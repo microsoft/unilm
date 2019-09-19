@@ -11,6 +11,7 @@ If you find UniLM useful in your work, you can cite the paper as below:
     @incollection{unilm_neurips2019,
       title = {Unified Language Model Pre-training for Natural Language Understanding and Generation},
       author = {Dong, Li and Yang, Nan and Wang, Wenhui and Wei, Furu and Liu, Xiaodong and Wang, Yu and Gao, Jianfeng and Zhou, Ming and Hon, Hsiao-Wuen},
+      booktitle = {Advances in Neural Information Processing Systems 32},
       year = {2019},
       url = {https://arxiv.org/pdf/1905.03197.pdf}
 
