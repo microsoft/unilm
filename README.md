@@ -9,6 +9,8 @@
 
 ## Environment
 
+### Docker
+
 The recommended way to run the code is using docker under Linux:
 ```bash
 alias=`whoami | cut -d'.' -f2`; docker run -it --rm --runtime=nvidia --ipc=host --privileged -v /home/${alias}:/home/${alias} pytorch/pytorch:1.1.0-cuda10.0-cudnn7.5-devel bash
@@ -28,7 +30,7 @@ git reset --hard 1603407bf49c7fc3da74fceb6a6c7b47fece2ef8
 python setup.py install --user --cuda_ext --cpp_ext
 cd $PWD_DIR
 
-pip install --user tensorboardX six numpy tqdm path.py pandas scikit-learn lmdb pyarrow py-lz4framed methodtools py-rouge
+pip install --user tensorboardX six numpy tqdm path.py pandas scikit-learn lmdb pyarrow py-lz4framed methodtools py-rouge pyrouge
 pip install -e git://github.com/Maluuba/nlg-eval.git#egg=nlg-eval
 ```
 The mixed-precision training code requires the specific version of [NVIDIA/apex](https://github.com/NVIDIA/apex/tree/1603407bf49c7fc3da74fceb6a6c7b47fece2ef8), which only supports pytorch<1.2.0.
@@ -101,7 +103,7 @@ python gigaword/eval.py --pred ${MODEL_RECOVER_PATH}.${EVAL_SPLIT} \
   --gold ${DATA_DIR}/org_data/${EVAL_SPLIT}.tgt.txt --perl
 ```
 
-The program `eval.py` generates a post-processed output file `${MODEL_RECOVER_PATH}.${EVAL_SPLIT}.post`  (downloaded from [here](https://drive.google.com/open?id=15R7IvOVT3irdH3d2eqHPs_5Lbh1LIy8U)).
+The program `eval.py` generates a post-processed output file `${MODEL_RECOVER_PATH}.${EVAL_SPLIT}.post` (downloaded from [here](https://drive.google.com/open?id=15R7IvOVT3irdH3d2eqHPs_5Lbh1LIy8U)).
 
 ### Abstractive Summarization - [Gigaword](https://github.com/harvardnlp/sent-summary)
 
@@ -161,7 +163,7 @@ python gigaword/eval.py --pred ${MODEL_RECOVER_PATH}.${EVAL_SPLIT}.alp0.6 \
   --gold ${DATA_DIR}/org_data/${EVAL_SPLIT}.tgt.txt --perl
 ```
 
-The program `eval.py` generates a post-processed output file `${MODEL_RECOVER_PATH}.${EVAL_SPLIT}.alp0.6.post`  (downloaded from [here](https://drive.google.com/open?id=1oycvzMC6ZoWZV7BOt5OlZ7q0SxM_0Zc9)).
+The program `eval.py` generates a post-processed output file `${MODEL_RECOVER_PATH}.${EVAL_SPLIT}.alp0.6.post` (downloaded from [here](https://drive.google.com/open?id=1oycvzMC6ZoWZV7BOt5OlZ7q0SxM_0Zc9)).
 
 ### Abstractive Summarization - [CNN / Daily Mail](https://github.com/harvardnlp/sent-summary)
 
@@ -221,7 +223,7 @@ python gigaword/eval.py --pred ${MODEL_RECOVER_PATH}.${EVAL_SPLIT}.alp1.0 \
   --gold ${DATA_DIR}/org_data/${EVAL_SPLIT}.summary --trunc_len 70 --perl
 ```
 
-The program `eval.py` generates a post-processed output file `${MODEL_RECOVER_PATH}.${EVAL_SPLIT}.alp1.0.post`  (downloaded from [here](https://drive.google.com/open?id=1p93XD0wo3YvyxZnNYywujtnQoNCDiTF7)).
+The program `eval.py` generates a post-processed output file `${MODEL_RECOVER_PATH}.${EVAL_SPLIT}.alp1.0.post` (downloaded from [here](https://drive.google.com/open?id=1p93XD0wo3YvyxZnNYywujtnQoNCDiTF7)).
 
 ### Question Generation - [SQuAD](https://arxiv.org/abs/1806.03822)
 
@@ -287,6 +289,11 @@ python qg/eval.py --out_file qg/output/qg.test.output.txt
 The output files can be downloaded from [here](https://drive.google.com/open?id=1MdaRftgl_HMqN7DLvYmw-zKkvOBZCP6U).
 
 Note: the evaluation code files `qg/eval_on_unilm_tokenized_ref.py` and `qg/eval.py` are in Python 2.*, because they are dependent on the [evaluation scripts](https://github.com/xinyadu/nqg/tree/master/qgevalcap) of [Du et al., (2017)](https://arxiv.org/pdf/1705.00106.pdf).
+
+## FAQ
+
+- Install ROUGE-1.5.5
+If we would like to use the Perl script of ROUGE, it can be installed by following the [instruction](https://github.com/bheinzerling/pyrouge#installation). The ROUGE-1.5.5 package (written in Perl) can be found at [here](https://github.com/andersjo/pyrouge/tree/master/tools/ROUGE-1.5.5). We can also use the Python-version evaluation script by removing the flag `--perl` when running `eval.py`. Notice that there would be slight number difference between them due to the implementation details.
 
 ## Citation
 
