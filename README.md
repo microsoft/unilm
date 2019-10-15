@@ -287,9 +287,7 @@ python qg/eval_on_unilm_tokenized_ref.py --out_file qg/output/qg.test.output.txt
 python qg/eval.py --out_file qg/output/qg.test.output.txt
 ```
 
-The output files can be downloaded from [here](https://drive.google.com/open?id=1MdaRftgl_HMqN7DLvYmw-zKkvOBZCP6U).
-
-Note: the evaluation code files `qg/eval_on_unilm_tokenized_ref.py` and `qg/eval.py` are in Python 2.*, because they are dependent on the [evaluation scripts](https://github.com/xinyadu/nqg/tree/master/qgevalcap) of [Du et al., (2017)](https://arxiv.org/pdf/1705.00106.pdf).
+The files `qg/eval_on_unilm_tokenized_ref.py` and `qg/eval.py` are in Python 2.\*, because they are dependent on the [evaluation scripts](https://github.com/xinyadu/nqg/tree/master/qgevalcap) of [Du et al., (2017)](https://arxiv.org/pdf/1705.00106.pdf). The output files can be downloaded from [here](https://drive.google.com/open?id=1MdaRftgl_HMqN7DLvYmw-zKkvOBZCP6U). Notice that our model predictions are cased, while the gold outputs provided by Du et al., (2017) are uncased. So the predicted results need to be converted to lowercase before computing the evaluation metrics.
 
 ## FAQ
 
