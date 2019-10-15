@@ -219,7 +219,7 @@ python biunilm/decode_seq2seq.py --fp16 --amp --bert_model bert-large-cased --ne
 python biunilm/gen_seq_from_trace.py --bert_model bert-large-cased --alpha 1.0 \
   --input ${MODEL_RECOVER_PATH}.${EVAL_SPLIT}
 # run evaluation
-python gigaword/eval.py --pred ${MODEL_RECOVER_PATH}.${EVAL_SPLIT}.alp1.0 \
+python cnndm/eval.py --pred ${MODEL_RECOVER_PATH}.${EVAL_SPLIT}.alp1.0 \
   --gold ${DATA_DIR}/org_data/${EVAL_SPLIT}.summary --trunc_len 70 --perl
 ```
 
