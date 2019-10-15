@@ -294,7 +294,7 @@ Note: the evaluation code files `qg/eval_on_unilm_tokenized_ref.py` and `qg/eval
 ## FAQ
 
 - Install ROUGE-1.5.5
-  - If we would like to use the Perl script of ROUGE, it can be installed by following the [instruction](https://github.com/bheinzerling/pyrouge#installation). The ROUGE-1.5.5 package (written in Perl) can be downloaded from [here](https://github.com/andersjo/pyrouge/tree/master/tools/ROUGE-1.5.5). We can also use the Python-version evaluation script by removing the flag `--perl` when running `eval.py`. Notice that there would be slight number difference between them due to the implementation details.
+  - If we would like to use the Perl script of ROUGE, it can be installed by following [instruction-1](https://gist.github.com/donglixp/d7eea02d57ba2e099746f8463c2f6597) and [instruction-2](https://github.com/bheinzerling/pyrouge#installation). The ROUGE-1.5.5 package (written in Perl) can be downloaded from [here](https://github.com/andersjo/pyrouge/tree/master/tools/ROUGE-1.5.5). We can also use the Python-version evaluation script by removing the flag `--perl` when running `eval.py`. Notice that there would be slight number difference between them due to the implementation details.
 
 ## Citation
 
