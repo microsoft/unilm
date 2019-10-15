@@ -308,6 +308,12 @@ If you find UniLM useful in your work, you can cite the following paper:
 }
 ```
 
+## Related Projects/Codebase
+
+- Vision-Language Pre-training: https://github.com/LuoweiZhou/VLP
+- MT-DNN: https://github.com/namisan/mt-dnn
+- Response Generation Pre-training: https://github.com/microsoft/DialoGPT
+
 ## Acknowledgments
 Our code is based on [pytorch-transformers v0.4.0](https://github.com/huggingface/pytorch-transformers/tree/v0.4.0). We thank the authors for their wonderful open-source efforts.
 
