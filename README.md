@@ -30,7 +30,8 @@ git reset --hard 1603407bf49c7fc3da74fceb6a6c7b47fece2ef8
 python setup.py install --user --cuda_ext --cpp_ext
 cd $PWD_DIR
 
-pip install --user tensorboardX six numpy tqdm path.py pandas scikit-learn lmdb pyarrow py-lz4framed methodtools py-rouge pyrouge
+pip install --user tensorboardX six numpy tqdm path.py pandas scikit-learn lmdb pyarrow py-lz4framed methodtools py-rouge pyrouge nltk
+python -c "import nltk; nltk.download('punkt')"
 pip install -e git://github.com/Maluuba/nlg-eval.git#egg=nlg-eval
 ```
 The mixed-precision training code requires the specific version of [NVIDIA/apex](https://github.com/NVIDIA/apex/tree/1603407bf49c7fc3da74fceb6a6c7b47fece2ef8), which only supports pytorch<1.2.0.
