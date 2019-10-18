@@ -17,5 +17,5 @@
   "type_vocab_size": 6,
   "layer_norm_epsilon": 0.00001,
   "vocab_size": 28996,
-  "label_smoothing": 0
+  "label_smoothing": 0.0
 }
