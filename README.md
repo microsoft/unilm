@@ -325,5 +325,5 @@ Portions of the source code are based on the [pytorch-transformers v0.4.0](https
 
 For help or issues using UniLM, please submit a GitHub issue.
 
-For personal communication related to UniLM, please contact Li Dong (`lidong1@microsoft.com`), Furu Wei (`fuwei@microsoft.com`).
+For other communications related to UniLM, please contact Li Dong (`lidong1@microsoft.com`), Furu Wei (`fuwei@microsoft.com`).
 
