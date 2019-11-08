@@ -1451,7 +1451,7 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
                 last_hidden, None, task_idx=task_idx)
             if self.not_predict_set:
                 for token_id in self.not_predict_set:
-                    prediction_scores[:, token_id].fill_(-10000.0)
+                    prediction_scores[:, :, token_id].fill_(-10000.0)
             _, max_ids = torch.max(prediction_scores, dim=-1)
             output_ids.append(max_ids)
 
