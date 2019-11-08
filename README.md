@@ -293,6 +293,9 @@ The files `qg/eval_on_unilm_tokenized_ref.py` and `qg/eval.py` are in Python 2.\
 
 - Install ROUGE-1.5.5
   - If we would like to use the Perl script of ROUGE, it can be installed by following [instruction-1](https://gist.github.com/donglixp/d7eea02d57ba2e099746f8463c2f6597) and [instruction-2](https://github.com/bheinzerling/pyrouge#installation). The ROUGE-1.5.5 package (written in Perl) can be downloaded from [here](https://github.com/andersjo/pyrouge/tree/master/tools/ROUGE-1.5.5). We can also use the Python-version evaluation script by removing the flag `--perl` when running `eval.py`. Notice that there would be slight number difference between them due to the implementation details.
+  
+- [Run inference using CPUs](https://github.com/microsoft/unilm/issues/23#issuecomment-549788510)
+  - Run `decode_seq2seq.py` without the flags `--amp` and `--fp16`, and uninstall the python package `nvidia/apex`.
 
 ## Citation
 
@@ -325,5 +328,5 @@ Portions of the source code are based on the [pytorch-transformers v0.4.0](https
 
 For help or issues using UniLM, please submit a GitHub issue.
 
-For personal communication related to UniLM, please contact Li Dong (`lidong1@microsoft.com`), Furu Wei (`fuwei@microsoft.com`).
+For other communications related to UniLM, please contact Li Dong (`lidong1@microsoft.com`), Furu Wei (`fuwei@microsoft.com`).
 
