@@ -1378,7 +1378,7 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
 
     def __init__(self, config, mask_word_id=0, num_labels=2, num_rel=0,
                  search_beam_size=1, length_penalty=1.0, eos_id=0, sos_id=0,
-                 forbid_duplicate_ngrams=False, forbid_ignore_set=None, ngram_size=3, min_len=0, mode="s2s", pos_shift=False):
+                 forbid_duplicate_ngrams=False, forbid_ignore_set=None, not_predict_set=None, ngram_size=3, min_len=0, mode="s2s", pos_shift=False):
         super(BertForSeq2SeqDecoder, self).__init__(config)
         self.bert = BertModelIncr(config)
         self.cls = BertPreTrainingHeads(
@@ -1398,6 +1398,7 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
         self.sos_id = sos_id
         self.forbid_duplicate_ngrams = forbid_duplicate_ngrams
         self.forbid_ignore_set = forbid_ignore_set
+        self.not_predict_set = not_predict_set
         self.ngram_size = ngram_size
         self.min_len = min_len
         assert mode in ("s2s", "l2r")
@@ -1448,6 +1449,9 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
             last_hidden = new_encoded_layers[-1][:, -1:, :]
             prediction_scores, _ = self.cls(
                 last_hidden, None, task_idx=task_idx)
+            if self.not_predict_set:
+                for token_id in self.not_predict_set:
+                    prediction_scores[:, token_id].fill_(-10000.0)
             _, max_ids = torch.max(prediction_scores, dim=-1)
             output_ids.append(max_ids)
 
@@ -1536,6 +1540,9 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
                 log_scores += (forbid_word_mask * -10000.0)
             if self.min_len and (next_pos-input_length+1 <= self.min_len):
                 log_scores[:, :, self.eos_id].fill_(-10000.0)
+            if self.not_predict_set:
+                for token_id in self.not_predict_set:
+                    log_scores[:, :, token_id].fill_(-10000.0)
             kk_scores, kk_ids = torch.topk(log_scores, k=K)
             if len(total_scores) == 0:
                 k_ids = torch.reshape(kk_ids, [batch_size, K])

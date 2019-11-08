@@ -96,7 +96,7 @@ def main():
 
     parser.add_argument('--forbid_duplicate_ngrams', action='store_true')
     parser.add_argument('--forbid_ignore_word', type=str, default=None,
-                        help="Forbid the word during forbid_duplicate_ngrams")
+                        help="Ignore the word during forbid_duplicate_ngrams")
     parser.add_argument("--min_len", default=None, type=int)
     parser.add_argument('--need_score_traces', action='store_true')
     parser.add_argument('--ngram_size', type=int, default=3)
@@ -112,6 +112,8 @@ def main():
                         help="Sharing segment embeddings for the encoder of S2S (used with --s2s_add_segment).")
     parser.add_argument('--pos_shift', action='store_true',
                         help="Using position shift for fine-tuning.")
+    parser.add_argument('--not_predict_token', type=str, default=None,
+                        help="Do not predict the tokens during decoding.")
 
     args = parser.parse_args()
 
@@ -153,21 +155,27 @@ def main():
         (1 if args.s2s_add_segment else 0) if args.new_segment_ids else 2
     mask_word_id, eos_word_ids, sos_word_id = tokenizer.convert_tokens_to_ids(
         ["[MASK]", "[SEP]", "[S2S_SOS]"])
-    forbid_ignore_set = None
-    if args.forbid_ignore_word:
-        w_list = []
-        for w in args.forbid_ignore_word.split('|'):
-            if w.startswith('[') and w.endswith(']'):
-                w_list.append(w.upper())
-            else:
-                w_list.append(w)
-        forbid_ignore_set = set(tokenizer.convert_tokens_to_ids(w_list))
+
+    def _get_token_id_set(s):
+        r = None
+        if s:
+            w_list = []
+            for w in s.split('|'):
+                if w.startswith('[') and w.endswith(']'):
+                    w_list.append(w.upper())
+                else:
+                    w_list.append(w)
+            r = set(tokenizer.convert_tokens_to_ids(w_list))
+        return r
+
+    forbid_ignore_set = _get_token_id_set(args.forbid_ignore_word)
+    not_predict_set = _get_token_id_set(args.not_predict_token)
     print(args.model_recover_path)
     for model_recover_path in glob.glob(args.model_recover_path.strip()):
         logger.info("***** Recover model: %s *****", model_recover_path)
         model_recover = torch.load(model_recover_path)
         model = BertForSeq2SeqDecoder.from_pretrained(args.bert_model, state_dict=model_recover, num_labels=cls_num_labels, num_rel=pair_num_relation, type_vocab_size=type_vocab_size, task_idx=3, mask_word_id=mask_word_id, search_beam_size=args.beam_size,
-                                                      length_penalty=args.length_penalty, eos_id=eos_word_ids, sos_id=sos_word_id, forbid_duplicate_ngrams=args.forbid_duplicate_ngrams, forbid_ignore_set=forbid_ignore_set, ngram_size=args.ngram_size, min_len=args.min_len, mode=args.mode, max_position_embeddings=args.max_seq_length, ffn_type=args.ffn_type, num_qkv=args.num_qkv, seg_emb=args.seg_emb, pos_shift=args.pos_shift)
+                                                      length_penalty=args.length_penalty, eos_id=eos_word_ids, sos_id=sos_word_id, forbid_duplicate_ngrams=args.forbid_duplicate_ngrams, forbid_ignore_set=forbid_ignore_set, not_predict_set=not_predict_set, ngram_size=args.ngram_size, min_len=args.min_len, mode=args.mode, max_position_embeddings=args.max_seq_length, ffn_type=args.ffn_type, num_qkv=args.num_qkv, seg_emb=args.seg_emb, pos_shift=args.pos_shift)
         del model_recover
 
         if args.fp16:
