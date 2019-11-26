@@ -118,7 +118,7 @@ The training set of Gigaword contains 3.8M examples for headline generation.
 | [BertShare (Rothe et al., 2019)](https://arxiv.org/pdf/1907.12461.pdf)           | 38.13     | 19.81     | 35.62     |
 | **UniLM**                                                                        | **38.90** | **20.05** | **36.00** |
 
-The data can be downloaded from [here](https://drive.google.com/open?id=1USoQ8lJgN8kAWnUnRrupMGrPMLlDVqlV).
+The data can be downloaded from [here](https://drive.google.com/open?id=1USoQ8lJgN8kAWnUnRrupMGrPMLlDVqlV). **Note**: We use HarvardNLP's pre-processed version for comparisons with other models, which substitutes all the digits with the special token "#". If you would like to directly use the provided model, you may need additional postprocess to recover the correct digits.
 
 ```bash
 # run fine-tuning
