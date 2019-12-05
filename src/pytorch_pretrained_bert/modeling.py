@@ -1454,7 +1454,7 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
             prediction_scores, _ = self.cls(
                 last_hidden, None, task_idx=task_idx)
             prediction_scores = prediction_scores[:, -1, :] / (self.temperature if self.temperature > 0 else 1.)
-
+            prediction_scores = self.top_k_top_p_filtering(prediction_scores, top_k=self.top_k, top_p=self.top_p)
             if self.not_predict_set:
                 for token_id in self.not_predict_set:
                     prediction_scores[:, :, token_id].fill_(-10000.0)
