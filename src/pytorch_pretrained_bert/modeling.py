@@ -1393,6 +1393,9 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
             self.crit_pair_rel = BertPreTrainingPairRel(
                 config, num_rel=num_rel)
         self.search_beam_size = search_beam_size
+        self.temperature = 0
+        self.topk = 0
+        self.topp = 0
         self.length_penalty = length_penalty
         self.eos_id = eos_id
         self.sos_id = sos_id
@@ -1449,10 +1452,15 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
             last_hidden = new_encoded_layers[-1][:, -1:, :]
             prediction_scores, _ = self.cls(
                 last_hidden, None, task_idx=task_idx)
+            prediction_scores = prediction_scores[:, -1, :] / (self.temperature if self.temperature > 0 else 1.)
+
             if self.not_predict_set:
                 for token_id in self.not_predict_set:
                     prediction_scores[:, :, token_id].fill_(-10000.0)
-            _, max_ids = torch.max(prediction_scores, dim=-1)
+            if temperature == 0: # greedy sampling:
+                max_ids = torch.argmax(prediction_scores, dim=-1).unsqueeze(-1)
+            else:
+                max_ids = torch.multinomial(F.softmax(prediction_scores, dim=-1), num_samples=1)
             output_ids.append(max_ids)
 
             if self.pos_shift:
@@ -1757,6 +1765,36 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
                 ts_list, output_length, padding_value=0).to(input_ids.device)
 
         return traces
+
+    def top_k_top_p_filtering(self, logits, top_k=0, top_p=0.0, filter_value=-float('Inf')):
+        """ Filter a distribution of logits using top-k and/or nucleus (top-p) filtering
+            Args:
+                logits: logits distribution shape (batch size x vocabulary size)
+                top_k > 0: keep only top k tokens with highest probability (top-k filtering).
+                top_p > 0.0: keep the top tokens with cumulative probability >= top_p (nucleus filtering).
+                    Nucleus filtering is described in Holtzman et al. (http://arxiv.org/abs/1904.09751)
+            From: https://gist.github.com/thomwolf/1a5a29f6962089e871b94cbd09daf317
+        """
+        top_k = min(top_k, logits.size(-1))  # Safety check
+        if top_k > 0:
+            # Remove all tokens with a probability less than the last token of the top-k
+            indices_to_remove = logits < torch.topk(logits, top_k)[0][..., -1, None]
+            logits[indices_to_remove] = filter_value
+
+        if top_p > 0.0:
+            sorted_logits, sorted_indices = torch.sort(logits, descending=True)
+            cumulative_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
+
+            # Remove tokens with cumulative probability above the threshold
+            sorted_indices_to_remove = cumulative_probs > top_p
+            # Shift the indices to the right to keep also the first token above the threshold
+            sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+            sorted_indices_to_remove[..., 0] = 0
+
+            # scatter sorted tensors to original indexing
+            indices_to_remove = sorted_indices_to_remove.scatter(dim=1, index=sorted_indices, src=sorted_indices_to_remove)
+            logits[indices_to_remove] = filter_value
+        return logits
 
 
 class BertForMaskedLM(PreTrainedBertModel):
