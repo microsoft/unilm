@@ -1458,7 +1458,7 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
             if self.not_predict_set:
                 for token_id in self.not_predict_set:
                     prediction_scores[:, :, token_id].fill_(-10000.0)
-            if temperature == 0: # greedy sampling:
+            if self.temperature == 0: # greedy sampling:
                 max_ids = torch.argmax(prediction_scores, dim=-1).unsqueeze(-1)
             else:
                 max_ids = torch.multinomial(F.softmax(prediction_scores, dim=-1), num_samples=1)
