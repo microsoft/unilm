@@ -1378,7 +1378,8 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
 
     def __init__(self, config, mask_word_id=0, num_labels=2, num_rel=0,
                  search_beam_size=1, length_penalty=1.0, eos_id=0, sos_id=0,
-                 forbid_duplicate_ngrams=False, forbid_ignore_set=None, not_predict_set=None, ngram_size=3, min_len=0, mode="s2s", pos_shift=False):
+                 forbid_duplicate_ngrams=False, forbid_ignore_set=None, not_predict_set=None, ngram_size=3, min_len=0, mode="s2s", pos_shift=False,
+                 temperature=0, topk=0, topp=0):
         super(BertForSeq2SeqDecoder, self).__init__(config)
         self.bert = BertModelIncr(config)
         self.cls = BertPreTrainingHeads(
@@ -1393,9 +1394,9 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
             self.crit_pair_rel = BertPreTrainingPairRel(
                 config, num_rel=num_rel)
         self.search_beam_size = search_beam_size
-        self.temperature = 0
-        self.topk = 0
-        self.topp = 0
+        self.temperature = temperature
+        self.topk = topk
+        self.topp = topp
         self.length_penalty = length_penalty
         self.eos_id = eos_id
         self.sos_id = sos_id
