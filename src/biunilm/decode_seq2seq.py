@@ -91,14 +91,14 @@ def main():
                         help="Batch size for decoding.")
     parser.add_argument('--beam_size', type=int, default=1,
                         help="Beam size for searching")
-    parser.add_argument('--temperature', type=float, default=1,
-                        help="temperature to modify token logits by, this argument will be ignored if beam_size > 1")
-    parser.add_argument('--top_k', type=int, default=0,
-                        help="uses top_k token selection capability, this argument will be ignored if beam_size > 1")
-    parser.add_argument('--top_p', type=int, default=0,
-                        help="uses top_k token selection capability, this argument will be ignored if beam_size > 1")
     parser.add_argument('--length_penalty', type=float, default=0,
                         help="Length penalty for beam search")
+    parser.add_argument('--temperature', default=0,
+                        help="temperature to modify token logits by, this argument will be ignored if beam_size > 1")
+    parser.add_argument('--top_k', type=int, default=0,
+                        help="top_k token selection number for token decoding, this argument will be ignored if beam_size > 1")
+    parser.add_argument('--top_p', type=float, default=0,
+                        help="top_p probability for nucleus filtering token decoding, this argument will be ignored if beam_size > 1")
 
     parser.add_argument('--forbid_duplicate_ngrams', action='store_true')
     parser.add_argument('--forbid_ignore_word', type=str, default=None,
