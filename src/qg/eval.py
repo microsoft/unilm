@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 __author__ = 'xinya'
 
 from bleu.bleu import Bleu
@@ -138,10 +139,10 @@ class QGEvalCap:
             score, scores = scorer.compute_score(self.gts, self.res)
             if type(method) == list:
                 for sc, scs, m in zip(score, scores, method):
-                    print "%s: %0.5f" % (m, sc)
+                    print("%s: %0.5f" % (m, sc))
                     output.append(sc)
             else:
-                print "%s: %0.5f" % (method, score)
+                print("%s: %0.5f" % (method, score))
                 output.append(score)
         return output
 
@@ -205,5 +206,5 @@ if __name__ == "__main__":
                         default="./qg_data/nqg_processed_data/tgt-test.txt", help="target file")
     args = parser.parse_args()
 
-    print "scores: \n"
+    print("scores: \n")
     eval(args.out_file, args.src_file, args.tgt_file)
