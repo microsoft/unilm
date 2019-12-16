@@ -1457,7 +1457,7 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
             prediction_scores = self.top_k_top_p_filtering(prediction_scores, top_k=self.top_k, top_p=self.top_p)
             if self.not_predict_set:
                 for token_id in self.not_predict_set:
-                    prediction_scores[:, :, token_id].fill_(-10000.0)
+                    prediction_scores[..., token_id].fill_(-10000.0)
             if self.temperature == 0: # greedy sampling:
                 max_ids = torch.argmax(prediction_scores, dim=-1).unsqueeze(-1)
             else:
@@ -1793,7 +1793,7 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
             sorted_indices_to_remove[..., 0] = 0
 
             # scatter sorted tensors to original indexing
-            indices_to_remove = sorted_indices_to_remove.scatter(dim=1, index=sorted_indices, src=sorted_indices_to_remove)
+            indices_to_remove = sorted_indices_to_remove.scatter(dim=-1, index=sorted_indices, src=sorted_indices_to_remove)
             logits[indices_to_remove] = filter_value
         return logits
 
