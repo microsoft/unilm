@@ -644,11 +644,7 @@ class PreTrainedBertModel(nn.Module):
         """ Initialize the weights.
         """
         if isinstance(module, (nn.Linear, nn.Embedding)):
-            # Slightly different from the TF version which uses truncated_normal for initialization
-            # cf https://github.com/pytorch/pytorch/pull/5617
-            # module.weight.data.normal_(mean=0.0, std=self.config.initializer_range)
-            module.weight.data.copy_(torch.Tensor(
-                truncnorm.rvs(-1, 1, size=list(module.weight.data.shape)) * self.config.initializer_range))
+            module.weight.data.normal_(mean=0.0, std=self.config.initializer_range)
         elif isinstance(module, BertLayerNorm):
             module.bias.data.zero_()
             module.weight.data.fill_(1.0)
