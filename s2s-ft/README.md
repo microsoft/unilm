@@ -1,4 +1,4 @@
-# S2S Fine-Tuning
+# Sqeuence-to-Sequence Fine-tuning
 
 ## License
 This project is licensed under the license found in the LICENSE file in the root directory of this source tree.
