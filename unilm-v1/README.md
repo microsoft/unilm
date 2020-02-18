@@ -1,5 +1,5 @@
 # UniLM
-**We develop pre-trained models for natural language understanding (NLU) and generation (NLG) tasks**
+**Unified pre-training for natural language understanding (NLU) and generation (NLG)**
 
 **\*\*\*\*\* New October 1st, 2019: UniLM v1 release \*\*\*\*\***
 
