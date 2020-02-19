@@ -13,8 +13,8 @@ Yiheng Xu, Minghao Li, Lei Cui, Shaohan Huang, Furu Wei, Ming Zhou, arXiv Prepri
 
 ## Pre-trained Model
 
-* [LayoutLM-Base, Uncased](https://1drv.ms/u/s!ApPZx_TWwibInS3JD3sZlPpQVZ2b?e=bbTfmM):12-layer, 768-hidden, 12-heads, 113M parameters
-* [LayoutLM-Large, Uncased](https://1drv.ms/u/s!ApPZx_TWwibInSy2nj7YabBsTWNa?e=p4LQo1):24-layer, 1024-hidden, 16-heads, 343M parameters
+* [LayoutLM-Base, Uncased](https://1drv.ms/u/s!ApPZx_TWwibInS3JD3sZlPpQVZ2b?e=bbTfmM) (11M documents, 2 epochs): 12-layer, 768-hidden, 12-heads, 113M parameters
+* [LayoutLM-Large, Uncased](https://1drv.ms/u/s!ApPZx_TWwibInSy2nj7YabBsTWNa?e=p4LQo1) (11M documents, 2 epochs): 24-layer, 1024-hidden, 16-heads, 343M parameters
 
 ## Fine-tuning
 
