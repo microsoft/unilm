@@ -9,7 +9,7 @@ Yiheng Xu, Minghao Li, Lei Cui, Shaohan Huang, Furu Wei, Ming Zhou, arXiv Prepri
 
 ## Release Notes
 
-**\*\*\*\*\* New Feb 18th, 2020: Initial Release with model and fine-tuning code.\*\*\*\*\***
+**\*\*\*\*\* New Feb 18th, 2020: Initial release of pre-trained models and fine-tuning code for LayoutLM v1 \*\*\*\*\***
 
 ## Pre-trained Model
 
