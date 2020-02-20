@@ -93,6 +93,12 @@ def main():
                         help="Beam size for searching")
     parser.add_argument('--length_penalty', type=float, default=0,
                         help="Length penalty for beam search")
+    parser.add_argument('--temperature', type=float, default=0,
+                        help="temperature to modify token logits by, this argument will be ignored if beam_size > 1")
+    parser.add_argument('--top_k', type=int, default=0,
+                        help="top_k token selection number for token decoding, this argument will be ignored if beam_size > 1")
+    parser.add_argument('--top_p', type=float, default=0,
+                        help="top_p probability for nucleus filtering token decoding, this argument will be ignored if beam_size > 1")
 
     parser.add_argument('--forbid_duplicate_ngrams', action='store_true')
     parser.add_argument('--forbid_ignore_word', type=str, default=None,
@@ -175,7 +181,8 @@ def main():
         logger.info("***** Recover model: %s *****", model_recover_path)
         model_recover = torch.load(model_recover_path)
         model = BertForSeq2SeqDecoder.from_pretrained(args.bert_model, state_dict=model_recover, num_labels=cls_num_labels, num_rel=pair_num_relation, type_vocab_size=type_vocab_size, task_idx=3, mask_word_id=mask_word_id, search_beam_size=args.beam_size,
-                                                      length_penalty=args.length_penalty, eos_id=eos_word_ids, sos_id=sos_word_id, forbid_duplicate_ngrams=args.forbid_duplicate_ngrams, forbid_ignore_set=forbid_ignore_set, not_predict_set=not_predict_set, ngram_size=args.ngram_size, min_len=args.min_len, mode=args.mode, max_position_embeddings=args.max_seq_length, ffn_type=args.ffn_type, num_qkv=args.num_qkv, seg_emb=args.seg_emb, pos_shift=args.pos_shift)
+                                                      length_penalty=args.length_penalty, eos_id=eos_word_ids, sos_id=sos_word_id, forbid_duplicate_ngrams=args.forbid_duplicate_ngrams, forbid_ignore_set=forbid_ignore_set, not_predict_set=not_predict_set, ngram_size=args.ngram_size, min_len=args.min_len, mode=args.mode, max_position_embeddings=args.max_seq_length, ffn_type=args.ffn_type, num_qkv=args.num_qkv, seg_emb=args.seg_emb, pos_shift=args.pos_shift,
+                                                      temperature=args.temperature, top_k=args.top_k, top_p=args.top_p)
         del model_recover
 
         if args.fp16:
