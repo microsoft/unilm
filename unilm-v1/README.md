@@ -5,8 +5,6 @@
 
 **UniLM v1** (September 30th, 2019): the code and pre-trained models for the NeurIPS 2019 paper entitled "[Unified Language Model Pre-training for Natural Language Understanding and Generation](https://arxiv.org/abs/1905.03197)". UniLM (v1) achieves the **new SOTA results** in **NLG** (especially **sequence-to-sequence generation**) tasks/benchmarks, including abstractive summarization (the Gigaword and CNN/DM dataset), question generation (the SQuAD QG dataset), etc. 
 
-**UniLM v2**: the new pre-training protocol and implementation scheme (coming soon).
-
 ## Environment
 
 ### Docker
@@ -40,15 +38,16 @@ Install the repo as a package in the docker:
 ```bash
 mkdir ~/code; cd ~/code
 git clone https://github.com/microsoft/unilm.git
-cd ~/code/unilm/src
+cd ~/code/unilm/unilm-v1/src
 pip install --user --editable .
 ```
 
 ## Pre-trained Models
-We release a large **cased** UniLM model pre-trained with **Wikipedia and BookCorpus** corpora. The model is trained by using the same model configuration and WordPiece vocabulary as BERT. The model parameters can be loaded as in the fine-tuning code.
+We release both base-size and large-size **cased** UniLM models pre-trained with **Wikipedia and BookCorpus** corpora. The models are trained by using the same model configuration and WordPiece vocabulary as BERT. The model parameters can be loaded as in the fine-tuning code.
 
 The links to the pre-trained models:
-- [UniLMv1-large-cased](https://drive.google.com/open?id=1Zj_nZWO7YffaOInj3Q4SZyn09Mb3In-e): 24-layer, 1024-hidden, 16-heads, 340M parameters
+- [unilm1-large-cased](https://unilm.blob.core.windows.net/ckpt/unilm1-large-cased.bin): 24-layer, 1024-hidden, 16-heads, 340M parameters
+- [unilm1-base-cased](https://unilm.blob.core.windows.net/ckpt/unilm1-base-cased.bin): 12-layer, 768-hidden, 12-heads, 110M parameters
 
 ## Fine-tuning
 We provide instructions on how to fine-tune UniLM as a sequence-to-sequence model to support various downstream natural language generation tasks as follows. It is recommended to use 2 or 4 v100-32G GPU cards to fine-tune the model. Gradient accumulation (`--gradient_accumulation_steps`) can be enabled if there is an OOM error.
