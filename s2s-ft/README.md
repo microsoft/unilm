@@ -23,7 +23,7 @@ cd ${code_dir} ; pip install --editable .
 
 ## Pre-trained Models
 
-We recommend to use the v2 uncased model:
+We recommend to use the uncased model:
 - [unilm1.2-base-uncased](https://unilm.blob.core.windows.net/ckpt/unilm1.2-base-uncased.bin): 12-layer, 768-hidden, 12-heads, 110M parameters
 
 If you would like to use a cased model:
