@@ -1,5 +1,5 @@
 # s2s-ft: Sequence-to-Sequence Fine-Tuning
-**A pytorch package for finetuning pre-trained Transformers for language (sequence-to-sequence) generation**
+**A PyTorch package used to fine-tune pre-trained Transformers for sequence-to-sequence language generation**
 
 ## Environment
 
