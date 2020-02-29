@@ -46,7 +46,7 @@ python -m torch.distributed.launch --nproc_per_node=4 ./examples/run_squad.py --
 ```
 
 ## Fine-tuning on NLG tasks
-Following [UniLM](/unilm-v1), MiniLM can be fine-tuned as a sequence-to-sequence model by employing a specific self-attention mask to support various downstream NLG tasks. We use the [s2s-ft toolkit](/s2s-ft) to conduct the fine-tuning for NLG tasks.
+Following [UniLM](/unilm-v1), MiniLM can be fine-tuned as a sequence-to-sequence model by employing a specific self-attention mask to support various downstream NLG tasks. We use the [s2s-ft package](/s2s-ft) to conduct the fine-tuning for NLG tasks.
 
 ### Abstractive Summarization - [XSum](https://github.com/EdinburghNLP/XSum)
 
