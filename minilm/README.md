@@ -3,7 +3,7 @@
 
 **\*\*\*\*\* New February 29, 2020: MiniLM v1 release \*\*\*\*\***
 
-**MiniLM v1**: the pre-trained models for the paper entitled "[MiniLM: Deep Self-Attention Distillation for Task-Agnostic Compression of Pre-Trained Transformers](https://arxiv.org/abs/2002.10957)". **Deep self-attention distillation is all you need** (for task-agnostic knowledge distillation of pre-trained Transformers). MiniLM (12-layer, 384-hidden) achieves 2.7x speedup and comparable results over BERT-Base (12-layer, 768-hidden) on **NLU** tasks as well as strong results on **NLG** tasks. The even smaller MiniLM (6-layer, 384-hidden) obtains 5.3x speedup and produces very competitive results.
+**MiniLM v1** (February 29, 2020): the pre-trained models for the paper entitled "[MiniLM: Deep Self-Attention Distillation for Task-Agnostic Compression of Pre-Trained Transformers](https://arxiv.org/abs/2002.10957)". **Deep self-attention distillation is all you need** (for task-agnostic knowledge distillation of pre-trained Transformers). MiniLM (12-layer, 384-hidden) achieves 2.7x speedup and comparable results over BERT-Base (12-layer, 768-hidden) on **NLU** tasks as well as strong results on **NLG** tasks. The even smaller MiniLM (6-layer, 384-hidden) obtains 5.3x speedup and produces very competitive results.
 
 ## Pre-trained Models
 We release **uncased** **12**-layer and **6**-layer MiniLM models with **384** hidden size distilled from an in-house pre-trained [UniLM v2](/unilm) model in BERT-Base size. We also release **uncased** **6**-layer MiniLM model with **768** hidden size distilled from [BERT-Base](https://github.com/google-research/bert). The models use the same WordPiece vocabulary as BERT.
