@@ -1,4 +1,5 @@
 # LayoutLM
+**multimodal (text + layout/format + image) pre-training for document understanding (e.g. scanned documents, PDF, etc.)**
 
 ## Introduction
 
