@@ -9,7 +9,7 @@
 We release the **uncased** **12**-layer and **6**-layer MiniLM models with **384** hidden size distilled from an in-house pre-trained [UniLM v2](/unilm) model in BERT-Base size. We also release **uncased** **6**-layer MiniLM model with **768** hidden size distilled from [BERT-Base](https://github.com/google-research/bert). The models use the same WordPiece vocabulary as BERT.
 
 The links to the pre-trained models:
-- MiniLMv1-L12-H384-uncased: 12-layer, 384-hidden, 12-heads, 33M parameters, 2.7x faster than BERT-Base
+- [MiniLMv1-L12-H384-uncased](https://1drv.ms/u/s!AjHn0yEmKG8qixAYyu2Fvq5ulnU7?e=DFApTA): 12-layer, 384-hidden, 12-heads, 33M parameters, 2.7x faster than BERT-Base
 - MiniLMv1-L6-H384-uncased: 6-layer, 384-hidden, 12-heads, 22M parameters, 5.3x faster than BERT-Base
 - MiniLMv1-L6-H768-uncased: 6-layer, 768-hidden, 12-heads, 66M parameters, 2.0x faster than BERT-Base
 
@@ -24,7 +24,7 @@ We present the dev results on SQuAD 2.0 and several GLUE benchmark tasks.
 | **MiniLM-L12xH384**                                                | 33M       | 81.7      | 85.7      | 93.0      | 91.5      | 58.5      | 73.3      | 89.5      | 91.3      |
 | **MiniLM-L6xH384**                                                 | 22M       | 75.6      | 83.3      | 91.5      | 90.5      | 47.5      | 68.8      | 88.9      | 90.6      |
 
-This example code fine-tunes **6**-layer MiniLM on SQuAD 2.0 dataset.
+This example code fine-tunes **12**-layer MiniLM on SQuAD 2.0 dataset.
 
 ```bash
 # run fine-tuning on SQuAD 2.0
@@ -35,13 +35,13 @@ MODEL_PATH=/{path_of_pre-trained_model}/
 export CUDA_VISIBLE_DEVICES=0,1,2,3
 python -m torch.distributed.launch --nproc_per_node=4 ./examples/run_squad.py --model_type bert \
  --output_dir ${OUTPUT_DIR} --data_dir ${DATA_DIR} \
- --model_name_or_path ${MODEL_PATH}/minilm-l6-h384-uncased.bin --tokenizer_name ${MODEL_PATH}/vocab.txt \
- --config_name ${MODEL_PATH}/minilm-l6-h384-uncased-config.json \
+ --model_name_or_path ${MODEL_PATH}/minilm-l12-h384-uncased.bin --tokenizer_name ${MODEL_PATH}/vocab.txt \
+ --config_name ${MODEL_PATH}/minilm-l12-h384-uncased-config.json \
  --do_train --do_eval --do_lower_case \
  --train_file train-v2.0.json --predict_file dev-v2.0.json \
- --learning_rate 5e-5 --num_train_epochs 5 \
+ --learning_rate 4e-5 --num_train_epochs 4 \
  --max_seq_length 384 --doc_stride 128 \
- --per_gpu_eval_batch_size=8 --per_gpu_train_batch_size=8 --save_steps 5000 \
+ --per_gpu_eval_batch_size=12 --per_gpu_train_batch_size=12 --save_steps 5000 \
  --version_2_with_negative
 ```
 
@@ -58,7 +58,7 @@ Following [UniLM](/unilm-v1), MiniLM can be fine-tuned as a sequence-to-sequence
 | **MiniLM-L12xH384**             | 33M       | 40.43     | 17.72     | 32.60     |
 | **MiniLM-L6xH384**              | 22M       | 38.79     | 16.39     | 31.10     |
 
-This example code fine-tunes **6**-layer MiniLM on XSum dataset.
+This example code fine-tunes **12**-layer MiniLM on XSum dataset.
 
 ```bash
 # run fine-tuning on XSum
@@ -66,21 +66,24 @@ TRAIN_FILE=/your/path/to/train.json
 CACHED_FEATURE_FILE=/your/path/to/xsum_train.uncased.features.pt
 OUTPUT_DIR=/your/path/to/save_checkpoints
 CACHE_DIR=/your/path/to/transformer_package_cache
+MODEL_PATH=/your/path/to/pre_trained_model/
 
 export CUDA_VISIBLE_DEVICES=0,1,2,3
 python -m torch.distributed.launch --nproc_per_node=4 run_seq2seq.py \
   --train_file ${TRAIN_FILE} --cached_train_features_file ${CACHED_FEATURE_FILE} \
   --output_dir ${OUTPUT_DIR} \
-  --model_type minilm --model_name_or_path minilm-l6-h384-uncased \
+  --model_type bert --model_name_or_path ${MODEL_PATH}/minilm-l12-h384-uncased.bin \
+  --tokenizer_name ${MODEL_PATH}/minilm-l12-h384-uncased-vocab-nlg.txt --config_name ${MODEL_PATH}/minilm-l12-h384-uncased-config.json \
   --do_lower_case --fp16 --fp16_opt_level O2 \
   --max_source_seq_length 464 --max_target_seq_length 48 \
   --per_gpu_train_batch_size 16 --gradient_accumulation_steps 1 \
-  --learning_rate 1.5e-4 --num_warmup_steps 500 --num_training_steps 120000 --cache_dir ${CACHE_DIR}
+  --learning_rate 1e-4 --num_warmup_steps 500 --num_training_steps 108000 --cache_dir ${CACHE_DIR}
 ```
 
 ```bash
 # run decoding on XSum
 MODEL_PATH=/your/path/to/model_checkpoint
+VOCAB_PATH=/your/path/to/vocab_file
 SPLIT=validation
 INPUT_JSON=/your/path/to/${SPLIT}.json
 
@@ -88,10 +91,10 @@ export CUDA_VISIBLE_DEVICES=0
 export OMP_NUM_THREADS=4
 export MKL_NUM_THREADS=4
 python decode_seq2seq.py \
-  --fp16 --model_type minilm --tokenizer_name minilm-l6-h384-uncased \
+  --fp16 --model_type bert --tokenizer_name ${VOCAB_PATH}/minilm-l12-h384-uncased-vocab-nlg.txt \
   --input_file ${INPUT_JSON} --split $SPLIT --do_lower_case \
   --model_path ${MODEL_PATH} --max_seq_length 512 --max_tgt_length 48 --batch_size 32 --beam_size 5 \
-  --length_penalty 0 --forbid_duplicate_ngrams --mode s2s --forbid_ignore_word "."
+  --length_penalty 0 --forbid_duplicate_ngrams --mode s2s --forbid_ignore_word "." --need_score_traces
 ```
 
 ### Abstractive Summarization - [CNN / Daily Mail](https://github.com/harvardnlp/sent-summary)
