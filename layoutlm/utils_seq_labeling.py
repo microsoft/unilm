@@ -53,7 +53,7 @@ class InputFeatures(object):
         self.boxes = boxes
 
 
-def read_examples_from_file(data_dir, mode, task):
+def read_examples_from_file(data_dir, mode):
     file_path = os.path.join(data_dir, "{}.txt".format(mode))
     box_file_path = os.path.join(data_dir, "{}_box.txt".format(mode))
     guid_index = 1
