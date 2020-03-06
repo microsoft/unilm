@@ -110,7 +110,7 @@ The golden answer text files can be downloaded at [here](https://unilm.blob.core
 SPLIT=validation
 GOLD_PATH=/your/path/to/${SPLIT}.target
 # ${MODEL_PATH}.${SPLIT} is the predicted target file
-python eval_for_xsum/eval.py --pred ${MODEL_PATH}.${SPLIT} --gold ${GOLD_PATH} --split ${SPLIT}
+python evaluations/eval_for_xsum.py --pred ${MODEL_PATH}.${SPLIT} --gold ${GOLD_PATH} --split ${SPLIT}
 ```
 
 
