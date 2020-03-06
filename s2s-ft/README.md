@@ -1,5 +1,4 @@
 # s2s-ft: Sequence-to-Sequence Fine-Tuning
-**A PyTorch package used to fine-tune pre-trained Transformers for sequence-to-sequence language generation**
 
 ## Environment
 
@@ -94,8 +93,8 @@ export OMP_NUM_THREADS=4
 export MKL_NUM_THREADS=4
 
 python decode_seq2seq.py \
-  --fp16 --bert_model unilm1.2-base-uncased --input_file ${INPUT_JSON} --split $SPLIT --do_lower_case \
-  --model_recover_path ${MODEL_PATH} --max_seq_length 512 --max_tgt_length 48 --batch_size 32 --beam_size 5 \
+  --fp16 --model_type unilm --tokenizer_name unilm1.2-base-uncased --input_file ${INPUT_JSON} --split $SPLIT --do_lower_case \
+  --model_path ${MODEL_PATH} --max_seq_length 512 --max_tgt_length 48 --batch_size 32 --beam_size 5 \
   --length_penalty 0 --forbid_duplicate_ngrams --mode s2s --forbid_ignore_word "."
 ```
 
@@ -156,8 +155,8 @@ export OMP_NUM_THREADS=4
 export MKL_NUM_THREADS=4
 
 python decode_seq2seq.py \
-  --fp16 --model_name unilm1-base-cased --input_file ${INPUT_JSON} --split $SPLIT \
-  --model_recover_path ${MODEL_PATH} --max_seq_length 768 --max_tgt_length 160 --batch_size 32 --beam_size 5 \
+  --fp16 --model_type unilm --tokenizer_name unilm1-base-cased --input_file ${INPUT_JSON} --split $SPLIT \
+  --model_path ${MODEL_PATH} --max_seq_length 768 --max_tgt_length 160 --batch_size 32 --beam_size 5 \
   --length_penalty 0 --forbid_duplicate_ngrams --mode s2s --forbid_ignore_word "."
 ```
 
@@ -216,8 +215,8 @@ export OMP_NUM_THREADS=4
 export MKL_NUM_THREADS=4
 
 python decode_seq2seq.py \
-  --fp16 --model_name unilm1.2-base-uncased --do_lower_case --input_file ${INPUT_JSON} --split $SPLIT \
-  --model_recover_path ${MODEL_PATH} --max_seq_length 768 --max_tgt_length 160 --batch_size 32 --beam_size 5 \
+  --fp16 --model_type unilm --tokenizer_name unilm1.2-base-uncased --do_lower_case --input_file ${INPUT_JSON} --split $SPLIT \
+  --model_path ${MODEL_PATH} --max_seq_length 768 --max_tgt_length 160 --batch_size 32 --beam_size 5 \
   --length_penalty 0 --forbid_duplicate_ngrams --mode s2s --forbid_ignore_word "." --min_len 48
 ```
 
@@ -236,6 +235,6 @@ python evaluations/eval_for_cnndm.py --pred ${MODEL_PATH}.${SPLIT} --gold ${GOLD
 
 ## License
 This project is licensed under the license found in the LICENSE file in the root directory of this source tree.
-Portions of the source code are based on the [transformers](https://github.com/huggingface/transformers) project.
+Portions of the source code are based on the [pytorch-transformers v0.4.0](https://github.com/huggingface/pytorch-transformers/tree/v0.4.0) project.
 
 [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct)

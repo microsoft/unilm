@@ -7,7 +7,6 @@ from __future__ import print_function
 import os
 import json
 import logging
-import glob
 import argparse
 import math
 from tqdm import tqdm, trange
@@ -17,12 +16,19 @@ import random
 import pickle
 
 from transformers import BertTokenizer, RobertaTokenizer
-from s2s_ft.modeling_decoding import BertForSeq2SeqDecoder
+from s2s_ft.modeling_decoding import BertForSeq2SeqDecoder, BertConfig
 from transformers.tokenization_bert import whitespace_tokenize
 import s2s_ft.s2s_loader as seq2seq_loader
 from s2s_ft.utils import load_and_cache_examples
+from transformers import \
+    BertTokenizer, RobertaTokenizer
 from s2s_ft.tokenization_unilm import UnilmTokenizer
 
+TOKENIZER_CLASSES = {
+    'bert': BertTokenizer,
+    'roberta': RobertaTokenizer,
+    'unilm': UnilmTokenizer,
+}
 
 class WhitespaceTokenizer(object):
     def tokenize(self, text):
@@ -54,25 +60,20 @@ def main():
     parser = argparse.ArgumentParser()
 
     # Required parameters
-    parser.add_argument("--model_name", default='bert-base-cased', type=str,
-                        help="Bert pre-trained model selected in the list: bert-base-uncased, "
-                             "bert-large-uncased, bert-base-cased, bert-large-cased, roberta-base, "
-                             "roberta-large, unilm-base-cased, unilm-large-cased.")
-    parser.add_argument("--model_recover_path", default=None, type=str, required=True,
-                        help="The file of fine-tuned pretraining model.")
+    parser.add_argument("--model_type", default=None, type=str, required=True,
+                        help="Model type selected in the list: " + ", ".join(TOKENIZER_CLASSES.keys()))
+    parser.add_argument("--model_path", default=None, type=str, required=True,
+                        help="Path to the model checkpoint.")
+    parser.add_argument("--config_path", default=None, type=str,
+                        help="Path to config.json for the model.")
+
     # tokenizer_name
-    parser.add_argument("--tokenizer_name", default=None, type=str,
+    parser.add_argument("--tokenizer_name", default=None, type=str, required=True, 
                         help="tokenizer name")
     parser.add_argument("--max_seq_length", default=512, type=int,
                         help="The maximum total input sequence length after WordPiece tokenization. \n"
                              "Sequences longer than this will be truncated, and sequences shorter \n"
                              "than this will be padded.")
-    parser.add_argument('--ffn_type', default=0, type=int,
-                        help="0: default mlp; 1: W((Wx+b) elem_prod x);")
-    parser.add_argument('--num_qkv', default=0, type=int,
-                        help="Number of different <Q,K,V>.")
-    parser.add_argument('--seg_emb', action='store_true',
-                        help="Using segment embedding for self-attention.")
 
     # decoding parameters
     parser.add_argument('--fp16', action='store_true',
@@ -91,8 +92,6 @@ def main():
                         help="random seed for initialization")
     parser.add_argument("--do_lower_case", action='store_true',
                         help="Set this flag if you are using an uncased model.")
-    parser.add_argument('--new_pos_ids', action='store_true',
-                        help="Use new position ids for LMs.")
     parser.add_argument('--batch_size', type=int, default=4,
                         help="Batch size for decoding.")
     parser.add_argument('--beam_size', type=int, default=1,
@@ -118,6 +117,8 @@ def main():
                         help="Sharing segment embeddings for the encoder of S2S (used with --s2s_add_segment).")
     parser.add_argument('--pos_shift', action='store_true',
                         help="Using position shift for fine-tuning.")
+    parser.add_argument("--cache_dir", default=None, type=str,
+                        help="Where do you want to store the pre-trained models downloaded from s3")
 
     args = parser.parse_args()
 
@@ -145,52 +146,31 @@ def main():
         torch.manual_seed(random_seed)
         if n_gpu > 0:
             torch.cuda.manual_seed_all(args.seed)
-    setattr(args, "is_roberta", args.model_name.startswith("roberta"))
-    setattr(args, "no_segment_embedding", args.is_roberta)
-    if not args.model_name.startswith("unilm1.2"):
-        setattr(args, "new_segment_ids", args.model_name.startswith("unilm-") or args.model_name.startswith("unilm1-"))
-    else:
-        setattr(args, "new_segment_ids", False)
     
-    if args.is_roberta:
-        tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
-        vocab = tokenizer.encoder
-        args.model_name = args.model_name.replace("roberta", "bert") + "-cased"
-    else:
-        if args.model_name.startswith("bert"):
-            tokenizer = BertTokenizer.from_pretrained(
-                args.tokenizer_name if args.tokenizer_name else args.model_name,
-                do_lower_case=args.do_lower_case)
-        else:
-            tokenizer = UnilmTokenizer.from_pretrained(
-                args.tokenizer_name if args.tokenizer_name else args.model_name,
-                do_lower_case=args.do_lower_case)
-            args.model_name = 'bert-' + args.model_name.split('-', 1)[-1]
+    tokenizer = TOKENIZER_CLASSES[args.model_type].from_pretrained(
+        args.tokenizer_name, do_lower_case=args.do_lower_case, 
+        cache_dir=args.cache_dir if args.cache_dir else None)
 
+    if args.model_type == "roberta":
+        vocab = tokenizer.encoder
+    else:
         vocab = tokenizer.vocab
 
     tokenizer.max_len = args.max_seq_length
 
-    pair_num_relation = 0
-    bi_uni_pipeline = []
-    cls_token = '<s>' if args.is_roberta else '[CLS]'
-    sep_token = '</s>' if args.is_roberta else '[SEP]'
-    pad_token = '<pad>' if args.is_roberta else '[PAD]'
-    mask_token = '<mask>' if args.is_roberta else '[MASK]'
+    config_file = args.config_path if args.config_path else os.path.join(args.model_path, "config.json")
+    logger.info("Read decoding config from: %s" % config_file)
+    config = BertConfig.from_json_file(config_file)
 
+    bi_uni_pipeline = []
     bi_uni_pipeline.append(seq2seq_loader.Preprocess4Seq2seqDecoder(
         list(vocab.keys()), tokenizer.convert_tokens_to_ids, args.max_seq_length,
-        max_tgt_length=args.max_tgt_length, new_segment_ids=args.new_segment_ids, mode="s2s", num_qkv=args.num_qkv,
-        s2s_special_token=args.s2s_special_token, s2s_add_segment=args.s2s_add_segment,
-        s2s_share_segment=args.s2s_share_segment, pos_shift=args.pos_shift,
-        cls_token=cls_token, sep_token=sep_token, pad_token=pad_token))
+        max_tgt_length=args.max_tgt_length, pos_shift=args.pos_shift,
+        source_type_id=config.source_type_id, target_type_id=config.target_type_id, 
+        cls_token=tokenizer.cls_token, sep_token=tokenizer.sep_token, pad_token=tokenizer.pad_token))
 
-    # Prepare model
-    cls_num_labels = 2
-    type_vocab_size = 6 + \
-        (1 if args.s2s_add_segment else 0) if args.new_segment_ids else 2
     mask_word_id, eos_word_ids, sos_word_id = tokenizer.convert_tokens_to_ids(
-        [mask_token, sep_token, sep_token])
+        [tokenizer.mask_token, tokenizer.sep_token, tokenizer.sep_token])
     forbid_ignore_set = None
     if args.forbid_ignore_word:
         w_list = []
@@ -200,23 +180,18 @@ def main():
             else:
                 w_list.append(w)
         forbid_ignore_set = set(tokenizer.convert_tokens_to_ids(w_list))
-    print(args.model_recover_path)
+    print(args.model_path)
     found_checkpoint_flag = False
-    for model_recover_path in glob.glob(args.model_recover_path.strip()):
+    for model_recover_path in [args.model_path.strip()]:
         logger.info("***** Recover model: %s *****", model_recover_path)
         found_checkpoint_flag = True
-        model_recover = torch.load(model_recover_path)
         model = BertForSeq2SeqDecoder.from_pretrained(
-            args.model_name, state_dict=model_recover, num_labels=cls_num_labels, num_rel=pair_num_relation,
-            type_vocab_size=type_vocab_size, task_idx=3, mask_word_id=mask_word_id, search_beam_size=args.beam_size,
+            model_recover_path, config=config, mask_word_id=mask_word_id, search_beam_size=args.beam_size,
             length_penalty=args.length_penalty, eos_id=eos_word_ids, sos_id=sos_word_id,
             forbid_duplicate_ngrams=args.forbid_duplicate_ngrams, forbid_ignore_set=forbid_ignore_set,
             ngram_size=args.ngram_size, min_len=args.min_len, mode=args.mode,
-            max_position_embeddings=args.max_seq_length, ffn_type=args.ffn_type, num_qkv=args.num_qkv,
-            seg_emb=args.seg_emb, pos_shift=args.pos_shift, is_roberta=args.is_roberta,
-            no_segment_embedding=args.no_segment_embedding,
+            max_position_embeddings=args.max_seq_length, pos_shift=args.pos_shift, 
         )
-        del model_recover
 
         if args.fp16:
             model.half()
@@ -278,10 +253,10 @@ def main():
                         output_buf = tokenizer.convert_ids_to_tokens(w_ids)
                         output_tokens = []
                         for t in output_buf:
-                            if t in (sep_token, pad_token):
+                            if t in (tokenizer.sep_token, tokenizer.pad_token):
                                 break
                             output_tokens.append(t)
-                        if args.is_roberta:
+                        if args.model_type == "roberta":
                             output_sequence = tokenizer.convert_tokens_to_string(output_tokens)
                         else:
                             output_sequence = ' '.join(detokenize(output_tokens))

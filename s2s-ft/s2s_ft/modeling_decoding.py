@@ -79,7 +79,7 @@ PRETRAINED_MODEL_ARCHIVE_MAP = {
     'unilm1-large-cased': "https://unilm.blob.core.windows.net/ckpt/unilm1-large-cased.bin",
     'unilm1.2-base-uncased': "https://unilm.blob.core.windows.net/ckpt/unilm1.2-base-uncased.bin"
 }
-CONFIG_NAME = 'bert_config.json'
+CONFIG_NAME = 'config.json'
 WEIGHTS_NAME = 'pytorch_model.bin'
 
 
@@ -122,7 +122,9 @@ class BertConfig(object):
                  label_smoothing=None,
                  num_qkv=0,
                  seg_emb=False,
-                 no_segment_embedding=False):
+                 source_type_id=0, 
+                 target_type_id=1,
+                 no_segment_embedding=False, **kwargs):
         """Constructs BertConfig.
         Args:
             vocab_size_or_config_json_file: Vocabulary size of `inputs_ids` in `BertModel`.
@@ -172,6 +174,10 @@ class BertConfig(object):
             self.num_qkv = num_qkv
             self.seg_emb = seg_emb
             self.no_segment_embedding = no_segment_embedding
+            self.source_type_id = source_type_id
+            self.target_type_id = target_type_id
+            if type_vocab_size == 0:
+                self.no_segment_embedding = True
         else:
             raise ValueError("First argument must be either a vocabulary size (int)"
                              "or the path to a pretrained model config file (str)")
@@ -744,8 +750,7 @@ class PreTrainedBertModel(nn.Module):
             module.bias.data.zero_()
 
     @classmethod
-    def from_pretrained(cls, pretrained_model_name, state_dict=None, cache_dir=None,
-                        is_roberta=False, no_segment_embedding=False, *inputs, **kwargs):
+    def from_pretrained(cls, pretrained_model_name, config, state_dict=None, cache_dir=None, *inputs, **kwargs):
         """
         Instantiate a PreTrainedBertModel from a pre-trained model file or a pytorch state dict.
         Download and cache the pre-trained model file if needed.
@@ -765,90 +770,6 @@ class PreTrainedBertModel(nn.Module):
             *inputs, **kwargs: additional input for the specific Bert class
                 (ex: num_labels for BertForSequenceClassification)
         """
-        if pretrained_model_name in PRETRAINED_MODEL_ARCHIVE_MAP:
-            archive_file = PRETRAINED_MODEL_ARCHIVE_MAP[pretrained_model_name]
-        else:
-            archive_file = pretrained_model_name
-        # redirect to the cache, if necessary
-        try:
-            resolved_archive_file = cached_path(
-                archive_file, cache_dir=cache_dir)
-        except FileNotFoundError:
-            logger.error(
-                "Model name '{}' was not found in model name list ({}). "
-                "We assumed '{}' was a path or url but couldn't find any file "
-                "associated to this path or url.".format(
-                    pretrained_model_name,
-                    ', '.join(PRETRAINED_MODEL_ARCHIVE_MAP.keys()),
-                    archive_file))
-            return None
-        if resolved_archive_file == archive_file:
-            logger.info("loading archive file {}".format(archive_file))
-        else:
-            logger.info("loading archive file {} from cache at {}".format(
-                archive_file, resolved_archive_file))
-        tempdir = None
-        if os.path.isdir(resolved_archive_file):
-            serialization_dir = resolved_archive_file
-        else:
-            # Extract archive to temp dir
-            tempdir = tempfile.mkdtemp()
-            logger.info("extracting archive file {} to temp dir {}".format(
-                resolved_archive_file, tempdir))
-            with tarfile.open(resolved_archive_file, 'r:gz') as archive:
-                archive.extractall(tempdir)
-            serialization_dir = tempdir
-        # Load config
-        if ('config_path' in kwargs) and kwargs['config_path']:
-            config_file = kwargs['config_path']
-        else:
-            config_file = os.path.join(serialization_dir, CONFIG_NAME)
-        config = BertConfig.from_json_file(config_file)
-
-        # define new type_vocab_size (there might be different numbers of segment ids)
-        if 'type_vocab_size' in kwargs:
-            config.type_vocab_size = kwargs['type_vocab_size']
-        # define new relax_projection
-        if ('relax_projection' in kwargs) and kwargs['relax_projection']:
-            config.relax_projection = kwargs['relax_projection']
-        # new position embedding
-        if ('new_pos_ids' in kwargs) and kwargs['new_pos_ids']:
-            config.new_pos_ids = kwargs['new_pos_ids']
-        # define new relax_projection
-        if ('task_idx' in kwargs) and kwargs['task_idx']:
-            config.task_idx = kwargs['task_idx']
-        # define new max position embedding for length expansion
-        if ('max_position_embeddings' in kwargs) and kwargs['max_position_embeddings']:
-            config.max_position_embeddings = kwargs['max_position_embeddings']
-        # use fp32 for embeddings
-        if ('fp32_embedding' in kwargs) and kwargs['fp32_embedding']:
-            config.fp32_embedding = kwargs['fp32_embedding']
-        # type of FFN in transformer blocks
-        if ('ffn_type' in kwargs) and kwargs['ffn_type']:
-            config.ffn_type = kwargs['ffn_type']
-        # label smoothing
-        if ('label_smoothing' in kwargs) and kwargs['label_smoothing']:
-            config.label_smoothing = kwargs['label_smoothing']
-        # dropout
-        if ('hidden_dropout_prob' in kwargs) and kwargs['hidden_dropout_prob']:
-            config.hidden_dropout_prob = kwargs['hidden_dropout_prob']
-        if ('attention_probs_dropout_prob' in kwargs) and kwargs['attention_probs_dropout_prob']:
-            config.attention_probs_dropout_prob = kwargs['attention_probs_dropout_prob']
-        # different QKV
-        if ('num_qkv' in kwargs) and kwargs['num_qkv']:
-            config.num_qkv = kwargs['num_qkv']
-        # segment embedding for self-attention
-        if ('seg_emb' in kwargs) and kwargs['seg_emb']:
-            config.seg_emb = kwargs['seg_emb']
-        # initialize word embeddings
-        _word_emb_map = None
-        if ('word_emb_map' in kwargs) and kwargs['word_emb_map']:
-            _word_emb_map = kwargs['word_emb_map']
-
-        if is_roberta:
-            config.vocab_size = 50265
-        if no_segment_embedding:
-            config.no_segment_embedding = True
         logger.info("Model config {}".format(config))
 
         # clean the arguments in kwargs
@@ -862,7 +783,7 @@ class PreTrainedBertModel(nn.Module):
         # Instantiate model.
         model = cls(config, *inputs, **kwargs)
         if state_dict is None:
-            weights_path = os.path.join(serialization_dir, WEIGHTS_NAME)
+            weights_path = os.path.join(pretrained_model_name, WEIGHTS_NAME)
             state_dict = torch.load(weights_path)
 
         old_keys = []
@@ -878,159 +799,6 @@ class PreTrainedBertModel(nn.Module):
                 new_keys.append(new_key)
         for old_key, new_key in zip(old_keys, new_keys):
             state_dict[new_key] = state_dict.pop(old_key)
-
-        # initialize new segment embeddings
-        _k = 'bert.embeddings.token_type_embeddings.weight'
-        if (_k in state_dict) and (config.type_vocab_size != state_dict[_k].shape[0]):
-            logger.info(
-                "config.type_vocab_size != state_dict[bert.embeddings.token_type_embeddings.weight] ({0} != {1})".format(
-                    config.type_vocab_size, state_dict[_k].shape[0]))
-            if config.type_vocab_size > state_dict[_k].shape[0]:
-                # state_dict[_k].data = state_dict[_k].data.resize_(config.type_vocab_size, state_dict[_k].shape[1])
-                state_dict[_k].resize_(
-                    config.type_vocab_size, state_dict[_k].shape[1])
-                # L2R
-                if config.type_vocab_size >= 3:
-                    state_dict[_k].data[2, :].copy_(state_dict[_k].data[0, :])
-                # R2L
-                if config.type_vocab_size >= 4:
-                    state_dict[_k].data[3, :].copy_(state_dict[_k].data[0, :])
-                # S2S
-                if config.type_vocab_size >= 6:
-                    state_dict[_k].data[4, :].copy_(state_dict[_k].data[0, :])
-                    state_dict[_k].data[5, :].copy_(state_dict[_k].data[1, :])
-                if config.type_vocab_size >= 7:
-                    state_dict[_k].data[6, :].copy_(state_dict[_k].data[1, :])
-            elif config.type_vocab_size < state_dict[_k].shape[0]:
-                state_dict[_k].data = state_dict[_k].data[:config.type_vocab_size, :]
-
-        _k = 'bert.embeddings.position_embeddings.weight'
-        n_config_pos_emb = 4 if config.new_pos_ids else 1
-        if (_k in state_dict) and (n_config_pos_emb * config.hidden_size != state_dict[_k].shape[1]):
-            logger.info(
-                "n_config_pos_emb*config.hidden_size != state_dict[bert.embeddings.position_embeddings.weight] ({0}*{1} != {2})".format(
-                    n_config_pos_emb, config.hidden_size, state_dict[_k].shape[1]))
-            assert state_dict[_k].shape[1] % config.hidden_size == 0
-            n_state_pos_emb = int(state_dict[_k].shape[1] / config.hidden_size)
-            assert (n_state_pos_emb == 1) != (n_config_pos_emb ==
-                                              1), "!!!!n_state_pos_emb == 1 xor n_config_pos_emb == 1!!!!"
-            if n_state_pos_emb == 1:
-                state_dict[_k].data = state_dict[_k].data.unsqueeze(1).repeat(
-                    1, n_config_pos_emb, 1).reshape(
-                    (config.max_position_embeddings, n_config_pos_emb * config.hidden_size))
-            elif n_config_pos_emb == 1:
-                if hasattr(config, 'task_idx') and (config.task_idx is not None) and (0 <= config.task_idx <= 3):
-                    _task_idx = config.task_idx
-                else:
-                    _task_idx = 0
-                state_dict[_k].data = state_dict[_k].data.view(
-                    config.max_position_embeddings, n_state_pos_emb, config.hidden_size).select(1, _task_idx)
-
-        # initialize new position embeddings
-        _k = 'bert.embeddings.position_embeddings.weight'
-        if _k in state_dict and config.max_position_embeddings != state_dict[_k].shape[0]:
-            logger.info(
-                "config.max_position_embeddings != state_dict[bert.embeddings.position_embeddings.weight] ({0} - {1})".format(
-                    config.max_position_embeddings, state_dict[_k].shape[0]))
-            if config.max_position_embeddings > state_dict[_k].shape[0]:
-                old_size = state_dict[_k].shape[0]
-                # state_dict[_k].data = state_dict[_k].data.resize_(config.max_position_embeddings, state_dict[_k].shape[1])
-                state_dict[_k].resize_(
-                    config.max_position_embeddings, state_dict[_k].shape[1])
-                start = old_size
-                while start < config.max_position_embeddings:
-                    chunk_size = min(
-                        old_size, config.max_position_embeddings - start)
-                    state_dict[_k].data[start:start + chunk_size,
-                    :].copy_(state_dict[_k].data[:chunk_size, :])
-                    start += chunk_size
-            elif config.max_position_embeddings < state_dict[_k].shape[0]:
-                state_dict[_k].data = state_dict[_k].data[:config.max_position_embeddings, :]
-
-        # initialize relax projection
-        _k = 'cls.predictions.transform.dense.weight'
-        n_config_relax = 1 if (config.relax_projection <
-                               1) else config.relax_projection
-        if (_k in state_dict) and (n_config_relax * config.hidden_size != state_dict[_k].shape[0]):
-            logger.info(
-                "n_config_relax*config.hidden_size != state_dict[cls.predictions.transform.dense.weight] ({0}*{1} != {2})".format(
-                    n_config_relax, config.hidden_size, state_dict[_k].shape[0]))
-            assert state_dict[_k].shape[0] % config.hidden_size == 0
-            n_state_relax = int(state_dict[_k].shape[0] / config.hidden_size)
-            assert (n_state_relax == 1) != (n_config_relax ==
-                                            1), "!!!!n_state_relax == 1 xor n_config_relax == 1!!!!"
-            if n_state_relax == 1:
-                _k = 'cls.predictions.transform.dense.weight'
-                state_dict[_k].data = state_dict[_k].data.unsqueeze(0).repeat(
-                    n_config_relax, 1, 1).reshape((n_config_relax * config.hidden_size, config.hidden_size))
-                for _k in ('cls.predictions.transform.dense.bias', 'cls.predictions.transform.LayerNorm.weight',
-                           'cls.predictions.transform.LayerNorm.bias'):
-                    state_dict[_k].data = state_dict[_k].data.unsqueeze(
-                        0).repeat(n_config_relax, 1).view(-1)
-            elif n_config_relax == 1:
-                if hasattr(config, 'task_idx') and (config.task_idx is not None) and (0 <= config.task_idx <= 3):
-                    _task_idx = config.task_idx
-                else:
-                    _task_idx = 0
-                _k = 'cls.predictions.transform.dense.weight'
-                state_dict[_k].data = state_dict[_k].data.view(
-                    n_state_relax, config.hidden_size, config.hidden_size).select(0, _task_idx)
-                for _k in ('cls.predictions.transform.dense.bias', 'cls.predictions.transform.LayerNorm.weight',
-                           'cls.predictions.transform.LayerNorm.bias'):
-                    state_dict[_k].data = state_dict[_k].data.view(
-                        n_state_relax, config.hidden_size).select(0, _task_idx)
-
-        # initialize QKV
-        _all_head_size = config.num_attention_heads * \
-                         int(config.hidden_size / config.num_attention_heads)
-        n_config_num_qkv = 1 if (config.num_qkv < 1) else config.num_qkv
-        for qkv_name in ('query', 'key', 'value'):
-            _k = 'bert.encoder.layer.0.attention.self.{0}.weight'.format(
-                qkv_name)
-            if (_k in state_dict) and (n_config_num_qkv * _all_head_size != state_dict[_k].shape[0]):
-                logger.info("n_config_num_qkv*_all_head_size != state_dict[_k] ({0}*{1} != {2})".format(
-                    n_config_num_qkv, _all_head_size, state_dict[_k].shape[0]))
-                for layer_idx in range(config.num_hidden_layers):
-                    _k = 'bert.encoder.layer.{0}.attention.self.{1}.weight'.format(
-                        layer_idx, qkv_name)
-                    assert state_dict[_k].shape[0] % _all_head_size == 0
-                    n_state_qkv = int(state_dict[_k].shape[0] / _all_head_size)
-                    assert (n_state_qkv == 1) != (n_config_num_qkv ==
-                                                  1), "!!!!n_state_qkv == 1 xor n_config_num_qkv == 1!!!!"
-                    if n_state_qkv == 1:
-                        _k = 'bert.encoder.layer.{0}.attention.self.{1}.weight'.format(
-                            layer_idx, qkv_name)
-                        state_dict[_k].data = state_dict[_k].data.unsqueeze(0).repeat(
-                            n_config_num_qkv, 1, 1).reshape((n_config_num_qkv * _all_head_size, _all_head_size))
-                        _k = 'bert.encoder.layer.{0}.attention.self.{1}.bias'.format(
-                            layer_idx, qkv_name)
-                        state_dict[_k].data = state_dict[_k].data.unsqueeze(
-                            0).repeat(n_config_num_qkv, 1).view(-1)
-                    elif n_config_num_qkv == 1:
-                        if hasattr(config, 'task_idx') and (config.task_idx is not None) and (
-                                0 <= config.task_idx <= 3):
-                            _task_idx = config.task_idx
-                        else:
-                            _task_idx = 0
-                        assert _task_idx != 3, "[INVALID] _task_idx=3: n_config_num_qkv=1 (should be 2)"
-                        if _task_idx == 0:
-                            _qkv_idx = 0
-                        else:
-                            _qkv_idx = 1
-                        _k = 'bert.encoder.layer.{0}.attention.self.{1}.weight'.format(
-                            layer_idx, qkv_name)
-                        state_dict[_k].data = state_dict[_k].data.view(
-                            n_state_qkv, _all_head_size, _all_head_size).select(0, _qkv_idx)
-                        _k = 'bert.encoder.layer.{0}.attention.self.{1}.bias'.format(
-                            layer_idx, qkv_name)
-                        state_dict[_k].data = state_dict[_k].data.view(
-                            n_state_qkv, _all_head_size).select(0, _qkv_idx)
-
-        if _word_emb_map:
-            _k = 'bert.embeddings.word_embeddings.weight'
-            for _tgt, _src in _word_emb_map:
-                state_dict[_k].data[_tgt, :].copy_(
-                    state_dict[_k].data[_src, :])
 
         missing_keys = []
         unexpected_keys = []
@@ -1060,9 +828,6 @@ class PreTrainedBertModel(nn.Module):
                 model.__class__.__name__, unexpected_keys))
         if len(error_msgs) > 0:
             logger.info('\n'.join(error_msgs))
-        if tempdir:
-            # Clean up temp dir
-            shutil.rmtree(tempdir)
         return model
 
 

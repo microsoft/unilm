@@ -31,7 +31,6 @@ UNILM_PRETRAINED_MODEL_ARCHIVE_MAP = {
     'unilm1.2-base-uncased': "https://unilm.blob.core.windows.net/ckpt/unilm1.2-base-uncased.bin"
 }
 
-
 class BertPreTrainedForSeq2SeqModel(BertPreTrainedModel):
     """ An abstract class to handle weights initialization and
         a simple interface for dowloading and loading pretrained models.
@@ -89,6 +88,7 @@ class BertPreTrainedForSeq2SeqModel(BertPreTrainedModel):
         config = kwargs["config"]
         state_dict = kwargs["state_dict"]
         # initialize new position embeddings (From Microsoft/UniLM)
+        _k = 'bert.embeddings.position_embeddings.weight'
         # if _k in state_dict and config.max_position_embeddings != state_dict[_k].shape[0]:
         #     logger.info("config.max_position_embeddings != state_dict[bert.embeddings.position_embeddings.weight] ({0} - {1})".format(
         #         config.max_position_embeddings, state_dict[_k].shape[0]))

@@ -23,7 +23,6 @@ from transformers import AdamW, get_linear_schedule_with_warmup
 from transformers import \
     RobertaConfig, BertConfig, \
     BertTokenizer, RobertaTokenizer, \
-    DistilBertConfig, DistilBertTokenizer, \
     XLMRobertaConfig, XLMRobertaTokenizer
 from s2s_ft.configuration_unilm import UnilmConfig
 from s2s_ft.tokenization_unilm import UnilmTokenizer
@@ -36,8 +35,6 @@ logger = logging.getLogger(__name__)
 
 MODEL_CLASSES = {
     'bert': (BertConfig, BertTokenizer),
-    'distilbert': (DistilBertConfig, DistilBertTokenizer),
-    # 'albert': (AlbertConfig, AlbertTokenizer),
     'roberta': (RobertaConfig, RobertaTokenizer),
     'xlm-roberta': (XLMRobertaConfig, XLMRobertaTokenizer),
     'unilm': (UnilmConfig, UnilmTokenizer),
@@ -92,15 +89,15 @@ def train(args, training_features, model, tokenizer):
     # model recover
     recover_step = utils.get_max_epoch_model(args.output_dir)
 
-    if recover_step:
-        model_recover_checkpoint = os.path.join(args.output_dir, "model.{}.bin".format(recover_step))
-        logger.info(" ** Recover model checkpoint in %s ** ", model_recover_checkpoint)
-        model_state_dict = torch.load(model_recover_checkpoint, map_location='cpu')
-        optimizer_recover_checkpoint = os.path.join(args.output_dir, "optim.{}.bin".format(recover_step))
-        checkpoint_state_dict = torch.load(optimizer_recover_checkpoint, map_location='cpu')
-        checkpoint_state_dict['model'] = model_state_dict
-    else:
-        checkpoint_state_dict = None
+    # if recover_step:
+    #     model_recover_checkpoint = os.path.join(args.output_dir, "model.{}.bin".format(recover_step))
+    #     logger.info(" ** Recover model checkpoint in %s ** ", model_recover_checkpoint)
+    #     model_state_dict = torch.load(model_recover_checkpoint, map_location='cpu')
+    #     optimizer_recover_checkpoint = os.path.join(args.output_dir, "optim.{}.bin".format(recover_step))
+    #     checkpoint_state_dict = torch.load(optimizer_recover_checkpoint, map_location='cpu')
+    #     checkpoint_state_dict['model'] = model_state_dict
+    # else:
+    checkpoint_state_dict = None
 
     model.to(args.device)
     model, optimizer = prepare_for_training(args, model, checkpoint_state_dict, amp=amp)
@@ -208,19 +205,21 @@ def train(args, training_features, model, tokenizer):
                 if args.local_rank in [-1, 0] and args.save_steps > 0 and \
                         (global_step % args.save_steps == 0 or global_step == args.num_training_steps):
 
-                    model_to_save = model.module if hasattr(model, 'module') else model
-                    torch.save(
-                        model_to_save.state_dict(), os.path.join(args.output_dir, 'model.{}.bin'.format(global_step)))
-                    optim_to_save = {
-                        "optimizer": optimizer.state_dict(),
-                        "lr_scheduler": scheduler.state_dict(),
-                    }
-                    if args.fp16:
-                        optim_to_save["amp"] = amp.state_dict()
-                    torch.save(
-                        optim_to_save, os.path.join(args.output_dir, 'optim.{}.bin'.format(global_step)))
+                    save_path = os.path.join(args.output_dir, "ckpt-%d" % global_step)
+                    os.makedirs(save_path, exist_ok=True)
+                    model_to_save = model.module if hasattr(model, "module") else model
+                    model_to_save.save_pretrained(save_path)
+                    
+                    # optim_to_save = {
+                    #     "optimizer": optimizer.state_dict(),
+                    #     "lr_scheduler": scheduler.state_dict(),
+                    # }
+                    # if args.fp16:
+                    #     optim_to_save["amp"] = amp.state_dict()
+                    # torch.save(
+                    #     optim_to_save, os.path.join(args.output_dir, 'optim.{}.bin'.format(global_step)))
 
-                    logger.info("Saving model checkpoint %d", global_step)
+                    logger.info("Saving model checkpoint %d into %s", global_step, save_path)
 
     if args.local_rank in [-1, 0] and tb_writer:
         tb_writer.close()
