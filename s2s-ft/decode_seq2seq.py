@@ -23,9 +23,11 @@ from s2s_ft.utils import load_and_cache_examples
 from transformers import \
     BertTokenizer, RobertaTokenizer
 from s2s_ft.tokenization_unilm import UnilmTokenizer
+from s2s_ft.tokenization_minilm import MinilmTokenizer
 
 TOKENIZER_CLASSES = {
     'bert': BertTokenizer,
+    'minilm': MinilmTokenizer,
     'roberta': RobertaTokenizer,
     'unilm': UnilmTokenizer,
 }

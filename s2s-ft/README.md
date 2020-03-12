@@ -114,6 +114,66 @@ python evaluations/eval_for_xsum.py --pred ${MODEL_PATH}.${SPLIT} --gold ${GOLD_
 ```
 
 
+## Example: [XSUM](https://github.com/EdinburghNLP/XSum) with minilm-l12-h384-uncased
+
+### Fine-tuning
+
+Pre-processed json dataset links: [text format](https://unilm.blob.core.windows.net/s2s-ft-data/xsum.json.zip), or [tokenized format](https://unilm.blob.core.windows.net/s2s-ft-data/xsum.uncased_tokenized.zip).
+
+```bash
+# path of training data
+TRAIN_FILE=/your/path/to/train.json
+# folder used to save fine-tuned checkpoints
+OUTPUT_DIR=/your/path/to/save_checkpoints
+# folder used to cache package dependencies
+CACHE_DIR=/your/path/to/transformer_package_cache
+
+export CUDA_VISIBLE_DEVICES=0,1,2,3
+python -m torch.distributed.launch --nproc_per_node=4 run_seq2seq.py \
+  --train_file ${TRAIN_FILE} --output_dir ${OUTPUT_DIR} \
+  --model_type minilm --model_name_or_path minilm-l12-h384-uncased \
+  --do_lower_case --fp16 --fp16_opt_level O2 --max_source_seq_length 464 --max_target_seq_length 48 \
+  --per_gpu_train_batch_size 16 --gradient_accumulation_steps 1 \
+  --learning_rate 1e-4 --num_warmup_steps 500 --num_training_steps 108000 --cache_dir ${CACHE_DIR}
+```
+
+- The fine-tuning batch size = `number of gpus` * `per_gpu_train_batch_size` * `gradient_accumulation_steps`. So in the above example, the batch size is `4*16*1 = 64`. The three arguments need to be adjusted together in order to remain the total batch size unchanged.
+- `--do_lower_case`: for uncased models
+
+### Decoding
+
+```bash
+# path of the fine-tuned checkpoint
+MODEL_PATH=/your/path/to/model_checkpoint
+SPLIT=validation
+# input file that you would like to decode
+INPUT_JSON=/your/path/to/${SPLIT}.json
+
+export CUDA_VISIBLE_DEVICES=0
+export OMP_NUM_THREADS=4
+export MKL_NUM_THREADS=4
+
+python decode_seq2seq.py \
+  --fp16 --model_type minilm --tokenizer_name minilm-l12-h384-uncased --input_file ${INPUT_JSON} --split $SPLIT --do_lower_case \
+  --model_path ${MODEL_PATH} --max_seq_length 512 --max_tgt_length 48 --batch_size 32 --beam_size 5 \
+  --length_penalty 0 --forbid_duplicate_ngrams --mode s2s --forbid_ignore_word "."
+```
+
+- The decoding results are saved at `${MODEL_PATH}.${SPLIT}`.
+- `--do_lower_case`: for uncased models
+
+### Evalation
+
+The golden answer text files can be downloaded at [here](https://unilm.blob.core.windows.net/s2s-ft-data/xsum.eval.zip).
+
+```bash
+SPLIT=validation
+GOLD_PATH=/your/path/to/${SPLIT}.target
+# ${MODEL_PATH}.${SPLIT} is the predicted target file
+python evaluations/eval_for_xsum.py --pred ${MODEL_PATH}.${SPLIT} --gold ${GOLD_PATH} --split ${SPLIT}
+```
+
+
 ## Example: CNN/DailyMail with unilm1-base-cased
 
 Pre-processed json dataset links: [tokenized format](https://unilm.blob.core.windows.net/s2s-ft-data/cnndm.cased_tokenized.zip).

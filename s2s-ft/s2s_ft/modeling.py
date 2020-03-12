@@ -31,6 +31,10 @@ UNILM_PRETRAINED_MODEL_ARCHIVE_MAP = {
     'unilm1.2-base-uncased': "https://unilm.blob.core.windows.net/ckpt/unilm1.2-base-uncased.bin"
 }
 
+MINILM_PRETRAINED_MODEL_ARCHIVE_MAP = {
+    'minilm-l12-h384-uncased': "https://unilm.blob.core.windows.net/ckpt/minilm-l12-h384-uncased.bin",
+}
+
 class BertPreTrainedForSeq2SeqModel(BertPreTrainedModel):
     """ An abstract class to handle weights initialization and
         a simple interface for dowloading and loading pretrained models.
@@ -41,6 +45,7 @@ class BertPreTrainedForSeq2SeqModel(BertPreTrainedModel):
         "roberta": ROBERTA_PRETRAINED_MODEL_ARCHIVE_MAP,
         "xlm-roberta": XLM_ROBERTA_PRETRAINED_MODEL_ARCHIVE_MAP, 
         "unilm": UNILM_PRETRAINED_MODEL_ARCHIVE_MAP, 
+        "minilm": MINILM_PRETRAINED_MODEL_ARCHIVE_MAP, 
     }
     base_model_prefix = "bert_for_seq2seq"
     pretrained_model_archive_map = {
@@ -48,6 +53,7 @@ class BertPreTrainedForSeq2SeqModel(BertPreTrainedModel):
         **XLM_ROBERTA_PRETRAINED_MODEL_ARCHIVE_MAP, 
         **BERT_PRETRAINED_MODEL_ARCHIVE_MAP,
         **UNILM_PRETRAINED_MODEL_ARCHIVE_MAP,
+        **MINILM_PRETRAINED_MODEL_ARCHIVE_MAP, 
     }
 
     def _init_weights(self, module):

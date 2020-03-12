@@ -94,6 +94,7 @@ def hf_bert_to_hf_bert(state_dict):
 state_dict_convert = {
     'bert': hf_bert_to_hf_bert,
     'unilm': hf_bert_to_hf_bert, 
+    'minilm': hf_bert_to_hf_bert, 
     'roberta': hf_roberta_to_hf_bert,
     'xlm-roberta': hf_roberta_to_hf_bert,
     'distilbert': hf_distilbert_to_hf_bert,

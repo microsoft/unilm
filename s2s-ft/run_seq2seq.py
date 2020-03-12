@@ -26,6 +26,8 @@ from transformers import \
     XLMRobertaConfig, XLMRobertaTokenizer
 from s2s_ft.configuration_unilm import UnilmConfig
 from s2s_ft.tokenization_unilm import UnilmTokenizer
+from s2s_ft.configuration_minilm import MinilmConfig
+from s2s_ft.tokenization_minilm import MinilmTokenizer
 
 from s2s_ft import utils
 from s2s_ft.config import BertForSeq2SeqConfig
@@ -35,6 +37,7 @@ logger = logging.getLogger(__name__)
 
 MODEL_CLASSES = {
     'bert': (BertConfig, BertTokenizer),
+    'minilm': (MinilmConfig, MinilmTokenizer),
     'roberta': (RobertaConfig, RobertaTokenizer),
     'xlm-roberta': (XLMRobertaConfig, XLMRobertaTokenizer),
     'unilm': (UnilmConfig, UnilmTokenizer),
