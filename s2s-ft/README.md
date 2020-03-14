@@ -31,8 +31,8 @@ If you would like to use a cased model:
 - [unilm1-base-cased](https://unilm.blob.core.windows.net/ckpt/unilm1-base-cased.bin): 12-layer, 768-hidden, 12-heads, 110M parameters
 - [unilm1-large-cased](https://unilm.blob.core.windows.net/ckpt/unilm1-large-cased.bin): 24-layer, 1024-hidden, 16-heads, 340M parameters
 
-If you prefer small pretrained models:
-- [MiniLMv1-L12-H384-uncased](https://1drv.ms/u/s!AjHn0yEmKG8qixAYyu2Fvq5ulnU7?e=DFApTA): 12-layer, 384-hidden, 12-heads, 33M parameters
+If you prefer [small pretrained models](https://github.com/microsoft/unilm/tree/master/minilm) for faster inference speed:
+- [minilm-l12-h384-uncased](https://1drv.ms/u/s!AjHn0yEmKG8qixAYyu2Fvq5ulnU7?e=DFApTA): 12-layer, 384-hidden, 12-heads, 33M parameters
 
 ## Input File Format
 
