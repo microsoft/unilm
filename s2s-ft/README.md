@@ -57,7 +57,7 @@ We support two dataset formats:
 The code automatically detects the input format. If the json line contains `list`, we process the input as the tokenized format; if the json line contains `string`, the code will tokenize them.
 
 
-## Example: [XSUM](https://github.com/EdinburghNLP/XSum) with unilm1.2-base-uncased
+## Example: [XSum](https://github.com/EdinburghNLP/XSum) with unilm1.2-base-uncased
 
 ### Fine-tuning
 
@@ -117,7 +117,7 @@ python evaluations/eval_for_xsum.py --pred ${MODEL_PATH}.${SPLIT} --gold ${GOLD_
 ```
 
 
-## Example: [XSUM](https://github.com/EdinburghNLP/XSum) with minilm-l12-h384-uncased
+## Example: [XSum](https://github.com/EdinburghNLP/XSum) with minilm-l12-h384-uncased
 
 ### Fine-tuning
 
@@ -177,7 +177,7 @@ python evaluations/eval_for_xsum.py --pred ${MODEL_PATH}.${SPLIT} --gold ${GOLD_
 ```
 
 
-## Example: CNN/DailyMail with unilm1-base-cased
+## Example: CNN / Daily Mail with unilm1-base-cased
 
 Pre-processed json dataset links: [tokenized format](https://unilm.blob.core.windows.net/s2s-ft-data/cnndm.cased_tokenized.zip).
 
@@ -240,7 +240,7 @@ python evaluations/eval_for_cnndm.py --pred ${MODEL_PATH}.${SPLIT} --gold ${GOLD
 
 
 
-## Example: CNN/DailyMail with unilm1.2-base-uncased
+## Example: CNN / Daily Mail with unilm1.2-base-uncased
 
 Pre-processed json dataset links: [tokenized format](https://unilm.blob.core.windows.net/s2s-ft-data/cnndm.uncased_tokenized.zip).
 
