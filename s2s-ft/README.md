@@ -263,7 +263,7 @@ python -m torch.distributed.launch --nproc_per_node=4 run_seq2seq.py \
 ```
 
 - The fine-tuning batch size = `number of gpus` * `per_gpu_train_batch_size` * `gradient_accumulation_steps`. So in the above example, the batch size is `4*8*2 = 64`. The three arguments need to be adjusted together in order to remain the total batch size unchanged.
-- Uncased model should append `--do_lower_case` in command.
+- `--do_lower_case`: for uncased models
 
 ### Decoding
 
