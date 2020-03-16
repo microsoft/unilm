@@ -104,7 +104,7 @@ python decode_seq2seq.py \
 | [T5-11B (Raffel et al., 2019)](https://arxiv.org/pdf/1910.10683.pdf)                                                                                      | 11B       | 43.52     | 21.55     | 40.69     |
 | [BART (Lewis et al., 2019)](https://arxiv.org/pdf/1910.13461.pdf)                                                                                         | 400M      | 44.16     | 21.28     | 40.90     |
 | [UniLM V1 (Dong et al., 2019)](https://arxiv.org/abs/1905.03197)                                                                                          | 340M      | 43.08     | 20.43     | 40.34     |
-| [T5-Base (Raffel et al., 2019)](https://arxiv.org/pdf/1910.10683.pdf)                                                                                     | 220M      | 42.05     | 20.34     | 49.40     |
+| [T5-Base (Raffel et al., 2019)](https://arxiv.org/pdf/1910.10683.pdf)                                                                                     | 220M      | 42.05     | 20.34     | 39.40     |
 | [MASS (Song et al., 2019)](https://github.com/microsoft/MASS#results-on-abstractive-summarization-9272019)                                                | 123M      | 42.12     | 19.50     | 39.01     |
 | [BertSumAbs (Liu and Lapata, 2019)](https://arxiv.org/pdf/1908.08345.pdf)                                                                                 | 156M      | 41.72     | 19.39     | 38.76     |
 | **MiniLM-L12*H384**             | 33M       | 42.66     | 19.91     | 39.73     |
