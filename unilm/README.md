@@ -1,5 +1,5 @@
 # UniLM
-**Unified pre-training for natural language understanding (NLU) and generation (NLG)**
+**Unified pre-training for language understanding (NLU) and generation (NLG)**
 
 **UniLM v2** ```New``` (February, 2020): "[UniLMv2: Pseudo-Masked Language Models for Unified Language Model Pre-Training](https://arxiv.org/abs/2002.12804)".
 
