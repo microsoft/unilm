@@ -110,7 +110,7 @@ def train(args, training_features, model, tokenizer):
     global_step = recover_step if recover_step else 0
 
     if args.num_training_steps == -1:
-        args.num_training_steps = args.num_training_epochs * len(training_features) / train_batch_size
+        args.num_training_steps = int(args.num_training_epochs * len(training_features) / train_batch_size)
 
     scheduler = get_linear_schedule_with_warmup(
         optimizer, num_warmup_steps=args.num_warmup_steps,
