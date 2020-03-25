@@ -13,6 +13,8 @@ The family of UniLM:
 ## News
 - 03/2020: ```Multilingual MiniLM``` released!
 
+## Release
+
 **\*\*\*\*\* ```New February, 2020```: [UniLM v2](https://github.com/microsoft/unilm/tree/master/unilm) | [MiniLM v1](https://github.com/microsoft/unilm/tree/master/minilm) | [LayoutLM v1](https://github.com/microsoft/unilm/tree/master/layoutlm) | [s2s-ft v1](https://github.com/microsoft/unilm/tree/master/s2s-ft) release \*\*\*\*\***
 
 Update in this release:
