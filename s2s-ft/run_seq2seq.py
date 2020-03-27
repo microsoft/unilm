@@ -105,7 +105,11 @@ def train(args, training_features, model, tokenizer):
     model.to(args.device)
     model, optimizer = prepare_for_training(args, model, checkpoint_state_dict, amp=amp)
 
-    per_node_train_batch_size = args.per_gpu_train_batch_size * args.n_gpu * args.gradient_accumulation_steps
+    if args.n_gpu == 0 or args.no_cuda:
+        per_node_train_batch_size = args.per_gpu_train_batch_size * args.gradient_accumulation_steps
+    else:
+        per_node_train_batch_size = args.per_gpu_train_batch_size * args.n_gpu * args.gradient_accumulation_steps
+        
     train_batch_size = per_node_train_batch_size * (torch.distributed.get_world_size() if args.local_rank != -1 else 1)
     global_step = recover_step if recover_step else 0
 
