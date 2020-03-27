@@ -8,12 +8,22 @@ from tqdm import tqdm
 import unicodedata
 
 from transformers import BertTokenizer, RobertaTokenizer
+from s2s_ft.tokenization_unilm import UnilmTokenizer
+from s2s_ft.tokenization_minilm import MinilmTokenizer
 
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                     datefmt='%m/%d/%Y %H:%M:%S',
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+TOKENIZER_CLASSES = {
+    'bert': BertTokenizer,
+    'minilm': MinilmTokenizer,
+    'roberta': RobertaTokenizer,
+    'unilm': UnilmTokenizer,
+}
 
 
 def read_traces_from_file(file_name):
@@ -99,17 +109,11 @@ def simple_postprocess(tk_list):
 
 
 def main(args):
-    if args.is_roberta:
-        tokenizer = RobertaTokenizer.from_pretrained(
-            'roberta-base')
-        eos_token = "</s>"
-        pad_token = "<pad>"
-    else:
-        tokenizer = BertTokenizer.from_pretrained(
-            args.tokenizer_name if args.tokenizer_name else args.bert_model, 
-            do_lower_case=args.do_lower_case)
-        eos_token = "[SEP]"
-        pad_token = "[PAD]"
+    tokenizer = TOKENIZER_CLASSES[args.model_type].from_pretrained(
+        args.tokenizer_name, do_lower_case=args.do_lower_case, 
+        cache_dir=args.cache_dir if args.cache_dir else None)
+    eos_token = tokenizer.sep_token
+    pad_token = tokenizer.pad_token
 
     eos_id, pad_id = set(tokenizer.convert_tokens_to_ids([eos_token, pad_token]))
     logger.info("*********************************************")
@@ -135,7 +139,7 @@ def main(args):
                     break
                 else:
                     buf.append(t)
-            if args.is_roberta:
+            if args.model_type == "roberta":
                 output_text = " ".join(simple_postprocess(tokenizer.convert_tokens_to_string(buf).split(' ')))
                 if '\n' in output_text:
                     output_text = " [X_SEP] ".join(output_text.split('\n'))
@@ -144,7 +148,7 @@ def main(args):
 
             results.append(output_text)
 
-        fn_out = input_file+'.'
+        fn_out = input_file + '.'
         if args.length_penalty:
             fn_out += 'lenp'+str(args.length_penalty)
         if args.expect:
@@ -157,25 +161,25 @@ def main(args):
             for line in results:
                 fout.write(line)
                 fout.write("\n")
-
+        logger.info("Output file = [%s]" % fn_out)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", type=str, help="Input file.")
-    parser.add_argument("--bert_model", default=None, type=str, required=True,
-                        help="Bert pre-trained model selected in the list: bert-base-uncased, "
-                             "bert-large-uncased, bert-base-cased, bert-base-multilingual, bert-base-chinese.")
+    parser.add_argument("--model_type", default=None, type=str, required=True,
+                        help="Model type selected in the list: " + ", ".join(TOKENIZER_CLASSES.keys()))
     parser.add_argument("--alpha", default=None, type=float)
     parser.add_argument("--length_penalty", default=None, type=float)
     parser.add_argument("--expect", default=None, type=float,
                         help="Expectation of target length.")
     parser.add_argument("--min_len", default=None, type=int)
+    # tokenizer_name
+    parser.add_argument("--tokenizer_name", default=None, type=str, required=True, 
+                        help="tokenizer name")
     parser.add_argument("--do_lower_case", action='store_true',
                         help="Set this flag if you are using an uncased model.")
-    parser.add_argument("--is_roberta", action='store_true',
-                        help="Set this flag if you are using an uncased model.")
-    parser.add_argument("--tokenizer_name", default=None, type=str,
-                        help="tokenizer name")
+    parser.add_argument("--cache_dir", default=None, type=str,
+                        help="Where do you want to store the pre-trained models downloaded from s3")
     args = parser.parse_args()
 
     main(args)
