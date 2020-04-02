@@ -1656,7 +1656,7 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
                         forbid_word_mask = torch.tensor(
                             buf_matrix, dtype=log_scores.dtype)
                         forbid_word_mask = torch.reshape(
-                            forbid_word_mask, [batch_size * K, 1, vocab_size]).cuda()
+                            forbid_word_mask, [batch_size * K, 1, vocab_size]).to(input_ids.device)
                     else:
                         forbid_word_mask = None
             next_pos += 1
