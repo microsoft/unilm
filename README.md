@@ -11,7 +11,7 @@ The family of UniLM:
 >  [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft) (```new```): **sequence-to-sequence fine-tuning toolkit**
 
 ## News
-- 04/2020: [**Multilingual MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm) released!
+- April 5, 2020: [**Multilingual MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm) released!
 
 ## Release
 
