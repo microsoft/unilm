@@ -9,7 +9,7 @@
 
 **MiniLM v1** (February 29, 2020): the pre-trained models for the paper entitled "[MiniLM: Deep Self-Attention Distillation for Task-Agnostic Compression of Pre-Trained Transformers](https://arxiv.org/abs/2002.10957)". **Deep self-attention distillation is all you need** (for task-agnostic knowledge distillation of pre-trained Transformers). MiniLM (12-layer, 384-hidden) achieves 2.7x speedup and comparable results over BERT-Base (12-layer, 768-hidden) on **NLU** tasks as well as strong results on **NLG** tasks. The even smaller MiniLM (6-layer, 384-hidden) obtains 5.3x speedup and produces very competitive results.
 
-# Multilingual Pretrained Model
+# [Multilingual] Pretrained Model
 The link to the pre-trained multilingual model:
 - [Multilingual-MiniLMv1-L12-H384](https://1drv.ms/u/s!AjHn0yEmKG8qixM1DIyLGmdRqWYl?e=uq2kDh): 12-layer, 384-hidden, 12-heads, 21M Transformer parameters, 96M embedding parameters
 
