@@ -108,7 +108,7 @@ Like the sequence labeling task, you can run Bert, RoBERTa, and DistilBERT basel
 | BERT-Large                                                   | 90.99%     |
 | RoBERTa-Large                                                | 92.80%     |
 | [Ranking 1st in SROIE](https://rrc.cvc.uab.es/?ch=13&com=evaluation&task=3) | 94.02%     |
-| [**LayoutLM**](https://rrc.cvc.uab.es/?ch=13&com=evaluation&view=method_info&task=3&m=71448) | **95.24%** |
+| [**LayoutLM**](https://rrc.cvc.uab.es/?ch=13&com=evaluation&view=method_info&task=3&m=71448) | **96.04%** |
 
 #### RVL-CDIP
 
