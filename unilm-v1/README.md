@@ -1,7 +1,7 @@
 # UniLM
 **Unified pre-training for natural language understanding (NLU) and generation (NLG)**
 
-**```Check out the latest information and models for UniLM at [https://github.com/microsoft/unilm/tree/master/unilm](https://github.com/microsoft/unilm/tree/master/unilm)```**
+```Check out the latest information and models for UniLM at [https://github.com/microsoft/unilm/tree/master/unilm](https://github.com/microsoft/unilm/tree/master/unilm)```
 
 **\*\*\*\*\* New October 1st, 2019: UniLM v1 release \*\*\*\*\***
 
