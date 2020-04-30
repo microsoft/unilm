@@ -5,16 +5,6 @@
 
 **[UniLM v1](https://github.com/microsoft/unilm/tree/master/unilm-v1)** (September 30th, 2019): the code and pre-trained models for the NeurIPS 2019 paper entitled "[Unified Language Model Pre-training for Natural Language Understanding and Generation](https://arxiv.org/abs/1905.03197)".
 
-# Pre-trained Models
-We release both base-size and large-size **uncased** **[UniLMv2](https://arxiv.org/abs/2002.12804)** models pre-trained with the same 160G text corpora as in [RoBERTa](https://arxiv.org/abs/1907.11692). The models are trained using the same WordPiece vocabulary as [BERT](https://github.com/google-research/bert). 
-The links to the pre-trained models:
-- [unilm2-large-cased]: 24-layer, 1024-hidden, 16-heads, 340M parameters
-- [unilm2-base-cased]: 12-layer, 768-hidden, 12-heads, 110M parameters
-
-# Fine-tuning on NLG Tasks
-
-# Fine-tuning on NLU Tasks
-
 ## Citation
 
 If you find UniLM useful in your work, you can cite the following paper:
