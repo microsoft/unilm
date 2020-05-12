@@ -121,7 +121,11 @@ class CdipProcessor(DataProcessor):
         hocr_file = os.path.join(data_dir, "images", file[:-4] + ".html")
         text_buffer = []
         bbox_buffer = []
-        doc = html.parse(hocr_file)
+        try:
+            doc = html.parse(hocr_file)
+        except AssertionError:
+            logger.warning("%s is empty or its format is unacceptable. Skipped.", hocr_file)
+            return [], []
         for page in doc.xpath("//*[@class='ocr_page']"):
             page_bbox = [int(x) for x in get_prop(page, "bbox").split()]
             width, height = page_bbox[2], page_bbox[3]
