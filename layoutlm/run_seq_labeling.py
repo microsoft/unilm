@@ -686,7 +686,6 @@ def main():
 
     if args.overwrite_output_dir and os.path.exists(args.output_dir):
         shutil.rmtree(args.output_dir)
-    os.makedirs(args.output_dir)
     # Setup logging
     logging.basicConfig(
         filename=os.path.join(args.output_dir, "train.log"),
@@ -744,6 +743,7 @@ def main():
 
     # Training
     if args.do_train:
+        os.makedirs(args.output_dir)
         train_dataset = load_and_cache_examples(
             args, tokenizer, labels, pad_token_label_id, mode="train"
         )
