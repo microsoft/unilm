@@ -10,7 +10,7 @@ Yiheng Xu, Minghao Li, Lei Cui, Shaohan Huang, Furu Wei, Ming Zhou, arXiv Prepri
 
 ## Release Notes
 
-**\*\*\*\*\* New May 16th, 2020: LayoutLM has been accepted to KDD 2020 as a full paper in research track.\*\*\*\*\***
+**\*\*\*\*\* New May 16th, 2020: Our LayoutLM paper has been accepted to KDD 2020 as a full paper in the research track.\*\*\*\*\***
 
 **\*\*\*\*\* New Feb 18th, 2020: Initial release of pre-trained models and fine-tuning code for LayoutLM v1 \*\*\*\*\***
 
