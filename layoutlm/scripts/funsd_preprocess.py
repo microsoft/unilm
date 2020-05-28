@@ -107,9 +107,9 @@ def seg_file(file_path, tokenizer, max_len):
             if current_subwords_len == 0:
                 continue
 
-            if (subword_len_counter + current_subwords_len) > max_len:
+            if (subword_len_counter + current_subwords_len) >= max_len:
                 fw_p.write("\n" + line + "\n")
-                subword_len_counter = 0
+                subword_len_counter += current_subwords_len
                 continue
 
             subword_len_counter += current_subwords_len
