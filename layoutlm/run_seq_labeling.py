@@ -810,9 +810,9 @@ def main():
 
     if args.do_predict and args.local_rank in [-1, 0]:
         tokenizer = tokenizer_class.from_pretrained(
-            args.output_dir, do_lower_case=args.do_lower_case
+            args.model_name_or_path, do_lower_case=args.do_lower_case
         )
-        model = model_class.from_pretrained(args.output_dir)
+        model = model_class.from_pretrained(args.model_name_or_path)
         model.to(args.device)
         result, predictions = evaluate(
             args, model, tokenizer, labels, pad_token_label_id, mode="test"
