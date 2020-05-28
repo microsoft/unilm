@@ -105,7 +105,7 @@ python decode_seq2seq.py \
 - The decoding results are saved at `${MODEL_PATH}.${SPLIT}`.
 - `--do_lower_case`: for uncased models
 
-### Evalation
+### Evaluation
 
 The golden answer text files can be downloaded at [here](https://unilm.blob.core.windows.net/s2s-ft-data/xsum.eval.zip).
 
@@ -165,7 +165,7 @@ python decode_seq2seq.py \
 - The decoding results are saved at `${MODEL_PATH}.${SPLIT}`.
 - `--do_lower_case`: for uncased models
 
-### Evalation
+### Evaluation
 
 The golden answer text files can be downloaded at [here](https://unilm.blob.core.windows.net/s2s-ft-data/xsum.eval.zip).
 
@@ -226,7 +226,7 @@ python decode_seq2seq.py \
 
 - The decoding results are saved at `${MODEL_PATH}.${SPLIT}`.
 
-### Evalation
+### Evaluation
 
 The golden answer text files can be downloaded at [here](https://unilm.blob.core.windows.net/s2s-ft-data/cnndm.eval.zip).
 
@@ -286,7 +286,7 @@ python decode_seq2seq.py \
 
 - The decoding results are saved at `${MODEL_PATH}.${SPLIT}`.
 
-### Evalation
+### Evaluation
 
 The golden answer text files can be downloaded at [here](https://unilm.blob.core.windows.net/s2s-ft-data/cnndm.eval.zip).
 
