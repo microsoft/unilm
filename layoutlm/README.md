@@ -23,19 +23,21 @@ We pre-train LayoutLM on IIT-CDIP Test Collection 1.0\* dataset with two setting
 
 \*As some downstream datasets are the subsets of IIT-CDIP, we have carefully excluded the overlap portion from the pre-training data.
 
-## Fine-tuning
+## Fine-tuning Example
 
 We evaluate LayoutLM on several document image understanding datasets, and it outperforms several SOTA pre-trained models and approaches.
 
 Setup environment as follows:
 
-~~~shell
+~~~bash
 conda create -n layoutlm python=3.6
 conda activate layoutlm
-conda install pytorch==1.3.1 torchvision==0.4.2 cudatoolkit=10.1 -c pytorch
+conda install pytorch==1.4.0 cudatoolkit=10.1 -c pytorch
 git clone https://github.com/NVIDIA/apex && cd apex
 pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./
-pip install -r requirements.txt
+pip install .
+## For development mode
+# pip install -e ".[dev]"
 ~~~
 
 ### Sequence Labeling Task
@@ -45,16 +47,14 @@ We give a fine-tuning example for sequence labeling tasks. You can run this exam
 
 First, we need to preprocess the JSON file into txt. You can run the preprocessing scripts `funsd_preprocess.py` in the `scripts` directory. For more options, please refer to the arguments.
 
-~~~shell
-wget https://guillaumejaume.github.io/FUNSD/dataset.zip
-unzip dataset.zip && mv dataset data
-python scripts/funsd_preprocess.py
-cat data/train.txt | cut -d$'\t' -f 2 | grep -v "^$"| sort | uniq > data/labels.txt
+~~~bash
+cd examples/seq_labeling
+./preprocess.sh
 ~~~
 
 After preprocessing, run LayoutLM as follows:
 
-~~~shell
+~~~bash
 python run_seq_labeling.py  --data_dir data \
                             --model_type layoutlm \
                             --model_name_or_path path/to/pretrained/model/directory \
@@ -67,11 +67,36 @@ python run_seq_labeling.py  --data_dir data \
                             --output_dir path/to/output/directory \
                             --labels data/labels.txt \
                             --per_gpu_train_batch_size 16 \
+                            --per_gpu_eval_batch_size 16 \
                             --fp16
-
 ~~~
 
-Also, you can run Bert, RoBERTa, and DistilBERT baseline by modifying the `--model_type` argument. For more options, please refer to the arguments of `run.py`.
+Note: The `DataParallel` will be enabled automatically to utilize all GPUs. If you want to train with `DistributedDataParallel`, please run the script like:
+
+~~~bash
+# Suppose you have 4 GPUs. 
+
+python -m torch.distributed.launch --nproc_per_node=4 run_seq_labeling.py  --data_dir data \
+                            --model_type layoutlm \
+                            --model_name_or_path path/to/pretrained/model/directory \
+                            --do_lower_case \
+                            --max_seq_length 512 \
+                            --do_train \
+                            --num_train_epochs 100.0 \
+                            --logging_steps 10 \
+                            --save_steps -1 \
+                            --output_dir path/to/output/directory \
+                            --labels data/labels.txt \
+                            --per_gpu_train_batch_size 16 \
+                            --per_gpu_eval_batch_size 16 \
+                            --fp16
+~~~
+
+
+
+Then you can do evaluation or inference by replacing `--do_train` with `--do_eval` or `--do_predict`
+
+Also, you can run Bert and RoBERTa baseline by modifying the `--model_type` argument. For more options, please refer to the arguments of `run.py`.
 
 ### Document Image Classification Task
 
@@ -79,17 +104,16 @@ We also fine-tune LayoutLM on the document image classification task. You can do
 
 With the processed OCR data, you can run LayoutLM as follows:
 
-~~~shell
+~~~bash
 python run_classification.py  --data_dir  data \
                               --model_type layoutlm \
                               --model_name_or_path path/to/pretrained/model/directory \
                               --output_dir path/to/output/directory \
                               --do_lower_case \
                               --max_seq_length 512 \
-                              --task_name cdip \
                               --do_train \
                               --do_eval \
-                              --num_train_epochs 10.0 \
+                              --num_train_epochs 40.0 \
                               --logging_steps 5000 \
                               --save_steps 5000 \
                               --per_gpu_train_batch_size 16 \
@@ -98,7 +122,9 @@ python run_classification.py  --data_dir  data \
                               --fp16 
 ~~~
 
-Like the sequence labeling task, you can run Bert, RoBERTa, and DistilBERT baseline by modifying the `--model_type` argument.
+Similarly, you can do evaluation by changing `--do_train` to `--do_eval` and `--do_test`
+
+Like the sequence labeling task, you can run Bert and RoBERTa baseline by modifying the `--model_type` argument.
 
 ### Results
 

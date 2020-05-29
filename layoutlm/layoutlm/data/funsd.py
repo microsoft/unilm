@@ -1,33 +1,90 @@
-# coding=utf-8
-# Copyright 2018 The Google AI Language Team Authors and The HuggingFace Inc. team.
-# Copyright (c) 2018, NVIDIA CORPORATION.  All rights reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-""" Named entity recognition fine-tuning: utilities to work with CoNLL-2003 task. """
-
-from __future__ import absolute_import, division, print_function
-
 import logging
 import os
-from io import open
+
+import torch
+from torch.utils.data import Dataset
 
 logger = logging.getLogger(__name__)
+
+
+class FunsdDataset(Dataset):
+    def __init__(self, args, tokenizer, labels, pad_token_label_id, mode):
+        if args.local_rank not in [-1, 0] and mode == "train":
+            torch.distributed.barrier()  # Make sure only the first process in distributed training process the dataset, and the others will use the cache
+
+        # Load data features from cache or dataset file
+        cached_features_file = os.path.join(
+            args.data_dir,
+            "cached_{}_{}_{}".format(
+                mode,
+                list(filter(None, args.model_name_or_path.split("/"))).pop(),
+                str(args.max_seq_length),
+            ),
+        )
+        if os.path.exists(cached_features_file) and not args.overwrite_cache:
+            logger.info("Loading features from cached file %s", cached_features_file)
+            features = torch.load(cached_features_file)
+        else:
+            logger.info("Creating features from dataset file at %s", args.data_dir)
+            examples = read_examples_from_file(args.data_dir, mode)
+            features = convert_examples_to_features(
+                examples,
+                labels,
+                args.max_seq_length,
+                tokenizer,
+                cls_token_at_end=bool(args.model_type in ["xlnet"]),
+                # xlnet has a cls token at the end
+                cls_token=tokenizer.cls_token,
+                cls_token_segment_id=2 if args.model_type in ["xlnet"] else 0,
+                sep_token=tokenizer.sep_token,
+                sep_token_extra=bool(args.model_type in ["roberta"]),
+                # roberta uses an extra separator b/w pairs of sentences, cf. github.com/pytorch/fairseq/commit/1684e166e3da03f5b600dbb7855cb98ddfcd0805
+                pad_on_left=bool(args.model_type in ["xlnet"]),
+                # pad on the left for xlnet
+                pad_token=tokenizer.convert_tokens_to_ids([tokenizer.pad_token])[0],
+                pad_token_segment_id=4 if args.model_type in ["xlnet"] else 0,
+                pad_token_label_id=pad_token_label_id,
+            )
+            if args.local_rank in [-1, 0]:
+                logger.info("Saving features into cached file %s", cached_features_file)
+                torch.save(features, cached_features_file)
+
+        if args.local_rank == 0 and mode == "train":
+            torch.distributed.barrier()  # Make sure only the first process in distributed training process the dataset, and the others will use the cache
+
+        self.features = features
+        # Convert to Tensors and build dataset
+        self.all_input_ids = torch.tensor(
+            [f.input_ids for f in features], dtype=torch.long
+        )
+        self.all_input_mask = torch.tensor(
+            [f.input_mask for f in features], dtype=torch.long
+        )
+        self.all_segment_ids = torch.tensor(
+            [f.segment_ids for f in features], dtype=torch.long
+        )
+        self.all_label_ids = torch.tensor(
+            [f.label_ids for f in features], dtype=torch.long
+        )
+        self.all_bboxes = torch.tensor([f.boxes for f in features], dtype=torch.long)
+
+    def __len__(self):
+        return len(self.features)
+
+    def __getitem__(self, index):
+        return (
+            self.all_input_ids[index],
+            self.all_input_mask[index],
+            self.all_segment_ids[index],
+            self.all_label_ids[index],
+            self.all_bboxes[index],
+        )
 
 
 class InputExample(object):
     """A single training/test example for token classification."""
 
-    def __init__(self, guid, words, labels, boxes=None):
+    def __init__(self, guid, words, labels, boxes, actual_bboxes, file_name, page_size):
         """Constructs a InputExample.
 
         Args:
@@ -40,31 +97,56 @@ class InputExample(object):
         self.words = words
         self.labels = labels
         self.boxes = boxes
+        self.actual_bboxes = actual_bboxes
+        self.file_name = file_name
+        self.page_size = page_size
 
 
 class InputFeatures(object):
     """A single set of features of data."""
 
-    def __init__(self, input_ids, input_mask, segment_ids, label_ids, boxes=None):
+    def __init__(
+        self,
+        input_ids,
+        input_mask,
+        segment_ids,
+        label_ids,
+        boxes,
+        actual_bboxes,
+        file_name,
+        page_size,
+    ):
+        assert (
+            0 <= all(boxes) <= 1000
+        ), "Error with input bbox ({}): the coordinate value is not between 0 and 1000".format(
+            boxes
+        )
         self.input_ids = input_ids
         self.input_mask = input_mask
         self.segment_ids = segment_ids
         self.label_ids = label_ids
         self.boxes = boxes
+        self.actual_bboxes = actual_bboxes
+        self.file_name = file_name
+        self.page_size = page_size
 
 
 def read_examples_from_file(data_dir, mode):
     file_path = os.path.join(data_dir, "{}.txt".format(mode))
     box_file_path = os.path.join(data_dir, "{}_box.txt".format(mode))
+    image_file_path = os.path.join(data_dir, "{}_image.txt".format(mode))
     guid_index = 1
     examples = []
     with open(file_path, encoding="utf-8") as f, open(
         box_file_path, encoding="utf-8"
-    ) as fb:
+    ) as fb, open(image_file_path, encoding="utf-8") as fi:
         words = []
-        labels = []
         boxes = []
-        for line, bline in zip(f, fb):
+        actual_bboxes = []
+        file_name = None
+        page_size = None
+        labels = []
+        for line, bline, iline in zip(f, fb, fi):
             if line.startswith("-DOCSTART-") or line == "" or line == "\n":
                 if words:
                     examples.append(
@@ -73,17 +155,25 @@ def read_examples_from_file(data_dir, mode):
                             words=words,
                             labels=labels,
                             boxes=boxes,
+                            actual_bboxes=actual_bboxes,
+                            file_name=file_name,
+                            page_size=page_size,
                         )
                     )
                     guid_index += 1
                     words = []
                     boxes = []
+                    actual_bboxes = []
+                    file_name = None
+                    page_size = None
                     labels = []
             else:
                 splits = line.split("\t")
                 bsplits = bline.split("\t")
+                isplits = iline.split("\t")
                 assert len(splits) == 2
                 assert len(bsplits) == 2
+                assert len(isplits) == 4
                 assert splits[0] == bsplits[0]
                 words.append(splits[0])
                 if len(splits) > 1:
@@ -91,6 +181,10 @@ def read_examples_from_file(data_dir, mode):
                     box = bsplits[-1].replace("\n", "")
                     box = [int(b) for b in box.split()]
                     boxes.append(box)
+                    actual_bbox = [int(b) for b in isplits[1].split()]
+                    actual_bboxes.append(actual_bbox)
+                    page_size = [int(i) for i in isplits[2].split()]
+                    file_name = isplits[3].strip()
                 else:
                     # Examples could have no label for mode = "test"
                     labels.append("O")
@@ -101,6 +195,9 @@ def read_examples_from_file(data_dir, mode):
                     words=words,
                     labels=labels,
                     boxes=boxes,
+                    actual_bboxes=actual_bboxes,
+                    file_name=file_name,
+                    page_size=page_size,
                 )
             )
     return examples
@@ -137,16 +234,23 @@ def convert_examples_to_features(
 
     features = []
     for (ex_index, example) in enumerate(examples):
+        file_name = example.file_name
+        page_size = example.page_size
+        width, height = page_size
         if ex_index % 10000 == 0:
             logger.info("Writing example %d of %d", ex_index, len(examples))
 
         tokens = []
         token_boxes = []
+        actual_bboxes = []
         label_ids = []
-        for word, label, box in zip(example.words, example.labels, example.boxes):
+        for word, label, box, actual_bbox in zip(
+            example.words, example.labels, example.boxes, example.actual_bboxes
+        ):
             word_tokens = tokenizer.tokenize(word)
             tokens.extend(word_tokens)
             token_boxes.extend([box] * len(word_tokens))
+            actual_bboxes.extend([actual_bbox] * len(word_tokens))
             # Use the real label id for the first token of the word, and padding ids for the remaining tokens
             label_ids.extend(
                 [label_map[label]] + [pad_token_label_id] * (len(word_tokens) - 1)
@@ -157,6 +261,7 @@ def convert_examples_to_features(
         if len(tokens) > max_seq_length - special_tokens_count:
             tokens = tokens[: (max_seq_length - special_tokens_count)]
             token_boxes = token_boxes[: (max_seq_length - special_tokens_count)]
+            actual_bboxes = actual_bboxes[: (max_seq_length - special_tokens_count)]
             label_ids = label_ids[: (max_seq_length - special_tokens_count)]
 
         # The convention in BERT is:
@@ -179,22 +284,26 @@ def convert_examples_to_features(
         # the entire model is fine-tuned.
         tokens += [sep_token]
         token_boxes += [sep_token_box]
+        actual_bboxes += [[0, 0, width, height]]
         label_ids += [pad_token_label_id]
         if sep_token_extra:
             # roberta uses an extra separator b/w pairs of sentences
             tokens += [sep_token]
             token_boxes += [sep_token_box]
+            actual_bboxes += [[0, 0, width, height]]
             label_ids += [pad_token_label_id]
         segment_ids = [sequence_a_segment_id] * len(tokens)
 
         if cls_token_at_end:
             tokens += [cls_token]
             token_boxes += [cls_token_box]
+            actual_bboxes += [[0, 0, width, height]]
             label_ids += [pad_token_label_id]
             segment_ids += [cls_token_segment_id]
         else:
             tokens = [cls_token] + tokens
             token_boxes = [cls_token_box] + token_boxes
+            actual_bboxes = [[0, 0, width, height]] + actual_bboxes
             label_ids = [pad_token_label_id] + label_ids
             segment_ids = [cls_token_segment_id] + segment_ids
 
@@ -236,6 +345,7 @@ def convert_examples_to_features(
             logger.info("segment_ids: %s", " ".join([str(x) for x in segment_ids]))
             logger.info("label_ids: %s", " ".join([str(x) for x in label_ids]))
             logger.info("boxes: %s", " ".join([str(x) for x in token_boxes]))
+            logger.info("actual_bboxes: %s", " ".join([str(x) for x in actual_bboxes]))
 
         features.append(
             InputFeatures(
@@ -244,28 +354,9 @@ def convert_examples_to_features(
                 segment_ids=segment_ids,
                 label_ids=label_ids,
                 boxes=token_boxes,
+                actual_bboxes=actual_bboxes,
+                file_name=file_name,
+                page_size=page_size,
             )
         )
     return features
-
-
-def get_labels(path):
-    if path:
-        with open(path, "r") as f:
-            labels = f.read().splitlines()
-        if "O" not in labels:
-            labels = ["O"] + labels
-        return labels
-    else:
-        return [
-            "O",
-            "B-MISC",
-            "I-MISC",
-            "B-PER",
-            "I-PER",
-            "B-ORG",
-            "I-ORG",
-            "B-LOC",
-            "I-LOC",
-        ]
-

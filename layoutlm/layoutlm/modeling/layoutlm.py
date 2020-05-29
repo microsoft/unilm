@@ -1,20 +1,30 @@
+import logging
+
 import torch
 from torch import nn
 from torch.nn import CrossEntropyLoss, MSELoss
-from transformers import BertPreTrainedModel
-from transformers.modeling_bert import (
-    BertEncoder,
-    BertPooler,
-    BertLayerNorm,
-)
+from transformers import BertConfig, BertModel, BertPreTrainedModel
+from transformers.modeling_bert import BertLayerNorm
+
+logger = logging.getLogger(__name__)
+
+LAYOUTLM_PRETRAINED_MODEL_ARCHIVE_MAP = {}
+
+LAYOUTLM_PRETRAINED_CONFIG_ARCHIVE_MAP = {}
 
 
-class LayoutLMEmbeddings(nn.Module):
-    """Construct the embeddings from word, position and token_type embeddings.
-    """
+class LayoutlmConfig(BertConfig):
+    pretrained_config_archive_map = LAYOUTLM_PRETRAINED_CONFIG_ARCHIVE_MAP
+    model_type = "bert"
 
+    def __init__(self, max_2d_position_embeddings=1024, **kwargs):
+        super().__init__(**kwargs)
+        self.max_2d_position_embeddings = max_2d_position_embeddings
+
+
+class LayoutlmEmbeddings(nn.Module):
     def __init__(self, config):
-        super(LayoutLMEmbeddings, self).__init__()
+        super(LayoutlmEmbeddings, self).__init__()
         self.word_embeddings = nn.Embedding(
             config.vocab_size, config.hidden_size, padding_idx=0
         )
@@ -43,7 +53,12 @@ class LayoutLMEmbeddings(nn.Module):
         self.dropout = nn.Dropout(config.hidden_dropout_prob)
 
     def forward(
-        self, input_ids, bbox, token_type_ids=None, position_ids=None,
+        self,
+        input_ids,
+        bbox,
+        token_type_ids=None,
+        position_ids=None,
+        inputs_embeds=None,
     ):
         seq_length = input_ids.size(1)
         if position_ids is None:
@@ -84,50 +99,16 @@ class LayoutLMEmbeddings(nn.Module):
         return embeddings
 
 
-class LayoutLMModel(BertPreTrainedModel):
-    r"""
-    Outputs: `Tuple` comprising various elements depending on the configuration (config) and inputs:
-        **last_hidden_state**: ``torch.FloatTensor`` of shape ``(batch_size, sequence_length, hidden_size)``
-            Sequence of hidden-states at the output of the last layer of the model.
-        **pooler_output**: ``torch.FloatTensor`` of shape ``(batch_size, hidden_size)``
-            Last layer hidden-state of the first token of the sequence (classification token)
-            further processed by a Linear layer and a Tanh activation function. The Linear
-            layer weights are trained from the next sentence prediction (classification)
-            objective during Bert pretraining. This output is usually *not* a good summary
-            of the semantic content of the input, you're often better with averaging or pooling
-            the sequence of hidden-states for the whole input sequence.
-        **hidden_states**: (`optional`, returned when ``config.output_hidden_states=True``)
-            list of ``torch.FloatTensor`` (one for the output of each layer + the output of the embeddings)
-            of shape ``(batch_size, sequence_length, hidden_size)``:
-            Hidden-states of the model at the output of each layer plus the initial embedding outputs.
-        **attentions**: (`optional`, returned when ``config.output_attentions=True``)
-            list of ``torch.FloatTensor`` (one for each layer) of shape ``(batch_size, num_heads, sequence_length, sequence_length)``:
-            Attentions weights after the attention softmax, used to compute the weighted average in the self-attention heads.
+class LayoutlmModel(BertModel):
 
-    """
+    config_class = LayoutlmConfig
+    pretrained_model_archive_map = LAYOUTLM_PRETRAINED_MODEL_ARCHIVE_MAP
+    base_model_prefix = "bert"
 
     def __init__(self, config):
-        super(LayoutLMModel, self).__init__(config)
-
-        self.embeddings = LayoutLMEmbeddings(config)
-        self.encoder = BertEncoder(config)
-        self.pooler = BertPooler(config)
-
+        super(LayoutlmModel, self).__init__(config)
+        self.embeddings = LayoutlmEmbeddings(config)
         self.init_weights()
-
-    def _resize_token_embeddings(self, new_num_tokens):
-        old_embeddings = self.embeddings.word_embeddings
-        new_embeddings = self._get_resized_embeddings(old_embeddings, new_num_tokens)
-        self.embeddings.word_embeddings = new_embeddings
-        return self.embeddings.word_embeddings
-
-    def _prune_heads(self, heads_to_prune):
-        """ Prunes heads of the model.
-            heads_to_prune: dict of {layer_num: list of heads to prune in this layer}
-            See base class PreTrainedModel
-        """
-        for layer, heads in heads_to_prune.items():
-            self.encoder.layer[layer].attention.prune_heads(heads)
 
     def forward(
         self,
@@ -187,7 +168,7 @@ class LayoutLMModel(BertPreTrainedModel):
             head_mask = [None] * self.config.num_hidden_layers
 
         embedding_output = self.embeddings(
-            input_ids, bbox, position_ids=position_ids, token_type_ids=token_type_ids,
+            input_ids, bbox, position_ids=position_ids, token_type_ids=token_type_ids
         )
         encoder_outputs = self.encoder(
             embedding_output, extended_attention_mask, head_mask=head_mask
@@ -201,32 +182,15 @@ class LayoutLMModel(BertPreTrainedModel):
         return outputs  # sequence_output, pooled_output, (hidden_states), (attentions)
 
 
-class LayoutLMForTokenClassification(BertPreTrainedModel):
-    r"""
-        **labels**: (`optional`) ``torch.LongTensor`` of shape ``(batch_size, sequence_length)``:
-            Labels for computing the token classification loss.
-            Indices should be in ``[0, ..., config.num_labels - 1]``.
-
-    Outputs: `Tuple` comprising various elements depending on the configuration (config) and inputs:
-        **loss**: (`optional`, returned when ``labels`` is provided) ``torch.FloatTensor`` of shape ``(1,)``:
-            Classification loss.
-        **scores**: ``torch.FloatTensor`` of shape ``(batch_size, sequence_length, config.num_labels)``
-            Classification scores (before SoftMax).
-        **hidden_states**: (`optional`, returned when ``config.output_hidden_states=True``)
-            list of ``torch.FloatTensor`` (one for the output of each layer + the output of the embeddings)
-            of shape ``(batch_size, sequence_length, hidden_size)``:
-            Hidden-states of the model at the output of each layer plus the initial embedding outputs.
-        **attentions**: (`optional`, returned when ``config.output_attentions=True``)
-            list of ``torch.FloatTensor`` (one for each layer) of shape ``(batch_size, num_heads, sequence_length, sequence_length)``:
-            Attentions weights after the attention softmax, used to compute the weighted average in the self-attention heads.
-
-    """
+class LayoutlmForTokenClassification(BertPreTrainedModel):
+    config_class = LayoutlmConfig
+    pretrained_model_archive_map = LAYOUTLM_PRETRAINED_MODEL_ARCHIVE_MAP
+    base_model_prefix = "bert"
 
     def __init__(self, config):
-        super(LayoutLMForTokenClassification, self).__init__(config)
+        super().__init__(config)
         self.num_labels = config.num_labels
-
-        self.bert = LayoutLMModel(config)
+        self.bert = LayoutlmModel(config)
         self.dropout = nn.Dropout(config.hidden_dropout_prob)
         self.classifier = nn.Linear(config.hidden_size, config.num_labels)
 
@@ -276,34 +240,16 @@ class LayoutLMForTokenClassification(BertPreTrainedModel):
         return outputs  # (loss), scores, (hidden_states), (attentions)
 
 
-class LayoutLMForSequenceClassification(BertPreTrainedModel):
-    r"""
-        **labels**: (`optional`) ``torch.LongTensor`` of shape ``(batch_size,)``:
-            Labels for computing the sequence classification/regression loss.
-            Indices should be in ``[0, ..., config.num_labels - 1]``.
-            If ``config.num_labels == 1`` a regression loss is computed (Mean-Square loss),
-            If ``config.num_labels > 1`` a classification loss is computed (Cross-Entropy).
-
-    Outputs: `Tuple` comprising various elements depending on the configuration (config) and inputs:
-        **loss**: (`optional`, returned when ``labels`` is provided) ``torch.FloatTensor`` of shape ``(1,)``:
-            Classification (or regression if config.num_labels==1) loss.
-        **logits**: ``torch.FloatTensor`` of shape ``(batch_size, config.num_labels)``
-            Classification (or regression if config.num_labels==1) scores (before SoftMax).
-        **hidden_states**: (`optional`, returned when ``config.output_hidden_states=True``)
-            list of ``torch.FloatTensor`` (one for the output of each layer + the output of the embeddings)
-            of shape ``(batch_size, sequence_length, hidden_size)``:
-            Hidden-states of the model at the output of each layer plus the initial embedding outputs.
-        **attentions**: (`optional`, returned when ``config.output_attentions=True``)
-            list of ``torch.FloatTensor`` (one for each layer) of shape ``(batch_size, num_heads, sequence_length, sequence_length)``:
-            Attentions weights after the attention softmax, used to compute the weighted average in the self-attention heads.
-
-    """
+class LayoutlmForSequenceClassification(BertPreTrainedModel):
+    config_class = LayoutlmConfig
+    pretrained_model_archive_map = LAYOUTLM_PRETRAINED_MODEL_ARCHIVE_MAP
+    base_model_prefix = "bert"
 
     def __init__(self, config):
-        super(LayoutLMForSequenceClassification, self).__init__(config)
+        super(LayoutlmForSequenceClassification, self).__init__(config)
         self.num_labels = config.num_labels
 
-        self.bert = LayoutLMModel(config)
+        self.bert = LayoutlmModel(config)
         self.dropout = nn.Dropout(config.hidden_dropout_prob)
         self.classifier = nn.Linear(config.hidden_size, self.config.num_labels)
 

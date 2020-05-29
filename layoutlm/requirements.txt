@@ -1,3 +1,0 @@
-pillow==7.1.0
-seqeval==0.0.12
-transformers==2.2.1
