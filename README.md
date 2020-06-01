@@ -11,6 +11,7 @@ The family of UniLM:
 >  [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft) (```new```): **sequence-to-sequence fine-tuning toolkit**
 
 ## News
+- June, 2020 (```NEW```): LayoutLM v1 was accepted by KDD 2020, and UniLMv2 was accepted by ICML 2020.
 - April 5, 2020: [**Multilingual MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm) released!
 
 ## Release
