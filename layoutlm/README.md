@@ -32,12 +32,22 @@ Setup environment as follows:
 ~~~bash
 conda create -n layoutlm python=3.6
 conda activate layoutlm
+~~~
+~~~bash
+## If a you are not using a MacOS use these steps
 conda install pytorch==1.4.0 cudatoolkit=10.1 -c pytorch
 git clone https://github.com/NVIDIA/apex && cd apex
 pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./
+~~~
+~~~bash
+##If a MacOS is used no need to install cudatoolkit and apex, just install  pytorch.
+conda install pytorch==1.4.0 -c pytorch
+~~~
+~~~bash
 pip install .
 ## For development mode
 # pip install -e ".[dev]"
+python3 setup.py install
 ~~~
 
 ### Sequence Labeling Task
@@ -121,6 +131,7 @@ python run_classification.py  --data_dir  data \
                               --evaluate_during_training \
                               --fp16 
 ~~~
+If apex is not installed remove the  `--fp16`  parammeter
 
 Similarly, you can do evaluation by changing `--do_train` to `--do_eval` and `--do_test`
 
