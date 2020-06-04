@@ -23,6 +23,14 @@ We pre-train LayoutLM on IIT-CDIP Test Collection 1.0\* dataset with two setting
 
 \*As some downstream datasets are the subsets of IIT-CDIP, we have carefully excluded the overlap portion from the pre-training data.
 
+## Cedrus Trainings
+https://drive.google.com/open?id=1SExlh5Ycg8PyFtl-XaJdHmRyvAI2_0_P
+Refer to this drive to find all the datasets used in the trainings, models trained, and output of each training.
+
+* Naming convention for the output models: `aetna_dataset_output_"type of pretrained model used"_ "number of epoch"_ "dataset used"`, for example `aetna_dataset_output_base_20_d1`.
+
+* After every training it is recommended to insert the result in the `Research` sheet and upload the output model and results in the `Outputs` folder using the naming convention mentioned above.
+
 ## Fine-tuning Example
 
 We evaluate LayoutLM on several document image understanding datasets, and it outperforms several SOTA pre-trained models and approaches.
@@ -32,12 +40,22 @@ Setup environment as follows:
 ~~~bash
 conda create -n layoutlm python=3.6
 conda activate layoutlm
+~~~
+~~~bash
+## If a you are not using a MacOS use these steps
 conda install pytorch==1.4.0 cudatoolkit=10.1 -c pytorch
 git clone https://github.com/NVIDIA/apex && cd apex
 pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./
+~~~
+~~~bash
+##If a MacOS is used no need to install cudatoolkit and apex, just install  pytorch.
+conda install pytorch==1.4.0 -c pytorch
+~~~
+~~~bash
 pip install .
 ## For development mode
 # pip install -e ".[dev]"
+python3 setup.py install
 ~~~
 
 ### Sequence Labeling Task
@@ -70,7 +88,8 @@ python run_seq_labeling.py  --data_dir data \
                             --per_gpu_eval_batch_size 16 \
                             --fp16
 ~~~
-
+If apex is not installed remove the  `--fp16`  parammeter
+You can download pre-trained model from the links mentioned above (layoutLM or drive)
 Note: The `DataParallel` will be enabled automatically to utilize all GPUs. If you want to train with `DistributedDataParallel`, please run the script like:
 
 ~~~bash
@@ -93,7 +112,8 @@ python -m torch.distributed.launch --nproc_per_node=4 run_seq_labeling.py  --dat
 ~~~
 
 
-
+If apex is not installed remove the  `--fp16`  parammeter
+You can download pre-trained model from the links mentioned above (layoutLM or drive)
 Then you can do evaluation or inference by replacing `--do_train` with `--do_eval` or `--do_predict`
 
 Also, you can run Bert and RoBERTa baseline by modifying the `--model_type` argument. For more options, please refer to the arguments of `run.py`.
@@ -121,6 +141,9 @@ python run_classification.py  --data_dir  data \
                               --evaluate_during_training \
                               --fp16 
 ~~~
+If apex is not installed remove the  `--fp16`  parammeter
+
+You can download pre-trained model from the links mentioned above (layoutLM or drive)
 
 Similarly, you can do evaluation by changing `--do_train` to `--do_eval` and `--do_test`
 
