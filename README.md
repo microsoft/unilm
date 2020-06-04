@@ -13,6 +13,7 @@ The family of UniLM:
 ## News
 - June, 2020 (```NEW```): [LayoutLM v1](https://github.com/microsoft/unilm/tree/master/layoutlm) was accepted by KDD 2020, and [UniLMv2](https://github.com/microsoft/unilm/tree/master/unilm) was accepted by ICML 2020.
 - April 5, 2020: [**Multilingual MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm) released!
+- September, 2019: [UniLMv1](https://github.com/microsoft/unilm/tree/master/unilm-v1) was accepted by NeurIPS 2019.
 
 ## Release
 
