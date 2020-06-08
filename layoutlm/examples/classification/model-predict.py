@@ -1,12 +1,16 @@
-import torch, os, sys, re
-from layoutlm.layoutlm import LayoutlmConfig, LayoutlmForSequenceClassification
-from transformers import BertTokenizerFast
-from layoutlm.layoutlm.data.rvl_cdip import CdipProcessor, get_prop, DocExample, convert_examples_to_features
+import os
+import re
+import sys
+import torch
 from lxml import html
+from transformers import BertTokenizerFast
+
+from layoutlm import LayoutlmConfig, LayoutlmForSequenceClassification
+from layoutlm.data.rvl_cdip import CdipProcessor, get_prop, DocExample, convert_examples_to_features
 
 
 # from rvl_cdip.py
-def read_hocr_file(hocr_file):
+def convert_hocr_to_feature(hocr_file, tokenizer, label_list):
     text_buffer = []
     bbox_buffer = []
     try:
@@ -31,7 +35,14 @@ def read_hocr_file(hocr_file):
                 ]
                 bbox = [int(x * 1000) for x in bbox]
                 bbox_buffer.append(bbox)
-    return text_buffer, bbox_buffer
+    # hocr file is now read, all relevant data is in text_buffer and bbox_buffer
+    guid = "eval-0"
+    label = "0"
+    # convert from hocr data to DocExample
+    examples = [DocExample(guid=guid, text_a=text_buffer, text_b=None, bbox=bbox_buffer, label=label)]
+    # convert from DocExample to list of DocFeature
+    features = convert_examples_to_features(examples=examples, tokenizer=tokenizer, label_list=label_list)
+    return features[0]
 
 
 def modelPredict(output_path, hocr_file):
@@ -43,15 +54,29 @@ def modelPredict(output_path, hocr_file):
     processor = CdipProcessor()
     label_list = processor.get_labels()
     num_labels = len(label_list)
+    feature = convert_hocr_to_feature(hocr_file, tokenizer, label_list)
 
-    text, bbox = read_hocr_file(hocr_file)
-    # next step from here in run_classification.py is to create DocExample, convert to DocFeature, then to a Tensor
-    # that we can properly pass into the bottom call. this is the part that I have been stuck on, as the conversion
-    # outlined in run_classification.py requires labels and other inputs that aren't directly obvious what they should be
-    # when it comes to us trying to predict on a new image.
-    model("OUR TENSOR CONTAINING THE IMAGE INFO SHOULD GO HERE")
+    model.eval()
+    with torch.no_grad():
+        inputs = {
+            "input_ids": torch.tensor([feature.input_ids]),
+            "attention_mask": torch.tensor([feature.attention_mask]),
+            "token_type_ids": torch.tensor([feature.token_type_ids]),
+            "labels": torch.tensor([feature.label]),
+            "bbox": torch.tensor([feature.bboxes])
+        }
+        outputs = model(**inputs)
+        sm = torch.nn.Softmax()
+        probabilities = sm(outputs[1]).tolist()[0]
+        max_prob, max_index, index = 0, 0, 0
+        for p in probabilities:
+            if p > max_prob:
+                max_prob = p
+                max_index = index
+            index += 1
+    head, tail = os.path.split(hocr_file)
+    print(">>> Predicted label %s with %s confidence for input file %s" % (max_index, max_prob * 100, tail))
+
 
 if __name__ == "__main__":
-    # modelPredict(sys.argv[1])
-    modelPredict("/Users/chris/CODE/cedrus/unilm/layoutlm/examples/classification/aetna_dataset_output_base_20_d1"
-                 , "/Users/chris/CODE/cedrus/unilm/layoutlm/layoutlm/data/Aetna Dataset -2/images/test/COB1-1.xml")
+    modelPredict(sys.argv[1], sys.argv[2])
