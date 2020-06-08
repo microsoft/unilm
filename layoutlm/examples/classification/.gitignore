@@ -215,3 +215,4 @@ dmypy.json
 /data
 /layoutlm-base-uncased
 /layoutlm-large-uncased
+/aetna_dataset_output*
