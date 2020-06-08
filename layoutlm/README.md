@@ -31,6 +31,14 @@ Refer to this drive to find all the datasets used in the trainings, models train
 
 * After every training it is recommended to insert the result in the `Research` sheet and upload the output model and results in the `Outputs` folder using the naming convention mentioned above.
 
+## Predict Script
+In order to leverage training output/pre-trained model to predict, make sure you are in the conda environment and call:
+~~~bash
+cd layoutlm/examples/classification
+python3 model-predict.py "path/to/output/directory" "path/to/XML/input/file"
+~~~
+
+
 ## Fine-tuning Example
 
 We evaluate LayoutLM on several document image understanding datasets, and it outperforms several SOTA pre-trained models and approaches.
