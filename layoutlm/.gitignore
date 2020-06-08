@@ -212,6 +212,3 @@ dmypy.json
 /runs
 /outputs
 /models
-
-/layoutlm-base-uncased
-/layoutlm-large-uncased
