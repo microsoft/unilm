@@ -5,7 +5,7 @@ import torch
 from lxml import html
 from transformers import BertTokenizerFast
 
-from layoutlm import LayoutlmConfig, LayoutlmForSequenceClassification
+from layoutlm.modeling.layoutlm import LayoutlmConfig, LayoutlmForSequenceClassification
 from layoutlm.data.rvl_cdip import CdipProcessor, get_prop, DocExample, convert_examples_to_features
 
 
