@@ -45,7 +45,7 @@ def convert_hocr_to_feature(hocr_file, tokenizer, label_list):
     return features[0]
 
 
-def modelPredict(output_path, hocr_file):
+def make_prediction(output_path, hocr_file):
     # config, tokenizer, and model all loaded from output directory
     config = LayoutlmConfig.from_pretrained(output_path)
     tokenizer = BertTokenizerFast.from_pretrained(output_path)
@@ -53,7 +53,6 @@ def modelPredict(output_path, hocr_file):
 
     processor = CdipProcessor()
     label_list = processor.get_labels()
-    num_labels = len(label_list)
     feature = convert_hocr_to_feature(hocr_file, tokenizer, label_list)
 
     model.eval()
@@ -74,9 +73,11 @@ def modelPredict(output_path, hocr_file):
                 max_prob = p
                 max_index = index
             index += 1
-    head, tail = os.path.split(hocr_file)
-    print(">>> Predicted label %s with %s confidence for input file %s" % (max_index, max_prob * 100, tail))
+        # returns index of label for now, we can likely reference label_list in the future to return label name???
+    return max_index, max_prob
 
 
 if __name__ == "__main__":
-    modelPredict(sys.argv[1], sys.argv[2])
+    label, confidence = make_prediction(sys.argv[1], sys.argv[2])
+    head, tail = os.path.split(sys.argv[2])
+    print('>>> Predicted label %s with %s%% confidence for input file %s' % (label, confidence*100, tail))
