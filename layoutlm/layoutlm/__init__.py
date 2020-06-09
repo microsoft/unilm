@@ -6,3 +6,4 @@ from .modeling.layoutlm import (
     LayoutlmForSequenceClassification,
     LayoutlmForTokenClassification,
 )
+from .data.convert import convert_img_to_xml
