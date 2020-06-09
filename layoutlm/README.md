@@ -38,6 +38,16 @@ cd layoutlm/examples/classification
 python3 model-predict.py "path/to/output/directory" "path/to/XML/input/file"
 ~~~
 
+## Tesseract Script
+A script to convert dataset of images to properly formatted OCR data is available at `layoutlm/layoutlm/data/convert-OCR.py`
+
+Call script as follows:
+~~~bash
+cd layoutlm/layoutlm/data
+python3 convert-OCR.py "Aetna Dataset -1" (name of dataset directory under layoutlm/layoutlm/data)
+~~~
+
+The script will run and make consecutive calls to Tesseract, outputting converted .xml files into a new directory `~/out-OCR` within the original dataset directory.
 
 ## Fine-tuning Example
 
