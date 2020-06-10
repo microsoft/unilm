@@ -100,7 +100,7 @@ def train(args, train_dataset, model, tokenizer):  # noqa C901
                 for n, p in model.named_parameters()
                 if not any(nd in n for nd in no_decay)
             ],
-            "weight_decay": args.weight_decay,
+            "weight_decay": 0.0,
         },
         {
             "params": [

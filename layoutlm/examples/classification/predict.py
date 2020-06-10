@@ -10,7 +10,7 @@ from layoutlm.data.rvl_cdip import CdipProcessor, get_prop, DocExample, convert_
 
 
 # from rvl_cdip.py
-def convert_hocr_to_feature(hocr_file, tokenizer, label_list):
+def convert_hocr_to_feature(hocr_file, tokenizer, label_list, label):
     text_buffer = []
     bbox_buffer = []
     try:
@@ -37,7 +37,6 @@ def convert_hocr_to_feature(hocr_file, tokenizer, label_list):
                 bbox_buffer.append(bbox)
     # hocr file is now read, all relevant data is in text_buffer and bbox_buffer
     guid = "eval-0"
-    label = "0"
     # convert from hocr data to DocExample
     examples = [DocExample(guid=guid, text_a=text_buffer, text_b=None, bbox=bbox_buffer, label=label)]
     # convert from DocExample to list of DocFeature
@@ -53,7 +52,7 @@ def make_prediction(output_path, hocr_file):
 
     processor = CdipProcessor()
     label_list = processor.get_labels()
-    feature = convert_hocr_to_feature(hocr_file, tokenizer, label_list)
+    feature = convert_hocr_to_feature(hocr_file, tokenizer, label_list, "0")
 
     model.eval()
     with torch.no_grad():

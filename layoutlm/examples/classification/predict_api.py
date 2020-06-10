@@ -16,7 +16,7 @@ def predict(base64_img):
     except:
         pass
     filename = uuid.uuid4().hex
-    # assumes that base64_img encodes a .png file
+    # assumes that base64_img encodes a .tiff file
     img = os.path.join(OUTPUT_DIR, filename + '.tiff')
     with open(img, 'wb') as file_to_save:
         decoded_image_data = base64.b64decode(base64_img, '-_')
