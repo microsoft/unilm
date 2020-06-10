@@ -8,7 +8,7 @@ def convert_all_to_xml(root):
         pass
     for path, directories, files in os.walk(root):
         for file in files:  # walk through dataset for img files
-            if file.endswith('.png') | file.endswith('.jpg'):
+            if file.endswith('.png') | file.endswith('.jpg') | file.endswith('.tif'):
                 img = os.path.join(path, file)
                 convert_img_to_xml(img, output_dir)
 

@@ -1,29 +1,29 @@
 import os, uuid, pathlib, base64
-
+import sys
+ROOT_DIR = os.path.abspath("../../../")
+sys.path.append(ROOT_DIR)
 from layoutlm.data.convert import convert_img_to_xml
 from examples.classification.predict import make_prediction
 
 # assumes model exists and is in same directory as this file
-MODEL = 'aetna_dataset_output_base_40_d3'
-OUTPUT = 'output'
+MODEL_DIR = 'aetna_dataset_output_base_40_d3'
+OUTPUT_DIR = 'output'
+
 
 def predict(base64_img):
-    root = pathlib.Path(__file__).parent.absolute()
-    output_dir = os.path.join(root, OUTPUT)
     try:
-        os.mkdir(output_dir)
+        os.mkdir(OUTPUT_DIR)
     except:
         pass
     filename = uuid.uuid4().hex
     # assumes that base64_img encodes a .png file
-    img = os.path.join(output_dir, filename + '.png')
+    img = os.path.join(OUTPUT_DIR, filename + '.tiff')
     with open(img, 'wb') as file_to_save:
         decoded_image_data = base64.b64decode(base64_img, '-_')
         file_to_save.write(decoded_image_data)
-    convert_img_to_xml(img, output_dir)
-    hocr = os.path.join(output_dir, filename + '.xml')
-    model_dir = os.path.join(root, MODEL)
-    label, confidence = make_prediction(model_dir, hocr)
+    convert_img_to_xml(img, OUTPUT_DIR)
+    hocr = os.path.join(OUTPUT_DIR, filename + '.xml')
+    label, confidence = make_prediction(MODEL_DIR, hocr)
     response = {
         'label': label,
         'confidence': confidence

@@ -1,5 +1,9 @@
 #!flask/bin/python
-from flask import Flask, request
+import os
+from flask import Flask, request, jsonify, abort
+import sys
+ROOT_DIR = os.path.abspath("../../../")
+sys.path.append(ROOT_DIR)
 from examples.classification.predict_api import predict
 app = Flask(__name__)
 
