@@ -211,6 +211,7 @@ dmypy.json
 /.vscode
 /runs
 /outputs
+/output
 /models
 /data
 /layoutlm-base-uncased
