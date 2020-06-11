@@ -213,6 +213,7 @@ dmypy.json
 /outputs
 /output
 /models
+/aetna-trained-model
 /data
 /layoutlm-base-uncased
 /layoutlm-large-uncased
