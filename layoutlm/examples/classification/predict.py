@@ -77,6 +77,9 @@ def make_prediction(output_path, hocr_file):
 
 
 if __name__ == "__main__":
-    label, confidence = make_prediction(sys.argv[1], sys.argv[2])
-    head, tail = os.path.split(sys.argv[2])
-    print('>>> Predicted label %s with %s%% confidence for input file %s' % (label, confidence*100, tail))
+    label, confidence = make_prediction('/Users/chris/CODE/cedrus/unilm/layoutlm/examples/classification/aetna_dataset_output_base_40_d3',
+                    '/Users/chris/CODE/cedrus/unilm/layoutlm/layoutlm/data/Aetna Dataset -3/OCR/images/COB1/COB1-1.xml')
+    print('>>> Predicted label %s with %s%% confidence' % (label, confidence * 100))
+    #label, confidence = make_prediction(sys.argv[1], sys.argv[2])
+    #head, tail = os.path.split(sys.argv[2])
+    #print('>>> Predicted label %s with %s%% confidence for input file %s' % (label, confidence*100, tail))
