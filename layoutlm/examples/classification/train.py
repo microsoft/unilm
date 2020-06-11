@@ -1,10 +1,12 @@
 import os, uuid, base64, torch
+import logging
 from examples.classification.predict import convert_hocr_to_feature
 from layoutlm.data.convert import convert_img_to_xml
 from layoutlm.modeling.layoutlm import LayoutlmConfig, LayoutlmForSequenceClassification
 from layoutlm.data.rvl_cdip import CdipProcessor, get_prop, DocExample, convert_examples_to_features
 from transformers import BertTokenizerFast, AdamW, get_linear_schedule_with_warmup
-MODEL_DIR = 'aetna_dataset_output_base_40_d3'
+logger = logging.getLogger(__name__)
+MODEL_DIR = 'aetna-trained-model'
 OUTPUT_DIR = 'output'
 
 
@@ -84,7 +86,35 @@ def do_training(base64_img, label):
         optimizer.step()
         scheduler.step()
     #todo: (for chris) save model
-    return(model)
+    save_model(model, tokenizer, MODEL_DIR)
+    return { "trained_model_name": MODEL_DIR}
+
+
+def save_model(model, tokenizer, output_dir):
+    output_dir = os.path.join(output_dir)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    print('output_dir %s ', output_dir)
+    logger.info("Saving model checkpoint to %s", output_dir)
+    model_class = LayoutlmForSequenceClassification
+    tokenizer_class = BertTokenizerFast
+    # Save a trained model, configuration and tokenizer using `save_pretrained()`.
+    # They can then be reloaded using `from_pretrained()`
+    model_to_save = (
+        model.module if hasattr(model, "module") else model
+    )  # Take care of distributed/parallel training
+    model_to_save.save_pretrained(output_dir)
+    tokenizer.save_pretrained(output_dir)
+
+    # Good practice: save your training arguments together with the trained model
+    torch.save(output_dir, os.path.join(output_dir, "training_args.bin"))
+
+    # Load a trained model and vocabulary that you have fine-tuned
+    model = model_class.from_pretrained(output_dir)
+    tokenizer = tokenizer_class.from_pretrained(
+        output_dir, do_lower_case=True
+    )
+    model.to('cpu')
 
 if __name__ == "__main__":
-    do_training('hello', 'hello')
+    do_training("image", "label")
