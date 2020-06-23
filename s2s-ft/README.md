@@ -12,7 +12,7 @@ The following Python package need to be installed:
 ```bash
 pip install --user methodtools py-rouge pyrouge nltk
 python -c "import nltk; nltk.download('punkt')"
-git clone https://github.com/NVIDIA/apex.git && cd apex && python setup.py install --cuda_ext --cpp_ext
+git clone https://github.com/NVIDIA/apex.git && cd apex && git reset --hard de6378f5dae8fcf2879a4be8ecea8bbcb9e59d5 && python setup.py install --cuda_ext --cpp_ext
 ```
 
 Install the repo as a package:
