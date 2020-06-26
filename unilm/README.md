@@ -1,6 +1,8 @@
 # UniLM
 **Unified pre-training for language understanding (NLU) and generation (NLG)**
 
+Update (June, 2020): [UniLMv2: Pseudo-Masked Language Models for Unified Language Model Pre-Training](https://arxiv.org/abs/2002.12804) was accepted by ICML 2020.
+
 **UniLM v2** ```New``` (February, 2020): "[UniLMv2: Pseudo-Masked Language Models for Unified Language Model Pre-Training](https://arxiv.org/abs/2002.12804)".
 
 **[UniLM v1](https://github.com/microsoft/unilm/tree/master/unilm-v1)** (September 30th, 2019): the code and pre-trained models for the NeurIPS 2019 paper entitled "[Unified Language Model Pre-training for Natural Language Understanding and Generation](https://arxiv.org/abs/1905.03197)".
