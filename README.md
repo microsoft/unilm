@@ -4,14 +4,17 @@
 The family of UniLM:
 > [**UniLM**](https://github.com/microsoft/unilm/tree/master/unilm): **unified pre-training for language understanding and generation**
 
->  [**MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm) (```new```): **small pre-trained models for language understanding and generation**
+>  [**InfoXLM**](https://github.com/microsoft/unilm/tree/master/infoxlm) (```new```): **multilingual/cross-lingual pre-trained models for language understanding and generation**
 
->[**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm) (```new```): **multimodal (text + layout/format + image) pre-training for document understanding** (e.g. scanned documents, PDF, etc.)
+>  [**MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm): **small pre-trained models for language understanding and generation**
 
->  [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft) (```new```): **sequence-to-sequence fine-tuning toolkit**
+>[**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm): **multimodal (text + layout/format + image) pre-training for document understanding** (e.g. scanned documents, PDF, etc.)
+
+>  [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): **sequence-to-sequence fine-tuning toolkit**
 
 ## News
-- June, 2020 (```NEW```): [LayoutLM v1](https://github.com/microsoft/unilm/tree/master/layoutlm) was accepted by KDD 2020, and [UniLMv2](https://github.com/microsoft/unilm/tree/master/unilm) was accepted by ICML 2020.
+- July 16, 2020: [**InfoXLM (Multilingual UniLM)**](https://github.com/microsoft/unilm/tree/master/infoxlm)
+- June, 2020 (```NEW```): [LayoutLM](https://github.com/microsoft/unilm/tree/master/layoutlm) was accepted by KDD 2020, and [UniLMv2](https://github.com/microsoft/unilm/tree/master/unilm) was accepted by ICML 2020.
 - April 5, 2020: [**Multilingual MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm) released!
 - September, 2019: [UniLMv1](https://github.com/microsoft/unilm/tree/master/unilm-v1) was accepted by NeurIPS 2019.
 
