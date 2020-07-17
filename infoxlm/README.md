@@ -1,5 +1,5 @@
 # InfoXLM
-**An Information-Theoretic Framework for Cross-Lingual Language Model Pre-Training**
+**Multilingual/Cross-lingual UniLM**
 
 **InfoXLM** ```New``` (July, 2020): "[InfoXLM: An Information-Theoretic Framework for Cross-Lingual Language Model Pre-Training](https://arxiv.org/pdf/2007.07834.pdf)".
 
