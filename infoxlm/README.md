@@ -12,4 +12,7 @@ This project is licensed under the license found in the LICENSE file in the root
 
 ### Contact Information
 
-For help or issues, please submit a GitHub issue.
+For help or issues using InfoXLM, please submit a GitHub issue.
+
+For other communications related to InfoXLM, please contact Li Dong (`lidong1@microsoft.com`), Furu Wei (`fuwei@microsoft.com`).
+
