@@ -1,5 +1,5 @@
 # LayoutLM
-**Multimodal (text + layout/format + image) pre-training for document understanding**
+**Multimodal (text + layout/format + image) pre-training for document AI**
 
 ## Introduction
 
