@@ -53,13 +53,13 @@ from layoutlm import FunsdDataset, LayoutlmConfig, LayoutlmForTokenClassificatio
 
 logger = logging.getLogger(__name__)
 
-ALL_MODELS = sum(
-    (
-        tuple(conf.pretrained_config_archive_map.keys())
-        for conf in (BertConfig, RobertaConfig, LayoutlmConfig)
-    ),
-    (),
-)
+#ALL_MODELS = sum(
+#    (
+#        tuple(conf.pretrained_config_archive_map.keys())
+#        for conf in (LayoutlmConfig)
+#    ),
+#    (),
+#)
 
 MODEL_CLASSES = {
     "bert": (BertConfig, BertForTokenClassification, BertTokenizer),
@@ -416,7 +416,7 @@ def main():  # noqa C901
         type=str,
         required=True,
         help="Path to pre-trained model or shortcut name selected in the list: "
-        + ", ".join(ALL_MODELS),
+        + ", ".join(""),
     )
     parser.add_argument(
         "--output_dir",
