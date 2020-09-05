@@ -49,7 +49,8 @@ class LayoutlmEmbeddings(nn.Module):
 
         # self.LayerNorm is not snake-cased to stick with TensorFlow model variable name and be able to load
         # any TensorFlow checkpoint file
-        self.LayerNorm = BertLayerNorm(config.hidden_size, eps=config.layer_norm_eps)
+        self.LayerNorm = BertLayerNorm(
+            config.hidden_size, eps=config.layer_norm_eps)
         self.dropout = nn.Dropout(config.hidden_dropout_prob)
 
     def forward(
@@ -152,7 +153,8 @@ class LayoutlmModel(BertModel):
         if head_mask is not None:
             if head_mask.dim() == 1:
                 head_mask = (
-                    head_mask.unsqueeze(0).unsqueeze(0).unsqueeze(-1).unsqueeze(-1)
+                    head_mask.unsqueeze(0).unsqueeze(
+                        0).unsqueeze(-1).unsqueeze(-1)
                 )
                 head_mask = head_mask.expand(
                     self.config.num_hidden_layers, -1, -1, -1, -1
@@ -179,7 +181,8 @@ class LayoutlmModel(BertModel):
         outputs = (sequence_output, pooled_output) + encoder_outputs[
             1:
         ]  # add hidden_states and attentions if they are here
-        return outputs  # sequence_output, pooled_output, (hidden_states), (attentions)
+        # sequence_output, pooled_output, (hidden_states), (attentions)
+        return outputs
 
 
 class LayoutlmForTokenClassification(BertPreTrainedModel):
@@ -234,7 +237,8 @@ class LayoutlmForTokenClassification(BertPreTrainedModel):
                 active_labels = labels.view(-1)[active_loss]
                 loss = loss_fct(active_logits, active_labels)
             else:
-                loss = loss_fct(logits.view(-1, self.num_labels), labels.view(-1))
+                loss = loss_fct(
+                    logits.view(-1, self.num_labels), labels.view(-1))
             outputs = (loss,) + outputs
 
         return outputs  # (loss), scores, (hidden_states), (attentions)
@@ -292,14 +296,14 @@ class LayoutlmForSequenceClassification(BertPreTrainedModel):
                 loss = loss_fct(logits.view(-1), labels.view(-1))
             else:
                 loss_fct = CrossEntropyLoss()
-                loss = loss_fct(logits.view(-1, self.num_labels), labels.view(-1))
+                loss = loss_fct(
+                    logits.view(-1, self.num_labels), labels.view(-1))
             outputs = (loss,) + outputs
 
         return outputs  # (loss), logits, (hidden_states), (attentions)
 
 
-
-class LayoutlmForQuestionAnswerg(BertPreTrainedModel):
+class LayoutlmForQuestionAnswering(BertPreTrainedModel):
     config_class = LayoutlmConfig
     pretrained_model_archive_map = LAYOUTLM_PRETRAINED_MODEL_ARCHIVE_MAP
     base_model_prefix = "bert"
@@ -358,4 +362,3 @@ class LayoutlmForQuestionAnswerg(BertPreTrainedModel):
             outputs = (total_loss,) + outputs
 
         return outputs
-
