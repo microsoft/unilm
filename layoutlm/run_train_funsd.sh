@@ -3,7 +3,7 @@ python -m torch.distributed.launch --nproc_per_node=4 ./examples/seq_labeling/ru
     --model_name_or_path /export/home/sf_gitrepo/form_pretrain/pretrained_model/layoutlm-base-uncased \
     --do_lower_case \
     --max_seq_length 512 \
-    --do_eval \
+    --do_train \
     --num_train_epochs 100.0 \
     --logging_steps 10 \
     --save_steps -1 \
@@ -11,4 +11,5 @@ python -m torch.distributed.launch --nproc_per_node=4 ./examples/seq_labeling/ru
     --labels examples/seq_labeling/data/labels.txt \
     --per_gpu_train_batch_size 16 \
     --per_gpu_eval_batch_size 16 \
-    --fp16
+    --fp16 \
+    --overwrite_output_dir

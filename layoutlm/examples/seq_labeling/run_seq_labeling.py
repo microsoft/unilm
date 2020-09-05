@@ -50,6 +50,7 @@ from transformers import (
 )
 
 from layoutlm import FunsdDataset, LayoutlmConfig, LayoutlmForTokenClassification
+import pdb
 
 logger = logging.getLogger(__name__)
 
@@ -694,7 +695,6 @@ def main():  # noqa C901
     model.to(args.device)
 
     logger.info("Training/evaluation parameters %s", args)
-
     # Training
     if args.do_train:
         train_dataset = FunsdDataset(
