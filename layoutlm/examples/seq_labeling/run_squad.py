@@ -139,7 +139,6 @@ def train(args, train_dataset, model, tokenizer):
         model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.local_rank],
                                                           output_device=args.local_rank,
                                                           find_unused_parameters=True)
-    pdb.set_tarce()
     # Train!
     logger.info("***** Running training *****")
     logger.info("  Num examples = %d", len(train_dataset))
@@ -356,15 +355,17 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
         'dev' if evaluate else 'train',
         list(filter(None, args.model_name_or_path.split('/'))).pop(),
         str(args.max_seq_length)))
-    if os.path.exists(cached_features_file) and not args.overwrite_cache and not output_examples:
+    if not os.path.exists(cached_features_file) and not args.overwrite_cache and not output_examples:
         logger.info("Loading features from cached file %s",
                     cached_features_file)
         features = torch.load(cached_features_file)
     else:
         logger.info("Creating features from dataset file at %s", input_file)
+        pdb.set_trace()
         examples = read_squad_examples(input_file=input_file,
                                        is_training=not evaluate,
                                        version_2_with_negative=args.version_2_with_negative)
+        pdb.set_trace()
         features = convert_examples_to_features(examples=examples,
                                                 tokenizer=tokenizer,
                                                 max_seq_length=args.max_seq_length,

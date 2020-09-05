@@ -1,4 +1,4 @@
-
+from __future__ import absolute_import, division, print_function
 # coding=utf-8
 # Copyright 2018 The Google AI Language Team Authors and The HuggingFace Inc. team.
 # Copyright (c) 2018, NVIDIA CORPORATION.  All rights reserved.
@@ -15,14 +15,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """ Load SQuAD dataset. """
-
-from __future__ import absolute_import, division, print_function
+"""
+squad data structure
+entry
+    paragraphs - list
+        context - string of doc
+        qas - list of dict
+            answers - list
+                answer_start # char position
+                text # answer text
+            question - str
+            id  
+    title - str
+"""
+#from __future__ import absolute_import, division, print_function
 
 import json
 import logging
 import math
 import collections
 from io import open
+from tqdm import tqdm
+import pdb
 
 from transformers.tokenization_bert import BasicTokenizer, whitespace_tokenize
 
@@ -119,7 +133,7 @@ def read_squad_examples(input_file, is_training, version_2_with_negative):
         return False
 
     examples = []
-    for entry in input_data:
+    for entry in tqdm(input_data):
         for paragraph in entry["paragraphs"]:
             paragraph_text = paragraph["context"]
             doc_tokens = []
@@ -175,7 +189,7 @@ def read_squad_examples(input_file, is_training, version_2_with_negative):
                         start_position = -1
                         end_position = -1
                         orig_answer_text = ""
-
+                # start_position and end_position are 0-based token position
                 example = SquadExample(
                     qas_id=qas_id,
                     question_text=question_text,
@@ -186,7 +200,6 @@ def read_squad_examples(input_file, is_training, version_2_with_negative):
                     is_impossible=is_impossible)
                 examples.append(example)
     return examples
-
 
 def convert_examples_to_features(examples, tokenizer, max_seq_length,
                                  doc_stride, max_query_length, is_training,
@@ -209,7 +222,7 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
         #     logger.info('Converting %s/%s pos %s neg %s', example_index, len(examples), cnt_pos, cnt_neg)
 
         query_tokens = tokenizer.tokenize(example.question_text)
-
+        pdb.set_trace()
         if len(query_tokens) > max_query_length:
             query_tokens = query_tokens[0:max_query_length]
 
@@ -279,7 +292,7 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
                 tokens.append(token)
                 segment_ids.append(sequence_a_segment_id)
                 p_mask.append(1)
-
+            pdb.set_trace()
             # SEP token
             tokens.append(sep_token)
             segment_ids.append(sequence_a_segment_id)
@@ -379,7 +392,8 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
                     logger.info("end_position: %d" % (end_position))
                     logger.info(
                         "answer: %s" % (answer_text))
-
+            
+            pdb.set_trace()
             features.append(
                 InputFeatures(
                     unique_id=unique_id,
