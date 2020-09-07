@@ -25,7 +25,7 @@ entry
                 answer_start # char position
                 text # answer text
             question - str
-            id  
+            id  - unique str
     title - str
 """
 #from __future__ import absolute_import, division, print_function

@@ -1,37 +1,32 @@
 # coding=utf-8
-# Copyright 2018 The Google AI Language Team Authors and The HuggingFace Inc. team.
-# Copyright (c) 2018, NVIDIA CORPORATION.  All rights reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-""" Finetuning the library models for question-answering on SQuAD (Bert, XLM, XLNet)."""
+"""
+Format key/value prediction as question answering problem
+
+"""
 
 from __future__ import absolute_import, division, print_function
 
 import argparse
+import glob
 import logging
 import os
 import random
-import glob
+import shutil
 
 import numpy as np
 import torch
-from torch.utils.data import (DataLoader, RandomSampler, SequentialSampler,
-                              TensorDataset)
+from seqeval.metrics import (
+    classification_report,
+    f1_score,
+    precision_score,
+    recall_score,
+)
+from tensorboardX import SummaryWriter
+from torch.nn import CrossEntropyLoss
+from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, TensorDataset
 from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
 import pdb
-
-from tensorboardX import SummaryWriter
 
 from transformers import (
     WEIGHTS_NAME,
@@ -39,14 +34,13 @@ from transformers import (
     BertConfig,
     BertForQuestionAnswering,
     BertTokenizer,
-    XLMConfig,
-    XLMForQuestionAnswering,
-    XLMTokenizer,
-    XLNetConfig,
-    XLNetForQuestionAnswering,
-    XLNetTokenizer,
+    RobertaConfig,
+    RobertaForQuestionAnswering,
+    RobertaTokenizer,
     get_linear_schedule_with_warmup,
 )
+
+from layoutlm import LayoutlmConfig, LayoutlmForQuestionAnswering
 
 from transformers.data.metrics.squad_metrics import (
     compute_predictions_log_probs,
@@ -54,27 +48,19 @@ from transformers.data.metrics.squad_metrics import (
     squad_evaluate,
 )
 
-from utils_squad import (
-    read_squad_examples,
+from utils_funsd_link_qa import (
+    read_funsd_link_examples,
     convert_examples_to_features,
     RawResult,
     RawResultExtended,
 )
 
-# The follwing import is the official SQuAD evaluation script (2.0).
-# You can remove it from the dependencies if you are using this script outside of the library
-# We've added it here for automated tests (see examples/test_examples.py file)
-#from utils_squad_evaluate import EVAL_OPTS, main as evaluate_on_squad
-
 logger = logging.getLogger(__name__)
 
-# ALL_MODELS = sum((tuple(conf.pretrained_config_archive_map.keys())
-#                  for conf in (BertConfig, XLNetConfig, XLMConfig)), ())
-
 MODEL_CLASSES = {
-    'bert': (BertConfig, BertForQuestionAnswering, BertTokenizer),
-    'xlnet': (XLNetConfig, XLNetForQuestionAnswering, XLNetTokenizer),
-    'xlm': (XLMConfig, XLMForQuestionAnswering, XLMTokenizer),
+    "bert": (BertConfig, BertForQuestionAnswering, BertTokenizer),
+    "roberta": (RobertaConfig, RobertaForQuestionAnswering, RobertaTokenizer),
+    "layoutlm": (LayoutlmConfig, LayoutlmForQuestionAnswering, BertTokenizer),
 }
 
 
@@ -157,6 +143,10 @@ def train(args, train_dataset, model, tokenizer):
     train_iterator = trange(int(args.num_train_epochs),
                             desc="Epoch", disable=args.local_rank not in [-1, 0])
     set_seed(args)  # Added here for reproductibility (even between python 2 and 3)
+
+    # batch
+    # input_ids, input_mask, segment_ids, start_positions, end_positions, boxes,
+    # all_example_index, cls_index, p_mask
     for _ in train_iterator:
         epoch_iterator = tqdm(train_dataloader, desc="Iteration",
                               disable=args.local_rank not in [-1, 0])
@@ -168,9 +158,11 @@ def train(args, train_dataset, model, tokenizer):
                       'token_type_ids': None if args.model_type == 'xlm' else batch[2],
                       'start_positions': batch[3],
                       'end_positions': batch[4]}
+            if args.model_type in ["layoutlm"]:
+                inputs["bbox"] = batch[5]
             if args.model_type in ['xlnet', 'xlm']:
-                inputs.update({'cls_index': batch[5],
-                               'p_mask': batch[6]})
+                inputs.update({'cls_index': batch[7],
+                               'p_mask': batch[8]})
             pdb.set_trace()
             outputs = model(**inputs)
             # model outputs are always tuple in pytorch-transformers (see doc)
@@ -258,6 +250,9 @@ def evaluate(args, model, tokenizer, prefix=""):
     logger.info("  Num examples = %d", len(dataset))
     logger.info("  Batch size = %d", args.eval_batch_size)
     all_results = []
+    # batch
+    # input_ids, input_mask, segment_ids, start_positions, end_positions, boxes,
+    # all_example_index, cls_index, p_mask
     for batch in tqdm(eval_dataloader, desc="Evaluating"):
         model.eval()
         batch = tuple(t.to(args.device) for t in batch)
@@ -267,10 +262,12 @@ def evaluate(args, model, tokenizer, prefix=""):
                       # XLM don't use segment_ids
                       'token_type_ids': None if args.model_type == 'xlm' else batch[2]
                       }
-            example_indices = batch[3]
+            if args.model_type in ["layoutlm"]:
+                inputs["bbox"] = batch[5].to(args.device)
+            example_indices = batch[6]
             if args.model_type in ['xlnet', 'xlm']:
-                inputs.update({'cls_index': batch[4],
-                               'p_mask': batch[5]})
+                inputs.update({'cls_index': batch[7],
+                               'p_mask': batch[8]})
             outputs = model(**inputs)
 
         for i, example_index in enumerate(example_indices):
@@ -362,9 +359,9 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
     else:
         logger.info("Creating features from dataset file at %s", input_file)
         pdb.set_trace()
-        examples = read_squad_examples(input_file=input_file,
-                                       is_training=not evaluate,
-                                       version_2_with_negative=args.version_2_with_negative)
+        examples = read_funsd_link_examples(input_file=input_file,
+                                            is_training=not evaluate,
+                                            version_2_with_negative=args.version_2_with_negative)
         pdb.set_trace()
         features = convert_examples_to_features(examples=examples,
                                                 tokenizer=tokenizer,
@@ -387,6 +384,17 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
     all_cls_index = torch.tensor(
         [f.cls_index for f in features], dtype=torch.long)
     all_p_mask = torch.tensor([f.p_mask for f in features], dtype=torch.float)
+    all_example_index = torch.arange(all_input_ids.size(0), dtype=torch.long)
+    all_start_positions = torch.tensor(
+        [f.start_position for f in features], dtype=torch.long)
+    all_end_positions = torch.tensor(
+        [f.end_position for f in features], dtype=torch.long)
+    all_boxes = torch.tensor([f.boxes for f in features], dtype=torch.long)
+    dataset = TensorDataset(all_input_ids, all_input_mask, all_segment_ids,
+                            all_start_positions, all_end_positions, all_boxes,
+                            all_example_index, all_cls_index, all_p_mask)
+
+    """
     if evaluate:
         all_example_index = torch.arange(
             all_input_ids.size(0), dtype=torch.long)
@@ -400,7 +408,7 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
         dataset = TensorDataset(all_input_ids, all_input_mask, all_segment_ids,
                                 all_start_positions, all_end_positions,
                                 all_cls_index, all_p_mask)
-
+    """
     if output_examples:
         return dataset, examples, features
     return dataset
