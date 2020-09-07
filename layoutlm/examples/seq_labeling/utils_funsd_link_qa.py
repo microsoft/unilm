@@ -58,6 +58,8 @@ class FunsdLinkExample(object):
                  actual_bboxes,
                  file_name,
                  page_size,
+                 question_start_position,
+                 question_end_position,
                  orig_answer_text=None,
                  start_position=None,
                  end_position=None,
@@ -73,6 +75,8 @@ class FunsdLinkExample(object):
         self.is_impossible = is_impossible
         self.file_name = file_name
         self.page_size = page_size
+        self.question_start_position = question_start_position
+        self.question_end_position = question_end_position
 
     def __str__(self):
         return self.__repr__()
@@ -212,6 +216,8 @@ def read_funsd_link_examples(input_file, is_training, version_2_with_negative):
                     actual_bboxes=actual_bboxes,
                     file_name=file_name,
                     page_size=page_size,
+                    question_start_position=question_start_position,
+                    question_end_position=question_end_position,
                     orig_answer_text=orig_answer_text,
                     start_position=start_position,
                     end_position=end_position,
