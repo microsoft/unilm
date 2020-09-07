@@ -140,7 +140,49 @@ class InputFeatures(object):
         self.page_size = page_size
 
 
-def read_funsd_link_examples(input_file, is_training, version_2_with_negative):
+def read_funsd_link_examples(input_file):
+    with open(input_file, "r", encoding='utf-8') as reader:
+        input_data = json.load(reader)
+    examples = []
+    for fn, entry in input_data.items():
+        pdb.set_trace()
+        doc_tokens, bboxes_str, actual_bboxes_str, qas = entry['doc_tokens'], entry[
+            'bboxes'], entry['actual_bboxes'], entry['qas']
+        boxes, actual_bboxes = [], []
+        for bbox in bboxes_str:
+            box = [int(b) for b in bbox.split()]
+            boxes.append(box)
+        for abbox_str in actual_bboxes_str:
+            abox, ps = abbox_str.split('\t')
+            box = [int(b) for b in abox.split()]
+            actual_bboxes.append(box)
+            page_size = [int(i) for i in ps.split()]
+
+        pdb.set_trace()
+        if len(qas) == 0:
+            print('no valid qa pair')
+            continue
+        for qa in qas:
+            pdb.set_trace()
+            example = FunsdLinkExample(
+                qas_id=qa['uid'],
+                question_text=qa['question_text'],
+                doc_tokens=doc_tokens,
+                boxes=boxes,
+                actual_bboxes=actual_bboxes,
+                file_name=fn,
+                page_size=page_size,
+                question_start_position=qa['question_start_position'],
+                question_end_position=qa['question_end_position'],
+                orig_answer_text=qa['orig_answer_text'],
+                start_position=qa['answer_start_position'],
+                end_position=qa['answer_end_position'],
+                is_impossible=False)
+            examples.append(example)
+    return examples
+
+
+def read_funsd_link_examples2(input_file, is_training, version_2_with_negative):
     """Read a SQuAD json file into a list of FunsdLinkExample."""
     with open(input_file, "r", encoding='utf-8') as reader:
         input_data = json.load(reader)["data"]
