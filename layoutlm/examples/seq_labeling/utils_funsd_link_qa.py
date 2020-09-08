@@ -36,10 +36,10 @@ entry
             id  - unique str
     title - str
 """
-#from __future__ import absolute_import, division, print_function
+# from __future__ import absolute_import, division, print_function
 
 # Required by XLNet evaluation method to compute optimal threshold (see write_predictions_extended() method)
-#from utils_squad_evaluate import find_all_best_thresh_v2, make_qid_to_has_ans, get_raw_scores
+# from utils_squad_evaluate import find_all_best_thresh_v2, make_qid_to_has_ans, get_raw_scores
 
 logger = logging.getLogger(__name__)
 
@@ -268,6 +268,185 @@ def read_funsd_link_examples2(input_file, is_training, version_2_with_negative):
     return examples
 
 
+def convert_examples_to_features_simple(examples, tokenizer, max_seq_length,
+                                        doc_stride, max_query_length, is_training,
+                                        cls_token_at_end=False,
+                                        cls_token='[CLS]', sep_token='[SEP]', pad_token=0,
+                                        cls_token_box=[0, 0, 0, 0], sep_token_box=[1000, 1000, 1000, 1000],
+                                        pad_token_box=[0, 0, 0, 0],
+                                        sequence_a_segment_id=0, sequence_b_segment_id=1,
+                                        cls_token_segment_id=0, pad_token_segment_id=0,
+                                        mask_padding_with_zero=True):
+    """Loads a data file into a list of `InputBatch`s.
+    [CLS] Question [SEP] Context [SEP]
+    """
+
+    unique_id = 1000000000
+    # cnt_pos, cnt_neg = 0, 0
+    # max_N, max_M = 1024, 1024
+    # f = np.zeros((max_N, max_M), dtype=np.float32)
+
+    features = []
+    for (example_index, example) in enumerate(examples):
+        doc_tokens = example.doc_tokens
+        question_start_position = example.question_start_position
+        question_end_position = example.question_end_position
+        answer_start_position = example.answer_start_position
+        answer_end_position = example.answer_end_position
+        boxes = example.boxes
+        actual_bboxes = example.actual_bboxes
+        file_name = example.file_name
+        page_size = example.page_size
+        width, height = page_size
+        tokens = []
+        segment_ids = []
+        # p_mask: mask with 1 for token than cannot be in the answer (0 for token which can be in an answer)
+        # Original TF implem also keep the classification token (set to 0) (not sure why...)
+        p_mask = []
+        token_boxes = []
+        actual_token_bboxes = []
+
+        # query sentence cap
+        len_query = question_end_position - question_start_position + 1
+        if len_query > max_query_length:
+            question_end_position = question_end_position - \
+                (len_query - max_query_length)
+
+        query_tokens = doc_tokens[question_start_position: question_end_position + 1]
+        query_boxes = boxes[question_start_position: question_end_position + 1]
+        query_actual_boxes = actual_bboxes[question_start_position: question_end_position + 1]
+        # The -3 accounts for [CLS], [SEP] and [SEP]
+        max_tokens_for_doc = max_seq_length - len(query_tokens) - 3
+        # cap max tokens
+        if (len(doc_tokens) > max_tokens_for_doc):
+            doc_tokens = doc_tokens[:max_tokens_for_doc]
+            boxes = boxes[:max_tokens_for_doc]
+            actual_bboxes = actual_bboxes[:max_tokens_for_doc]
+
+        # CLS token at the beginning
+        if not cls_token_at_end:
+            tokens.append(cls_token)
+            segment_ids.append(cls_token_segment_id)
+            token_boxes.append(cls_token_box)
+            actual_token_bboxes.append([0, 0, width, height])
+            p_mask.append(0)
+            cls_index = 0
+
+        # Query
+        for i in range(len(query_tokens)):
+            tokens.append(query_tokens[i])
+            token_boxes.append(query_boxes[i])
+            actual_token_bboxes.append(query_actual_boxes[i])
+            segment_ids.append(sequence_a_segment_id)
+            p_mask.append(1)
+
+        # SEP token
+        tokens.append(sep_token)
+        segment_ids.append(sequence_a_segment_id)
+        token_boxes.append(sep_token_box)
+        actual_token_bboxes.append([0, 0, width, height])
+        p_mask.append(1)
+
+        # Paragraph
+        for i in range(max_tokens_for_doc):
+            tokens.append(doc_tokens[i])
+            segment_ids.append(sequence_b_segment_id)
+            token_boxes.append(boxes[i])
+            actual_token_bboxes.append(actual_bboxes[i])
+            p_mask.append(0)
+        paragraph_len = max_tokens_for_doc
+
+        # SEP token
+        tokens.append(sep_token)
+        segment_ids.append(sequence_b_segment_id)
+        token_boxes.append(sep_token_box)
+        actual_token_bboxes.append([0, 0, width, height])
+        p_mask.append(1)
+
+        # CLS token at the end
+        if cls_token_at_end:
+            tokens.append(cls_token)
+            segment_ids.append(cls_token_segment_id)
+            token_boxes.append(cls_token_box)
+            actual_token_bboxes.append([0, 0, width, height])
+            p_mask.append(0)
+            cls_index = len(tokens) - 1  # Index of classification token
+
+        input_ids = tokenizer.convert_tokens_to_ids(tokens)
+        # The mask has 1 for real tokens and 0 for padding tokens. Only real
+        # tokens are attended to.
+        input_mask = [1 if mask_padding_with_zero else 0] * len(input_ids)
+
+        # Zero-pad up to the sequence length.
+        while len(input_ids) < max_seq_length:
+            input_ids.append(pad_token)
+            input_mask.append(0 if mask_padding_with_zero else 1)
+            token_boxes.append(cls_token_box)
+            actual_token_bboxes.append(pad_token_box)
+            segment_ids.append(pad_token_segment_id)
+            p_mask.append(1)
+
+        assert len(input_ids) == max_seq_length
+        assert len(input_mask) == max_seq_length
+        assert len(segment_ids) == max_seq_length
+        assert len(token_boxes) == max_seq_length
+        assert len(actual_token_bboxes) == max_seq_length
+
+        span_is_impossible = example.is_impossible
+        start_position = None
+        end_position = None
+        if answer_end_position > max_tokens_for_doc:
+            start_position = 0
+            end_position = 0
+            span_is_impossible = True
+        else:
+            doc_offset = len(query_tokens) + 2
+            start_position = answer_start_position + doc_offset
+            end_position = answer_end_position + doc_offset
+            span_is_impossible = False
+
+        if is_training and span_is_impossible:
+            start_position = cls_index
+            end_position = cls_index
+
+        if example_index < 5:
+            logger.info("*** Example ***")
+            logger.info("guid: %s", example.qas_id)
+            logger.info("tokens: %s", " ".join([str(x) for x in tokens]))
+            logger.info("input_ids: %s", " ".join([str(x) for x in input_ids]))
+            logger.info("input_mask: %s", " ".join(
+                [str(x) for x in input_mask]))
+            logger.info("segment_ids: %s", " ".join(
+                [str(x) for x in segment_ids]))
+            logger.info("boxes: %s", " ".join([str(x) for x in token_boxes]))
+            logger.info("actual_bboxes: %s", " ".join(
+                [str(x) for x in actual_token_bboxes]))
+
+        features.append(
+            InputFeatures(
+                unique_id=unique_id,
+                example_index=example_index,
+                doc_span_index=None,
+                tokens=tokens,
+                token_to_orig_map={},
+                token_is_max_context={},
+                input_ids=input_ids,
+                input_mask=input_mask,
+                segment_ids=segment_ids,
+                cls_index=cls_index,
+                p_mask=p_mask,
+                paragraph_len=paragraph_len,
+                boxes=token_boxes,
+                actual_bboxes=actual_token_bboxes,
+                file_name=file_name,
+                page_size=page_size,
+                start_position=start_position,
+                end_position=end_position,
+                is_impossible=span_is_impossible))
+        unique_id += 1
+    return features
+
+
 def convert_examples_to_features(examples, tokenizer, max_seq_length,
                                  doc_stride, max_query_length, is_training,
                                  cls_token_at_end=False,
@@ -288,7 +467,9 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
 
     features = []
     for (example_index, example) in enumerate(examples):
-
+        file_name = example.file_name
+        page_size = example.page_size
+        width, height = page_size
         # if example_index % 100 == 0:
         #     logger.info('Converting %s/%s pos %s neg %s', example_index, len(examples), cnt_pos, cnt_neg)
 

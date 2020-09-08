@@ -50,7 +50,7 @@ from transformers.data.metrics.squad_metrics import (
 
 from utils_funsd_link_qa import (
     read_funsd_link_examples,
-    convert_examples_to_features,
+    convert_examples_to_features_simple,
     RawResult,
     RawResultExtended,
 )
@@ -363,12 +363,12 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
                                             is_training=not evaluate,
                                             version_2_with_negative=args.version_2_with_negative)
         pdb.set_trace()
-        features = convert_examples_to_features(examples=examples,
-                                                tokenizer=tokenizer,
-                                                max_seq_length=args.max_seq_length,
-                                                doc_stride=args.doc_stride,
-                                                max_query_length=args.max_query_length,
-                                                is_training=not evaluate)
+        features = convert_examples_to_features_simple(examples=examples,
+                                                       tokenizer=tokenizer,
+                                                       max_seq_length=args.max_seq_length,
+                                                       doc_stride=args.doc_stride,
+                                                       max_query_length=args.max_query_length,
+                                                       is_training=not evaluate)
         if args.local_rank in [-1, 0]:
             logger.info("Saving features into cached file %s",
                         cached_features_file)
