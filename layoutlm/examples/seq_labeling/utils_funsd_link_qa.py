@@ -61,15 +61,15 @@ class FunsdLinkExample(object):
                  question_start_position,
                  question_end_position,
                  orig_answer_text=None,
-                 start_position=None,
-                 end_position=None,
+                 answer_start_position=None,
+                 answer_end_position=None,
                  is_impossible=None):
         self.qas_id = qas_id
         self.question_text = question_text
         self.doc_tokens = doc_tokens
         self.orig_answer_text = orig_answer_text
-        self.start_position = start_position
-        self.end_position = end_position
+        self.answer_start_position = answer_start_position
+        self.answer_end_position = answer_end_position
         self.boxes = boxes
         self.actual_bboxes = actual_bboxes
         self.is_impossible = is_impossible
@@ -77,6 +77,7 @@ class FunsdLinkExample(object):
         self.page_size = page_size
         self.question_start_position = question_start_position
         self.question_end_position = question_end_position
+        self.answers = [{"text": orig_answer_text}]
 
     def __str__(self):
         return self.__repr__()
@@ -87,10 +88,10 @@ class FunsdLinkExample(object):
         s += ", question_text: %s" % (
             self.question_text)
         s += ", doc_tokens: [%s]" % (" ".join(self.doc_tokens))
-        if self.start_position:
-            s += ", start_position: %d" % (self.start_position)
-        if self.end_position:
-            s += ", end_position: %d" % (self.end_position)
+        if self.answer_start_position:
+            s += ", start_position: %d" % (self.answer_start_position)
+        if self.answer_end_position:
+            s += ", end_position: %d" % (self.answer_end_position)
         if self.is_impossible:
             s += ", is_impossible: %r" % (self.is_impossible)
         return s
@@ -140,12 +141,11 @@ class InputFeatures(object):
         self.page_size = page_size
 
 
-def read_funsd_link_examples(input_file):
+def read_funsd_link_examples(input_file,  is_training, version_2_with_negative):
     with open(input_file, "r", encoding='utf-8') as reader:
         input_data = json.load(reader)
     examples = []
     for fn, entry in input_data.items():
-        pdb.set_trace()
         doc_tokens, bboxes_str, actual_bboxes_str, qas = entry['doc_tokens'], entry[
             'bboxes'], entry['actual_bboxes'], entry['qas']
         boxes, actual_bboxes = [], []
@@ -158,12 +158,10 @@ def read_funsd_link_examples(input_file):
             actual_bboxes.append(box)
             page_size = [int(i) for i in ps.split()]
 
-        pdb.set_trace()
         if len(qas) == 0:
             print('no valid qa pair')
             continue
         for qa in qas:
-            pdb.set_trace()
             example = FunsdLinkExample(
                 qas_id=qa['uid'],
                 question_text=qa['question_text'],
@@ -175,8 +173,8 @@ def read_funsd_link_examples(input_file):
                 question_start_position=qa['question_start_position'],
                 question_end_position=qa['question_end_position'],
                 orig_answer_text=qa['orig_answer_text'],
-                start_position=qa['answer_start_position'],
-                end_position=qa['answer_end_position'],
+                answer_start_position=qa['answer_start_position'],
+                answer_end_position=qa['answer_end_position'],
                 is_impossible=False)
             examples.append(example)
     return examples
@@ -305,13 +303,11 @@ def convert_examples_to_features_simple(examples, tokenizer, max_seq_length,
         p_mask = []
         token_boxes = []
         actual_token_bboxes = []
-
         # query sentence cap
         len_query = question_end_position - question_start_position + 1
         if len_query > max_query_length:
             question_end_position = question_end_position - \
                 (len_query - max_query_length)
-
         query_tokens = doc_tokens[question_start_position: question_end_position + 1]
         query_boxes = boxes[question_start_position: question_end_position + 1]
         query_actual_boxes = actual_bboxes[question_start_position: question_end_position + 1]
@@ -322,7 +318,7 @@ def convert_examples_to_features_simple(examples, tokenizer, max_seq_length,
             doc_tokens = doc_tokens[:max_tokens_for_doc]
             boxes = boxes[:max_tokens_for_doc]
             actual_bboxes = actual_bboxes[:max_tokens_for_doc]
-
+        
         # CLS token at the beginning
         if not cls_token_at_end:
             tokens.append(cls_token)
@@ -346,9 +342,8 @@ def convert_examples_to_features_simple(examples, tokenizer, max_seq_length,
         token_boxes.append(sep_token_box)
         actual_token_bboxes.append([0, 0, width, height])
         p_mask.append(1)
-
         # Paragraph
-        for i in range(max_tokens_for_doc):
+        for i in range(len(doc_tokens)):
             tokens.append(doc_tokens[i])
             segment_ids.append(sequence_b_segment_id)
             token_boxes.append(boxes[i])
@@ -371,7 +366,6 @@ def convert_examples_to_features_simple(examples, tokenizer, max_seq_length,
             actual_token_bboxes.append([0, 0, width, height])
             p_mask.append(0)
             cls_index = len(tokens) - 1  # Index of classification token
-
         input_ids = tokenizer.convert_tokens_to_ids(tokens)
         # The mask has 1 for real tokens and 0 for padding tokens. Only real
         # tokens are attended to.
@@ -385,7 +379,6 @@ def convert_examples_to_features_simple(examples, tokenizer, max_seq_length,
             actual_token_bboxes.append(pad_token_box)
             segment_ids.append(pad_token_segment_id)
             p_mask.append(1)
-
         assert len(input_ids) == max_seq_length
         assert len(input_mask) == max_seq_length
         assert len(segment_ids) == max_seq_length
@@ -421,7 +414,6 @@ def convert_examples_to_features_simple(examples, tokenizer, max_seq_length,
             logger.info("boxes: %s", " ".join([str(x) for x in token_boxes]))
             logger.info("actual_bboxes: %s", " ".join(
                 [str(x) for x in actual_token_bboxes]))
-
         features.append(
             InputFeatures(
                 unique_id=unique_id,

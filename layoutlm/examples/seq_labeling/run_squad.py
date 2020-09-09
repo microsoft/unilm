@@ -355,7 +355,7 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
         'dev' if evaluate else 'train',
         list(filter(None, args.model_name_or_path.split('/'))).pop(),
         str(args.max_seq_length)))
-    if os.path.exists(cached_features_file) and not args.overwrite_cache and not output_examples:
+    if not os.path.exists(cached_features_file) and not args.overwrite_cache and not output_examples:
         logger.info("Loading features from cached file %s",
                     cached_features_file)
         features = torch.load(cached_features_file)

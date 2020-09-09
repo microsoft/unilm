@@ -1,7 +1,7 @@
 #!/bin/bash
-wget https://guillaumejaume.github.io/FUNSD/dataset.zip
+#wget https://guillaumejaume.github.io/FUNSD/dataset.zip
 
-unzip dataset.zip && mv dataset data && rm -rf dataset.zip __MACOSX
+#unzip dataset.zip && mv dataset data && rm -rf dataset.zip __MACOSX
 
 python preprocess.py --data_dir data/training_data/annotations \
                                     --data_split train \

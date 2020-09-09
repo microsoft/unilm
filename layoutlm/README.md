@@ -37,6 +37,11 @@ conda install pytorch==1.4.0 cudatoolkit=10.1 -c pytorch
 git clone https://github.com/NVIDIA/apex && cd apex
 pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./
 pip install .
+pip install transformers
+pip install seqeval
+pip install tensorboardX
+
+
 ## For development mode
 # pip install -e ".[dev]"
 ~~~

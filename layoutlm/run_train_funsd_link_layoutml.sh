@@ -1,0 +1,16 @@
+python ./examples/seq_labeling/run_funsd_link_qa.py \
+    --model_type layoutlm \
+    --model_name_or_path /export/home/sf_gitrepo/form_pretrain/pretrained_model/layoutlm-base-uncased \
+    --do_train \
+    --do_eval \
+    --do_lower_case \
+    --train_file examples/seq_labeling/funsd/dataset/train.json \
+    --predict_file examples/seq_labeling/funsd/dataset/testing.json \
+    --learning_rate 3e-5 \
+    --num_train_epochs 20 \
+    --max_seq_length 512 \
+    --doc_stride 128 \
+    --output_dir results/funsd_link_layoutml_base/ \
+    --per_gpu_eval_batch_size=12 \
+    --per_gpu_train_batch_size=12 \
+    --overwrite_output_dir

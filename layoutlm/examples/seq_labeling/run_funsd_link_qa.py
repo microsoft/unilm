@@ -163,7 +163,6 @@ def train(args, train_dataset, model, tokenizer):
             if args.model_type in ['xlnet', 'xlm']:
                 inputs.update({'cls_index': batch[7],
                                'p_mask': batch[8]})
-            pdb.set_trace()
             outputs = model(**inputs)
             # model outputs are always tuple in pytorch-transformers (see doc)
             loss = outputs[0]
@@ -358,11 +357,9 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
         features = torch.load(cached_features_file)
     else:
         logger.info("Creating features from dataset file at %s", input_file)
-        pdb.set_trace()
         examples = read_funsd_link_examples(input_file=input_file,
                                             is_training=not evaluate,
                                             version_2_with_negative=args.version_2_with_negative)
-        pdb.set_trace()
         features = convert_examples_to_features_simple(examples=examples,
                                                        tokenizer=tokenizer,
                                                        max_seq_length=args.max_seq_length,
