@@ -222,7 +222,6 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
         #     logger.info('Converting %s/%s pos %s neg %s', example_index, len(examples), cnt_pos, cnt_neg)
 
         query_tokens = tokenizer.tokenize(example.question_text)
-        pdb.set_trace()
         if len(query_tokens) > max_query_length:
             query_tokens = query_tokens[0:max_query_length]
 
@@ -292,7 +291,6 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
                 tokens.append(token)
                 segment_ids.append(sequence_a_segment_id)
                 p_mask.append(1)
-            pdb.set_trace()
             # SEP token
             tokens.append(sep_token)
             segment_ids.append(sequence_a_segment_id)
@@ -393,7 +391,6 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
                     logger.info(
                         "answer: %s" % (answer_text))
             
-            pdb.set_trace()
             features.append(
                 InputFeatures(
                     unique_id=unique_id,

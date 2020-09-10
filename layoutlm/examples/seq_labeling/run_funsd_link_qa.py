@@ -166,9 +166,9 @@ def train(args, train_dataset, model, tokenizer):
             outputs = model(**inputs)
             # model outputs are always tuple in pytorch-transformers (see doc)
             loss = outputs[0]
-
             if args.n_gpu > 1:
                 loss = loss.mean()  # mean() to average on multi-gpu parallel (not distributed) training
+            print('loss {}'.format(loss))
             if args.gradient_accumulation_steps > 1:
                 loss = loss / args.gradient_accumulation_steps
 
@@ -268,7 +268,7 @@ def evaluate(args, model, tokenizer, prefix=""):
                 inputs.update({'cls_index': batch[7],
                                'p_mask': batch[8]})
             outputs = model(**inputs)
-
+        
         for i, example_index in enumerate(example_indices):
             eval_feature = features[example_index.item()]
             unique_id = int(eval_feature.unique_id)
