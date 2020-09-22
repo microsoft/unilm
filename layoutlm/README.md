@@ -129,7 +129,7 @@ Like the sequence labeling task, you can run Bert and RoBERTa baseline by modify
 
 ### Results
 
-#### SROIE
+#### SROIE (field-level)
 
 
 | Model                                                        | Hmean      |
@@ -151,7 +151,7 @@ Like the sequence labeling task, you can run Bert and RoBERTa baseline by modify
 | [Multimodal Ensemble (Dauphinee et al., 2019)](https://arxiv.org/abs/1912.04376) | 93.07%     |
 | **LayoutLM**                                                 | **94.42%** |
 
-#### FUNSD
+#### FUNSD (field-level)
 
 | Model         | Precision  | Recall     | F1         |
 | ------------- | ---------- | ---------- | ---------- |
