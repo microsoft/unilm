@@ -1,7 +1,7 @@
 # MiniLM
 **Small and fast pre-trained models for language understanding and generation**
 
-**\*\*\*\*\* September, 2020: MiniLM was accepted by NeurIPS 2020 \*\*\*\*\***
+**\*\*\*\*\* ``` September, 2020: MiniLM was accepted by NeurIPS 2020 ``` \*\*\*\*\***
 
 **\*\*\*\*\* New April 5, 2020: Multilingual MiniLM v1 release \*\*\*\*\***
 
