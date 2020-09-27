@@ -1,11 +1,11 @@
 # MiniLM
 **Small and fast pre-trained models for language understanding and generation**
 
+**\*\*\*\*\* September, 2020: MiniLM was accepted by NeurIPS 2020 \*\*\*\*\***
+
 **\*\*\*\*\* New April 5, 2020: Multilingual MiniLM v1 release \*\*\*\*\***
 
 **Multilingual MiniLM v1** (April 5, 2020): we released the **12**-layer multilingual MiniLM model with **384** hidden size distilled from [XLM-R Base](https://github.com/pytorch/fairseq/tree/master/examples/xlmr).
-
-**\*\*\*\*\* September, 2020: MiniLM was accepted by NeurIPS 2020 \*\*\*\*\***
 
 **\*\*\*\*\* February 29, 2020: MiniLM v1 release \*\*\*\*\***
 
