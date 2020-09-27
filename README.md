@@ -2,13 +2,13 @@
 **Pre-trained models for natural language understanding (NLU) and generation (NLG) tasks**
 
 The family of UniLM:
-> [**UniLM**](https://github.com/microsoft/unilm/tree/master/unilm): **unified pre-training for language understanding and generation**
+> [**UniLM**](https://github.com/microsoft/unilm/tree/master/unilm)(```v1@NeurIPS'19 | v2@ICML'20```): **unified pre-training for language understanding and generation**
 
 >  [**InfoXLM**](https://github.com/microsoft/unilm/tree/master/infoxlm) (```new```): **multilingual/cross-lingual pre-trained models for language understanding and generation**
 
->  [**MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm): **small pre-trained models for language understanding and generation**
+>  [**MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm)(```v1@NeurIPS'20```): **small pre-trained models for language understanding and generation**
 
->[**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm): **multimodal (text + layout/format + image) pre-training for document understanding** (e.g. scanned documents, PDF, etc.)
+>[**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm)(```v1@KDD'20```): **multimodal (text + layout/format + image) pre-training for document understanding** (e.g. scanned documents, PDF, etc.)
 
 >  [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): **sequence-to-sequence fine-tuning toolkit**
 
