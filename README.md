@@ -13,6 +13,7 @@ The family of UniLM:
 >  [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): **sequence-to-sequence fine-tuning toolkit**
 
 ## News
+- October 8th, 2020: T-ULRv2 \(aka InfoXLM(https://arxiv.org/abs/2007.07834)\) as the SOTA on the XTREME(https://sites.research.google/xtreme) leaderboard.
 - September, 2020: [MiniLM](https://github.com/microsoft/unilm/tree/master/minilm) was accepted by NeurIPS 2020.
 - July 16, 2020 (```NEW```): [**InfoXLM** (Multilingual UniLM)](https://github.com/microsoft/unilm/tree/master/infoxlm) [arXiv](https://arxiv.org/pdf/2007.07834.pdf)
 - June, 2020: [UniLMv2](https://github.com/microsoft/unilm/tree/master/unilm) was accepted by ICML 2020; [LayoutLM](https://github.com/microsoft/unilm/tree/master/layoutlm) was accepted by KDD 2020.
