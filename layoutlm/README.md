@@ -10,6 +10,9 @@ LayoutLM is a simple but effective pre-training method of text and layout for do
 [LayoutLM: Pre-training of Text and Layout for Document Image Understanding](https://arxiv.org/abs/1912.13318)
 Yiheng Xu, Minghao Li, Lei Cui, Shaohan Huang, Furu Wei, Ming Zhou, [KDD 2020](https://www.kdd.org/kdd2020/accepted-papers)
 
+[LayoutLMv2: Multi-modal Pre-training for Visually-Rich Document Understanding](https://arxiv.org/abs/2012.14740)
+Yang Xu, Yiheng Xu, Tengchao Lv, Lei Cui, Furu Wei, Guoxin Wang, Yijuan Lu, Dinei Florencio, Cha Zhang, Wanxiang Che, Min Zhang, Lidong Zhou, [Preprint](#)
+
 ## Release Notes
 **\*\*\*\*\* New Aug 7th, 2020: Our new document understanding datasets, [TableBank](https://doc-analysis.github.io/tablebank-page/) (LREC 2020) and [DocBank](https://doc-analysis.github.io/docbank-page/) (COLING 2020), are now publicly available.\*\*\*\*\***
 
