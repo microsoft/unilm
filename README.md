@@ -4,15 +4,16 @@
 The family of UniLM:
 > [**UniLM**](https://github.com/microsoft/unilm/tree/master/unilm) (```v1@NeurIPS'19 | v2@ICML'20```): **unified pre-training for language understanding and generation**
 
->  [**InfoXLM**](https://github.com/microsoft/unilm/tree/master/infoxlm) (```new```): **multilingual/cross-lingual pre-trained models for language understanding and generation**
+> [**InfoXLM**](https://github.com/microsoft/unilm/tree/master/infoxlm) (```new```): **multilingual/cross-lingual pre-trained models for language understanding and generation**
 
->  [**MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm) (```v1@NeurIPS'20```): **small pre-trained models for language understanding and generation**
+> [**MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm) (```v1@NeurIPS'20```): **small pre-trained models for language understanding and generation**
 
->[**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm) (```v1@KDD'20 | v2```): **multimodal (text + layout/format + image) pre-training for document understanding** (e.g. scanned documents, PDF, etc.)
+> [**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm) (```v1@KDD'20 | v2```): **multimodal (text + layout/format + image) pre-training for document understanding** (e.g. scanned documents, PDF, etc.)
 
->  [**XLM-T**](https://github.com/microsoft/unilm/tree/master/xlmt) (```NEW```): **Multilingual NMT w/ pretrained cross-lingual encoders**
+> [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): **sequence-to-sequence fine-tuning toolkit**
 
->  [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): **sequence-to-sequence fine-tuning toolkit**
+> [**XLM-T**](https://github.com/microsoft/unilm/tree/master/xlmt) (```NEW```): **Multilingual NMT w/ pretrained cross-lingual encoders**
+
 
 ## News
 - December 29th, 2020: [LayoutLMv2](https://arxiv.org/abs/2012.14740) is coming with the new SOTA on a wide varierty of document AI tasks, including [DocVQA](https://rrc.cvc.uab.es/?ch=17&com=evaluation&task=1) and [SROIE](https://rrc.cvc.uab.es/?ch=13&com=evaluation&task=3) leaderboard.
