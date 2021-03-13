@@ -8,6 +8,8 @@ The family of UniLM:
 
 > [**MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm) (```v1@NeurIPS'20```): **small and fast pre-trained models for language understanding and generation**
 
+> > [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm) (```NEW```): **Domain, language, task adaptation of pre-trained models**
+
 > [**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm) (```v1@KDD'20 | v2```): **multimodal (text + layout/format + image) pre-training for document understanding** (e.g. scanned documents, PDF, etc.)
 
 > [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): **sequence-to-sequence fine-tuning toolkit**
