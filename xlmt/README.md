@@ -1,6 +1,6 @@
 
 # XLM-T
-**Multilingual NMT w/ pre-trained ecnoders**
+**Multilingual NMT w/ pre-trained cross-lingual ecnoders**
 
 
 
