@@ -10,7 +10,7 @@ The family of UniLM:
 
 > [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm) (```NEW```): **domain, language, and task adaptation of pre-trained models**
 
-> [**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm) (```v1@KDD'20 | v2```): **multimodal (text + layout/format + image) pre-training for document understanding** (e.g. scanned documents, PDF, etc.)
+> [**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm) (```v1@KDD'20 | v2@ACL'21```): **multimodal (text + layout/format + image) pre-training for document understanding** (e.g. scanned documents, PDF, etc.)
 
 > [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm) (```NEW```): **multimodal (text + layout/format + image) pre-training for multilingual document understanding**
 
@@ -20,6 +20,7 @@ The family of UniLM:
 
 
 ## News
+- May, 2021: [LayoutLMv2](https://github.com/microsoft/unilm/tree/master/layoutlmv2) was accepted by ACL 2021 main conference.
 - April, 2021: [LayoutXLM](https://github.com/microsoft/unilm/tree/master/layoutxlm) is coming by extending the LayoutLM into multilingual support! A multilingual form understanding benchmark XFUN is also introduced, which includes forms with human labeled key-value pairs in 7 languages (Chinese, Japanese, Spanish, French, Italian, German, Portuguese).
 - March, 2021: [InfoXLM](https://github.com/microsoft/unilm/tree/master/infoxlm) was accepted by NAACL 2021.
 - December 29th, 2020: [LayoutLMv2](https://arxiv.org/abs/2012.14740) is coming with the new SOTA on a wide varierty of document AI tasks, including [DocVQA](https://rrc.cvc.uab.es/?ch=17&com=evaluation&task=1) and [SROIE](https://rrc.cvc.uab.es/?ch=13&com=evaluation&task=3) leaderboard.
@@ -38,7 +39,7 @@ The family of UniLM:
 - [x] [**s2s-ft 1.0**](https://github.com/microsoft/unilm/tree/master/s2s-ft) (February 26, 2020): A PyTorch package used to fine-tune pre-trained Transformers for sequence-to-sequence language generation. "[s2s-ft: Fine-Tuning Pre-Trained Transformers for Sequence-to-Sequence Learning](#)"
 - [x] [**MiniLM 1.0**](https://github.com/microsoft/unilm/tree/master/minilm) (February 26, 2020): deep self-attention distillation is all you need (for task-agnostic knowledge distillation of pre-trained Transformers). MiniLM (12-layer, 384-hidden) achieves 2.7x speedup and comparable results over BERT-base (12-layer, 768-hidden) on NLU tasks as well as strong results on NLG tasks. The even smaller MiniLM (6-layer, 384-hidden) obtains 5.3x speedup and produces very competitive results. "[MiniLM: Deep Self-Attention Distillation for Task-Agnostic Compression of Pre-Trained Transformers](https://arxiv.org/abs/2002.10957) ```NeurIPS 2020```"
 - [x] [**UniLM 2.0**](https://github.com/microsoft/unilm/tree/master/unilm) (February 28, 2020): **unified pre-training** of bi-directional LM (via autoencoding) and sequence-to-sequence LM (via partially autoregressive) w/ **Pseudo-Masked Language Model** for language understanding and generation. UniLM v2 achieves new SOTA in a wide range of natural language understanding and generation tasks. "[UniLMv2: Pseudo-Masked Language Models for Unified Language Model Pre-Training](https://arxiv.org/abs/2002.12804) ```ICML 2020```"
-- [x] [**LayoutLM 2.0**](https://github.com/microsoft/unilm/tree/master/layoutlmv2) (December 29, 2020): multimodal pre-training for visually-rich document understanding by leveraging text, layout and image information in a single framework. It is coming with new SOTA on a wide range of document understanding tasks, including FUNSD (0.7895 -> 0.8420), CORD (0.9493 -> 0.9601), SROIE (0.9524 -> 0.9781), Kleister-NDA (0.834 -> 0.852), RVL-CDIP (0.9443 -> 0.9564), and DocVQA (0.7295 -> 0.8672). "[LayoutLMv2: Multi-modal Pre-training for Visually-Rich Document Understanding](https://arxiv.org/abs/2012.14740)"
+- [x] [**LayoutLM 2.0**](https://github.com/microsoft/unilm/tree/master/layoutlmv2) (December 29, 2020): multimodal pre-training for visually-rich document understanding by leveraging text, layout and image information in a single framework. It is coming with new SOTA on a wide range of document understanding tasks, including FUNSD (0.7895 -> 0.8420), CORD (0.9493 -> 0.9601), SROIE (0.9524 -> 0.9781), Kleister-NDA (0.834 -> 0.852), RVL-CDIP (0.9443 -> 0.9564), and DocVQA (0.7295 -> 0.8672). "[LayoutLMv2: Multi-modal Pre-training for Visually-Rich Document Understanding](https://arxiv.org/abs/2012.14740) ```ACL 2021```"
 - [x] [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm) (April, 17, 2021): multimodal pre-training for multilingual visually-rich document understanding. The pre-trained LayoutXLM model has significantly outperformed the existing SOTA cross-lingual pre-trained models on the FUNSD and multilingual XFUN dataset including 7 languages (Chinese, Japanese, Spanish, French, Italian, German, Portuguese).
 
 
