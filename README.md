@@ -8,7 +8,7 @@ The family of UniLM:
 
 > [**MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm) (```v1@NeurIPS'20 | v2@ACL'21```): **small and fast pre-trained models for language understanding and generation**
 
-> [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm) (``` | v1@ACL'21```): **domain, language, and task adaptation of pre-trained models**
+> [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm) (```v1@ACL'21```): **domain, language, and task adaptation of pre-trained models**
 
 > [**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm) (```v1@KDD'20 | v2@ACL'21```): **multimodal (text + layout/format + image) pre-training for document understanding** (e.g. scanned documents, PDF, etc.)
 
@@ -26,7 +26,7 @@ The family of UniLM:
 - December 29th, 2020: [LayoutLMv2](https://arxiv.org/abs/2012.14740) is coming with the new SOTA on a wide varierty of document AI tasks, including [DocVQA](https://rrc.cvc.uab.es/?ch=17&com=evaluation&task=1) and [SROIE](https://rrc.cvc.uab.es/?ch=13&com=evaluation&task=3) leaderboard.
 - October 8th, 2020: T-ULRv2 (aka [InfoXLM](https://arxiv.org/abs/2007.07834)) as the SOTA on the [XTREME](https://sites.research.google/xtreme) leaderboard. // [Blog](https://www.microsoft.com/en-us/research/blog/microsoft-turing-universal-language-representation-model-t-ulrv2-tops-xtreme-leaderboard/)
 - September, 2020: [MiniLM](https://github.com/microsoft/unilm/tree/master/minilm) was accepted by NeurIPS 2020.
-- July 16, 2020 (```NEW```): [**InfoXLM** (Multilingual UniLM)](https://github.com/microsoft/unilm/tree/master/infoxlm) [arXiv](https://arxiv.org/pdf/2007.07834.pdf)
+- July 16, 2020: [**InfoXLM** (Multilingual UniLM)](https://github.com/microsoft/unilm/tree/master/infoxlm) [arXiv](https://arxiv.org/pdf/2007.07834.pdf)
 - June, 2020: [UniLMv2](https://github.com/microsoft/unilm/tree/master/unilm) was accepted by ICML 2020; [LayoutLM](https://github.com/microsoft/unilm/tree/master/layoutlm) was accepted by KDD 2020.
 - April 5, 2020: [**Multilingual MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm) released!
 - September, 2019: [UniLMv1](https://github.com/microsoft/unilm/tree/master/unilm-v1) was accepted by NeurIPS 2019.
