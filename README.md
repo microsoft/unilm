@@ -2,7 +2,7 @@
 **Pre-trained models for natural language understanding (NLU) and generation (NLG) tasks**
 
 The family of UniLM:
-> [**UniLM**](https://github.com/microsoft/unilm/tree/master/unilm) (```v1@NeurIPS'19 | v2@ICML'20```): **unified pre-training for language understanding and generation**
+> [**UniLM**](https://github.com/microsoft/unilm/tree/master/unilm) (```v1@NeurIPS'19 | v2@ICML'20 | v3@ACL'21```): **unified pre-training for language understanding and generation**
 
 > [**InfoXLM**](https://github.com/microsoft/unilm/tree/master/infoxlm) (```v1@NAACL'21 | v2@ACL'21```): **multilingual/cross-lingual pre-trained models for language understanding and generation**
 
