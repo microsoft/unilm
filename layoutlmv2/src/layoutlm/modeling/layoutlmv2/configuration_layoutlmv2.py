@@ -38,6 +38,8 @@ class LayoutLMv2Config(LayoutLMConfig):
         rel_2d_pos_bins=64,
         convert_sync_batchnorm=True,
         image_feature_pool_shape=[7, 7, 256],
+        coordinate_size=128,
+        shape_size=128,
         **kwargs
     ):
         super().__init__(
@@ -65,3 +67,5 @@ class LayoutLMv2Config(LayoutLMConfig):
         self.rel_2d_pos_bins = rel_2d_pos_bins
         self.convert_sync_batchnorm = convert_sync_batchnorm
         self.image_feature_pool_shape = image_feature_pool_shape
+        self.coordinate_size = coordinate_size
+        self.shape_size = shape_size

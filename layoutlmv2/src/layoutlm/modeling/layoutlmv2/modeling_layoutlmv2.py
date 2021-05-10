@@ -45,17 +45,10 @@ class LayoutLMv2Embeddings(nn.Module):
         self.word_embeddings = nn.Embedding(config.vocab_size, config.hidden_size, padding_idx=config.pad_token_id)
         self.position_embeddings = nn.Embedding(config.max_position_embeddings, config.hidden_size)
 
-        # TODO janky but working
-        if config.hidden_size == 768:
-            coordinate_size, shape_size = 128, 128
-        elif config.hidden_size == 1024:
-            coordinate_size, shape_size = 171, 170
-        else:
-            raise ValueError("config hidden_size error")
-        self.x_position_embeddings = nn.Embedding(config.max_2d_position_embeddings, coordinate_size)
-        self.y_position_embeddings = nn.Embedding(config.max_2d_position_embeddings, coordinate_size)
-        self.h_position_embeddings = nn.Embedding(config.max_2d_position_embeddings, shape_size)
-        self.w_position_embeddings = nn.Embedding(config.max_2d_position_embeddings, shape_size)
+        self.x_position_embeddings = nn.Embedding(config.max_2d_position_embeddings, config.coordinate_size)
+        self.y_position_embeddings = nn.Embedding(config.max_2d_position_embeddings, config.coordinate_size)
+        self.h_position_embeddings = nn.Embedding(config.max_2d_position_embeddings, config.shape_size)
+        self.w_position_embeddings = nn.Embedding(config.max_2d_position_embeddings, config.shape_size)
         self.token_type_embeddings = nn.Embedding(config.type_vocab_size, config.hidden_size)
 
         self.LayerNorm = LayoutLMv2LayerNorm(config.hidden_size, eps=config.layer_norm_eps)
