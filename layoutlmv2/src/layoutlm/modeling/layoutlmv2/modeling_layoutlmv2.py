@@ -846,7 +846,8 @@ class LayoutLMv2ForTokenClassification(LayoutLMv2PreTrainedModel):
             output_hidden_states=output_hidden_states,
             return_dict=return_dict,
         )
-        sequence_output, image_output = outputs[0].split(input_ids.size(1), dim=1)
+        seq_length = input_ids.size(1)
+        sequence_output, image_output = outputs[0][:, :seq_length], outputs[0][:, seq_length:]
         sequence_output = self.dropout(sequence_output)
         logits = self.classifier(sequence_output)
 
