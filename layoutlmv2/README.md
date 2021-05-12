@@ -39,7 +39,7 @@ python -m torch.distributed.launch --nproc_per_node=4 experiments/run_funsd.py \
 
 ### Results
 
-#### FUNSD (field-level)
+#### FUNSD (entity-level)
 
 | Model                         | Precision  | Recall     | F1         |
 | ----------------------------- | ---------- | ---------- | ---------- |
