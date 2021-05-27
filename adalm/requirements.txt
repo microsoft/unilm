@@ -1,0 +1,12 @@
+numpy
+boto3
+requests
+tqdm
+regex != 2019.12.17
+sacremoses
+tensorboardX
+transformers == 2.10.0
+scipy  
+seqeval 
+sklearn 
+urllib3==1.25.4
