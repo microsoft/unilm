@@ -8,14 +8,27 @@ The environment I made this project in consists of :
 - tensorflow 1.11 
 
 ## Basic usage
+
+#### Build domain-specific vocabulary automatically
+
+If you want to build a proper size of vocabulary for specific domain using the incremental algorithm in our paper, you can do as following:
+
+```bash
+python vocab_extend.py \
+	--corpus {file for the domain corpus}
+	--raw_vocab {bert_raw_vocab_file}
+	--output_file {he output file of the final vocabulary}
+	--interval {vocab size interval}
+	--threshold {threshold for P(D)}
+```
+
+If you simply want to get a specific size of vocab, you can run the following 
+
 ```
 python subword_builder.py \
 --corpus_filepattern {corpus_for_vocab} \
 --raw_vocab {bert_raw_vocab_file} \
 --output_filename {name_of_vocab} \
---min_count {minimum_subtoken_counts} \
+--vocab_size {final vocab size} \
 --do_lower_case
 ```
-The parameter *min_count* controls the vocabulary size of incremental BPE. 
-
-TODO: set a *max_vocab_size* for incremental BPE. 
