@@ -4,10 +4,8 @@ import json
 import os
 
 import datasets
-import torch
 
-from detectron2.data.detection_utils import read_image
-from detectron2.data.transforms import ResizeTransform, TransformList
+from layoutlmft.data.utils import load_image, normalize_bbox
 
 
 logger = datasets.logging.get_logger(__name__)
@@ -116,21 +114,3 @@ class Funsd(datasets.GeneratorBasedBuilder):
                         bboxes.append(normalize_bbox(w["box"], size))
 
             yield guid, {"id": str(guid), "tokens": tokens, "bboxes": bboxes, "ner_tags": ner_tags, "image": image}
-
-
-def normalize_bbox(bbox, size):
-    return [
-        int(1000 * bbox[0] / size[0]),
-        int(1000 * bbox[1] / size[1]),
-        int(1000 * bbox[2] / size[0]),
-        int(1000 * bbox[3] / size[1]),
-    ]
-
-
-def load_image(image_path):
-    image = read_image(image_path, format="BGR")
-    h = image.shape[0]
-    w = image.shape[1]
-    img_trans = TransformList([ResizeTransform(h=h, w=w, new_h=224, new_w=224)])
-    image = torch.tensor(img_trans.apply_image(image).copy()).permute(2, 0, 1)  # copy to make it writeable
-    return image, (w, h)

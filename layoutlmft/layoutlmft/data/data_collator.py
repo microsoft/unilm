@@ -76,7 +76,7 @@ class DataCollatorForKeyValueExtraction:
             if has_bbox_input:
                 batch["bbox"] = [[[0, 0, 0, 0]] * (sequence_length - len(bbox)) + bbox for bbox in batch["bbox"]]
 
-        batch = {k: torch.tensor(v, dtype=torch.int64) for k, v in batch.items()}
+        batch = {k: torch.tensor(v, dtype=torch.int64) if isinstance(v[0], list) else v for k, v in batch.items()}
         if has_image_input:
             batch["image"] = image
         return batch

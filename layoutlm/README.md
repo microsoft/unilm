@@ -1,9 +1,8 @@
 # LayoutLM
 **Multimodal (text + layout/format + image) pre-training for document AI**
 
-- April 17th, 2021: [LayoutXLM](https://arxiv.org/abs/2104.08836) extends the LayoutLM/LayoutLMv2 into multilingual support! In addition, we also introduce XFUN, a multilingual form understanding benchmark including forms with human labeled key-value pairs in 7 languages (Chinese, Japanese, Spanish, French, Italian, German, Portuguese).
+- April, 2021: [LayoutXLM](https://github.com/microsoft/unilm/tree/master/layoutxlm) is coming by extending the LayoutLM into multilingual support! A multilingual form understanding benchmark [XFUN](https://github.com/doc-analysis/XFUN) is also introduced, which includes forms with human labeled key-value pairs in 7 languages (Chinese, Japanese, Spanish, French, Italian, German, Portuguese).
 - December 29th, 2020: [LayoutLMv2](https://arxiv.org/abs/2012.14740) is coming with the new SOTA on a wide varierty of document AI tasks, including [DocVQA](https://rrc.cvc.uab.es/?ch=17&com=evaluation&task=1) and [SROIE](https://rrc.cvc.uab.es/?ch=13&com=evaluation&task=3) leaderboard.
-
 
 ## Introduction
 
@@ -29,113 +28,32 @@ Yiheng Xu, Tengchao Lv, Lei Cui, Guoxin Wang, Yijuan Lu, Dinei Florencio, Cha Zh
 
 We pre-train LayoutLM on IIT-CDIP Test Collection 1.0\* dataset with two settings. 
 
-* LayoutLM-Base, Uncased (11M documents, 2 epochs): 12-layer, 768-hidden, 12-heads, 113M parameters || [OneDrive](https://1drv.ms/u/s!ApPZx_TWwibInS3JD3sZlPpQVZ2b?e=bbTfmM) | [Google Drive](https://drive.google.com/open?id=1Htp3vq8y2VRoTAwpHbwKM0lzZ2ByB8xM)
-* LayoutLM-Large, Uncased (11M documents, 2 epochs): 24-layer, 1024-hidden, 16-heads, 343M parameters || [OneDrive](https://1drv.ms/u/s!ApPZx_TWwibInSy2nj7YabBsTWNa?e=p4LQo1) | [Google Drive](https://drive.google.com/open?id=1tatUuWVuNUxsP02smZCbB5NspyGo7g2g)
+* LayoutLM-Base, Uncased (11M documents, 2 epochs): 12-layer, 768-hidden, 12-heads, 113M parameters |[HuggingFace](https://huggingface.co/microsoft/layoutlm-base-uncased)| [OneDrive](https://1drv.ms/u/s!ApPZx_TWwibInS3JD3sZlPpQVZ2b?e=bbTfmM) | [Google Drive](https://drive.google.com/open?id=1Htp3vq8y2VRoTAwpHbwKM0lzZ2ByB8xM)
+* LayoutLM-Large, Uncased (11M documents, 2 epochs): 24-layer, 1024-hidden, 16-heads, 343M parameters |[HuggingFace](https://huggingface.co/atahmasb/tf-layoutlm-large-uncased)| [OneDrive](https://1drv.ms/u/s!ApPZx_TWwibInSy2nj7YabBsTWNa?e=p4LQo1) | [Google Drive](https://drive.google.com/open?id=1tatUuWVuNUxsP02smZCbB5NspyGo7g2g)
 
 \*As some downstream datasets are the subsets of IIT-CDIP, we have carefully excluded the overlap portion from the pre-training data.
 
-## Fine-tuning Example
+## Fine-tuning Example on FUNSD
 
-We evaluate LayoutLM on several document image understanding datasets, and it outperforms several SOTA pre-trained models and approaches.
+### Installation
 
-Setup environment as follows:
+Please refer to [layoutlmft](../layoutlmft/README.md)
 
-~~~bash
-conda create -n layoutlm python=3.6
-conda activate layoutlm
-conda install pytorch==1.4.0 cudatoolkit=10.1 -c pytorch
-git clone https://github.com/NVIDIA/apex && cd apex
-pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./
-pip install .
-## For development mode
-# pip install -e ".[dev]"
-~~~
+### Command
 
-### Sequence Labeling Task
-
-
-We give a fine-tuning example for sequence labeling tasks. You can run this example on [FUNSD](https://guillaumejaume.github.io/FUNSD/), a dataset for document understanding tasks.
-
-First, we need to preprocess the JSON file into txt. You can run the preprocessing scripts `funsd_preprocess.py` in the `scripts` directory. For more options, please refer to the arguments.
-
-~~~bash
-cd examples/seq_labeling
-./preprocess.sh
-~~~
-
-After preprocessing, run LayoutLM as follows:
-
-~~~bash
-python run_seq_labeling.py  --data_dir data \
-                            --model_type layoutlm \
-                            --model_name_or_path path/to/pretrained/model/directory \
-                            --do_lower_case \
-                            --max_seq_length 512 \
-                            --do_train \
-                            --num_train_epochs 100.0 \
-                            --logging_steps 10 \
-                            --save_steps -1 \
-                            --output_dir path/to/output/directory \
-                            --labels data/labels.txt \
-                            --per_gpu_train_batch_size 16 \
-                            --per_gpu_eval_batch_size 16 \
-                            --fp16
-~~~
-
-Note: The `DataParallel` will be enabled automatically to utilize all GPUs. If you want to train with `DistributedDataParallel`, please run the script like:
-
-~~~bash
-# Suppose you have 4 GPUs. 
-
-python -m torch.distributed.launch --nproc_per_node=4 run_seq_labeling.py  --data_dir data \
-                            --model_type layoutlm \
-                            --model_name_or_path path/to/pretrained/model/directory \
-                            --do_lower_case \
-                            --max_seq_length 512 \
-                            --do_train \
-                            --num_train_epochs 100.0 \
-                            --logging_steps 10 \
-                            --save_steps -1 \
-                            --output_dir path/to/output/directory \
-                            --labels data/labels.txt \
-                            --per_gpu_train_batch_size 16 \
-                            --per_gpu_eval_batch_size 16 \
-                            --fp16
-~~~
+```
+cd layoutlmft
+python -m torch.distributed.launch --nproc_per_node=4 examples/run_funsd.py \
+        --model_name_or_path microsoft/layoutlm-base-uncased \
+        --output_dir /tmp/test-ner \
+        --do_train \
+        --do_predict \
+        --max_steps 1000 \
+        --warmup_ratio 0.1 \
+        --fp16
+```
 
 
-
-Then you can do evaluation or inference by replacing `--do_train` with `--do_eval` or `--do_predict`
-
-Also, you can run Bert and RoBERTa baseline by modifying the `--model_type` argument. For more options, please refer to the arguments of `run.py`.
-
-### Document Image Classification Task
-
-We also fine-tune LayoutLM on the document image classification task. You can download the [RVL-CDIP](https://www.cs.cmu.edu/~aharley/rvl-cdip/) dataset from [here](https://www.cs.cmu.edu/~aharley/rvl-cdip/). Because this dataset only provides the document image, you should use the OCR tool to get the texts and bounding boxes. For example, you can easily use Tesseract, an open-source OCR engine, to generate corresponding OCR data in hOCR format. For more details, please refer to the [Tesseract wiki](https://github.com/tesseract-ocr/tesseract/wiki). Your processed data should look like [this sample data](https://1drv.ms/u/s!ApPZx_TWwibInTlBa5q3tQ7QUdH_?e=UZLVFw). 
-
-With the processed OCR data, you can run LayoutLM as follows:
-
-~~~bash
-python run_classification.py  --data_dir  data \
-                              --model_type layoutlm \
-                              --model_name_or_path path/to/pretrained/model/directory \
-                              --output_dir path/to/output/directory \
-                              --do_lower_case \
-                              --max_seq_length 512 \
-                              --do_train \
-                              --do_eval \
-                              --num_train_epochs 40.0 \
-                              --logging_steps 5000 \
-                              --save_steps 5000 \
-                              --per_gpu_train_batch_size 16 \
-                              --per_gpu_eval_batch_size 16 \
-                              --evaluate_during_training \
-                              --fp16 
-~~~
-
-Similarly, you can do evaluation by changing `--do_train` to `--do_eval` and `--do_test`
-
-Like the sequence labeling task, you can run Bert and RoBERTa baseline by modifying the `--model_type` argument.
 
 ### Results
 
@@ -174,13 +92,11 @@ Like the sequence labeling task, you can run Bert and RoBERTa baseline by modify
 If you find LayoutLM useful in your research, please cite the following paper:
 
 ``` latex
-@misc{xu2019layoutlm,
-    title={LayoutLM: Pre-training of Text and Layout for Document Image Understanding},
-    author={Yiheng Xu and Minghao Li and Lei Cui and Shaohan Huang and Furu Wei and Ming Zhou},
-    year={2019},
-    eprint={1912.13318},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL}
+@inproceedings{Xu2020LayoutLMPO,
+  title   = {LayoutLM: Pre-training of Text and Layout for Document Image Understanding},
+  author  = {Yiheng Xu and Minghao Li and Lei Cui and Shaohan Huang and Furu Wei and Ming Zhou},
+  journal = {Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining},
+  year    = {2020}
 }
 ```
 
@@ -195,4 +111,3 @@ Portions of the source code are based on the [transformers](https://github.com/h
 For help or issues using LayoutLM, please submit a GitHub issue.
 
 For other communications related to LayoutLM, please contact Lei Cui (`lecu@microsoft.com`), Furu Wei (`fuwei@microsoft.com`).
-

@@ -1,5 +1,5 @@
 .PHONY: quality style
-check_dirs := src experiments
+check_dirs := layoutlmft examples
 # Check that source code meets quality standards
 
 quality:

@@ -9,7 +9,6 @@ from torch.nn import CrossEntropyLoss
 
 import detectron2
 from detectron2.modeling import META_ARCH_REGISTRY
-from layoutlm.modeling.layoutlmv2.detectron2_config import add_layoutlmv2_config
 from transformers import PreTrainedModel
 from transformers.modeling_outputs import (
     BaseModelOutputWithPastAndCrossAttentions,
@@ -23,12 +22,15 @@ from transformers.models.layoutlm.modeling_layoutlm import LayoutLMPooler as Lay
 from transformers.models.layoutlm.modeling_layoutlm import LayoutLMSelfOutput as LayoutLMv2SelfOutput
 from transformers.utils import logging
 
+from ...modules.decoders.re import REDecoder
+from ...utils import ReOutput
 from .configuration_layoutlmv2 import LayoutLMv2Config
+from .detectron2_config import add_layoutlmv2_config
 
 
 logger = logging.get_logger(__name__)
 
-LAYOUTLM_PRETRAINED_MODEL_ARCHIVE_LIST = [
+LAYOUTLMV2_PRETRAINED_MODEL_ARCHIVE_LIST = [
     "layoutlmv2-base-uncased",
     "layoutlmv2-large-uncased",
 ]
@@ -95,6 +97,9 @@ class LayoutLMv2SelfAttention(nn.Module):
         self.attention_head_size = int(config.hidden_size / config.num_attention_heads)
         self.all_head_size = self.num_attention_heads * self.attention_head_size
 
+        self.has_relative_attention_bias = config.has_relative_attention_bias
+        self.has_spatial_attention_bias = config.has_spatial_attention_bias
+
         if config.fast_qkv:
             self.qkv_linear = nn.Linear(config.hidden_size, 3 * self.all_head_size, bias=False)
             self.q_bias = nn.Parameter(torch.zeros(1, 1, self.all_head_size))
@@ -150,7 +155,10 @@ class LayoutLMv2SelfAttention(nn.Module):
         query_layer = query_layer / math.sqrt(self.attention_head_size)
         # [BSZ, NAT, L, L]
         attention_scores = torch.matmul(query_layer, key_layer.transpose(-1, -2))
-        attention_scores = attention_scores + rel_pos + rel_2d_pos
+        if self.has_relative_attention_bias:
+            attention_scores += rel_pos
+        if self.has_spatial_attention_bias:
+            attention_scores += rel_2d_pos
         attention_scores = attention_scores.float().masked_fill_(attention_mask.to(torch.bool), float("-inf"))
         attention_probs = F.softmax(attention_scores, dim=-1, dtype=torch.float32).type_as(value_layer)
         # This is actually dropping out entire tokens to attend to, which might
@@ -335,16 +343,21 @@ class LayoutLMv2Encoder(nn.Module):
         self.config = config
         self.layer = nn.ModuleList([LayoutLMv2Layer(config) for _ in range(config.num_hidden_layers)])
 
-        self.rel_pos_bins = config.rel_pos_bins
-        self.max_rel_pos = config.max_rel_pos
-        self.rel_pos_onehot_size = config.rel_pos_bins
-        self.rel_pos_bias = nn.Linear(self.rel_pos_onehot_size, config.num_attention_heads, bias=False)
+        self.has_relative_attention_bias = config.has_relative_attention_bias
+        self.has_spatial_attention_bias = config.has_spatial_attention_bias
 
-        self.max_rel_2d_pos = config.max_rel_2d_pos
-        self.rel_2d_pos_bins = config.rel_2d_pos_bins
-        self.rel_2d_pos_onehot_size = config.rel_2d_pos_bins
-        self.rel_pos_x_bias = nn.Linear(self.rel_2d_pos_onehot_size, config.num_attention_heads, bias=False)
-        self.rel_pos_y_bias = nn.Linear(self.rel_2d_pos_onehot_size, config.num_attention_heads, bias=False)
+        if self.has_relative_attention_bias:
+            self.rel_pos_bins = config.rel_pos_bins
+            self.max_rel_pos = config.max_rel_pos
+            self.rel_pos_onehot_size = config.rel_pos_bins
+            self.rel_pos_bias = nn.Linear(self.rel_pos_onehot_size, config.num_attention_heads, bias=False)
+
+        if self.has_spatial_attention_bias:
+            self.max_rel_2d_pos = config.max_rel_2d_pos
+            self.rel_2d_pos_bins = config.rel_2d_pos_bins
+            self.rel_2d_pos_onehot_size = config.rel_2d_pos_bins
+            self.rel_pos_x_bias = nn.Linear(self.rel_2d_pos_onehot_size, config.num_attention_heads, bias=False)
+            self.rel_pos_y_bias = nn.Linear(self.rel_2d_pos_onehot_size, config.num_attention_heads, bias=False)
 
     def _cal_1d_pos_emb(self, hidden_states, position_ids):
         rel_pos_mat = position_ids.unsqueeze(-2) - position_ids.unsqueeze(-1)
@@ -403,8 +416,8 @@ class LayoutLMv2Encoder(nn.Module):
 
         next_decoder_cache = () if use_cache else None
 
-        rel_pos = self._cal_1d_pos_emb(hidden_states, position_ids)
-        rel_2d_pos = self._cal_2d_pos_emb(hidden_states, bbox)
+        rel_pos = self._cal_1d_pos_emb(hidden_states, position_ids) if self.has_relative_attention_bias else None
+        rel_2d_pos = self._cal_2d_pos_emb(hidden_states, bbox) if self.has_spatial_attention_bias else None
 
         for i, layer_module in enumerate(self.layer):
             if output_hidden_states:
@@ -490,7 +503,7 @@ class LayoutLMv2PreTrainedModel(PreTrainedModel):
     """
 
     config_class = LayoutLMv2Config
-    pretrained_model_archive_map = LAYOUTLM_PRETRAINED_MODEL_ARCHIVE_LIST
+    pretrained_model_archive_map = LAYOUTLMV2_PRETRAINED_MODEL_ARCHIVE_LIST
     base_model_prefix = "layoutlmv2"
     _keys_to_ignore_on_load_missing = [r"position_ids"]
 
@@ -602,11 +615,13 @@ class LayoutLMv2Model(LayoutLMv2PreTrainedModel):
     def __init__(self, config):
         super(LayoutLMv2Model, self).__init__(config)
         self.config = config
-
+        self.has_visual_segment_embedding = config.has_visual_segment_embedding
         self.embeddings = LayoutLMv2Embeddings(config)
 
         self.visual = VisualBackbone(config)
         self.visual_proj = nn.Linear(config.image_feature_pool_shape[-1], config.hidden_size)
+        if self.has_visual_segment_embedding:
+            self.visual_segment_embedding = nn.Parameter(nn.Embedding(1, config.hidden_size).weight[0])
         self.visual_LayerNorm = nn.LayerNorm(config.hidden_size, eps=config.layer_norm_eps)
         self.visual_dropout = nn.Dropout(config.hidden_dropout_prob)
 
@@ -651,6 +666,8 @@ class LayoutLMv2Model(LayoutLMv2PreTrainedModel):
         position_embeddings = self.embeddings.position_embeddings(position_ids)
         spatial_position_embeddings = self.embeddings._cal_spatial_position_embeddings(bbox)
         embeddings = visual_embeddings + position_embeddings + spatial_position_embeddings
+        if self.has_visual_segment_embedding:
+            embeddings += self.visual_segment_embedding
         embeddings = self.visual_LayerNorm(embeddings)
         embeddings = self.visual_dropout(embeddings)
         return embeddings
@@ -872,4 +889,49 @@ class LayoutLMv2ForTokenClassification(LayoutLMv2PreTrainedModel):
             logits=logits,
             hidden_states=outputs.hidden_states,
             attentions=outputs.attentions,
+        )
+
+
+class LayoutLMv2ForRelationExtraction(LayoutLMv2PreTrainedModel):
+    def __init__(self, config):
+        super().__init__(config)
+        self.layoutlmv2 = LayoutLMv2Model(config)
+        self.dropout = nn.Dropout(config.hidden_dropout_prob)
+        self.extractor = REDecoder(config)
+        self.init_weights()
+
+    def forward(
+        self,
+        input_ids,
+        bbox,
+        labels=None,
+        image=None,
+        attention_mask=None,
+        token_type_ids=None,
+        position_ids=None,
+        head_mask=None,
+        entities=None,
+        relations=None,
+    ):
+        outputs = self.layoutlmv2(
+            input_ids=input_ids,
+            bbox=bbox,
+            image=image,
+            attention_mask=attention_mask,
+            token_type_ids=token_type_ids,
+            position_ids=position_ids,
+            head_mask=head_mask,
+        )
+
+        seq_length = input_ids.size(1)
+        sequence_output, image_output = outputs[0][:, :seq_length], outputs[0][:, seq_length:]
+        sequence_output = self.dropout(sequence_output)
+        loss, pred_relations = self.extractor(sequence_output, entities, relations)
+
+        return ReOutput(
+            loss=loss,
+            entities=entities,
+            relations=relations,
+            pred_relations=pred_relations,
+            hidden_states=outputs[0],
         )

@@ -40,6 +40,9 @@ class LayoutLMv2Config(LayoutLMConfig):
         image_feature_pool_shape=[7, 7, 256],
         coordinate_size=128,
         shape_size=128,
+        has_relative_attention_bias=True,
+        has_spatial_attention_bias=True,
+        has_visual_segment_embedding=False,
         **kwargs
     ):
         super().__init__(
@@ -69,3 +72,6 @@ class LayoutLMv2Config(LayoutLMConfig):
         self.image_feature_pool_shape = image_feature_pool_shape
         self.coordinate_size = coordinate_size
         self.shape_size = shape_size
+        self.has_relative_attention_bias = has_relative_attention_bias
+        self.has_spatial_attention_bias = has_spatial_attention_bias
+        self.has_visual_segment_embedding = has_visual_segment_embedding

@@ -8,26 +8,19 @@ LayoutLMv2 is an improved version of LayoutLM with new pre-training tasks to mod
 Yang Xu, Yiheng Xu, Tengchao Lv, Lei Cui, Furu Wei, Guoxin Wang, Yijuan Lu, Dinei Florencio, Cha Zhang, Wanxiang Che, Min Zhang, Lidong Zhou, [ACL 2021](#)
 
 ## Models
-layoutlmv2-base-uncased | [huggingface](https://huggingface.co/microsoft/layoutlmv2-base-uncased)
+`layoutlmv2-base-uncased` | [HuggingFace](https://huggingface.co/microsoft/layoutlmv2-base-uncased)
 
-## Installation
+## Fine-tuning Example on FUNSD
 
-~~~bash
-conda create -n layoutlmv2 python=3.7
-conda activate layoutlmv2
-git clone https://github.com/microsoft/unilm.git
-cd layoutlmv2
-pip install -r requirements.txt
-pip install -e .
-~~~
+### Installation
 
-## Fine-tuning Example
+Please refer to [layoutlmft](../layoutlmft/README.md)
 
-### Sequence Labeling Task
-We give a fine-tuning example for sequence labeling tasks. You can run this example on [FUNSD](https://guillaumejaume.github.io/FUNSD/), a dataset for document understanding tasks.
-~~~bash
-# Suppose you have 4 GPUs. 
-python -m torch.distributed.launch --nproc_per_node=4 experiments/run_funsd.py \
+### Command
+
+```
+cd layoutlmft
+python -m torch.distributed.launch --nproc_per_node=4 examples/run_funsd.py \
         --model_name_or_path microsoft/layoutlmv2-base-uncased \
         --output_dir /tmp/test-ner \
         --do_train \
@@ -35,11 +28,11 @@ python -m torch.distributed.launch --nproc_per_node=4 experiments/run_funsd.py \
         --max_steps 1000 \
         --warmup_ratio 0.1 \
         --fp16
-~~~
+```
 
-### Results
+## Results
 
-#### FUNSD (entity-level)
+#### FUNSD (field-level)
 
 | Model                         | Precision  | Recall     | F1         |
 | ----------------------------- | ---------- | ---------- | ---------- |
@@ -57,8 +50,7 @@ If you find LayoutLMv2 useful in your research, please cite the following paper:
   title     = {LayoutLMv2: Multi-modal Pre-training for Visually-Rich Document Understanding},
   author    = {Yang Xu and Yiheng Xu and Tengchao Lv and Lei Cui and Furu Wei and Guoxin Wang and Yijuan Lu and Dinei Florencio and Cha Zhang and Wanxiang Che and Min Zhang and Lidong Zhou},
   booktitle = {Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics (ACL) 2021},
-  year      = {2021},
-  month     = {August},
+  year      = {2021}
 }
 ```
 
