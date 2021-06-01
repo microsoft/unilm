@@ -11,7 +11,7 @@ Yiheng Xu, Tengchao Lv, Lei Cui, Guoxin Wang, Yijuan Lu, Dinei Florencio, Cha Zh
 ## Models
 `layoutxlm-base` | [huggingface](https://huggingface.co/microsoft/layoutxlm-base)
 
-## Fine-tuning Example on XFUN
+## Fine-tuning Example on [XFUN](https://github.com/doc-analysis/XFUN)
 
 ### Installation
 
