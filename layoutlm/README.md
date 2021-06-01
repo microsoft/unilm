@@ -60,24 +60,24 @@ python -m torch.distributed.launch --nproc_per_node=4 examples/run_funsd.py \
 #### SROIE (field-level)
 
 
-| Model                                                        | Hmean      |
-| ------------------------------------------------------------ | ---------- |
-| BERT-Large                                                   | 90.99%     |
-| RoBERTa-Large                                                | 92.80%     |
-| [Ranking 1st in SROIE](https://rrc.cvc.uab.es/?ch=13&com=evaluation&task=3) | 94.02%     |
+| Model                                                                                        | Hmean      |
+| -------------------------------------------------------------------------------------------- | ---------- |
+| BERT-Large                                                                                   | 90.99%     |
+| RoBERTa-Large                                                                                | 92.80%     |
+| [Ranking 1st in SROIE](https://rrc.cvc.uab.es/?ch=13&com=evaluation&task=3)                  | 94.02%     |
 | [**LayoutLM**](https://rrc.cvc.uab.es/?ch=13&com=evaluation&view=method_info&task=3&m=71448) | **96.04%** |
 
 #### RVL-CDIP
 
-| Model                                                        | Accuracy   |
-| ------------------------------------------------------------ | ---------- |
-| BERT-Large                                                   | 89.92%     |
-| RoBERTa-Large                                                | 90.11%     |
-| [VGG-16 (Afzal et al., 2017)](https://arxiv.org/abs/1704.03557) | 90.97%     |
-| [Stacked CNN Ensemble (Das et al., 2018)](https://arxiv.org/abs/1801.09321) | 92.21%     |
+| Model                                                                                | Accuracy   |
+| ------------------------------------------------------------------------------------ | ---------- |
+| BERT-Large                                                                           | 89.92%     |
+| RoBERTa-Large                                                                        | 90.11%     |
+| [VGG-16 (Afzal et al., 2017)](https://arxiv.org/abs/1704.03557)                      | 90.97%     |
+| [Stacked CNN Ensemble (Das et al., 2018)](https://arxiv.org/abs/1801.09321)          | 92.21%     |
 | [LadderNet (Sarkhel & Nandi, 2019)](https://www.ijcai.org/Proceedings/2019/0466.pdf) | 92.77%     |
-| [Multimodal Ensemble (Dauphinee et al., 2019)](https://arxiv.org/abs/1912.04376) | 93.07%     |
-| **LayoutLM**                                                 | **94.42%** |
+| [Multimodal Ensemble (Dauphinee et al., 2019)](https://arxiv.org/abs/1912.04376)     | 93.07%     |
+| **LayoutLM**                                                                         | **94.42%** |
 
 #### FUNSD (field-level)
 
