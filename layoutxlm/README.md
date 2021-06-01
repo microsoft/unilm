@@ -47,7 +47,7 @@ python -m torch.distributed.launch --nproc_per_node=4 examples/run_xfun_re.py \
         --fp16
 ```
 
-## Results
+## Results on [XFUN](https://github.com/doc-analysis/XFUN)
 
 ###  Language-specific Finetuning
 
