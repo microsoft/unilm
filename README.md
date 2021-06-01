@@ -7,7 +7,7 @@ The family of UniLM:
 
 > [**InfoXLM**](https://github.com/microsoft/unilm/tree/master/infoxlm) (```v1@NAACL'21 | v2@ACL'21```): **multilingual/cross-lingual pre-trained models for language understanding and generation**
 
-> [**DeltaLM**](https://github.com/microsoft/unilm/tree/master/deltalm) (```NEW```): **Encoder-Decoder Pre-training for Language Generation and Translation by Augmenting Pretrained Multilingual Encoders**
+> [**DeltaLM**](https://github.com/microsoft/unilm/tree/master/deltalm) (```NEW```): **encoder-decoder pre-training for language generation and translation by augmenting pretrained multilingual encoders**
 
 > [**MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm) (```v1@NeurIPS'20 | v2@ACL'21```): **small and fast pre-trained models for language understanding and generation**
 
