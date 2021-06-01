@@ -36,6 +36,12 @@ The family of UniLM:
 
 ## Release
 
+**\*\*\*\*\* ```New June, 2021```: [LayoutXLM](https://github.com/microsoft/unilm/tree/master/layoutxlm) | [AdaLM](https://github.com/microsoft/unilm/tree/master/adalm) | [MiniLMv2](https://github.com/microsoft/unilm/tree/master/minilm) release \*\*\*\*\***
+
+- [x] [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm) (April, 17, 2021): multimodal pre-training for multilingual visually-rich document understanding. The pre-trained LayoutXLM model has significantly outperformed the existing SOTA cross-lingual pre-trained models on the FUNSD and multilingual [XFUN](https://github.com/doc-analysis/XFUN) dataset including 7 languages (Chinese, Japanese, Spanish, French, Italian, German, Portuguese). "[LayoutXLM: Multimodal Pre-training for Multilingual Visually-rich Document Understanding](https://arxiv.org/abs/2104.08836)"
+- [] [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm) (June, 2021): domain adaptation of pre-trained models. "[Adapt-and-Distill: Developing Small, Fast and Effective Pretrained Language Models for Domains](#) ```ACL 2021```"
+- [] [**MiniLMv2**](https://github.com/microsoft/unilm/tree/master/minilm) (December, 2020): small and fast pre-trained models with multihead self-attention relation distillation. "[MiniLMv2: Multi-Head Self-Attention Relation Distillation for Compressing Pretrained Transformers](https://arxiv.org/abs/2012.15828) ```ACL 2021```"
+
 **\*\*\*\*\* ```New May, 2021```: [LayoutLMv2](https://github.com/microsoft/unilm/tree/master/layoutlmv2) | [LayoutXLM](https://github.com/microsoft/unilm/tree/master/layoutxlm) release \*\*\*\*\***
 
 - [x] [**LayoutLM 2.0**](https://github.com/microsoft/unilm/tree/master/layoutlmv2) (December 29, 2020): multimodal pre-training for visually-rich document understanding by leveraging text, layout and image information in a single framework. It is coming with new SOTA on a wide range of document understanding tasks, including FUNSD (0.7895 -> 0.8420), CORD (0.9493 -> 0.9601), SROIE (0.9524 -> 0.9781), Kleister-NDA (0.834 -> 0.852), RVL-CDIP (0.9443 -> 0.9564), and DocVQA (0.7295 -> 0.8672). "[LayoutLMv2: Multi-modal Pre-training for Visually-Rich Document Understanding](https://arxiv.org/abs/2012.14740) ```ACL 2021```"
