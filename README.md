@@ -23,6 +23,7 @@ The family of UniLM:
 
 
 ## News
+- [Model Release] June, 2021: [**LayoutLMv2**](https://github.com/microsoft/unilm/tree/master/layoutlmv2), [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm), [**MiniLMv2**](https://github.com/microsoft/unilm/tree/master/minilm), and [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm).
 - May, 2021: [LayoutLMv2](https://github.com/microsoft/unilm/tree/master/layoutlmv2), InfoXLMv2, MiniLMv2, UniLMv3, and AdaLM were accepted by ACL 2021.
 - April, 2021: [LayoutXLM](https://github.com/microsoft/unilm/tree/master/layoutxlm) is coming by extending the LayoutLM into multilingual support! A multilingual form understanding benchmark [XFUN](https://github.com/doc-analysis/XFUN) is also introduced, which includes forms with human labeled key-value pairs in 7 languages (Chinese, Japanese, Spanish, French, Italian, German, Portuguese).
 - March, 2021: [InfoXLM](https://github.com/microsoft/unilm/tree/master/infoxlm) was accepted by NAACL 2021.
@@ -40,7 +41,7 @@ The family of UniLM:
 
 - [x] [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm) (April, 17, 2021): multimodal pre-training for multilingual visually-rich document understanding. The pre-trained LayoutXLM model has significantly outperformed the existing SOTA cross-lingual pre-trained models on the FUNSD and multilingual [XFUN](https://github.com/doc-analysis/XFUN) dataset including 7 languages (Chinese, Japanese, Spanish, French, Italian, German, Portuguese). "[LayoutXLM: Multimodal Pre-training for Multilingual Visually-rich Document Understanding](https://arxiv.org/abs/2104.08836)"
 - [x] [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm) (June, 2021): a simple yet effective approach for domain adaptation of pre-trained models. Biomedical specific pre-trained models are released. "[Adapt-and-Distill: Developing Small, Fast and Effective Pretrained Language Models for Domains](#) ```ACL 2021```"
-- [x] [**MiniLMv2**](https://github.com/microsoft/unilm/tree/master/minilm) (December, 2020): a simple yet effective task-agnostic knoweldge distillation method, namely multi-head self-attention relation distillation, for compressing large pre-trained Transformers into small and fast pre-trained models. Both English and multilingual MiniLM models are released. "[MiniLMv2: Multi-Head Self-Attention Relation Distillation for Compressing Pretrained Transformers](https://arxiv.org/abs/2012.15828) ```ACL 2021```"
+- [x] [**MiniLMv2**](https://github.com/microsoft/unilm/tree/master/minilm) (December, 2020): a simple yet effective task-agnostic knoweldge distillation method, namely multi-head self-attention relation distillation, for compressing large pre-trained Transformers into small and fast pre-trained models. MiniLMv2 significantly outperforms MiniLMv1. Both English and multilingual MiniLM models are released. "[MiniLMv2: Multi-Head Self-Attention Relation Distillation for Compressing Pretrained Transformers](https://arxiv.org/abs/2012.15828) ```ACL 2021```"
 
 **\*\*\*\*\* ```New May, 2021```: [LayoutLMv2](https://github.com/microsoft/unilm/tree/master/layoutlmv2) | [LayoutXLM](https://github.com/microsoft/unilm/tree/master/layoutxlm) release \*\*\*\*\***
 
