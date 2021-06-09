@@ -1,9 +1,36 @@
 # MiniLM
 **Small and fast pre-trained models for language understanding and generation**
 
-**\*\*\*\*\* ``` September, 2020: MiniLM was accepted by NeurIPS 2020 ``` \*\*\*\*\***
+**\*\*\*\*\* New June 9, 2021: MiniLM v2 release \*\*\*\*\***
 
-**\*\*\*\*\* New April 5, 2020: Multilingual MiniLM v1 release \*\*\*\*\***
+**MiniLM v2**: the pre-trained models for the paper entitled "[MiniLMv2: Multi-Head Self-Attention Relation Distillation for Compressing Pretrained Transformers](https://arxiv.org/abs/2012.15828)". We generalize deep self-attention distillation in MiniLMv1 by using self-attention relation distillation for task-agnostic compression of pre-trained Transformers. The proposed method eliminates the restriction on the number of student’s attention heads. Our monolingual and multilingual small models distilled from different base and large size teacher models achieve competitive performance. 
+
+**[Multilingual] Pre-trained Models**
+
+| Model                                                                        | Teacher Model | Speedup   | #Param    | XNLI (Acc) | MLQA (F1)    |
+|------------------------------------------------------------------------------|---------------|-----------|-----------|------------|--------------|
+| **[L12xH384 mMiniLMv2](https://1drv.ms/u/s!AjHn0yEmKG8qiyGH2uvettAtQOov)**   | XLMR-Large    | 2.7x      | 117M      | 72.9       | 64.9         |
+| **[L6xH384 mMiniLMv2](https://1drv.ms/u/s!AjHn0yEmKG8qiyC4-L624EmV2i7z)**    | XLMR-Large    | 5.3x      | 107M      | 69.3       | 59.0         |
+
+We compress XLMR-Large into 12-layer and 6-layer models with 384 hidden size and report the zero-shot performance on XNLI and MLQA test set. 
+
+**[English] Pre-trained Models**
+
+| Model                                                                        | Teacher Model         | Speedup   | #Param    | MNLI-m (Acc) | SQuAD 2.0 (F1) |
+|------------------------------------------------------------------------------|-----------------------|-----------|-----------|--------------|----------------|
+| **[L6xH768 MiniLMv2](https://1drv.ms/u/s!AjHn0yEmKG8qiyUqoRUc6P1t0mk0)**     | RoBERTa-Large         | 2.0x      | 81M       | 87.0         | 81.6           |
+| **[L12xH384 MiniLMv2](https://1drv.ms/u/s!AjHn0yEmKG8qiyM5cFiv7ew6uOO1)**    | RoBERTa-Large         | 2.7x      | 41M       | 86.9         | 82.3           |
+| **[L6xH384 MiniLMv2](https://1drv.ms/u/s!AjHn0yEmKG8qix6eX4PZbP2_N2MO)**     | RoBERTa-Large         | 5.3x      | 30M       | 84.4         | 76.4           |
+| [L6xH768 MiniLMv2](https://1drv.ms/u/s!AjHn0yEmKG8qix8oZl0UtY-KnJtY)         | BERT-Large Uncased    | 2.0x      | 66M       | 85.0         | 77.7           |
+| [L6xH384 MiniLMv2](https://1drv.ms/u/s!AjHn0yEmKG8qix0MfI2hDsmK20cY)         | BERT-Large Uncased    | 5.3x      | 22M       | 83.0         | 74.3           |
+| [L6xH768 MiniLMv2](https://1drv.ms/u/s!AjHn0yEmKG8qiyLmvLxXOSgpTxxm)         | BERT-Base Uncased     | 2.0x      | 66M       | 84.2         | 76.3           |
+| [L6xH384 MiniLMv2](https://1drv.ms/u/s!AjHn0yEmKG8qiyQSo9sRDP4t3_jT)         | BERT-Base Uncased     | 5.3x      | 22M       | 82.8         | 72.9           |
+
+The table presents the dev results of different small models on MNLI and SQuAD 2.0.
+
+**\*\*\*\*\* September, 2020: MiniLM was accepted by NeurIPS 2020 \*\*\*\*\***
+
+**\*\*\*\*\* April 5, 2020: Multilingual MiniLM v1 release \*\*\*\*\***
 
 **Multilingual MiniLM v1** (April 5, 2020): we released the **12**-layer multilingual MiniLM model with **384** hidden size distilled from [XLM-R Base](https://github.com/pytorch/fairseq/tree/master/examples/xlmr).
 
