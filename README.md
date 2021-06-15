@@ -17,6 +17,8 @@ The family of UniLM:
 
 > [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm) (```NEW```): **multimodal (text + layout/format + image) pre-training for multilingual document understanding**
 
+> [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit) (```NEW```): **BERT Pre-Training of Image Transformers**
+
 > [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): **sequence-to-sequence fine-tuning toolkit**
 
 > [**XLM-T**](https://github.com/microsoft/unilm/tree/master/xlmt) (```NEW```): **Multilingual NMT w/ pretrained cross-lingual encoders**
