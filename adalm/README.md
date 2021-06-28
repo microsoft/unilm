@@ -2,7 +2,7 @@
 
 **Domain, language and task adaptation of pre-trained models.**
 
-[Adapt-and-Distill: Developing Small, Fast and Effective Pretrained Language Models for Domains.](#)
+[Adapt-and-Distill: Developing Small, Fast and Effective Pretrained Language Models for Domains.](https://arxiv.org/abs/2106.13474)
 Yunzhi Yao, Shaohan Huang, Wenhui Wang, Li Dong and Furu Wei, [ACL 2021](#)
 
 This repository includes the code to finetune the adapted domain-specific model on downstrem tasks and the [code](https://github.com/microsoft/unilm/tree/master/adalm/incr_bpe) to generate incremental vocabulary for specific domain.
