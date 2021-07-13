@@ -3,7 +3,7 @@
 
 ## Introduction
 
-LayoutXLM is a multimodal pre-trained model for multilingual document understanding, which aims to bridge the language barriers for visually-rich document understanding. Experiment results show that it has significantly outperformed the existing SOTA cross-lingual pre-trained models on the XFUN dataset.
+LayoutXLM is a multimodal pre-trained model for multilingual document understanding, which aims to bridge the language barriers for visually-rich document understanding. Experiment results show that it has significantly outperformed the existing SOTA cross-lingual pre-trained models on the XFUND dataset.
 
 [LayoutXLM: Multimodal Pre-training for Multilingual Visually-rich Document Understanding](https://arxiv.org/abs/2104.08836)
 Yiheng Xu, Tengchao Lv, Lei Cui, Guoxin Wang, Yijuan Lu, Dinei Florencio, Cha Zhang, Furu Wei, arXiv Preprint 2021
@@ -11,7 +11,7 @@ Yiheng Xu, Tengchao Lv, Lei Cui, Guoxin Wang, Yijuan Lu, Dinei Florencio, Cha Zh
 ## Models
 `layoutxlm-base` | [huggingface](https://huggingface.co/microsoft/layoutxlm-base)
 
-## Fine-tuning Example on [XFUN](https://github.com/doc-analysis/XFUN)
+## Fine-tuning Example on [XFUND](https://github.com/doc-analysis/XFUND)
 
 ### Installation
 
@@ -47,7 +47,7 @@ python -m torch.distributed.launch --nproc_per_node=4 examples/run_xfun_re.py \
         --fp16
 ```
 
-## Results on [XFUN](https://github.com/doc-analysis/XFUN)
+## Results on [XFUND](https://github.com/doc-analysis/XFUND)
 
 ###  Language-specific Finetuning
 
