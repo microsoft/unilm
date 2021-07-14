@@ -19,7 +19,7 @@ The family of UniLM AI:
 
 > [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit) (```NEW```): **BERT Pre-Training of Image Transformers**
 
-> [**UniSpeech**](https://arxiv.org/abs/2101.07597) (```v1@ICML'21 ): **Speech Pre-Training for ASR and TTS**
+> [**UniSpeech**](https://arxiv.org/abs/2101.07597) (```v1@ICML'21```): **Speech Pre-Training for ASR and TTS**
 
 > [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): **sequence-to-sequence fine-tuning toolkit**
 
