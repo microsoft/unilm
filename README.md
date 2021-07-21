@@ -42,10 +42,16 @@ The family of UniLM AI:
 
 ## Release
 
+**\*\*\*\*\* ```New July, 2021```: [BEiT](https://github.com/microsoft/unilm/tree/master/beit) release \*\*\*\*\***
+
+- [x] [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit) (June 15, 2021): BERT Pre-Training of Image Transformers. BEiT-large achieves **[state-of-the-art results on ADE20K](https://paperswithcode.com/sota/semantic-segmentation-on-ade20k) (a big jump to 57.0 mIoU) for semantic segmentation**. BEiT-large achieves **state-of-the-art ImageNet top-1 accuracy (88.6%) under the setting without extra data other than ImageNet-22k**. "[BEiT: BERT Pre-Training of Image Transformers](https://arxiv.org/abs/2106.08254)"
+
+
+
 **\*\*\*\*\* ```New June, 2021```: [LayoutXLM](https://github.com/microsoft/unilm/tree/master/layoutxlm) | [AdaLM](https://github.com/microsoft/unilm/tree/master/adalm) | [MiniLMv2](https://github.com/microsoft/unilm/tree/master/minilm) release \*\*\*\*\***
 
-- [x] [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm) (April, 17, 2021): multimodal pre-training for multilingual visually-rich document understanding. The pre-trained LayoutXLM model has significantly outperformed the existing SOTA cross-lingual pre-trained models on the FUNSD and multilingual [XFUND](https://github.com/doc-analysis/XFUND) dataset including 7 languages (Chinese, Japanese, Spanish, French, Italian, German, Portuguese). "[LayoutXLM: Multimodal Pre-training for Multilingual Visually-rich Document Understanding](https://arxiv.org/abs/2104.08836)"
-- [x] [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm) (June, 2021): a simple yet effective approach for domain adaptation of pre-trained models. Biomedical specific pre-trained models are released. "[Adapt-and-Distill: Developing Small, Fast and Effective Pretrained Language Models for Domains](#) ```ACL 2021```"
+- [x] [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm) (April 17, 2021): multimodal pre-training for multilingual visually-rich document understanding. The pre-trained LayoutXLM model has significantly outperformed the existing SOTA cross-lingual pre-trained models on the FUNSD and multilingual [XFUND](https://github.com/doc-analysis/XFUND) dataset including 7 languages (Chinese, Japanese, Spanish, French, Italian, German, Portuguese). "[LayoutXLM: Multimodal Pre-training for Multilingual Visually-rich Document Understanding](https://arxiv.org/abs/2104.08836)"
+- [x] [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm) (June 2021): a simple yet effective approach for domain adaptation of pre-trained models. Biomedical specific pre-trained models are released. "[Adapt-and-Distill: Developing Small, Fast and Effective Pretrained Language Models for Domains](#) ```ACL 2021```"
 - [x] [**MiniLMv2**](https://github.com/microsoft/unilm/tree/master/minilm) (December, 2020): a simple yet effective task-agnostic knoweldge distillation method, namely multi-head self-attention relation distillation, for compressing large pre-trained Transformers into small and fast pre-trained models. MiniLMv2 significantly outperforms MiniLMv1. Both English and multilingual MiniLM models are released. "[MiniLMv2: Multi-Head Self-Attention Relation Distillation for Compressing Pretrained Transformers](https://arxiv.org/abs/2012.15828) ```ACL 2021```"
 
 **\*\*\*\*\* ```New May, 2021```: [LayoutLMv2](https://github.com/microsoft/unilm/tree/master/layoutlmv2) | [LayoutXLM](https://github.com/microsoft/unilm/tree/master/layoutxlm) release \*\*\*\*\***
