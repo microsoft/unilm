@@ -104,7 +104,7 @@ OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=16 run_bei
 - `--clip_grad`: clip gradient norm.
 - `--drop_path`: stochastic depth rate.
 - `--imagenet_default_mean_and_std`: enable this for ImageNet-1k pre-training, i.e., `(0.485, 0.456, 0.406)` for mean and `(0.229, 0.224, 0.225)` for std. We use `(0.5, 0.5, 0.5)` for mean and `(0.5, 0.5, 0.5)` for std by default on other pre-training data.
-- `--layer_scale_init_value`: 0.1 for base, 1e-5 for large, set 0 to disable layer scale.
+- `--layer_scale_init_value`: 0.1 for base, 1e-5 for large, set 0 to disable layerscale.
 
 ## Example: Pre-training BEiT-base on ImageNet-1k
 
