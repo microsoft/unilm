@@ -93,7 +93,8 @@ wget -o $TOKENIZER_PATH/decoder.pkl https://cdn.openai.com/dall-e/decoder.pkl
 OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=16 run_beit_pretraining.py \
         --data_path ${DATA_PATH} --output_dir ${OUTPUT_DIR} \
         --model beit_base_patch16_224_8k_vocab --discrete_vae_weight_path ${TOKENIZER_PATH} \
-        --batch_size 128 --lr 1.5e-3 --warmup_steps 10000 --epochs 150 --clip_grad 3.0 --drop_path 0.1
+        --batch_size 128 --lr 1.5e-3 --warmup_steps 10000 --epochs 150 \
+        --clip_grad 3.0 --drop_path 0.1 --layer_scale_init_value 0.1
 ```
 - `--batch_size`: batch size per GPU.
 - Effective batch size = `number of GPUs` * `--batch_size`. So in the above example, the effective batch size is `128*16 = 2048`.
@@ -103,7 +104,26 @@ OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=16 run_bei
 - `--clip_grad`: clip gradient norm.
 - `--drop_path`: stochastic depth rate.
 - `--imagenet_default_mean_and_std`: enable this for ImageNet-1k pre-training, i.e., `(0.485, 0.456, 0.406)` for mean and `(0.229, 0.224, 0.225)` for std. We use `(0.5, 0.5, 0.5)` for mean and `(0.5, 0.5, 0.5)` for std by default on other pre-training data.
+- `--layer_scale_init_value`: 0.1 for base, 1e-5 for large. set 0 to disable layer scale.
 
+The BEiT-base model can be pretrained on ImageNet-1k using a DGX-2 box (16 V100-32GB):
+```bash
+# Set the path to save checkpoints
+OUTPUT_DIR=/path/to/save/your_model
+# Download and extract ImageNet-1k
+DATA_PATH=/path/to/imagenet1k_train_set
+# Download the tokenizer weight from OpenAI's DALL-E
+TOKENIZER_PATH=/path/to/save/dall_e_tokenizer_weight
+mkdir -p $TOKENIZER_PATH
+wget -o $TOKENIZER_PATH/encoder.pkl https://cdn.openai.com/dall-e/encoder.pkl
+wget -o $TOKENIZER_PATH/decoder.pkl https://cdn.openai.com/dall-e/decoder.pkl
+
+OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=16 run_beit_pretraining.py \
+        --data_path ${DATA_PATH} --output_dir ${OUTPUT_DIR} \
+        --model beit_base_patch16_224_8k_vocab --discrete_vae_weight_path ${TOKENIZER_PATH} \
+        --batch_size 128 --lr 1.5e-3 --warmup_epochs 10 --epochs 300 \
+        --clip_grad 3.0 --drop_path 0.1 --layer_scale_init_value 0.1
+```
 
 ## Citation
 

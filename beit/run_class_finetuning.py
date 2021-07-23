@@ -49,7 +49,7 @@ def get_args():
     parser.set_defaults(rel_pos_bias=True)
     parser.add_argument('--abs_pos_emb', action='store_true')
     parser.set_defaults(abs_pos_emb=False)
-    parser.add_argument('--layer_scale_init_value', default=1e-5,
+    parser.add_argument('--layer_scale_init_value', default=0.1,
                         help="0.1 for base, 1e-5 for large. set 0 to disable layer scale")
 
     parser.add_argument('--input_size', default=224, type=int,
