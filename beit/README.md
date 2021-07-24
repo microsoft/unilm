@@ -96,7 +96,7 @@ OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=16 run_bei
         --batch_size 128 --lr 1.5e-3 --warmup_steps 10000 --epochs 150 \
         --clip_grad 3.0 --drop_path 0.1 --layer_scale_init_value 0.1
 ```
-- `--num_mask_patches`: the number of the visual patches need be masked.
+- `--num_mask_patches`: the number of visual patches need be masked.
 - `--batch_size`: batch size per GPU.
 - Effective batch size = `number of GPUs` * `--batch_size`. So in the above example, the effective batch size is `128*16 = 2048`.
 - `--lr`: learning rate.
