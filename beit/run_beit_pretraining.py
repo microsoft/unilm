@@ -48,7 +48,7 @@ def get_args():
     parser.add_argument('--layer_scale_init_value', default=0.1,
                         help="0.1 for base, 1e-5 for large. set 0 to disable layer scale")
 
-    parser.add_argument('--num_mask_patches', default=90, type=int,
+    parser.add_argument('--num_mask_patches', default=75, type=int,
                         help='number of the visual tokens/patches need be masked')
     parser.add_argument('--max_mask_patches_per_block', type=int, default=None)
     parser.add_argument('--min_mask_patches_per_block', type=int, default=16)
