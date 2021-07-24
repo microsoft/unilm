@@ -9,6 +9,8 @@
 # https://github.com/facebookresearch/deit/
 # https://github.com/facebookresearch/dino
 # --------------------------------------------------------'
+import os
+
 import torch
 
 from torchvision import datasets, transforms
