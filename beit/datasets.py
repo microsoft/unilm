@@ -10,7 +10,6 @@
 # https://github.com/facebookresearch/dino
 # --------------------------------------------------------'
 import os
-
 import torch
 
 from torchvision import datasets, transforms
@@ -109,7 +108,7 @@ def build_dataset(is_train, args):
         dataset = datasets.CIFAR100(args.data_path, train=is_train, transform=transform)
         nb_classes = 100
     elif args.data_set == 'IMNET':
-        root = root = os.path.join(args.data_path, 'train' if is_train else 'val')
+        root = os.path.join(args.data_path, 'train' if is_train else 'val')
         dataset = datasets.ImageFolder(root, transform=transform)
         nb_classes = 1000
     elif args.data_set == "image_folder":
