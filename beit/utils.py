@@ -452,7 +452,7 @@ def auto_load_model(args, model, model_without_ddp, optimizer, loss_scaler, mode
             if 'optimizer' in checkpoint and 'epoch' in checkpoint:
                 optimizer.load_state_dict(checkpoint['optimizer'])
                 args.start_epoch = checkpoint['epoch'] + 1
-                if args.model_ema:
+                if hasattr(args, 'model_ema') and args.model_ema:
                     _load_checkpoint_for_ema(model_ema, checkpoint['model_ema'])
                 if 'scaler' in checkpoint:
                     loss_scaler.load_state_dict(checkpoint['scaler'])
