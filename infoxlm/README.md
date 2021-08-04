@@ -74,8 +74,11 @@ python setup.py install --user --cuda_ext --cpp_ext
 cd ..
 cd $PWD_DIR
 
+git clone https://github.com/microsoft/unilm
+cd unilm/infoxlm
+
 # install fairseq https://github.com/CZWin32768/fairseq/tree/czw
-pip install --user --editable ./src-fairseq
+pip install --user --editable ./fairseq
 
 # install infoxlm
 pip install --user --editable ./src-infoxlm
