@@ -130,6 +130,50 @@ OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=16 run_bei
         --imagenet_default_mean_and_std
 ```
 
+## Example: Fine-tuning BEiT on ImageNet-22k
+
+The BEiT-large model can be fine-tuned on ImageNet-22k using a DGX-2 box (16 V100-32GB):
+
+```bash
+# Set the path to save checkpoints
+OUTPUT_DIR=/path/to/save/your_model
+# Download and extract ImageNet-22k
+DATA_PATH=/path/to/imagenet22k
+
+OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=16 run_class_finetuning.py \
+    --model beit_large_patch16_224 --data_path $DATA_PATH \
+    --nb_classes 21841 --data_set image_folder --disable_eval_during_finetuning \
+    --finetune https://unilm.blob.core.windows.net/beit/beit_large_patch16_224_pt22k.pth \
+    --output_dir $OUTPUT_DIR --batch_size 64 --lr 2e-3 --update_freq 2 \
+    --warmup_epochs 5 --epochs 90 --layer_decay 0.75 --drop_path 0.2 \
+    --weight_decay 0.05 --enable_deepspeed --layer_scale_init_value 1e-5 --clip_grad 1.0
+```
+- `--batch_size`: batch size per GPU.
+- Effective batch size = `number of GPUs` * `--batch_size` * `--update_freq`. So in the above example, the effective batch size is `16*64*2 = 2048`.
+- `--lr`: learning rate.
+- `--warmup_epochs`: learning rate warmup epochs.
+- `--epochs`: total pre-training epochs.
+- `--clip_grad`: clip gradient norm.
+- `--drop_path`: stochastic depth rate.
+- `--layer_scale_init_value`: 0.1 for base, 1e-5 for large, set 0 to disable layerscale.
+
+The BEiT-base can be fine-tuned on ImageNet-22k as follows:
+
+```bash
+# Set the path to save checkpoints
+OUTPUT_DIR=/path/to/save/your_model
+# Download and extract ImageNet-22k
+DATA_PATH=/path/to/imagenet22k
+
+OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=16 run_class_finetuning.py \
+    --model beit_base_patch16_224_8k_vocab --data_path $DATA_PATH \
+    --nb_classes 21841 --data_set image_folder --disable_eval_during_finetuning \
+    --finetune https://unilm.blob.core.windows.net/beit/beit_base_patch16_224_pt22k.pth \
+    --output_dir $OUTPUT_DIR --batch_size 256 --lr 3e-3 --update_freq 1 \
+    --warmup_epochs 5 --epochs 90 --layer_decay 0.65 --drop_path 0.2 \
+    --weight_decay 0.05 --enable_deepspeed --layer_scale_init_value 0.1 --clip_grad 3.0
+```
+
 ## Citation
 
 If you find this repository useful, please consider citing our work:
