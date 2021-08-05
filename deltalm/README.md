@@ -9,13 +9,6 @@
 - [DeltaLM-large](https://deltalm.blob.core.windows.net/deltalm/deltalm-large.pt): #enc-dec=24-12; #hidden=1024; #head=16; #FFN=4096 (#parameters: 830M)
 - [Vocabulary](https://deltalm.blob.core.windows.net/deltalm/dict.txt) and [Sentencepiece-model](https://deltalm.blob.core.windows.net/deltalm/spm.model)
 
-```
-/path/to/checkpoint/
-    model.pt
-    dict.txt
-    spm.model
-```
-
 ---
 
 ## Cross-lingual Abstractive Summarization - [Wikilingua](https://arxiv.org/abs/2010.03093)
@@ -24,10 +17,10 @@ We evaluate DeltaLM on cross-lingual abstractive summarization benchmark. We rep
 
 |   Model   |   #Params   |  ROUGE-1  |  ROUGE-2  |  ROUGE-L  |
 |-----------|-------------|-----------|-----------|-----------|
-| [mBART](https://arxiv.org/abs/2001.08210)     | 610M        | 34.5      | 12.9      | 28.7      |
+| [mBART](https://arxiv.org/abs/2001.08210)     | 610M        | 34.5      | 12.9      | **28.7**      |
 | [mT5](https://arxiv.org/abs/2010.11934)       | 300M        | 27.5      | 8.8       | 22.8      |
 | [mT5](https://arxiv.org/abs/2010.11934)       | 580M        | 31.8      | 11.5      | 26.0      |
-| DeltaLM   | 360M        | 35.3      | 13.4      | 28.7      |
+| DeltaLM   | 360M        | **35.3**      | **13.4**      | **28.7**      |
 
 ---
 
