@@ -1,0 +1,4 @@
+sentencepiece
+omegaconf
+# Replace this by 1.0.0 once it's out
+git+git://github.com/pytorch/fairseq.git@1305008e#egg=fairseq
