@@ -27,6 +27,7 @@ The family of UniLM AI:
 
 
 ## News
+- August 2021: [**BEiT**](https://huggingface.co/transformers/master/model_doc/beit.html) is on [HuggingFace](https://github.com/huggingface/transformers)
 - [Model Release] July, 2021: [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit) - Towards BERT moment for CV
 - [Model Release] June, 2021: [**LayoutLMv2**](https://github.com/microsoft/unilm/tree/master/layoutlmv2), [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm), [**MiniLMv2**](https://github.com/microsoft/unilm/tree/master/minilm), and [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm).
 - May, 2021: [LayoutLMv2](https://github.com/microsoft/unilm/tree/master/layoutlmv2), InfoXLMv2, MiniLMv2, UniLMv3, and AdaLM were accepted by ACL 2021.
