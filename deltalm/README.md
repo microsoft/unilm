@@ -5,8 +5,8 @@
 
 ## Pretrained Models
 
-- [DeltaLM-base](): #enc-dec=12-6; #hidden=768; #head=12; #FFN=3072 (#parameters: 360M)
-- [DeltaLM-large](): #enc-dec=24-12; #hidden=1024; #head=16; #FFN=4096 (#parameters: 830M)
+- [DeltaLM-base](https://deltalm.blob.core.windows.net/deltalm/deltalm-base.pt): #enc-dec=12-6; #hidden=768; #head=12; #FFN=3072 (#parameters: 360M)
+- [DeltaLM-large](https://deltalm.blob.core.windows.net/deltalm/deltalm-large.pt): #enc-dec=24-12; #hidden=1024; #head=16; #FFN=4096 (#parameters: 830M)
 - [Vocabulary](https://deltalm.blob.core.windows.net/deltalm/dict.txt) and [Sentencepiece-model](https://deltalm.blob.core.windows.net/deltalm/spm.model)
 
 ```
