@@ -1,7 +1,10 @@
 # [DeltaLM](https://arxiv.org/abs/2106.13736)
 
-**Encoder-Decoder Pre-training for Language Generation and Translation**
+**Encoder-Decoder Pre-training for Language Generation and Translation** 
 
+[DeltaLM: Encoder-Decoder Pre-training for Language Generation and Translation by Augmenting Pretrained Multilingual Encoders.](https://arxiv.org/abs/2106.13736) Shuming Ma, Li Dong, Shaohan Huang, Dongdong Zhang, Alexandre Muzio, Saksham Singhal, Hany Hassan Awadalla, Xia Song, Furu Wei. CoRR abs/2106.13736.
+
+---
 
 ## Pretrained Models
 
@@ -9,7 +12,6 @@
 - [DeltaLM-large](https://deltalm.blob.core.windows.net/deltalm/deltalm-large.pt): #enc-dec=24-12; #hidden=1024; #head=16; #FFN=4096 (#parameters: 830M)
 - [Vocabulary](https://deltalm.blob.core.windows.net/deltalm/dict.txt) and [Sentencepiece-model](https://deltalm.blob.core.windows.net/deltalm/spm.model)
 
----
 
 ## Cross-lingual Abstractive Summarization - [Wikilingua](https://arxiv.org/abs/2010.03093)
 
@@ -22,7 +24,6 @@ We evaluate DeltaLM on cross-lingual abstractive summarization benchmark. We rep
 | [mT5](https://arxiv.org/abs/2010.11934)       | 580M        | 31.8      | 11.5      | 26.0      |
 | DeltaLM   | 360M        | **35.3**      | **13.4**      | **28.7**      |
 
----
 
 ## Setup
 
