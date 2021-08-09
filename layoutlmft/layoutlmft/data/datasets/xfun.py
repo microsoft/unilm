@@ -101,7 +101,6 @@ class XFUN(datasets.GeneratorBasedBuilder):
         ]
 
     def _generate_examples(self, filepaths):
-        last_box = None
         for filepath in filepaths:
             logger.info("Generating examples from = %s", filepath)
             with open(filepath[0], "r") as f:
@@ -132,6 +131,7 @@ class XFUN(datasets.GeneratorBasedBuilder):
                     text_length = 0
                     ocr_length = 0
                     bbox = []
+                    last_box = None
                     for token_id, offset in zip(tokenized_inputs["input_ids"], tokenized_inputs["offset_mapping"]):
                         if token_id == 6:
                             bbox.append(None)
