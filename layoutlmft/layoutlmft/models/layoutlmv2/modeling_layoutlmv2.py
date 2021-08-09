@@ -758,7 +758,7 @@ class LayoutLMv2Model(LayoutLMv2PreTrainedModel):
             position_ids = self.embeddings.position_ids[:, :seq_length]
             position_ids = position_ids.expand_as(input_ids)
 
-        visual_position_ids = torch.arange(0, visual_shape[1], dtype=torch.long, device=input_ids.device).repeat(
+        visual_position_ids = torch.arange(0, visual_shape[1], dtype=torch.long, device=device).repeat(
             input_shape[0], 1
         )
         final_position_ids = torch.cat([position_ids, visual_position_ids], dim=1)
