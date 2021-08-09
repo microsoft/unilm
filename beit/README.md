@@ -166,7 +166,7 @@ OUTPUT_DIR=/path/to/save/your_model
 DATA_PATH=/path/to/imagenet22k
 
 OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=16 run_class_finetuning.py \
-    --model beit_base_patch16_224_8k_vocab --data_path $DATA_PATH \
+    --model beit_base_patch16_224 --data_path $DATA_PATH \
     --nb_classes 21841 --data_set image_folder --disable_eval_during_finetuning \
     --finetune https://unilm.blob.core.windows.net/beit/beit_base_patch16_224_pt22k.pth \
     --output_dir $OUTPUT_DIR --batch_size 256 --lr 3e-3 --update_freq 1 \
