@@ -28,7 +28,7 @@ TOKENIZER_MAPPING.update(
         (LayoutXLMConfig, (LayoutXLMTokenizer, LayoutXLMTokenizerFast)),
     ]
 )
-SLOW_TO_FAST_CONVERTERS.update({"LayoutLMv2Tokenizer": BertConverter, "LayoutXLMConverter": XLMRobertaConverter})
+SLOW_TO_FAST_CONVERTERS.update({"LayoutLMv2Tokenizer": BertConverter, "LayoutXLMTokenizer": XLMRobertaConverter})
 MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING.update(
     [(LayoutLMv2Config, LayoutLMv2ForTokenClassification), (LayoutXLMConfig, LayoutXLMForTokenClassification)]
 )
