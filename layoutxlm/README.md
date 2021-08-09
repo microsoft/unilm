@@ -42,7 +42,8 @@ python -m torch.distributed.launch --nproc_per_node=4 examples/run_xfun_re.py \
         --do_train \
         --do_eval \
         --lang zh \
-        --max_steps 1000 \
+        --max_steps 2500 \
+        --per_device_train_batch_size 2 \
         --warmup_ratio 0.1 \
         --fp16
 ```

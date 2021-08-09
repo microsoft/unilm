@@ -80,7 +80,7 @@ class REDecoder(nn.Module):
                 [
                     (i, j)
                     for i in range(len(entities[b]["label"]))
-                    for j in range(i + 1, len(entities[b]["label"]))
+                    for j in range(len(entities[b]["label"]))
                     if entities[b]["label"][i] == 1 and entities[b]["label"][j] == 2
                 ]
             )
