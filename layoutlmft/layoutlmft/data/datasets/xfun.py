@@ -131,6 +131,7 @@ class XFUN(datasets.GeneratorBasedBuilder):
                     text_length = 0
                     ocr_length = 0
                     bbox = []
+                    last_box = None
                     for token_id, offset in zip(tokenized_inputs["input_ids"], tokenized_inputs["offset_mapping"]):
                         if token_id == 6:
                             bbox.append(None)
@@ -146,7 +147,7 @@ class XFUN(datasets.GeneratorBasedBuilder):
                         if len(tmp_box) == 0:
                             tmp_box = last_box
                         bbox.append(normalize_bbox(merge_bbox(tmp_box), size))
-                        last_box = tmp_box  # noqa
+                        last_box = tmp_box
                     bbox = [
                         [bbox[i + 1][0], bbox[i + 1][1], bbox[i + 1][0], bbox[i + 1][1]] if b is None else b
                         for i, b in enumerate(bbox)
