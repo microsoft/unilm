@@ -13,7 +13,7 @@ The family of UniLM AI:
 
 > [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm) (```v1@ACL'21```): **domain, language, and task adaptation of pre-trained models**
 
-> [**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm) (```v1@KDD'20 | v2@ACL'21```): **multimodal (text + layout/format + image) pre-training for document understanding** (e.g. scanned documents, PDF, etc.)
+> [**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm) (```v1@KDD'20 | v2@ACL'21```): **multimodal (text + layout/format + image) pre-training for [Document AI](https://www.microsoft.com/en-us/research/project/document-ai/)** (e.g. scanned documents, PDF, etc.)
 
 > [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm) (```NEW```): **multimodal (text + layout/format + image) pre-training for multilingual document understanding**
 
