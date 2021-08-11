@@ -1,5 +1,5 @@
 # LayoutLMv2
-**Multimodal (text + layout/format + image) pre-training for document AI**
+**Multimodal (text + layout/format + image) pre-training for [Document AI](https://www.microsoft.com/en-us/research/project/document-ai/)**
 
 ## Introduction
 LayoutLMv2 is an improved version of LayoutLM with new pre-training tasks to model the interaction among text, layout, and image in a single multi-modal framework. It outperforms strong baselines and achieves new state-of-the-art results on a wide variety of downstream visually-rich document understanding tasks, including , including FUNSD (0.7895 → 0.8420), CORD (0.9493 → 0.9601), SROIE (0.9524 → 0.9781), Kleister-NDA (0.834 → 0.852), RVL-CDIP (0.9443 → 0.9564), and DocVQA (0.7295 → 0.8672).
