@@ -1,5 +1,5 @@
 # LayoutXLM
-**multimodal (text + layout/format + image) pre-training for multilingual document understanding**
+**Multimodal (text + layout/format + image) pre-training for multilingual [Document AI](https://www.microsoft.com/en-us/research/project/document-ai/)**
 
 ## Introduction
 
