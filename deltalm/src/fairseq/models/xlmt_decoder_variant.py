@@ -327,11 +327,12 @@ def upgrade_deltalm_state_for_xlmt_model(
     for key in mt_state_dict.keys():
         if 'src_embedding' in key:
             new_key = key.replace('src_embedding', 'encoder')
+            state_dict[new_key] = mt_state_dict[key][:state_dict[new_key].size(0)]
             assert new_key in state_dict.keys()
         elif 'tgt_embedding' in key:
             new_key = key.replace('tgt_embedding', 'decoder')
             assert new_key in state_dict.keys()
-            state_dict[new_key] = mt_state_dict[key]
+            state_dict[new_key] = mt_state_dict[key][:state_dict[new_key].size(0)]
             state_dict['decoder.output_projection.weight'] = state_dict['decoder.embed_tokens.weight']
         elif 'ffn_1.fc1' in key:
             new_key = key.replace('ffn_1.fc1', 'fc1')
