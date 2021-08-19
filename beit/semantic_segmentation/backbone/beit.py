@@ -15,6 +15,7 @@ import torch
 from functools import partial
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.utils.checkpoint as checkpoint
 
 from timm.models.layers import drop_path, to_2tuple, trunc_normal_
 
@@ -286,7 +287,7 @@ class BEiT(nn.Module):
     """
     def __init__(self, img_size=224, patch_size=16, in_chans=3, num_classes=80, embed_dim=768, depth=12,
                  num_heads=12, mlp_ratio=4., qkv_bias=False, qk_scale=None, drop_rate=0., attn_drop_rate=0.,
-                 drop_path_rate=0., hybrid_backbone=None, norm_layer=None, init_values=None, 
+                 drop_path_rate=0., hybrid_backbone=None, norm_layer=None, init_values=None, use_checkpoint=False, 
                  use_abs_pos_emb=True, use_rel_pos_bias=False, use_shared_rel_pos_bias=False,
                  out_indices=[3, 5, 7, 11]):
         super().__init__()
@@ -318,6 +319,7 @@ class BEiT(nn.Module):
 
         dpr = [x.item() for x in torch.linspace(0, drop_path_rate, depth)]  # stochastic depth decay rule
         self.use_rel_pos_bias = use_rel_pos_bias
+        self.use_checkpoint = use_checkpoint
         self.blocks = nn.ModuleList([
             Block(
                 dim=embed_dim, num_heads=num_heads, mlp_ratio=mlp_ratio, qkv_bias=qkv_bias, qk_scale=qk_scale,
@@ -427,7 +429,10 @@ class BEiT(nn.Module):
         rel_pos_bias = self.rel_pos_bias() if self.rel_pos_bias is not None else None
         features = []
         for i, blk in enumerate(self.blocks):
-            x = blk(x, rel_pos_bias=rel_pos_bias)
+            if self.use_checkpoint:
+                x = checkpoint.checkpoint(blk, x, rel_pos_bias)
+            else:
+                x = blk(x, rel_pos_bias)
             if i in self.out_indices:
                 xp = x[:, 1:, :].permute(0, 2, 1).reshape(B, -1, Hp, Wp)
                 features.append(xp.contiguous())

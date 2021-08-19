@@ -10,6 +10,7 @@
 # https://github.com/facebookresearch/xcit/
 # https://github.com/microsoft/Swin-Transformer
 # --------------------------------------------------------'
+# recommand use this config for BEiT models which are self-supervised pretrained and then intermediate fine-tuned on imagenet
 _base_ = [
     '../../_base_/models/upernet_beit.py', '../../_base_/datasets/ade20k.py',
     '../../_base_/default_runtime.py', '../../_base_/schedules/schedule_160k.py'
