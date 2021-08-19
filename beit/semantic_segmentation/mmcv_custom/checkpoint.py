@@ -360,6 +360,16 @@ def load_checkpoint(model,
             state_dict['absolute_pos_embed'] = absolute_pos_embed.view(N2, H, W, C2).permute(0, 3, 1, 2)
 
     rank, _ = get_dist_info()
+    if "rel_pos_bias.relative_position_bias_table" in state_dict:
+        if rank == 0:
+            print("Expand the shared relative position embedding to each layers. ")
+            num_layers = model.get_num_layers()
+            rel_pos_bias = state_dict["rel_pos_bias.relative_position_bias_table"]
+            for i in range(num_layers):
+                state_dict["blocks.%d.attn.relative_position_bias_table" % i] = rel_pos_bias.clone()
+
+        state_dict.pop("rel_pos_bias.relative_position_bias_table")
+
     all_keys = list(state_dict.keys())
     for key in all_keys:
         if "relative_position_index" in key:
