@@ -10,6 +10,7 @@
 # https://github.com/facebookresearch/xcit/
 # https://github.com/microsoft/Swin-Transformer
 # --------------------------------------------------------'
+# recommand use this config for BEiT models which are self-supervised pretrained on imagenet
 _base_ = [
     '../../_base_/models/upernet_beit.py', '../../_base_/datasets/ade20k.py',
     '../../_base_/default_runtime.py', '../../_base_/schedules/schedule_160k.py'
@@ -21,24 +22,24 @@ model = dict(
         type='BEiT',
         img_size=512,
         patch_size=16,
-        embed_dim=1024,
-        depth=24,
-        num_heads=16,
+        embed_dim=768,
+        depth=12,
+        num_heads=12,
         mlp_ratio=4,
         qkv_bias=True,
         use_abs_pos_emb=False,
         use_rel_pos_bias=True,
-        init_values=1e-6,
-        drop_path_rate=0.2,
-        out_indices=[7, 11, 15, 23],
+        init_values=0.1,
+        drop_path_rate=0.1,
+        out_indices=[3, 5, 7, 11]
     ),
     decode_head=dict(
-        in_channels=[1024, 1024, 1024, 1024],
+        in_channels=[768, 768, 768, 768],
         num_classes=150,
-        channels=1024,
+        channels=768,
     ),
     auxiliary_head=dict(
-        in_channels=1024,
+        in_channels=768,
         num_classes=150
     ), 
     test_cfg = dict(mode='slide', crop_size=crop_size, stride=(341, 341))
@@ -50,9 +51,9 @@ model = dict(
 #                                                  'relative_position_bias_table': dict(decay_mult=0.),
 #                                                  'norm': dict(decay_mult=0.)}))
 
-optimizer = dict(_delete_=True, type='AdamW', lr=2e-5, betas=(0.9, 0.999), weight_decay=0.05,
+optimizer = dict(_delete_=True, type='AdamW', lr=7e-4, betas=(0.9, 0.999), weight_decay=0.05,
                  constructor='LayerDecayOptimizerConstructor', 
-                 paramwise_cfg=dict(num_layers=24, layer_decay_rate=0.95))
+                 paramwise_cfg=dict(num_layers=12, layer_decay_rate=0.65))
 
 lr_config = dict(_delete_=True, policy='poly',
                  warmup='linear',

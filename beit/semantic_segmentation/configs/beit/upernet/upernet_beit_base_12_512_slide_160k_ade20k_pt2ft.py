@@ -10,6 +10,7 @@
 # https://github.com/facebookresearch/xcit/
 # https://github.com/microsoft/Swin-Transformer
 # --------------------------------------------------------'
+# recommand use this config for BEiT models which are self-supervised pretrained and then intermediate fine-tuned on imagenet
 _base_ = [
     '../../_base_/models/upernet_beit.py', '../../_base_/datasets/ade20k.py',
     '../../_base_/default_runtime.py', '../../_base_/schedules/schedule_160k.py'
@@ -50,9 +51,9 @@ model = dict(
 #                                                  'relative_position_bias_table': dict(decay_mult=0.),
 #                                                  'norm': dict(decay_mult=0.)}))
 
-optimizer = dict(_delete_=True, type='AdamW', lr=7e-4, betas=(0.9, 0.999), weight_decay=0.05,
+optimizer = dict(_delete_=True, type='AdamW', lr=3e-5, betas=(0.9, 0.999), weight_decay=0.05,
                  constructor='LayerDecayOptimizerConstructor', 
-                 paramwise_cfg=dict(num_layers=12, layer_decay_rate=0.65))
+                 paramwise_cfg=dict(num_layers=12, layer_decay_rate=0.9))
 
 lr_config = dict(_delete_=True, policy='poly',
                  warmup='linear',

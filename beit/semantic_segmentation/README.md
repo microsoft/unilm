@@ -30,7 +30,7 @@ tools/dist_train.sh <CONFIG_PATH> <NUM_GPUS>  --work-dir <SAVE_PATH> --seed 0  -
 For example, using a BEiT-base backbone with UperNet:
 ```bash
 bash tools/dist_train.sh \
-    configs/beit/upernet/upernet_beit_base_12_640_slide_160k_ade20k.py 8 \
+    configs/beit/upernet/upernet_beit_base_12_640_slide_160k_ade20k_pt2ft.py 8 \
     --work-dir /path/to/save --seed 0  --deterministic \
     --options model.pretrained=https://unilm.blob.core.windows.net/beit/beit_base_patch16_224_pt22k_ft22k.pth
 ```
@@ -47,7 +47,7 @@ tools/dist_test.sh  <CONFIG_PATH> <CHECKPOINT_PATH> <NUM_GPUS> --eval mIoU
 
 For example, evaluate a BEiT-base backbone with UperNet:
 ```bash
-bash tools/dist_test.sh configs/beit/upernet/upernet_beit_base_12_640_slide_160k_ade20k.py \ 
+bash tools/dist_test.sh configs/beit/upernet/upernet_beit_base_12_640_slide_160k_ade20k_pt2ft.py \ 
     https://unilm.blob.core.windows.net/beit/beit_base_patch16_640_pt22k_ft22ktoade20k.pth  4 --eval mIoU
 ```
 
