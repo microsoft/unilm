@@ -14,6 +14,7 @@ LayoutLM Family: LayoutLM, LayoutLMv2, LayoutXLM
 conda create -n layoutlmft python=3.7
 conda activate layoutlmft
 git clone https://github.com/microsoft/unilm.git
+cd unilm
 cd layoutlmft
 pip install -r requirements.txt
 pip install -e .
