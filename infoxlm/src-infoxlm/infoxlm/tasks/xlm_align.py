@@ -88,7 +88,7 @@ class XlmAlignTask(FairseqTask):
   def _get_whole_word_mask(self):
     # create masked input and targets
     if self.args.mask_whole_words:
-      print("| Get whole work mask ...")
+      print("| Get whole word mask ...")
       return mlm_utils.get_whole_word_mask(self.args, self.dictionary)
     return None
   
@@ -165,35 +165,15 @@ class XlmAlignTask(FairseqTask):
     return inter, ret
   
   def get_gold_or_silver_wa(self, sample, batch_sim, src_fr, src_to, trg_fr, trg_to):
-    # bsz, max_len, _ = batch_sim.size()
-    # print(src_fr)
-    # print(src_to)
-    # print(trg_fr)
-    # print(trg_to)
-    # print("batch_sim.shape=%s" % str(batch_sim.shape))
-
-    if "gold_wa" in sample:
-      loaded_gold_wa = sample["gold_wa"]
-    else:
-      loaded_gold_wa = [None] * len(batch_sim)
-
     gold_wa = []
     for i, sim in enumerate(batch_sim):
-      loaded_gold_wa_i = loaded_gold_wa[i]
-      if loaded_gold_wa_i is not None:
-        gold_wa.append(loaded_gold_wa_i)
-        # print(loaded_gold_wa_i)
-        continue
-
-      # NOTE if gold_wa is None then generate silver wa
-      # print("sim.shape=%s" % str(sim.shape))
       sim_wo_offset = sim[src_fr[i]: src_to[i], trg_fr[i]: trg_to[i]]
-      # print("sim_wo_offset=%s" % str(sim_wo_offset.shape))
       if src_to[i] - src_fr[i] <= 0 or trg_to[i] - trg_fr[i] <= 0:
         print("[W] src or trg len=0")
         gold_wa.append([])
         continue
-      _, gold_wa_i_wo_offset = self.iter_max(sim_wo_offset)
+      pi, xi = _sinkhorn_iter(sim_wo_offset, self.args.sinkhorn_iter)
+      gold_wa_i_wo_offset = self._extract_wa_from_pi_xi(pi, xi)
       gold_wa_i = []
       for src_idx, trg_idx in gold_wa_i_wo_offset:
         gold_wa_i.append((src_idx + src_fr[i], trg_idx + trg_fr[i]))
