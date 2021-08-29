@@ -25,6 +25,8 @@ The family of UniLM AI:
 
 > [**XLM-T**](https://github.com/microsoft/unilm/tree/master/xlmt) (```NEW```): **Multilingual NMT w/ pretrained cross-lingual encoders**
 
+> [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader)(```EMNLP'21```): **Pre-training of text and layout for reading order detection**
+
 
 ## News
 - August 2021: [**BEiT**](https://huggingface.co/transformers/master/model_doc/beit.html) is on [HuggingFace](https://github.com/huggingface/transformers)
