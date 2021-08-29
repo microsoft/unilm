@@ -25,7 +25,7 @@ The family of UniLM AI:
 
 > [**XLM-T**](https://github.com/microsoft/unilm/tree/master/xlmt) (```NEW```): **Multilingual NMT w/ pretrained cross-lingual encoders**
 
-> [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader)(```EMNLP'21```): **Pre-training of text and layout for reading order detection**
+> [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader) (```EMNLP'21```): **Pre-training of text and layout for reading order detection**
 
 
 ## News
