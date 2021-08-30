@@ -46,6 +46,10 @@ The family of UniLM AI:
 
 ## Release
 
+**\*\*\*\*\* ```New Auguest, 2021```: [LayoutReader](https://github.com/microsoft/unilm/tree/master/layoutreader) release \*\*\*\*\***
+
+- [x] [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader) (August 26, 2021): pre-training of text and layout for reading order detection. The pre-trained LayoutReader performs almost perfectly in reading order detection and significantly improves both open-source and commercial OCR engines in ordering text lines. Meanwhile, we also created a reading order benchmark dataset [ReadingBank](https://github.com/doc-analysis/ReadingBank) to further empower the research in this area. "[LayoutReader: Pre-training of Text and Layout for Reading Order Detection](https://arxiv.org/abs/2108.11591)"
+
 **\*\*\*\*\* ```New July, 2021```: [BEiT](https://github.com/microsoft/unilm/tree/master/beit) release \*\*\*\*\***
 
 - [x] [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit) (June 15, 2021): BERT Pre-Training of Image Transformers. BEiT-large achieves **[state-of-the-art results on ADE20K](https://paperswithcode.com/sota/semantic-segmentation-on-ade20k) (a big jump to 57.0 mIoU) for semantic segmentation**. BEiT-large achieves **state-of-the-art ImageNet top-1 accuracy (88.6%) under the setting without extra data other than ImageNet-22k**. "[BEiT: BERT Pre-Training of Image Transformers](https://arxiv.org/abs/2106.08254)"
