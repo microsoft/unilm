@@ -1,6 +1,6 @@
 # LayoutReader
 
-LayoutReader captures the text and layout information for reading order prediction using the seq2seq model. It performs almost perfectly in reading order detection and significantly improves both open-source and commercial OCR engines in ordering text lines in their results in our experiments.
+LayoutReader captures the text and layout information for reading order prediction using the seq2seq model. It significantly improves both open-source and commercial OCR engines in ordering text lines in their results in our experiments.
 
 
 Our paper "[LayoutReader: Pre-training of Text and Layout for Reading Order Detection](https://arxiv.org/pdf/2108.11591.pdf)" has been accepted by EMNLP 2021.
@@ -22,8 +22,9 @@ pip install -e .
 ~~~
 
 ## Run
-* Download the [pre-processed data](https://layoutlm.blob.core.windows.net/readingbank/dataset/ReadingBank.zip). For more details of the dataset, please refer to [ReadingBank](https://aka.ms/readingbank).
-* Training
+1. Download the [pre-processed data](https://layoutlm.blob.core.windows.net/readingbank/dataset/ReadingBank.zip). For more details of the dataset, please refer to [ReadingBank](https://aka.ms/readingbank).
+2. (Optional) Download our [pre-trained model](https://layoutlm.blob.core.windows.net/readingbank/dataset/layoutreader-base-readingbank.zip) and evaluate it refer to step 4.
+3. Training
     ~~~
     export CUDA_VISIBLE_DEVICE=0,1,2,3
     export OMP_NUM_THREADS=4
@@ -49,7 +50,7 @@ pip install -e .
         --save_steps 5000 \
         --cached_train_features_file /path/to/ReadingBank/features_train.pt
     ~~~
-* Decoding
+4. Decoding
     ~~~
     export CUDA_VISIBLE_DEVICES=0
     export OMP_NUM_THREADS=4
@@ -60,7 +61,7 @@ pip install -e .
         --tokenizer_name bert-base-uncased \
         --input_folder /path/to/ReadingBank/test \
         --cached_feature_file /path/to/ReadingBank/features_test.pt \
-        --output_file /path/to/output/LayoutReader/layoutlm-output.txt \
+        --output_file /path/to/output/LayoutReader/layoutlm/output.txt \
         --split test \
         --do_lower_case \
         --model_path /path/to/output/LayoutReader/layoutlm/ckpt-75000 \
@@ -76,37 +77,38 @@ pip install -e .
     ~~~
 
 ## Results
+Our released [pre-trained model](https://layoutlm.blob.core.windows.net/readingbank/dataset/layoutreader-base-readingbank.zip) achieves 98.2% Average Page-level BLEU score. Detailed results are reported as follow:
 
 * Evaluation results of the LayoutReader on the reading order detection task, where the source-side of training/testing data is in the left-to-right and top-to-bottom order
 
-| Method                     | Encoder                | Avg. Page-level BLEU ↑ | ARD ↓ |
-| -------------------------- | ---------------------- | ---------------------- | ----- |
-| Heuristic Method           | -                      | 0.6972                 | 8.46  |
-| LayoutReader (text only)   | BERT                   | 0.8510                 | 12.08 |
-| LayoutReader (text only)   | UniLM                  | 0.8765                 | 10.65 |
-| LayoutReader (layout only) | LayoutLM (layout only) | 0.9732                 | 2.31  |
-| LayoutReader               | LayoutLM               | 0.9819                 | 1.75  |
+  | Method                     | Encoder                | Avg. Page-level BLEU ↑ | ARD ↓ |
+  | -------------------------- | ---------------------- | ---------------------- | ----- |
+  | Heuristic Method           | -                      | 0.6972                 | 8.46  |
+  | LayoutReader (text only)   | BERT                   | 0.8510                 | 12.08 |
+  | LayoutReader (text only)   | UniLM                  | 0.8765                 | 10.65 |
+  | LayoutReader (layout only) | LayoutLM (layout only) | 0.9732                 | 2.31  |
+  | LayoutReader               | LayoutLM               | 0.9819                 | 1.75  |
 
 * Input order study with left-to-right and top-to-bottom inputs in evaluation, where r is the proportion of
 shuffled samples in training.
 
-| Method                          | Avg. Page-level BLEU ↑ | Avg. Page-level BLEU ↑ | Avg. Page-level BLEU ↑ | ARD ↓  | ARD ↓ | ARD ↓ |
-|---------------------------------|------------------------|------------------------|------------------------|--------|-------|-------|
-|                                 | r=100%                 | r=50%                  | r=0%                   | r=100% | r=50% | r=0%  |
-| LayoutReader (text only, BERT)  | 0.3355                 | 0.8397                 | 0.8510                 | 77.97  | 15.62 | 12.08 |
-| LayoutReader (text only, UniLM) | 0.3440                 | 0.8588                 | 0.8765                 | 78.67  | 13.65 | 10.65 |
-| LayoutReader (layout only)      | 0.9701                 | 0.9729                 | 0.9732                 | 2.85   | 2.61  | 2.31  |
-| LayoutReader                    | 0.9765                 | 0.9788                 | 0.9819                 | 2.50   | 2.24  | 1.75  |
+  | Method                          | Avg. Page-level BLEU ↑ | Avg. Page-level BLEU ↑ | Avg. Page-level BLEU ↑ | ARD ↓  | ARD ↓ | ARD ↓ |
+  |---------------------------------|------------------------|------------------------|------------------------|--------|-------|-------|
+  |                                 | r=100%                 | r=50%                  | r=0%                   | r=100% | r=50% | r=0%  |
+  | LayoutReader (text only, BERT)  | 0.3355                 | 0.8397                 | 0.8510                 | 77.97  | 15.62 | 12.08 |
+  | LayoutReader (text only, UniLM) | 0.3440                 | 0.8588                 | 0.8765                 | 78.67  | 13.65 | 10.65 |
+  | LayoutReader (layout only)      | 0.9701                 | 0.9729                 | 0.9732                 | 2.85   | 2.61  | 2.31  |
+  | LayoutReader                    | 0.9765                 | 0.9788                 | 0.9819                 | 2.50   | 2.24  | 1.75  |
 
 * Input order study with token-shuffled inputs in evaluation, where r is the proportion of shuffled samples in training.
 
-| Method                          | Avg. Page-level BLEU ↑ | Avg. Page-level BLEU ↑ | Avg. Page-level BLEU ↑ | ARD ↓  | ARD ↓ | ARD ↓  |
-|---------------------------------|------------------------|------------------------|------------------------|--------|-------|--------|
-|                                 | r=100%                 | r=50%                  | r=0%                   | r=100% | r=50% | r=0%   |
-| LayoutReader (text only, BERT)  | 0.3085                 | 0.2730                 | 0.1711                 | 78.69  | 85.44 | 67.96  |
-| LayoutReader (text only, UniLM) | 0.3119                 | 0.2855                 | 0.1728                 | 80.00  | 85.60 | 71.13  |
-| LayoutReader (layout only)      | 0.9718                 | 0.9714                 | 0.1331                 | 2.72   | 2.82  | 105.40 |
-| LayoutReader                    | 0.9772                 | 0.9770                 | 0.1783                 | 2.48   | 2.46  | 72.94  |
+  | Method                          | Avg. Page-level BLEU ↑ | Avg. Page-level BLEU ↑ | Avg. Page-level BLEU ↑ | ARD ↓  | ARD ↓ | ARD ↓  |
+  |---------------------------------|------------------------|------------------------|------------------------|--------|-------|--------|
+  |                                 | r=100%                 | r=50%                  | r=0%                   | r=100% | r=50% | r=0%   |
+  | LayoutReader (text only, BERT)  | 0.3085                 | 0.2730                 | 0.1711                 | 78.69  | 85.44 | 67.96  |
+  | LayoutReader (text only, UniLM) | 0.3119                 | 0.2855                 | 0.1728                 | 80.00  | 85.60 | 71.13  |
+  | LayoutReader (layout only)      | 0.9718                 | 0.9714                 | 0.1331                 | 2.72   | 2.82  | 105.40 |
+  | LayoutReader                    | 0.9772                 | 0.9770                 | 0.1783                 | 2.48   | 2.46  | 72.94  |
 
 ## Citation
 

@@ -134,10 +134,7 @@ def main():
     args = parser.parse_args()
 
     model_path = args.model_path
-    while not os.path.exists(model_path):
-        # NOTE: sleep 1h
-        logger.info('sleeping...')
-        sleep(1*60*60)
+    assert os.path.exists(model_path), 'model_path ' + model_path + ' not exists!'
 
     if args.need_score_traces and args.beam_size <= 1:
         raise ValueError(
@@ -249,10 +246,7 @@ def main():
             input_lines = input_lines[:args.subset]
 
         # NOTE: add the sequence index through enumerate
-        input_lines = sorted(list(enumerate(input_lines)),
-                             key=lambda x: -len(x[1]))
-        # output_lines = [""] * len(input_lines)
-        # output_eval_score = [0] * len(input_lines)
+        input_lines = sorted(list(enumerate(input_lines)), key=lambda x: -len(x[1]))
 
         score_trace_list = [None] * len(input_lines)
         total_batch = math.ceil(len(input_lines) / args.batch_size)
@@ -290,7 +284,6 @@ def main():
                         output_ids = traces.tolist()
                     for i in range(len(buf)):
                         w_ids = output_ids[i]
-                        # output_buf = tokenizer.convert_ids_to_tokens(w_ids)
                         output_buf = get_tokens_from_src_and_index(src=buf[i], index=w_ids, modifier=lambda x: x-1)
                         output_tokens = []
                         for t in output_buf:
@@ -304,14 +297,12 @@ def main():
                             output_sequence = ' '.join(detokenize(output_tokens))
                         if '\n' in output_sequence:
                             output_sequence = " [X_SEP] ".join(output_sequence.split('\n'))
-                        # output_lines[buf_id[i]] = output_sequence
 
                         target = target_lines[buf_id[i]]
                         target = detokenize(target)
                         result = output_sequence.split()
                         score = sentence_bleu([target], result)
 
-                        # output_eval_score[buf_id[i]] = score
                         geo_score = target_geo_scores[buf_id[i]]
                         target_sequence = ' '.join(target)
 
@@ -325,13 +316,19 @@ def main():
                                 'scores': traces['scores'][i], 'wids': traces['wids'][i], 'ptrs': traces['ptrs'][i]}
                 pbar.update(1)
                 first_batch = False
-        # if args.output_file:
-        #     fn_out = args.output_file
-        # else:
-        #     fn_out = model_recover_path + '.' + args.split
-        # with open(fn_out, "w", encoding="utf-8") as fout:
-        #     for line, score, target, geo_score in zip(output_lines, output_eval_score, target_lines, target_geo_scores):
-        #         fout.write('{:.8f}\t{:.8f}\t{}\t{}\n'.format(score, geo_score, line, target))
+
+        outscore = open(fn_out, encoding='utf-8')
+        bleu_score = geo_score = {}
+        total_bleu = total_geo = 0.0
+        for line in outscore.readlines():
+            id, bleu, geo, out_seq, tgt_seq = line.split('\t')
+            bleu_score[int(id)] = float(bleu)
+            total_bleu += float(bleu)
+            geo_score[int(id)] = float(geo)
+            total_geo += float(geo)
+        print("avg_bleu", round(100 * total_bleu / len(bleu_score), 1))
+        print("avg_geo", round(100 * total_geo / len(geo_score), 1))
+        # released model (layoutreader-base-readingbank): avg_bleu 98.2, avg_geo 69.7
 
         if args.need_score_traces:
             with open(fn_out + ".trace.pickle", "wb") as fout_trace:
