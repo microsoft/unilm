@@ -48,7 +48,7 @@ The family of UniLM AI:
 
 **\*\*\*\*\* ```New Auguest, 2021```: [LayoutReader](https://github.com/microsoft/unilm/tree/master/layoutreader) release \*\*\*\*\***
 
-- [x] [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader) (August 26, 2021): pre-training of text and layout for reading order detection. The pre-trained LayoutReader performs almost perfectly in reading order detection and significantly improves both open-source and commercial OCR engines in ordering text lines. Meanwhile, we also created a reading order benchmark dataset [ReadingBank](https://github.com/doc-analysis/ReadingBank) to further empower the research in this area. "[LayoutReader: Pre-training of Text and Layout for Reading Order Detection](https://arxiv.org/abs/2108.11591) ```EMNLP 2021```"
+- [x] [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader) (August 26, 2021): pre-training of text and layout for reading order detection. The pre-trained LayoutReader significantly improves both open-source and commercial OCR engines in ordering text lines. Meanwhile, we also created a reading order benchmark dataset [ReadingBank](https://github.com/doc-analysis/ReadingBank) to further empower the research in this area. "[LayoutReader: Pre-training of Text and Layout for Reading Order Detection](https://arxiv.org/abs/2108.11591) ```EMNLP 2021```"
 
 **\*\*\*\*\* ```New July, 2021```: [BEiT](https://github.com/microsoft/unilm/tree/master/beit) release \*\*\*\*\***
 
