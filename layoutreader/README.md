@@ -23,7 +23,7 @@ pip install -e .
 
 ## Run
 1. Download the [pre-processed data](https://layoutlm.blob.core.windows.net/readingbank/dataset/ReadingBank.zip). For more details of the dataset, please refer to [ReadingBank](https://aka.ms/readingbank).
-2. (Optional) Download our [pre-trained model](https://layoutlm.blob.core.windows.net/readingbank/dataset/layoutreader-base-readingbank.zip) and evaluate it refer to step 4.
+2. (Optional) Download our [pre-trained model](https://layoutlm.blob.core.windows.net/readingbank/model/layoutreader-base-readingbank.zip) and evaluate it refer to step 4.
 3. Training
     ~~~
     export CUDA_VISIBLE_DEVICE=0,1,2,3
