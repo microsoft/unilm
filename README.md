@@ -1,6 +1,6 @@
 # UniLM AI
 <!--**Pre-trained models for natural language understanding (NLU) and generation (NLG) tasks**-->
-**Pre-trained (foundation) models across tasks (understanding, generation and translation), languages, and modalities (language, image, adudio, vision + language, audio + language, etc.)**
+**Pre-trained (foundation) models across tasks (understanding, generation and translation), languages (100+ languages), and modalities (language, image, adudio, vision + language, audio + language, etc.)**
 
 The family of UniLM AI:
 > [**UniLM**](https://github.com/microsoft/unilm/tree/master/unilm) (```v1@NeurIPS'19 | v2@ICML'20 | v3@ACL'21```): **unified pre-training for language understanding and generation**
