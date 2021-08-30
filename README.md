@@ -29,7 +29,7 @@ The family of UniLM AI:
 
 
 ## News
-- [Model Release] August, 2021: [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader)
+- [Model Release] August, 2021: [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader) - Built with LayoutLM to improve general reading order detection.
 - August 2021: [**BEiT**](https://huggingface.co/transformers/master/model_doc/beit.html) is on [HuggingFace](https://github.com/huggingface/transformers)
 - [Model Release] July, 2021: [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit) - Towards BERT moment for CV
 - [Model Release] June, 2021: [**LayoutLMv2**](https://github.com/microsoft/unilm/tree/master/layoutlmv2), [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm), [**MiniLMv2**](https://github.com/microsoft/unilm/tree/master/minilm), and [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm).
@@ -48,7 +48,7 @@ The family of UniLM AI:
 
 **\*\*\*\*\* ```New Auguest, 2021```: [LayoutReader](https://github.com/microsoft/unilm/tree/master/layoutreader) release \*\*\*\*\***
 
-- [x] [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader) (August 26, 2021): pre-training of text and layout for reading order detection. The pre-trained LayoutReader performs almost perfectly in reading order detection and significantly improves both open-source and commercial OCR engines in ordering text lines. Meanwhile, we also created a reading order benchmark dataset [ReadingBank](https://github.com/doc-analysis/ReadingBank) to further empower the research in this area. "[LayoutReader: Pre-training of Text and Layout for Reading Order Detection](https://arxiv.org/abs/2108.11591)"
+- [x] [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader) (August 26, 2021): pre-training of text and layout for reading order detection. The pre-trained LayoutReader performs almost perfectly in reading order detection and significantly improves both open-source and commercial OCR engines in ordering text lines. Meanwhile, we also created a reading order benchmark dataset [ReadingBank](https://github.com/doc-analysis/ReadingBank) to further empower the research in this area. "[LayoutReader: Pre-training of Text and Layout for Reading Order Detection](https://arxiv.org/abs/2108.11591) ```EMNLP 2021```"
 
 **\*\*\*\*\* ```New July, 2021```: [BEiT](https://github.com/microsoft/unilm/tree/master/beit) release \*\*\*\*\***
 
