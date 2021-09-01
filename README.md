@@ -46,6 +46,10 @@ The family of UniLM AI:
 
 ## Release
 
+**\*\*\*\*\* ```New September, 2021```: [DeltaLM](https://github.com/microsoft/unilm/tree/master/deltalm) release \*\*\*\*\***
+
+- [x] [**DeltaLM**](https://github.com/microsoft/unilm/tree/master/deltalm) (September 1, 2021): encoder-decoder pre-training for language generation and translation. DeltaLM **ranks first** on the [WMT21 multilingual translation task](http://www.statmt.org/wmt21/large-scale-multilingual-translation-task.html). The task requires a model to translate between 102 languages. "[DeltaLM: Encoder-Decoder Pre-training for Language Generation and Translation by Augmenting Pretrained Multilingual Encoders.](https://arxiv.org/abs/2106.13736)"
+
 **\*\*\*\*\* ```New Auguest, 2021```: [LayoutReader](https://github.com/microsoft/unilm/tree/master/layoutreader) release \*\*\*\*\***
 
 - [x] [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader) (August 26, 2021): pre-training of text and layout for reading order detection. The pre-trained LayoutReader significantly improves both open-source and commercial OCR engines in ordering text lines. Meanwhile, we also created a reading order benchmark dataset [ReadingBank](https://github.com/doc-analysis/ReadingBank) to further empower the research in this area. "[LayoutReader: Pre-training of Text and Layout for Reading Order Detection](https://arxiv.org/abs/2108.11591) ```EMNLP 2021```"
