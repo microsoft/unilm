@@ -270,3 +270,7 @@ Thumbs.db
 
 
 # End of https://www.toptal.com/developers/gitignore/api/python,macos,pycharm+all
+
+
+runs
+layoutlmft/data/datasets/xfun.py.lock
