@@ -226,19 +226,19 @@ def main():
 
     # Initialize our Trainer
     trainer = XfunSerTrainer(
-        model=model,
-        args=training_args,
-        train_dataset=train_dataset if training_args.do_train else None,
-        eval_dataset=eval_dataset if training_args.do_eval else None,
-        tokenizer=tokenizer,
-        data_collator=data_collator,
-        compute_metrics=compute_metrics,
+        model=model, # 学習や推論に利用するモデル
+        args=training_args, # 学習のための設定
+        train_dataset=train_dataset if training_args.do_train else None, # トレーニングデータ
+        eval_dataset=eval_dataset if training_args.do_eval else None, # テストデータ
+        tokenizer=tokenizer, # データの前処理に使われるトークナイザ
+        data_collator=data_collator, # データセットから1バッチを形成するための関数
+        compute_metrics=compute_metrics, # 評価時に使用するメトリクス
     )
 
     # Training
     if training_args.do_train:
-        checkpoint = last_checkpoint if last_checkpoint else None
-        train_result = trainer.train(resume_from_checkpoint=checkpoint)
+        checkpoint = last_checkpoint if last_checkpoint else None # last_checkpointがある場合はそれを利用する
+        train_result = trainer.train(resume_from_checkpoint=checkpoint) # トレーニングを実行
         metrics = train_result.metrics
         trainer.save_model()  # Saves the tokenizer too for easy upload
 
