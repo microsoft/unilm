@@ -31,8 +31,9 @@ We evaluate DeltaLM on cross-lingual abstractive summarization benchmark. We rep
 ## Setup
 
 ```bash
-cd src/
-pip install --editiable ./
+git submodule update --init deltalm/fairseq
+cd deltalm/
+pip install --editiable fairseq/
 ```
 
 ## Fine-tuning
@@ -47,6 +48,11 @@ pip install --editiable ./
 |   +-- valid.tgt
 ```
 
+*Examples (IWSLT14 German to English)*:
+```bash
+bash examples/prepare_iwslt14.sh /tmp/iwslt14
+```
+
 2. Tokenize the data using [Sentencepiece](https://github.com/google/sentencepiece):
 
 ```bash
@@ -54,15 +60,26 @@ spm_encode --model=/path/to/checkpoint/spm.model --output_format=piece < train.s
 spm_encode --model=/path/to/checkpoint/spm.model --output_format=piece < train.tgt > train.spm.tgt
 spm_encode --model=/path/to/checkpoint/spm.model --output_format=piece < valid.src > valid.spm.src
 spm_encode --model=/path/to/checkpoint/spm.model --output_format=piece < valid.tgt > valid.spm.tgt
+spm_encode --model=/path/to/checkpoint/spm.model --output_format=piece < test.src > test.spm.src
+spm_encode --model=/path/to/checkpoint/spm.model --output_format=piece < test.tgt > test.spm.tgt
+```
+
+*Examples (IWSLT14 German to English)*:
+```bash
+bash examples/binary_iwslt14.sh \
+     /tmp/iwslt14/iwslt14.tokenized.de-en \
+     /tmp/iwslt14/iwslt14.spm \
+     /path/to/checkpoint/spm.model
 ```
 
 3. Binary the data:
 
 ```bash
 data_bin=/path/to/data-bin/
-python ./fairseq_cli/preprocess.py  \
+python preprocess.py  \
     --trainpref train.spm \
     --validpref valid.spm \
+    --testpref test.spm \
     --source-lang src --target-lang tgt \
     --destdir $data_bin \
     --srcdict /path/to/checkpoint/dict.txt \
@@ -70,22 +87,67 @@ python ./fairseq_cli/preprocess.py  \
     --workers 40
 ```
 
+*Examples (IWSLT14 German to English)*:
+```bash
+bash examples/binary_iwslt14.sh \
+     /tmp/iwslt14/iwslt14.spm \
+     /tmp/iwslt14/iwslt14.bin \
+     /path/to/checkpoint/dict.txt
+```
+
 4. Fine-tuning:
 
 ```bash
 PRETRAINED_MODEL=/path/to/checkpoint/model.pt
-LANGS="src,tgt"
-LANG_PAIRS="src-tgt"
 python train.py $data_bin \
-    --save-dir checkpoints/ --arch xlmt_decoder_variant_large_from_deltalm_postnorm --pretrained-deltalm-checkpoint $PRETRAINED_MODEL --init-encoder-only --init-decoder-only --variant addffn \
-    --task translation_multi_simple_epoch --sampling-method "linear" --sampling-temperature 5.0 --min-sampling-temperature 1.0 --warmup-epoch 5 \
-    --encoder-langtok "tgt" --langtoks '{"main":("tgt",None)}' --langs $LANGS --lang-pairs $LANG_PAIRS \
-    --share-all-embeddings --max-source-positions 512 --max-target-positions 512 --criterion label_smoothed_cross_entropy --label-smoothing 0.1 \
-    --optimizer adam --adam-betas '(0.9, 0.98)' --lr-scheduler inverse_sqrt --lr 1e-4 --warmup-init-lr 1e-07 --stop-min-lr 1e-09 --warmup-updates 4000 \
-    --max-update 400000 --max-epoch 100 --max-tokens 4096 --update-freq 1 \
-    --seed 1 --log-format simple --skip-invalid-size-inputs-valid-test --ddp-backend=no_c10d
+    --save-dir $save_dir \
+    --arch deltalm_base \
+    --pretrained-deltalm-checkpoint $PRETRAINED_MODEL \
+    --share-all-embeddings \
+    --max-source-positions 512 --max-target-positions 512 \
+    --criterion label_smoothed_cross_entropy \
+    --label-smoothing 0.1 \
+    --optimizer adam --adam-betas '(0.9, 0.98)' \
+    --lr-scheduler inverse_sqrt \
+    --lr $lr \
+    --warmup-init-lr 1e-07 \
+    --stop-min-lr 1e-09 \
+    --warmup-updates 4000 \
+    --max-update 400000 \
+    --max-epoch 100 \
+    --max-tokens $batch_size \
+    --update-freq 1 \
+    --seed 1 \
+    --log-format simple \
+    --skip-invalid-size-inputs-valid-test
 ```
-**Note: Please adjust the `max-tokens` and `update-freq` to suit in different experimental environments. Recommendation of the total batch size is `4096 * 128` tokens per step.
+**Note: 
+- For large checkpoint, please set `--arch deltalm_large`.
+- Please adjust the `max-tokens` and `update-freq` to suit in different experimental environments. Recommendation of the total batch size is `4096 * 128` tokens per step.
+- Use `--fp16` for more efficient training on the devices that have Tensor Cores.
+
+*Examples (IWSLT14 German to English)*:
+```bash
+bash examples/train_iwslt14.sh \
+     /tmp/iwslt14/iwslt14.bin \
+     /tmp/iwslt14/checkpoints \
+     /path/to/checkpoint/model.pt
+```
+
+5. Evaluation:
+
+```bash
+python generate.py $data_bin \
+    --path $save_dir/checkpoint_best.pt \
+    --batch-size 128 --beam 5 --remove-bpe=sentencepiece
+```
+
+*Examples (IWSLT14 German to English)*:
+```bash
+bash examples/evaluate_iwslt14.sh \
+     /tmp/iwslt14/iwslt14.bin \
+     /tmp/iwslt14/checkpoints
+```
 
 ---
 
