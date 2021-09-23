@@ -27,7 +27,10 @@ The family of UniLM AI:
 
 > [**XLM-T**](https://github.com/microsoft/unilm/tree/master/xlmt) (```NEW```): **Multilingual NMT w/ pretrained cross-lingual encoders**
 
+> [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) (```NEW```): **Transformer-based OCR w/ pre-trained models**
+
 ## News
+- [Model Release] September, 2021: [**TrOCR**](https://github.com/microsoft/unilm/tree/master/TrOCR) - Transformer-based OCR w/ pre-trained BEiT and RoBERTa models.
 - August 2021: [**LayoutLMv2**](https://huggingface.co/transformers/master/model_doc/layoutlmv2.html) and [**LayoutXLM**](https://huggingface.co/transformers/master/model_doc/layoutxlm.html) are on [HuggingFace](https://github.com/huggingface/transformers)
 - [Model Release] August, 2021: [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader) - Built with LayoutLM to improve general reading order detection.
 - [Model Release] August, 2021: [**DeltaLM**](https://github.com/microsoft/unilm/tree/master/deltalm) - Encoder-decoder pre-training for language generation and translation.
@@ -47,27 +50,31 @@ The family of UniLM AI:
 
 ## Release
 
-**\*\*\*\*\* ```New August, 2021```: [LayoutReader](https://github.com/microsoft/unilm/tree/master/layoutreader) release \*\*\*\*\***
+**\*\*\*\*\* ```New September, 2021```: [TrOCR](https://github.com/microsoft/unilm/tree/master/TrOCR) release \*\*\*\*\***
+
+- [x] [**TrOCR**](https://github.com/microsoft/unilm/tree/master/TrOCR) (September 22, 2021): Transformer-based OCR with pre-trained models, which leverages the Transformer architecture for both image understanding and wordpiece-level text generation. The TrOCR model is simple but effective (convolution free), and can be pre-trained with large-scale synthetic data and fine-tuned with human-labeled datasets. "[TrOCR: Transformer-based Optical Character Recognition with Pre-trained Models](https://arxiv.org/abs/2109.10282)"
+
+**\*\*\*\*\* ```August, 2021```: [LayoutReader](https://github.com/microsoft/unilm/tree/master/layoutreader) release \*\*\*\*\***
 
 - [x] [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader) (August 26, 2021): pre-training of text and layout for reading order detection. The pre-trained LayoutReader significantly improves both open-source and commercial OCR engines in ordering text lines. Meanwhile, we also created a reading order benchmark dataset [ReadingBank](https://github.com/doc-analysis/ReadingBank) to further empower the research in this area. "[LayoutReader: Pre-training of Text and Layout for Reading Order Detection](https://arxiv.org/abs/2108.11591) ```EMNLP 2021```"
 
-**\*\*\*\*\* ```New August, 2021```: [DeltaLM](https://github.com/microsoft/unilm/tree/master/deltalm) release \*\*\*\*\***
+**\*\*\*\*\* ```August, 2021```: [DeltaLM](https://github.com/microsoft/unilm/tree/master/deltalm) release \*\*\*\*\***
 
 - [x] [**DeltaLM**](https://github.com/microsoft/unilm/tree/master/deltalm) (August, 2021): encoder-decoder pre-training for language generation and translation. DeltaLM **ranks first** on the [WMT21 multilingual translation task](http://www.statmt.org/wmt21/large-scale-multilingual-translation-task.html). The task requires a model to translate between 102 languages. "[DeltaLM: Encoder-Decoder Pre-training for Language Generation and Translation by Augmenting Pretrained Multilingual Encoders.](https://arxiv.org/abs/2106.13736)"
 
-**\*\*\*\*\* ```New July, 2021```: [BEiT](https://github.com/microsoft/unilm/tree/master/beit) release \*\*\*\*\***
+**\*\*\*\*\* ```July, 2021```: [BEiT](https://github.com/microsoft/unilm/tree/master/beit) release \*\*\*\*\***
 
 - [x] [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit) (June 15, 2021): BERT Pre-Training of Image Transformers. BEiT-large achieves **[state-of-the-art results on ADE20K](https://paperswithcode.com/sota/semantic-segmentation-on-ade20k) (a big jump to 57.0 mIoU) for semantic segmentation**. BEiT-large achieves **state-of-the-art ImageNet top-1 accuracy (88.6%) under the setting without extra data other than ImageNet-22k**. "[BEiT: BERT Pre-Training of Image Transformers](https://arxiv.org/abs/2106.08254)"
 
 
 
-**\*\*\*\*\* ```New June, 2021```: [LayoutXLM](https://github.com/microsoft/unilm/tree/master/layoutxlm) | [AdaLM](https://github.com/microsoft/unilm/tree/master/adalm) | [MiniLMv2](https://github.com/microsoft/unilm/tree/master/minilm) release \*\*\*\*\***
+**\*\*\*\*\* ```June, 2021```: [LayoutXLM](https://github.com/microsoft/unilm/tree/master/layoutxlm) | [AdaLM](https://github.com/microsoft/unilm/tree/master/adalm) | [MiniLMv2](https://github.com/microsoft/unilm/tree/master/minilm) release \*\*\*\*\***
 
 - [x] [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm) (April 17, 2021): multimodal pre-training for multilingual visually-rich document understanding. The pre-trained LayoutXLM model has significantly outperformed the existing SOTA cross-lingual pre-trained models on the FUNSD and multilingual [XFUND](https://github.com/doc-analysis/XFUND) dataset including 7 languages (Chinese, Japanese, Spanish, French, Italian, German, Portuguese). "[LayoutXLM: Multimodal Pre-training for Multilingual Visually-rich Document Understanding](https://arxiv.org/abs/2104.08836)"
 - [x] [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm) (June 2021): a simple yet effective approach for domain adaptation of pre-trained models. Biomedical specific pre-trained models are released. "[Adapt-and-Distill: Developing Small, Fast and Effective Pretrained Language Models for Domains](#) ```ACL 2021```"
 - [x] [**MiniLMv2**](https://github.com/microsoft/unilm/tree/master/minilm) (December, 2020): a simple yet effective task-agnostic knoweldge distillation method, namely multi-head self-attention relation distillation, for compressing large pre-trained Transformers into small and fast pre-trained models. MiniLMv2 significantly outperforms MiniLMv1. Both English and multilingual MiniLM models are released. "[MiniLMv2: Multi-Head Self-Attention Relation Distillation for Compressing Pretrained Transformers](https://arxiv.org/abs/2012.15828) ```ACL 2021```"
 
-**\*\*\*\*\* ```New May, 2021```: [LayoutLMv2](https://github.com/microsoft/unilm/tree/master/layoutlmv2) | [LayoutXLM](https://github.com/microsoft/unilm/tree/master/layoutxlm) release \*\*\*\*\***
+**\*\*\*\*\* ```May, 2021```: [LayoutLMv2](https://github.com/microsoft/unilm/tree/master/layoutlmv2) | [LayoutXLM](https://github.com/microsoft/unilm/tree/master/layoutxlm) release \*\*\*\*\***
 
 - [x] [**LayoutLM 2.0**](https://github.com/microsoft/unilm/tree/master/layoutlmv2) (December 29, 2020): multimodal pre-training for visually-rich document understanding by leveraging text, layout and image information in a single framework. It is coming with new SOTA on a wide range of document understanding tasks, including FUNSD (0.7895 -> 0.8420), CORD (0.9493 -> 0.9601), SROIE (0.9524 -> 0.9781), Kleister-NDA (0.834 -> 0.852), RVL-CDIP (0.9443 -> 0.9564), and DocVQA (0.7295 -> 0.8672). "[LayoutLMv2: Multi-modal Pre-training for Visually-Rich Document Understanding](https://arxiv.org/abs/2012.14740) ```ACL 2021```"
 
