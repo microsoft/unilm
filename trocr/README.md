@@ -28,20 +28,20 @@ pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cud
 ~~~
 
 ## Fine-tuning and evaluation
-|   model  | download |
+|   Model  | Download |
 | -------- | -------- |
-| TrOCR-Base-IAM     | [download](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-handwritten.pt) |
-| TrOCR-Large-IAM    | [download](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-handwritten.pt) |
-| TrOCR-Base-SROIE   | [download](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-printed.pt) |
-| TrOCR-Large-SROIE  | [download](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-printed.pt) |
-| TrOCR-Base-Stage1  | [download](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-stage1.pt) |
-| TrOCR-Large-Stage1 | [download](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-stage1.pt) |
+| TrOCR-Base-IAM     | [trocr-base-handwritten.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-handwritten.pt) |
+| TrOCR-Large-IAM    | [trocr-large-handwritten.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-handwritten.pt) |
+| TrOCR-Base-SROIE   | [trocr-base-printed.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-printed.pt) |
+| TrOCR-Large-SROIE  | [trocr-large-printed.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-printed.pt) |
+| TrOCR-Base-Stage1  | [trocr-base-stage1.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-stage1.pt) |
+| TrOCR-Large-Stage1 | [trocr-large-stage1.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-stage1.pt) |
 
 
-|   testset  | download |
+|   Test set  | Download |
 | --------| -------- |
-| IAM     | [download](https://layoutlm.blob.core.windows.net/trocr/dataset/IAM.tar.gz) |
-| SROIE   | [download](https://layoutlm.blob.core.windows.net/trocr/dataset/SROIE_Task2_Original.tar.gz) |
+| IAM     | [IAM.tar.gz](https://layoutlm.blob.core.windows.net/trocr/dataset/IAM.tar.gz) |
+| SROIE   | [SROIE_Task2_Original.tar.gz](https://layoutlm.blob.core.windows.net/trocr/dataset/SROIE_Task2_Original.tar.gz) |
 
 
 
