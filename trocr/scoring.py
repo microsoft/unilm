@@ -64,28 +64,28 @@ class CER2Scorer(BaseScorer):
 #     def result_string(self) -> str:
 #         return f"CER: {self.score():.2f}"
 
-# @register_scorer("acc_ed", dataclass=FairseqDataclass)
-# class AccEDScorer(BaseScorer):
-#     def __init__(self, args):
-#         super(AccEDScorer, self).__init__(args)
-#         self.n_data = 0
-#         self.n_correct = 0
-#         self.ed = 0
-#
-#     def add_string(self, ref, pred):
-#         self.n_data += 1
-#         if ref == pred:
-#             self.n_correct += 1
-#         self.ed += edit_distance(ref, pred)
-#         self.ref.append(ref)
-#         self.pred.append(pred)
-#
-#     def score(self):
-#         return self.n_correct / float(self.n_data) * 100, self.ed / float(self.n_data)
-#
-#     def result_string(self):
-#         acc, norm_ed = self.score()
-#         return f"Accuracy: {acc:.3f} Norm ED: {norm_ed:.2f}"
+@register_scorer("acc_ed", dataclass=FairseqDataclass)
+class AccEDScorer(BaseScorer):
+    def __init__(self, args):
+        super(AccEDScorer, self).__init__(args)
+        self.n_data = 0
+        self.n_correct = 0
+        self.ed = 0
+
+    def add_string(self, ref, pred):
+        self.n_data += 1
+        if ref == pred:
+            self.n_correct += 1
+        self.ed += edit_distance(ref, pred)
+        self.ref.append(ref)
+        self.pred.append(pred)
+
+    def score(self):
+        return self.n_correct / float(self.n_data) * 100, self.ed / float(self.n_data)
+
+    def result_string(self):
+        acc, norm_ed = self.score()
+        return f"Accuracy: {acc:.3f} Norm ED: {norm_ed:.2f}"
 
 @register_scorer("sroie", dataclass=FairseqDataclass)
 class SROIEScorer(BaseScorer):
