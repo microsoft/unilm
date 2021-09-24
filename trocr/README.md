@@ -8,8 +8,8 @@ TrOCR is an end-to-end text recognition approach with pre-trained image Transfor
 The TrOCR is currently implemented with the Fairseq library. We hope to convert the models to Huggingface format later.
 
  
-| Model                          |  #Param   | testset | score          |
-|--------------------------------|-----------|---------|----------------|
+| Model                          |  #Param   | Test set | Score          |
+|--------------------------------|-----------|----------|----------------|
 | TrOCR-Base                     | 334M       | IAM     | 3.42 (Cased CER)     |
 | TrOCR-Large                    | 558M       | IAM     | 2.89 (Cased CER)     |
 | TrOCR-Base                     | 334M       | SROIE   | 96.34 (F1)  |
