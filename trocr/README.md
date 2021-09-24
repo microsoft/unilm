@@ -3,15 +3,17 @@
 ## Introduction
 TrOCR is an end-to-end text recognition approach with pre-trained image Transformer and text Transformer models, which leverages the Transformer architecture for both image understanding and wordpiece-level text generation. 
  
- [TrOCR: Transformer-based Optical Character Recognition with Pre-trained Models](https://layoutlm.blob.core.windows.net/trocr/dataset/IAM.tar.gz) Minghao Li, Tengchao Lv, Lei Cui, Yijuan Lu, Dinei Florencio, Cha Zhang, Zhoujun Li, Furu Wei
+ [TrOCR: Transformer-based Optical Character Recognition with Pre-trained Models](https://arxiv.org/abs/2109.10282), Minghao Li, Tengchao Lv, Lei Cui, Yijuan Lu, Dinei Florencio, Cha Zhang, Zhoujun Li, Furu Wei, Preprint 2021.
+
+The TrOCR is currently implemented with the fairseq library. We hope to convert the models to Huggingface format later.
+
  
- 
-| Model                          |  #Param   | testset | score          |
-|--------------------------------|-----------|---------|----------------|
-| TrOCR-Base                     | 334M       | IAM     | 3.42 (CER)     |
-| TrOCR-Large                    | 558M       | IAM     | 2.89 (CER)     |
-| TrOCR-Base                     | 334M       | SROIE   | 96.34 (SROIE)  |
-| TrOCR-Large                    | 558M       | SROIE   | 96.58 (SROIE)  |
+| Model                          |  #Param   | Test set | Score          |
+|--------------------------------|-----------|----------|----------------|
+| TrOCR-Base                     | 334M       | IAM     | 3.42 (Cased CER)     |
+| TrOCR-Large                    | 558M       | IAM     | 2.89 (Cased CER)     |
+| TrOCR-Base                     | 334M       | SROIE   | 96.34 (F1)  |
+| TrOCR-Large                    | 558M       | SROIE   | 96.58 (F1)  |
 
 ## Installation
 ~~~bash
@@ -26,20 +28,20 @@ pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cud
 ~~~
 
 ## Fine-tuning and evaluation
-|   model  | download |
+|   Model  | Download |
 | -------- | -------- |
-| TrOCR-Base-IAM     | [download](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-handwritten.pt) |
-| TrOCR-Large-IAM    | [download](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-handwritten.pt) |
-| TrOCR-Base-SROIE   | [download](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-printed.pt) |
-| TrOCR-Large-SROIE  | [download](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-printed.pt) |
-| TrOCR-Base-Stage1  | [download](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-stage1.pt) |
-| TrOCR-Large-Stage1 | [download](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-stage1.pt) |
+| TrOCR-Base-IAM     | [trocr-base-handwritten.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-handwritten.pt) |
+| TrOCR-Large-IAM    | [trocr-large-handwritten.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-handwritten.pt) |
+| TrOCR-Base-SROIE   | [trocr-base-printed.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-printed.pt) |
+| TrOCR-Large-SROIE  | [trocr-large-printed.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-printed.pt) |
+| TrOCR-Base-Stage1  | [trocr-base-stage1.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-stage1.pt) |
+| TrOCR-Large-Stage1 | [trocr-large-stage1.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-stage1.pt) |
 
 
-|   testset  | download |
+|   Test set  | Download |
 | --------| -------- |
-| IAM     | [download](https://layoutlm.blob.core.windows.net/trocr/dataset/IAM.tar.gz) |
-| SROIE   | [download](https://layoutlm.blob.core.windows.net/trocr/dataset/SROIE_Task2_Original.tar.gz) |
+| IAM     | [IAM.tar.gz](https://layoutlm.blob.core.windows.net/trocr/dataset/IAM.tar.gz) |
+| SROIE   | [SROIE_Task2_Original.tar.gz](https://layoutlm.blob.core.windows.net/trocr/dataset/SROIE_Task2_Original.tar.gz) |
 
 
 
@@ -129,7 +131,7 @@ The score reported by "fairseq-generate" will be lower than which calculated by 
 So please convert the output file to zip format using "convert_to_sroie_format.py" and submit it on the [website](https://rrc.cvc.uab.es/?ch=13&com=evaluation&task=2) to get the true score.
 
 ## Citation
-If you find TrOCR useful in your research, please cite the following paper:
+If you want to cite TrOCR in your research, please cite the following paper:
 ``` latex
 @misc{li2021trocr,
       title={TrOCR: Transformer-based Optical Character Recognition with Pre-trained Models}, 
