@@ -129,7 +129,7 @@ The score reported by "fairseq-generate" will be lower than which calculated by 
 So please convert the output file to zip format using "convert_to_sroie_format.py" and submit it on the [website](https://rrc.cvc.uab.es/?ch=13&com=evaluation&task=2) to get the true score.
 
 ## Citation
-If you find TrOCR useful in your research, please cite the following paper:
+If you want to cite TrOCR in your research, please cite the following paper:
 ``` latex
 @misc{li2021trocr,
       title={TrOCR: Transformer-based Optical Character Recognition with Pre-trained Models}, 
