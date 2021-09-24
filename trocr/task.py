@@ -6,9 +6,8 @@ from fairseq.data import Dictionary
 from fairseq.tasks import LegacyFairseqTask, register_task
 from torchvision.transforms.transforms import ToTensor
 
-from .data import SROIETextRecognitionDataset, Receipt53KDataset, HDF5Dataset, MultiHDF5Dataset, GeneralDataset, SyntheticTextRecognitionDataset
+from .data import SROIETextRecognitionDataset, SyntheticTextRecognitionDataset
 from .data_aug import build_data_aug
-from .deit_datasets import build_transform
 import logging
 
 logger = logging.getLogger(__name__)
@@ -99,36 +98,16 @@ class SROIETextRecognitionTask(LegacyFairseqTask):
                 input_size = tuple(input_size)
         elif isinstance(input_size, int):
             input_size = (input_size, input_size)
-        if self.args.preprocess == 'NODA':
-            tfm = build_data_aug(input_size, mode='NODA') 
-        elif self.args.preprocess == 'DeiT':
-            tfm = build_transform(split == 'train', self.args)
-        elif self.args.preprocess == 'DA2':            
-            tfm = build_data_aug(input_size, mode=split)            
-        elif self.args.preprocess == 'ResNetDA':
-            tfm = build_data_aug(input_size, mode=split, resnet=True)
-        elif self.args.preprocess == 'ResizePadDA':
-            tfm = build_data_aug(input_size, mode=split, resizepad=True)
+        if self.args.preprocess == 'DA2':
+            tfm = build_data_aug(input_size, mode=split)
         else:
             raise Exception('Undeined image preprocess method.')
         
         if self.args.data_type == 'SROIE':
             root_dir = os.path.join(self.data_dir, split)
             self.datasets[split] = SROIETextRecognitionDataset(root_dir, tfm, self.bpe, self.target_dict, self.args.crop_img_output_dir)        
-        elif self.args.data_type == 'Receipt53K':
-            gt_path = os.path.join(self.data_dir, 'gt_{}.txt'.format(split))            
-            self.datasets[split] = Receipt53KDataset(gt_path, tfm, self.bpe, self.target_dict)
-        elif self.args.data_type == 'HDF5':
-            root_dir = os.path.join(self.data_dir, split)
-            self.datasets[split] = HDF5Dataset(root_dir, tfm, self.bpe, self.target_dict)        
-        elif self.args.data_type == 'MultiHDF5':
-            root_dir = os.path.join(self.data_dir, split)
-            self.datasets[split] = MultiHDF5Dataset(root_dir, tfm, self.bpe, self.target_dict)      
-        elif self.args.data_type == 'General':
-            desc_path = os.path.join(self.data_dir, '{}.txt'.format(split))
-            self.datasets[split] = GeneralDataset(desc_path, tfm, self.bpe, self.target_dict)
         elif self.args.data_type == 'STR':
-            gt_path = os.path.join(self.data_dir, 'gt_{}.txt'.format(split))            
+            gt_path = os.path.join(self.data_dir, 'gt_{}.txt'.format(split))
             self.datasets[split] = SyntheticTextRecognitionDataset(gt_path, tfm, self.bpe, self.target_dict)
         else:
             raise Exception('Not defined dataset type: ' + self.args.data_type)

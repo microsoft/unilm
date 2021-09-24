@@ -4,12 +4,7 @@ import math
 from typing import Dict, List, Optional
 
 from fairseq.sequence_generator import SequenceGenerator
-import torch.nn as nn
-from fairseq import search, utils
-from fairseq.data import data_utils
-from fairseq.models import FairseqIncrementalDecoder
 from torch import Tensor
-from fairseq.ngram_repeat_block import NGramRepeatBlock
 
 class TextRecognitionGenerator(SequenceGenerator):
 
@@ -28,10 +23,6 @@ class TextRecognitionGenerator(SequenceGenerator):
             ],
         )
         net_input = sample["net_input"]
-        # 'net_input': {
-        #         'imgs': imgs,
-        #         'prev_output_tokens': rotate_batch
-        #     },
         device = sample["net_input"]["imgs"].device
 
 

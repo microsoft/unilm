@@ -69,18 +69,3 @@ class GPT2BPEEnhancedSpace(GPT2BPE):
     def is_beginning_of_word(self, x: str) -> bool:
         return self.decode(x).startswith(" ")
 
-
-if __name__ == '__main__':
-    from data import SROIETask2
-    config = GPT2BPEConfig()
-    bpe = GPT2BPEEnhancedSpace(config)
-    bpe2 = GPT2BPE(config)
-    data, crop_data = SROIETask2('data/SROIE_Task2_Original/train', None, None, None)
-    for item in crop_data:
-        if item['image_id'] == 128:
-            print()
-        encoded_str = bpe.encode(item['encoded_str'])
-        assert bpe.decode(encoded_str) == item['encoded_str'], '{:d} errors'.format(item['image_id'])
-    # print(bpe.encode(' hello world!'))
-    # print(bpe2.encode(' hello world!'))
-
