@@ -124,9 +124,9 @@ $(which fairseq-generate) \
         --fp16 \
         ${DATA}
 ~~~
-The score reported by "fairseq-generate" will lower than which calculated by offical calculated tools (about 0.03).
+The score reported by "fairseq-generate" will be lower than which calculated by offical calculated tools (about 0.03).
 
-So please convert the output file to zip format using "convert_to_sroie_format.py" and submit it on the [website](https://rrc.cvc.uab.es/?ch=13&com=evaluation&task=2).
+So please convert the output file to zip format using "convert_to_sroie_format.py" and submit it on the [website](https://rrc.cvc.uab.es/?ch=13&com=evaluation&task=2) to get the true score.
 
 ## Citation
 If you find TrOCR useful in your research, please cite the following paper:
