@@ -37,6 +37,10 @@ pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cud
 | TrOCR-Base-Stage1  | [trocr-base-stage1.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-stage1.pt) |
 | TrOCR-Large-Stage1 | [trocr-large-stage1.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-stage1.pt) |
 
+|   Test set  | Download |
+| --------| -------- |
+| IAM     | [IAM.tar.gz](https://layoutlm.blob.core.windows.net/trocr/dataset/IAM.tar.gz) |
+| SROIE   | [SROIE_Task2_Original.tar.gz](https://layoutlm.blob.core.windows.net/trocr/dataset/SROIE_Task2_Original.tar.gz) |
 
 
 
