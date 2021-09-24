@@ -122,7 +122,7 @@ $(which fairseq-generate) \
         ${DATA}
 ~~~
 
-Please convert the output file to zip format using "convert_to_sroie_format.py" and submit it on the [website](https://rrc.cvc.uab.es/?ch=13&com=evaluation&task=2) to get the true score.
+Please convert the output file to zip format using "convert_to_sroie_format.py" and submit it on the [website](https://rrc.cvc.uab.es/?ch=13&com=evaluation&task=2) to get the  score.
 
 ## Citation
 If you want to cite TrOCR in your research, please cite the following paper:
