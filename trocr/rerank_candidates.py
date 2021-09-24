@@ -166,31 +166,6 @@ def main():
             scorer.add_string(gt_str, preds[0][0])
     
     print(scorer.result_string())
-    # gt_scores = []
-    # pred_scores = []
-    # for file_name in predictions:
-    #     all_gt = []
-    #     all_pred = []
-    #     for gt_str, preds in predictions[file_name]:
-    #         all_gt.append(gt_str)
-    #         all_pred.append(preds[0][0])
-    
-    #     all_gt = ' '.join(all_gt)
-    #     all_pred = ' '.join(all_pred)
-
-    #     gt_scores.append(score(all_gt))
-    #     pred_scores.append(score(all_pred))
-
-    # sum_count = 0
-    # less_count = 0
-    
-    # for gt_score, pred_score in zip(gt_scores, pred_scores):
-    #     sum_count += 1
-    #     if gt_score <= pred_score:
-    #         less_count += 1
-    # print('{:d}/{:d}'.format(less_count, sum_count))
-    # print(sum(gt_scores)/len(gt_scores), sum(pred_scores)/len(pred_scores))
-
 
 if __name__ == '__main__':
     main()
