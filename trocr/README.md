@@ -80,7 +80,7 @@ $(which fairseq-generate) \
 
 ### Fine-tuning on SROIE
 For fine-tuning and inference on printed text, the "--decoder-pretrained" need to be set to "roberta" in large model and "roberta2" in base model.
-This is a legacy issue caused by version iteration of the code during the experiment.
+This is a legacy issue caused by version iteration of the code during the experiment (will be fixed later).
 
 For handwritten text, set it to "roberta2" is ok.
 
