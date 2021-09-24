@@ -10,8 +10,8 @@ TrOCR is an end-to-end text recognition approach with pre-trained image Transfor
 |--------------------------------|-----------|---------|----------------|
 | TrOCR-Base                     | 334M       | IAM     | 3.42 (CER)     |
 | TrOCR-Large                    | 558M       | IAM     | 2.89 (CER)     |
-| TrOCR-Base                     | 334M       | SROIE   | 96.34 (SROIE)  |
-| TrOCR-Large                    | 558M       | SROIE   | 96.58 (SROIE)  |
+| TrOCR-Base                     | 334M       | SROIE   | 96.34 (F1)  |
+| TrOCR-Large                    | 558M       | SROIE   | 96.58 (F1)  |
 
 ## Installation
 ~~~bash
