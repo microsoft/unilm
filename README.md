@@ -30,6 +30,7 @@ The family of UniLM AI:
 > [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) (```NEW```): **Transformer-based OCR w/ pre-trained models**
 
 ## News
+- [Model Release] September, 2021: [**LayoutLM-cased**](https://huggingface.co/microsoft/layoutlm-base-cased) are on [HuggingFace](https://github.com/huggingface/transformers)
 - [Model Release] September, 2021: [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) - Transformer-based OCR w/ pre-trained [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit) and RoBERTa models.
 - August 2021: [**LayoutLMv2**](https://huggingface.co/transformers/master/model_doc/layoutlmv2.html) and [**LayoutXLM**](https://huggingface.co/transformers/master/model_doc/layoutxlm.html) are on [HuggingFace](https://github.com/huggingface/transformers)
 - [Model Release] August, 2021: [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader) - Built with LayoutLM to improve general reading order detection.
