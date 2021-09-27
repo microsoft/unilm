@@ -18,6 +18,8 @@ Yang Xu, Yiheng Xu, Tengchao Lv, Lei Cui, Furu Wei, Guoxin Wang, Yijuan Lu, Dine
 Yiheng Xu, Tengchao Lv, Lei Cui, Guoxin Wang, Yijuan Lu, Dinei Florencio, Cha Zhang, Furu Wei, [Preprint](#)
 
 ## Release Notes
+**\*\*\*\*\* New Sep 27th, 2021: [**LayoutLM-cased**](https://huggingface.co/microsoft/layoutlm-base-cased) are on [HuggingFace](https://github.com/huggingface/transformers) \*\*\*\*\***
+
 **\*\*\*\*\* New Aug 7th, 2020: Our new document understanding datasets, [TableBank](https://doc-analysis.github.io/tablebank-page/) (LREC 2020) and [DocBank](https://doc-analysis.github.io/docbank-page/) (COLING 2020), are now publicly available.\*\*\*\*\***
 
 **\*\*\*\*\* New May 16th, 2020: Our LayoutLM paper has been accepted to KDD 2020 as a full paper in the research track\*\*\*\*\***
@@ -26,12 +28,26 @@ Yiheng Xu, Tengchao Lv, Lei Cui, Guoxin Wang, Yijuan Lu, Dinei Florencio, Cha Zh
 
 ## Pre-trained Model
 
-We pre-train LayoutLM on IIT-CDIP Test Collection 1.0\* dataset with two settings. 
+We pre-train LayoutLM on IIT-CDIP Test Collection 1.0\* dataset. 
 
-* LayoutLM-Base, Uncased (11M documents, 2 epochs): 12-layer, 768-hidden, 12-heads, 113M parameters |[HuggingFace](https://huggingface.co/microsoft/layoutlm-base-uncased)| [OneDrive](https://1drv.ms/u/s!ApPZx_TWwibInS3JD3sZlPpQVZ2b?e=bbTfmM) | [Google Drive](https://drive.google.com/open?id=1Htp3vq8y2VRoTAwpHbwKM0lzZ2ByB8xM)
-* LayoutLM-Large, Uncased (11M documents, 2 epochs): 24-layer, 1024-hidden, 16-heads, 343M parameters |[HuggingFace](https://huggingface.co/atahmasb/tf-layoutlm-large-uncased)| [OneDrive](https://1drv.ms/u/s!ApPZx_TWwibInSy2nj7YabBsTWNa?e=p4LQo1) | [Google Drive](https://drive.google.com/open?id=1tatUuWVuNUxsP02smZCbB5NspyGo7g2g)
+| name                    | #params | HuggingFace                                                  |
+| ----------------------- | ------- | ------------------------------------------------------------ |
+| LayoutLM-Base, Uncased  | 113M    | [Model Hub](https://huggingface.co/microsoft/layoutlm-base-uncased) |
+| LayoutLM-Base, Cased    | 113M    | [Model Hub](https://huggingface.co/microsoft/layoutlm-base-cased) |
+| LayoutLM-Large, Uncased | 343M    | [Model Hub](https://huggingface.co/microsoft/layoutlm-large-uncased) |
+
+
 
 \*As some downstream datasets are the subsets of IIT-CDIP, we have carefully excluded the overlap portion from the pre-training data.
+
+### Different Tokenizer
+Note that LayoutLM-Base-Cased requires a different tokenizer, based on RobertaTokenizer. You can
+initialize it as follows:
+
+~~~
+from transformers import AutoTokenizer
+tokenizer = AutoTokenizer.from_pretrained('microsoft/layoutlm-base-cased') 
+~~~
 
 ## Fine-tuning Example on FUNSD
 
