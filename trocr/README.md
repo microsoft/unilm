@@ -64,7 +64,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_
     --warmup-init-lr 1e-8 --warmup-updates 500 --weight-decay 0.0001 --log-format tqdm \
     --log-interval 10 --batch-size ${BSZ} --batch-size-valid ${valid_BSZ} --save-dir ${SAVE_PATH} \
     --tensorboard-logdir ${LOG_DIR} --max-epoch 300 --patience 20 --ddp-backend legacy_ddp \
-    --num-workers 8 --preprocess DA2 --decoder-pretrained roberta2 --update-freq 1 \
+    --num-workers 8 --preprocess DA2 --decoder-pretrained roberta --update-freq 1 \
     --finetune-from-model /path/to/model --fp16 \
     ${DATA} \
 ~~~
@@ -80,16 +80,11 @@ $(which fairseq-generate) \
         --data-type STR --user-dir ./ --task text_recognition --input-size 384 \
         --beam 10 --bpe gpt2 --scoring cer2 --gen-subset test --batch-size ${BSZ} \
         --path ${MODEL} --results-path ${RESULT_PATH} --text-recog-gen --preprocess DA2 \
-        --decoder-pretrained roberta2 --fp16 \
+        --fp16 \
         ${DATA}
 ~~~
 
 ### Fine-tuning on SROIE
-For fine-tuning and inference on printed text, the "--decoder-pretrained" need to be set to "roberta" in large model and "roberta2" in base model.
-This is a legacy issue caused by version iteration of the code during the experiment (will be fixed later).
-
-For handwritten text, set it to "roberta2" is ok.
-
 ~~~bash
 export MODEL_NAME=ft_SROIE
 export SAVE_PATH=/path/to/save/${MODEL_NAME}
@@ -123,7 +118,6 @@ $(which fairseq-generate) \
         --beam 10 --nbest 1 --bpe gpt2 --scoring sroie --gen-subset test \
         --batch-size ${BSZ} --path ${MODEL} --results-path ${RESULT_PATH} \
         --text-recog-gen --preprocess DA2 \
-        --decoder-pretrained roberta \ # base:roberta2 large:roberta 
         --fp16 \
         ${DATA}
 ~~~
