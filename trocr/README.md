@@ -2,6 +2,8 @@
 
 ## Introduction
 TrOCR is an end-to-end text recognition approach with pre-trained image Transformer and text Transformer models, which leverages the Transformer architecture for both image understanding and wordpiece-level text generation. 
+
+![TrOCR](https://pbs.twimg.com/media/FADdTXEVgAAsTWL?format=jpg&name=4096x4096)
  
  [TrOCR: Transformer-based Optical Character Recognition with Pre-trained Models](https://arxiv.org/abs/2109.10282), Minghao Li, Tengchao Lv, Lei Cui, Yijuan Lu, Dinei Florencio, Cha Zhang, Zhoujun Li, Furu Wei, Preprint 2021.
 
