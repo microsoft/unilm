@@ -607,6 +607,18 @@ def beit_large_decoder_large(args):
     args.decoder_attention_heads = getattr(args, "decoder_attention_heads", 16)
     base_transformer(args)
 
+@register_model_architecture('DeiT_TR', 'DeiT_TR_LargeR_BEiT_Large')
+def beit_large_decoder_large(args):
+    # DeiT Encoder  deit_base_distilled_patch16_384
+    args.deit_arch = getattr(args, "deit_arch", "beit_large_patch16_384")
+    # Transformer Decoder
+    args.encoder_embed_dim = 1024
+    args.decoder_layers = getattr(args, "decoder_layers", 12)
+    args.decoder_embed_dim = getattr(args, "decoder_embed_dim", 1024)
+    args.decoder_ffn_embed_dim = getattr(args, "decoder_ffn_embed_dim", 4096)
+    args.decoder_attention_heads = getattr(args, "decoder_attention_heads", 16)
+    base_transformer(args)
+
 @register_model_architecture('DeiT_TR', 'deit_base_decoder_large_custom_size')
 def deit_base_decoder_large_custom_size(args):
     # DeiT Encoder  deit_base_distilled_patch16_custom_size

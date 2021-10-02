@@ -6,8 +6,13 @@ from fairseq.data import Dictionary
 from fairseq.tasks import LegacyFairseqTask, register_task
 from torchvision.transforms.transforms import ToTensor
 
-from .data import SROIETextRecognitionDataset, SyntheticTextRecognitionDataset
-from .data_aug import build_data_aug
+try:
+    from .data import SROIETextRecognitionDataset, SyntheticTextRecognitionDataset
+    from .data_aug import build_data_aug
+except:
+    from data import SROIETextRecognitionDataset, SyntheticTextRecognitionDataset
+    from data_aug import build_data_aug
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -135,7 +140,10 @@ class SROIETextRecognitionTask(LegacyFairseqTask):
             SequenceGenerator,
             SequenceGeneratorWithAlignment,
         )
-        from .generator import TextRecognitionGenerator
+        try:
+            from .generator import TextRecognitionGenerator
+        except:
+            from generator import TextRecognitionGenerator
         try:
             from fairseq.fb_sequence_generator import FBSequenceGenerator
         except ModuleNotFoundError:
