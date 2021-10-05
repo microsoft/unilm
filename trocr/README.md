@@ -124,6 +124,9 @@ $(which fairseq-generate) \
 
 Please convert the output file to zip format using "convert_to_sroie_format.py" and submit it on the [website](https://rrc.cvc.uab.es/?ch=13&com=evaluation&task=2) to get the  score.
 
+## An Inference Example
+Please see detials in [pic_inference.py](https://github.com/microsoft/unilm/blob/master/trocr/pic_inference.py).
+
 ## Citation
 If you want to cite TrOCR in your research, please cite the following paper:
 ``` latex
@@ -136,9 +139,6 @@ If you want to cite TrOCR in your research, please cite the following paper:
       primaryClass={cs.CL}
 }
 ```
-
-## Actual inference
-Please see detials in [pic_inference.py](https://github.com/microsoft/unilm/blob/master/trocr/pic_inference.py).
 
 ## License
 This project is licensed under the license found in the LICENSE file in the root directory of this source tree. Portions of the source code are based on the [fairseq](https://github.com/pytorch/fairseq) project. [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct)
