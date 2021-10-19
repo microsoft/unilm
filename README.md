@@ -17,7 +17,7 @@ The family of UniLM AI:
 
 > [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm) (```NEW```): **multimodal (text + layout/format + image) pre-training for multilingual document understanding**
 
-> [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm) (```NEW```): **multimodal (text + markup language) pre-training for visually-rich document understanding**
+> [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm) (```NEW```): **markup language model pre-training for visually-rich document understanding**
 
 > [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader) (```EMNLP'21```): **Pre-training of text and layout for reading order detection**
 
