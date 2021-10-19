@@ -17,6 +17,8 @@ The family of UniLM AI:
 
 > [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm) (```NEW```): **multimodal (text + layout/format + image) pre-training for multilingual document understanding**
 
+> [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm) (```NEW```): **multimodal (text + markup language) pre-training for visually-rich document understanding**
+
 > [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader) (```EMNLP'21```): **Pre-training of text and layout for reading order detection**
 
 > [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit) (```NEW```): **BERT Pre-Training of Image Transformers**
@@ -55,7 +57,11 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 
 ## Release
 
-**\*\*\*\*\* ```New September, 2021```: [TrOCR](https://github.com/microsoft/unilm/tree/master/trocr) release \*\*\*\*\***
+**\*\*\*\*\* ```New October, 2021```: [MarkupLM](https://github.com/microsoft/unilm/tree/master/markuplm) release \*\*\*\*\***
+
+- [x] [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm) (October 19, 2021): MarkupLM, a simple yet effective pre-training approach for text and markup language. With the Transformer architecture, MarkupLM integrates different input embeddings including text embeddings, position embeddings, and XPath embeddings. Furthermore, we also propose new pre-training objectives that are specially designed for understanding the markup language. We evaluate the pre-trained MarkupLM model on the WebSRC and SWDE datasets. Experiments show that MarkupLM significantly outperforms several SOTA baselines in these tasks. "[MarkupLM: Pre-training of Text and Markup Language for Visually-rich Document Understanding](https://arxiv.org/abs/2110.08518)"
+
+**\*\*\*\*\* ```September, 2021```: [TrOCR](https://github.com/microsoft/unilm/tree/master/trocr) release \*\*\*\*\***
 
 - [x] [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) (September 22, 2021): Transformer-based OCR with pre-trained models, which leverages the Transformer architecture for both image understanding and bpe-level text generation. The TrOCR model is simple but effective (convolution free), and can be pre-trained with large-scale synthetic data and fine-tuned with human-labeled datasets. "[TrOCR: Transformer-based Optical Character Recognition with Pre-trained Models](https://arxiv.org/abs/2109.10282)"
 
