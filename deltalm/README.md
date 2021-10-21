@@ -34,7 +34,7 @@ We evaluate DeltaLM on cross-lingual abstractive summarization benchmark. We rep
 ```bash
 git submodule update --init deltalm/fairseq
 cd deltalm/
-pip install --editiable fairseq/
+pip install --editable fairseq/
 ```
 
 ## Fine-tuning
