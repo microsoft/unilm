@@ -15,7 +15,7 @@ The TrOCR is currently implemented with the fairseq library. We hope to convert 
 | TrOCR-Base                     | 334M       | IAM     | 3.42 (Cased CER)     |
 | TrOCR-Large                    | 558M       | IAM     | 2.89 (Cased CER)     |
 | TrOCR-Base                     | 334M       | SROIE   | 96.34 (F1)  |
-| TrOCR-Large                    | 558M       | SROIE   | 96.58 (F1)  |
+| TrOCR-Large                    | 558M       | SROIE   | 96.60 (F1)  |
 
 ## Installation
 ~~~bash
