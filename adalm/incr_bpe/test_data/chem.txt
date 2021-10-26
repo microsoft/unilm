@@ -1,0 +1,50 @@
+<< Androgen >> antagonistic effect of estramustine phosphate (EMP) metabolites on wild-type and mutated [[ androgen receptor ]].
+Androgen antagonistic effect of << estramustine phosphate >> (EMP) metabolites on wild-type and mutated [[ androgen receptor ]].
+Androgen antagonistic effect of estramustine phosphate (<< EMP >>) metabolites on wild-type and mutated [[ androgen receptor ]].
+Down-regulation of << prostate-specific antigen >> (PSA) expression, an AR-target gene, by [[ estramustine ]] and bicalutamide was accompanied by the blockade of the mutated androgen receptor.
+Down-regulation of prostate-specific antigen (<< PSA >>) expression, an AR-target gene, by [[ estramustine ]] and bicalutamide was accompanied by the blockade of the mutated androgen receptor.
+Down-regulation of prostate-specific antigen (PSA) expression, an << AR >>-target gene, by [[ estramustine ]] and bicalutamide was accompanied by the blockade of the mutated androgen receptor.
+Down-regulation of << prostate-specific antigen >> (PSA) expression, an AR-target gene, by estramustine and [[ bicalutamide ]] was accompanied by the blockade of the mutated androgen receptor.
+Down-regulation of prostate-specific antigen (<< PSA >>) expression, an AR-target gene, by estramustine and [[ bicalutamide ]] was accompanied by the blockade of the mutated androgen receptor.
+Down-regulation of prostate-specific antigen (PSA) expression, an << AR >>-target gene, by estramustine and [[ bicalutamide ]] was accompanied by the blockade of the mutated androgen receptor.
+Down-regulation of prostate-specific antigen (PSA) expression, an AR-target gene, by << estramustine >> and bicalutamide was accompanied by the blockade of the mutated [[ androgen receptor ]].
+Down-regulation of prostate-specific antigen (PSA) expression, an AR-target gene, by estramustine and << bicalutamide >> was accompanied by the blockade of the mutated [[ androgen receptor ]].
+Exposure of LNCaP cells to << estramustine >> for 24 hr caused transcriptional inhibition of [[ PSA ]] in a concentration-dependent manner.
+The levels of << PSA >> mRNA decreased 56 and 90% when LNCaP cells were treated with 5 and 10 microM of [[ estramustine ]], respectively (IC50 = 10.97 +/- 1.68 microM).
+Binding of << hydroxyflutamide >> to m-AR in LNCaP cells resulted in a concentration-dependent stimulation of [[ PSA ]] expression, suggesting that hydroxyflutamide acted as an agonist of the m-AR.
+Binding of hydroxyflutamide to m-AR in LNCaP cells resulted in a concentration-dependent stimulation of PSA expression, suggesting that << hydroxyflutamide >> acted as an agonist of the m-[[ AR ]].
+Our data indicate that << estramustine phosphate >> metabolites perform as androgen antagonists of [[ AR ]], an additional mechanism involved in the therapeutic effect of estramustine phosphate in patients with prostate cancer.
+Our data indicate that estramustine phosphate metabolites perform as << androgen >> antagonists of [[ AR ]], an additional mechanism involved in the therapeutic effect of estramustine phosphate in patients with prostate cancer.
+In order to address one aspect of the feasibility of performing time-resolved studies on AChE, a data set has been collected using the Laue technique on a trigonal crystal of << Torpedo californica AChE >> soaked with the reversible inhibitor [[ edrophonium ]], using a total X-ray exposure time of 24 ms.
+Selective inhibition of << cyclooxygenase 2 >> spares renal function and [[ prostaglandin ]] synthesis in cirrhotic rats with ascites.
+The current study evaluates the effects of a selective << COX-2 >> inhibitor ([[ SC-236 ]]) on renal function in cirrhotic rats with ascites.
+RESULTS: Administration of SC-236 to cirrhotic animals did not produce significant renal effects, whereas administration of the nonselective << COX-1 >>/COX-2 inhibitor, [[ ketorolac ]], resulted in a marked reduction in urine volume, urinary excretion of prostaglandins, and glomerular filtration rate and in a significant impairment in renal water metabolism.
+RESULTS: Administration of SC-236 to cirrhotic animals did not produce significant renal effects, whereas administration of the nonselective COX-1/<< COX-2 >> inhibitor, [[ ketorolac ]], resulted in a marked reduction in urine volume, urinary excretion of prostaglandins, and glomerular filtration rate and in a significant impairment in renal water metabolism.
+RESULTS: Administration of SC-236 to cirrhotic animals did not produce significant renal effects, whereas administration of the nonselective << COX-1 >>/COX-2 inhibitor, ketorolac, resulted in a marked reduction in urine volume, urinary excretion of [[ prostaglandins ]], and glomerular filtration rate and in a significant impairment in renal water metabolism.
+RESULTS: Administration of SC-236 to cirrhotic animals did not produce significant renal effects, whereas administration of the nonselective COX-1/<< COX-2 >> inhibitor, ketorolac, resulted in a marked reduction in urine volume, urinary excretion of [[ prostaglandins ]], and glomerular filtration rate and in a significant impairment in renal water metabolism.
+Inhibition of << cPLA2 >> translocation and leukotriene C4 secretion by [[ fluticasone propionate ]] in exogenously activated human eosinophils.
+FMLP/CB-stimulated translocation of << cPLA2 >> to the nuclear envelope assessed by specific immunohistochemical staining also was blocked by [[ FP ]].
+We find that << FP >> causes a decrease in stimulated eosinophil secretion of LTC4 that is regulated by [[ phospholipase A2 ]] (PLA2).
+We find that FP causes a decrease in stimulated eosinophil secretion of << LTC4 >> that is regulated by [[ phospholipase A2 ]] (PLA2).
+We find that FP causes a decrease in stimulated eosinophil secretion of << LTC4 >> that is regulated by phospholipase A2 ([[ PLA2 ]]).
+Inhibition of LTC4 synthesis precedes the global cytotoxic effects of << FP >> as indicated by the simultaneous upregulation of [[ annexin-1 ]] expression.
+<< Desipramine >> treatment decreases 3H-nisoxetine binding and [[ norepinephrine transporter ]] mRNA in SK-N-SHSY5Y cells.
+The antidepressant << desipramine >> has been shown to decrease synaptic membrane concentrations of the norepinephrine re-uptake transporter ([[ NET ]]) in vivo and in vitro, on both an acute and a chronic basis.
+The antidepressant << desipramine >> has been shown to decrease synaptic membrane concentrations of the [[ norepinephrine re-uptake transporter ]] (NET) in vivo and in vitro, on both an acute and a chronic basis.
+We conclude that decreased NET synthesis may contribute to the chronic, but not acute, effect of << desipramine >> to downregulate the [[ NET ]].
+Inhibition of the << human ether-a-go-go-related gene (HERG) potassium channel >> by [[ cisapride ]]: affinity for open and inactivated states.
+2 In a chronic transfection model using CHO-K1 cells, << cisapride >> inhibited [[ HERG ]] tail currents after a step to +25 mV with similar potency at room and physiological temperatures (IC50 16. 4 nM at 20-22 degrees C and 23.6 nM at 37 degrees C).
+6 In conclusion, << HERG >> channel inhibition by [[ cisapride ]] exhibits features consistent with open and inactivated state binding and is sensitive to external potassium concentration.
+While it is an antagonist at these latter receptors, << ziprasidone >> behaves as a [[ 5-HT1A ]] agonist in vitro in adenylate cyclase measurements.
+Pretreatment with the << 5-HT1A >> antagonist [[ WAY-100,635 ]] (10 micrograms/kg i.v.) prevented the ziprasidone-induced inhibition; the same dose of WAY-100,635 had little effect on the inhibition produced by clozapine and olanzapine.
+Pretreatment with the << 5-HT1A >> antagonist WAY-100,635 (10 micrograms/kg i.v.) prevented the ziprasidone-induced inhibition; the same dose of [[ WAY-100,635 ]] had little effect on the inhibition produced by clozapine and olanzapine.
+These profiles suggest a mechanism of action for each agent, << 5-HT1A >> agonism for [[ ziprasidone ]] and alpha 1 antagonism for clozapine and olanzapine.
+The << 5-HT1A >> agonist activity reported here clearly distinguishes [[ ziprasidone ]] from currently available antipsychotic agents and suggests that this property may play a significant role in its pharmacologic actions.
+The nonselective and irreversible << MAO >> inhibitors, [[ phenelzine ]] (3-10 mg/kg), tranylcypromine (1-3 mg/kg), and nialamide (30 mg/kg), decreased rates of responding maintained by ethanol reinforcement.
+The nonselective and irreversible << MAO >> inhibitors, phenelzine (3-10 mg/kg), [[ tranylcypromine ]] (1-3 mg/kg), and nialamide (30 mg/kg), decreased rates of responding maintained by ethanol reinforcement.
+The nonselective and irreversible << MAO >> inhibitors, phenelzine (3-10 mg/kg), tranylcypromine (1-3 mg/kg), and [[ nialamide ]] (30 mg/kg), decreased rates of responding maintained by ethanol reinforcement.
+The reversible << MAO-A >> inhibitor, [[ befloxatone ]] (0.3-3 mg/kg), and the irreversible MAO-A inhibitor, clorgyline (10-30 mg/kg), also reduced ethanol self-administration.
+The reversible MAO-A inhibitor, befloxatone (0.3-3 mg/kg), and the irreversible << MAO-A >> inhibitor, [[ clorgyline ]] (10-30 mg/kg), also reduced ethanol self-administration.
+The irreversible << MAO-B >> inhibitors, [[ pargyline ]] (30 mg/kg) and l-deprenyl (3-10 mg/kg) also decreased responding maintained by ethanol reinforcement; these results are consistent with previous findings that both drugs decreased ethanol intake in mice.
+The irreversible << MAO-B >> inhibitors, pargyline (30 mg/kg) and [[ l-deprenyl ]] (3-10 mg/kg) also decreased responding maintained by ethanol reinforcement; these results are consistent with previous findings that both drugs decreased ethanol intake in mice.
+<< Dicumarol >>, a potent inhibitor of [[ quinone oxidoreductase ]], at high concentration (500 microm ) caused only a 72% decrease in the utilization of resorufin.

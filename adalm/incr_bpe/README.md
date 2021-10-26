@@ -15,11 +15,18 @@ If you want to build a proper size of vocabulary for specific domain using the i
 
 ```bash
 python vocab_extend.py \
-	--corpus {file for the domain corpus}
-	--raw_vocab {bert_raw_vocab_file}
-	--output_file {he output file of the final vocabulary}
-	--interval {vocab size interval}
+	--corpus {file for the domain corpus} \
+	--raw_vocab {bert_raw_vocab_file} \
+	--output_file {he output file of the final vocabulary} \
+	--interval {vocab size interval} \
 	--threshold {threshold for P(D)}
+
+# Example using sample data
+python vocab_extend.py --corpus test_data/chem.txt \
+	--raw_vocab test_data/vocab.txt \
+	--output_file test_data/chem.vocab \
+	--interval 1000 --threshold 1
+
 ```
 
 If you simply want to get a specific size of vocab, you can run the following 
