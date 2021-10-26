@@ -101,7 +101,7 @@ def vocab_extend(corpus, raw_vocab, output_filename, interval=10000 , threshold 
         pre_lm = now_lm
 
 
-vocab_extend('cs_data.txt', 'vocab.txt', 'cs.vocab')
+#vocab_extend('cs_data.txt', 'vocab.txt', 'cs.vocab')
 
 def get_args():
     parser = argparse.ArgumentParser()
