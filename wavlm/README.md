@@ -35,7 +35,6 @@ We also evaluate our models on typical speech processing benchmarks.
 | UniSpeech-SAT large | No | 0.564 | 0.561| 1.23 |
 | **WavLM large** | No | **0.431** | **0.538**| **1.154** |
 
-Regarding reproduction, please contact [Zhengyang](https://github.com/czy97)
 
 
 ### Speech Separation
@@ -51,8 +50,6 @@ Evaluation on [LibriCSS](https://github.com/chenzhuo1011/libri_css)
 | **WavLM large** | 4.2| 4.1	| 4.8	| 5.8 |	7.4|	8.5|
 
 
-Regarding reproduction, please contact [Sanyuan](https://github.com/Sanyuan-Chen)
-
 ### Speaker Diarization
 
 Evaluation on CALLHOME
@@ -66,15 +63,9 @@ Evaluation on CALLHOME
 | WavLM Base| 6.99|	11.12|	15.20	|16.48|	21.61|	11.75|
 | **WavLm large** | 6.46|	10.69|	11.84	|12.89|	20.70|	10.35|
 
-
-Regarding reproduction, please contact [Zhengyang](https://github.com/czy97)
-
 ### Speech Recogntion
 
-![alt text](ASR.png)
-
-
-Regarding reproduction, please contact [Chengyi](https://github.com/cywang97)
+![alt text](ASR.PNG)
 
 
 ## More Speech Pre-Trained  Models
@@ -88,8 +79,17 @@ Portions of the source code are based on the [FAIRSEQ](https://github.com/pytorc
 
 
 ### Reference
-If you find Our work is useful in your research, please cite the following paper:
-
+If you find our work is useful in your research, please cite the following paper:
+``` latex
+@article{Chen2021WavLM,
+  title   = {WavLM: Large-Scale Self-Supervised  Pre-training   for Full Stack Speech Processing},
+  author  = {Sanyuan Chen and Chengyi Wang and Zhengyang Chen and Yu Wu and Shujie Liu and Zhuo Chen and Jinyu Li and Naoyuki Kanda and Takuya Yoshioka and Xiong Xiao and Jian Wu and Long Zhou and Shuo Ren and Yanmin Qian and Yao Qian and Jian Wu and Micheal Zeng and Furu Wei},
+  eprint={2110.13900},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL}
+  year={2021}
+}
+```
 [WavLM: Large-Scale Self-Supervised  Pre-training   for Full Stack Speech Processing](https://arxiv.org/pdf/2110.13900.pdf)
 
 
