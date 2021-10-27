@@ -6,6 +6,10 @@
 
  [**WavLM**](https://arxiv.org/pdf/2110.13900.pdf) : **WavLM: Large-Scale Self-Supervised  Pre-training   for Full Stack Speech Processing**
 
+Official PyTorch implementation and pretrained models of WavLM
+
+- Oct 2021: release preprint in [arXiv](https://arxiv.org/pdf/2110.13900.pdf)
+
 ## Pre-Trained models
 Model | Pretraining Dataset | Finetuning Dataset | Model
 |---|---|---|---
@@ -24,6 +28,9 @@ The authors are preparing simple, clear, and well-documented fine-tuning code of
 ## Downstream Task Performance 
 We also evaluate our models on typical speech processing benchmarks.
 ### Speaker Verification
+
+Evaluate on the [VoxCeleb](https://www.robots.ox.ac.uk/~vgg/data/voxceleb/#:~:text=VoxCeleb%20is%20an%20audio%2Dvisual,interview%20videos%20uploaded%20to%20YouTube)
+
 | Model         |Fix pre-train| Vox1-O | Vox1-E     | Vox1-H         |
 | ------------- |------------- | ---------- | ---------- | ---------- |
 | ECAPA-TDNN   | - | 0.87     | 1.12  | 2.12   |
@@ -52,7 +59,7 @@ Evaluation on [LibriCSS](https://github.com/chenzhuo1011/libri_css)
 
 ### Speaker Diarization
 
-Evaluation on CALLHOME
+Evaluation on [CALLHOME](https://arxiv.org/pdf/1909.06247.pdf)
 | Model         |spk_2	|spk_3|	spk_4|	spk_5|	spk_6|	spk_all |
 | ---------------- |------| ------ | ------ | ------ | ------ | ------ |
 | [EEND-vector clustering](https://arxiv.org/pdf/2105.09040.pdf)   | 7.96|	11.93	|16.38|	21.21|	23.1	|12.49||
@@ -90,7 +97,6 @@ If you find our work is useful in your research, please cite the following paper
   year={2021}
 }
 ```
-[WavLM: Large-Scale Self-Supervised  Pre-training   for Full Stack Speech Processing](https://arxiv.org/pdf/2110.13900.pdf)
 
 
 ### Contact Information

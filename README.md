@@ -23,13 +23,15 @@ The family of UniLM AI:
 
 > [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit) (```NEW```): **BERT Pre-Training of Image Transformers**
 
-> [**UniSpeech**](https://arxiv.org/abs/2101.07597) (```v1@ICML'21```): **Speech Pre-Training for ASR and TTS**
+> [**UniSpeech**](https://arxiv.org/abs/2101.07597) (```v1@ICML'21```): **Speech Pre-Training for Multi-lingual ASR**
 
 > [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): **sequence-to-sequence fine-tuning toolkit**
 
 > [**XLM-T**](https://github.com/microsoft/unilm/tree/master/xlmt) (```NEW```): **Multilingual NMT w/ pretrained cross-lingual encoders**
 
 > [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) (```NEW```): **Transformer-based OCR w/ pre-trained models**
+
+> [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) (```NEW```): **Speech Pre-Training for full stack tasks**
 
 # Hiring
 We are hiring at all levels (including FTE researchers and interns)! If you are interested in working with us on NLP and large-scale pre-trained models, please send your resume to <a href="mailto:fuwei@microsoft.com" class="x-hidden-focus">fuwei@microsoft.com</a>.
@@ -57,6 +59,11 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 - September, 2019: [UniLMv1](https://github.com/microsoft/unilm/tree/master/unilm-v1) was accepted by NeurIPS 2019.
 
 ## Release
+
+**\*\*\*\*\* ```New October, 2021```: [WavLM](https://github.com/microsoft/unilm/tree/master/wavlm) release \*\*\*\*\***
+
+- [x] [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) (October 27, 2021):  WavLM, a new pre-trained speech model, to solve full-stack downstream speech tasks. 
+WavLM integrates the gated relative position embedding structure and the utterance mixing method, to model both spoken content and speaker identity preservation. WavLM is trained on  94k hours of public audio data, which is larger than other released checkpoints for English Speech modeling. WavLM Large achieves state-of-the-art performance on the SUPERB benchmark, and brings significant improvements for various speech processing tasks on their representative benchmarks. "[WavLM: Large-Scale Self-Supervised  Pre-training   for Full Stack Speech Processing](https://arxiv.org/pdf/2110.13900.pdf)"
 
 **\*\*\*\*\* ```New October, 2021```: [MarkupLM](https://github.com/microsoft/unilm/tree/master/markuplm) release \*\*\*\*\***
 
