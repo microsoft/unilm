@@ -93,7 +93,7 @@ If you find our work is useful in your research, please cite the following paper
   author  = {Sanyuan Chen and Chengyi Wang and Zhengyang Chen and Yu Wu and Shujie Liu and Zhuo Chen and Jinyu Li and Naoyuki Kanda and Takuya Yoshioka and Xiong Xiao and Jian Wu and Long Zhou and Shuo Ren and Yanmin Qian and Yao Qian and Jian Wu and Micheal Zeng and Furu Wei},
   eprint={2110.13900},
   archivePrefix={arXiv},
-  primaryClass={cs.CL}
+  primaryClass={cs.CL},
   year={2021}
 }
 ```
