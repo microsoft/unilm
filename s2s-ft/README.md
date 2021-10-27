@@ -297,6 +297,20 @@ GOLD_PATH=/your/path/to/${SPLIT}.target
 python evaluations/eval_for_cnndm.py --pred ${MODEL_PATH}.${SPLIT} --gold ${GOLD_PATH} --split ${SPLIT} --trunc_len 160
 ```
 
+## Citation
+
+If you find this repository useful, please consider citing our work:
+```
+@article{s2s-ft,
+      title={s2s-ft: Fine-Tuning Pretrained Transformer Encoders for Sequence-to-Sequence Learning}, 
+      author={Hangbo Bao and Li Dong and Wenhui Wang and Nan Yang and Furu Wei},
+      year={2021},
+      eprint={2110.13640},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
+
 ## License
 This project is licensed under the license found in the LICENSE file in the root directory of this source tree.
 Portions of the source code are based on the [transformers](https://github.com/huggingface/transformers) project.
