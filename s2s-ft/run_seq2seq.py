@@ -348,7 +348,7 @@ def get_args():
 
     parser.add_argument('--source_mask_prob', type=float, default=-1.0,
                         help="Probability to mask source sequence in fine-tuning")
-    parser.add_argument('--target_mask_prob', type=float, default=-1.0,
+    parser.add_argument('--target_mask_prob', type=float, default=0.5,
                         help="Probability to mask target sequence in fine-tuning")
     parser.add_argument('--num_max_mask_token', type=int, default=0,
                         help="The number of the max masked tokens in target sequence")
