@@ -36,7 +36,8 @@ Evaluate on the [VoxCeleb](https://www.robots.ox.ac.uk/~vgg/data/voxceleb/#:~:te
 | ECAPA-TDNN   | - | 0.87     | 1.12  | 2.12   |
 | HuBERT large  | Yes|  0.888	|0.912|	1.853 |
 | Wav2Vec2.0 (XLSR)| Yes | 0.915|	0.945	|1.895|
-| **UniSpeech-SAT large** | Yes | 0.771	| 0.781|	1.669|
+| UniSpeech-SAT large | Yes | 0.771	| 0.781|	1.669|
+| WavLM large | Yes | 0.638	| 0.687|	1.457|
 | HuBERT large | No| 0.585|	0.654	|1.342|   
 | Wav2Vec2.0 (XLSR) | No| 0.564|	0.605	|1.23|   
 | UniSpeech-SAT large | No | 0.564 | 0.561| 1.23 |
