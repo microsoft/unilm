@@ -6,31 +6,34 @@ from __future__ import print_function
 
 import os
 import json
+import glob
 import logging
 import argparse
 import math
-from tqdm import tqdm, trange
+from tqdm import tqdm
 import numpy as np
 import torch
 import random
 import pickle
 
-from transformers import BertTokenizer, RobertaTokenizer
 from s2s_ft.modeling_decoding import BertForSeq2SeqDecoder, BertConfig
 from transformers.tokenization_bert import whitespace_tokenize
 import s2s_ft.s2s_loader as seq2seq_loader
 from s2s_ft.utils import load_and_cache_examples
 from transformers import \
-    BertTokenizer, RobertaTokenizer
-from s2s_ft.tokenization_unilm import UnilmTokenizer
-from s2s_ft.tokenization_minilm import MinilmTokenizer
+    BertTokenizer, RobertaTokenizer, XLMRobertaTokenizer, ElectraTokenizer
+from unilm.tokenization_unilm import UnilmTokenizer
+from unilm.tokenization_minilm import MinilmTokenizer
 
 TOKENIZER_CLASSES = {
     'bert': BertTokenizer,
     'minilm': MinilmTokenizer,
     'roberta': RobertaTokenizer,
     'unilm': UnilmTokenizer,
+    'xlm-roberta': XLMRobertaTokenizer,
+    'electra': ElectraTokenizer,
 }
+
 
 class WhitespaceTokenizer(object):
     def tokenize(self, text):
@@ -80,8 +83,8 @@ def main():
     # decoding parameters
     parser.add_argument('--fp16', action='store_true',
                         help="Whether to use 16-bit float precision instead of 32-bit")
-    parser.add_argument('--amp', action='store_true',
-                        help="Whether to use amp for fp16")
+    parser.add_argument('--no_cuda', action='store_true',
+                        help="Whether to use CUDA for decoding")
     parser.add_argument("--input_file", type=str, help="Input file")
     parser.add_argument('--subset', type=int, default=0,
                         help="Decode a subset of the input dataset.")
@@ -155,21 +158,18 @@ def main():
 
     if args.model_type == "roberta":
         vocab = tokenizer.encoder
+    elif args.model_type == "xlm-roberta":
+        vocab = {}
+        for tk_id in range(len(tokenizer)):
+            tk = tokenizer._convert_id_to_token(tk_id)
+            vocab[tk] = tk_id
     else:
         vocab = tokenizer.vocab
 
-    tokenizer.max_len = args.max_seq_length
-
-    config_file = args.config_path if args.config_path else os.path.join(args.model_path, "config.json")
-    logger.info("Read decoding config from: %s" % config_file)
-    config = BertConfig.from_json_file(config_file)
-
-    bi_uni_pipeline = []
-    bi_uni_pipeline.append(seq2seq_loader.Preprocess4Seq2seqDecoder(
-        list(vocab.keys()), tokenizer.convert_tokens_to_ids, args.max_seq_length,
-        max_tgt_length=args.max_tgt_length, pos_shift=args.pos_shift,
-        source_type_id=config.source_type_id, target_type_id=config.target_type_id, 
-        cls_token=tokenizer.cls_token, sep_token=tokenizer.sep_token, pad_token=tokenizer.pad_token))
+    if hasattr(tokenizer, 'model_max_length'):
+        tokenizer.model_max_length = args.max_seq_length
+    elif hasattr(tokenizer, 'max_len'):
+        tokenizer.max_len = args.max_seq_length
 
     mask_word_id, eos_word_ids, sos_word_id = tokenizer.convert_tokens_to_ids(
         [tokenizer.mask_token, tokenizer.sep_token, tokenizer.sep_token])
@@ -184,8 +184,23 @@ def main():
         forbid_ignore_set = set(tokenizer.convert_tokens_to_ids(w_list))
     print(args.model_path)
     found_checkpoint_flag = False
-    for model_recover_path in [args.model_path.strip()]:
+    for model_recover_path in glob.glob(args.model_path):
+        if not os.path.isdir(model_recover_path):
+            continue
+
         logger.info("***** Recover model: %s *****", model_recover_path)
+
+        config_file = args.config_path if args.config_path else os.path.join(model_recover_path, "config.json")
+        logger.info("Read decoding config from: %s" % config_file)
+        config = BertConfig.from_json_file(config_file)
+
+        bi_uni_pipeline = []
+        bi_uni_pipeline.append(seq2seq_loader.Preprocess4Seq2seqDecoder(
+            list(vocab.keys()), tokenizer.convert_tokens_to_ids, args.max_seq_length,
+            max_tgt_length=args.max_tgt_length, pos_shift=args.pos_shift,
+            source_type_id=config.source_type_id, target_type_id=config.target_type_id, 
+            cls_token=tokenizer.cls_token, sep_token=tokenizer.sep_token, pad_token=tokenizer.pad_token))
+
         found_checkpoint_flag = True
         model = BertForSeq2SeqDecoder.from_pretrained(
             model_recover_path, config=config, mask_word_id=mask_word_id, search_beam_size=args.beam_size,
@@ -205,10 +220,12 @@ def main():
         model.eval()
         next_i = 0
         max_src_length = args.max_seq_length - 2 - args.max_tgt_length
+        if args.pos_shift:
+            max_src_length += 1
 
         to_pred = load_and_cache_examples(
             args.input_file, tokenizer, local_rank=-1, 
-            cached_features_file=None, shuffle=False)
+            cached_features_file=None, shuffle=False, eval_mode=True)
 
         input_lines = []
         for line in to_pred:
@@ -258,7 +275,7 @@ def main():
                             if t in (tokenizer.sep_token, tokenizer.pad_token):
                                 break
                             output_tokens.append(t)
-                        if args.model_type == "roberta":
+                        if args.model_type == "roberta" or args.model_type == "xlm-roberta":
                             output_sequence = tokenizer.convert_tokens_to_string(output_tokens)
                         else:
                             output_sequence = ' '.join(detokenize(output_tokens))

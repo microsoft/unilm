@@ -7,7 +7,7 @@ from pathlib import Path
 from tqdm import tqdm
 import unicodedata
 
-from transformers import BertTokenizer, RobertaTokenizer
+from transformers import BertTokenizer, RobertaTokenizer, XLMRobertaTokenizer
 from s2s_ft.tokenization_unilm import UnilmTokenizer
 from s2s_ft.tokenization_minilm import MinilmTokenizer
 
@@ -23,6 +23,7 @@ TOKENIZER_CLASSES = {
     'minilm': MinilmTokenizer,
     'roberta': RobertaTokenizer,
     'unilm': UnilmTokenizer,
+    'xlm-roberta': XLMRobertaTokenizer, 
 }
 
 
@@ -115,7 +116,7 @@ def main(args):
     eos_token = tokenizer.sep_token
     pad_token = tokenizer.pad_token
 
-    eos_id, pad_id = set(tokenizer.convert_tokens_to_ids([eos_token, pad_token]))
+    eos_id, pad_id = tokenizer.convert_tokens_to_ids([eos_token, pad_token])
     logger.info("*********************************************")
     logger.info(" EOS TOKEN = {}, ID = {}".format(eos_token, eos_id))
     logger.info(" PAD TOKEN = {}, ID = {}".format(pad_token, pad_id))
@@ -139,7 +140,7 @@ def main(args):
                     break
                 else:
                     buf.append(t)
-            if args.model_type == "roberta":
+            if args.model_type == "roberta" or args.model_type == "xlm-roberta":
                 output_text = " ".join(simple_postprocess(tokenizer.convert_tokens_to_string(buf).split(' ')))
                 if '\n' in output_text:
                     output_text = " [X_SEP] ".join(output_text.split('\n'))

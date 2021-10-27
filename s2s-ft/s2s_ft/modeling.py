@@ -10,11 +10,14 @@ from torch.nn.modules.loss import _Loss
 import torch.nn.functional as F
 
 from transformers.modeling_bert import \
-    BertPreTrainedModel, BertSelfOutput, BertIntermediate, BertOutput, BertPredictionHeadTransform
+    BertPreTrainedModel, BertSelfOutput, BertIntermediate, \
+    BertOutput, BertPredictionHeadTransform, BertPooler
 from transformers.modeling_roberta import ROBERTA_PRETRAINED_MODEL_ARCHIVE_MAP
 from transformers.modeling_bert import BERT_PRETRAINED_MODEL_ARCHIVE_MAP
 from transformers.modeling_distilbert import DISTILBERT_PRETRAINED_MODEL_ARCHIVE_MAP
 from transformers.modeling_xlm_roberta import XLM_ROBERTA_PRETRAINED_MODEL_ARCHIVE_MAP
+from transformers.modeling_electra import ELECTRA_PRETRAINED_MODEL_ARCHIVE_MAP
+from transformers.file_utils import WEIGHTS_NAME
 
 from s2s_ft.config import BertForSeq2SeqConfig
 from s2s_ft.convert_state_dict import get_checkpoint_from_transformer_cache, state_dict_convert
@@ -28,7 +31,10 @@ UNILM_PRETRAINED_MODEL_ARCHIVE_MAP = {
     'unilm-large-cased': "https://unilm.blob.core.windows.net/ckpt/unilm1-large-cased.bin",
     'unilm1-base-cased': "https://unilm.blob.core.windows.net/ckpt/unilm1-base-cased.bin",
     'unilm1-large-cased': "https://unilm.blob.core.windows.net/ckpt/unilm1-large-cased.bin",
-    'unilm1.2-base-uncased': "https://unilm.blob.core.windows.net/ckpt/unilm1.2-base-uncased.bin"
+    'unilm1.2-base-uncased': "https://unilm.blob.core.windows.net/ckpt/unilm1.2-base-uncased.bin", 
+    'unilm2-base-uncased': "https://unilm.blob.core.windows.net/ckpt/unilm2-base-uncased.bin", 
+    'unilm2-large-uncased': "https://unilm.blob.core.windows.net/ckpt/unilm2-large-uncased.bin", 
+    'unilm2-large-cased': "https://unilm.blob.core.windows.net/ckpt/unilm2-large-cased.bin", 
 }
 
 MINILM_PRETRAINED_MODEL_ARCHIVE_MAP = {
@@ -47,13 +53,14 @@ class BertPreTrainedForSeq2SeqModel(BertPreTrainedModel):
         "unilm": UNILM_PRETRAINED_MODEL_ARCHIVE_MAP, 
         "minilm": MINILM_PRETRAINED_MODEL_ARCHIVE_MAP, 
     }
-    base_model_prefix = "bert_for_seq2seq"
+    base_model_prefix = "unilm_for_seq2seq"
     pretrained_model_archive_map = {
         **ROBERTA_PRETRAINED_MODEL_ARCHIVE_MAP,
         **XLM_ROBERTA_PRETRAINED_MODEL_ARCHIVE_MAP, 
         **BERT_PRETRAINED_MODEL_ARCHIVE_MAP,
         **UNILM_PRETRAINED_MODEL_ARCHIVE_MAP,
         **MINILM_PRETRAINED_MODEL_ARCHIVE_MAP, 
+        **ELECTRA_PRETRAINED_MODEL_ARCHIVE_MAP, 
     }
 
     def _init_weights(self, module):
@@ -70,7 +77,7 @@ class BertPreTrainedForSeq2SeqModel(BertPreTrainedModel):
 
     @classmethod
     def from_pretrained(cls, pretrained_model_name_or_path, reuse_position_embedding=None, *model_args, **kwargs):
-        model_type = kwargs.pop('model_type', None)
+        model_type = kwargs.pop('model_type', 'unilm')
         if model_type is not None and "state_dict" not in kwargs:
             if model_type in cls.supported_convert_pretrained_model_archive_map:
                 pretrained_model_archive_map = cls.supported_convert_pretrained_model_archive_map[model_type]
@@ -84,8 +91,17 @@ class BertPreTrainedForSeq2SeqModel(BertPreTrainedModel):
                     )
                     state_dict = state_dict_convert[model_type](state_dict)
                     kwargs["state_dict"] = state_dict
+                    logger.info("Load HF ckpts")
                 elif os.path.isfile(pretrained_model_name_or_path):
-                    kwargs["state_dict"] = torch.load(pretrained_model_name_or_path, map_location='cpu')
+                    state_dict = torch.load(pretrained_model_name_or_path, map_location='cpu')
+                    kwargs["state_dict"] = state_dict_convert[model_type](state_dict)
+                    logger.info("Load local ckpts")
+                elif os.path.isdir(pretrained_model_name_or_path):
+                    state_dict = torch.load(os.path.join(pretrained_model_name_or_path, WEIGHTS_NAME), map_location='cpu')
+                    kwargs["state_dict"] = state_dict_convert[model_type](state_dict)
+                    logger.info("Load local ckpts")
+                else:
+                    raise RuntimeError("Not fined the pre-trained checkpoint !")
 
         if kwargs["state_dict"] is None:
             logger.info("s2s-ft does't support the model !")
@@ -151,6 +167,9 @@ class BertEmbeddings(nn.Module):
     def __init__(self, config):
         super(BertEmbeddings, self).__init__()
         self.word_embeddings = nn.Embedding(config.vocab_size, config.hidden_size, padding_idx=0)
+        fix_word_embedding = getattr(config, "fix_word_embedding", None)
+        if fix_word_embedding:
+            self.word_embeddings.weight.requires_grad = False
         self.position_embeddings = nn.Embedding(config.max_position_embeddings, config.hidden_size)
         if config.type_vocab_size > 0:
             self.token_type_embeddings = nn.Embedding(config.type_vocab_size, config.hidden_size)
@@ -187,7 +206,7 @@ class BertEmbeddings(nn.Module):
 
         embeddings = self.LayerNorm(embeddings)
         embeddings = self.dropout(embeddings)
-        return embeddings
+        return embeddings, position_ids
 
 
 class BertSelfAttention(nn.Module):
@@ -214,7 +233,7 @@ class BertSelfAttention(nn.Module):
         x = x.view(*new_x_shape)
         return x.permute(0, 2, 1, 3)
 
-    def multi_head_attention(self, query, key, value, attention_mask):
+    def multi_head_attention(self, query, key, value, attention_mask, rel_pos):
         query_layer = self.transpose_for_scores(query)
         key_layer = self.transpose_for_scores(key)
         value_layer = self.transpose_for_scores(value)
@@ -225,6 +244,8 @@ class BertSelfAttention(nn.Module):
         if attention_mask is not None:
             # Apply the attention mask is (precomputed for all layers in BertModel forward() function)
             attention_scores = attention_scores + attention_mask
+        if rel_pos is not None:
+            attention_scores = attention_scores + rel_pos
 
         # Normalize the attention scores to probabilities.
         attention_probs = nn.Softmax(dim=-1)(attention_scores)
@@ -240,7 +261,9 @@ class BertSelfAttention(nn.Module):
 
         return (context_layer, attention_probs) if self.output_attentions else (context_layer,)
 
-    def forward(self, hidden_states, attention_mask=None, encoder_hidden_states=None, split_lengths=None):
+    def forward(self, hidden_states, attention_mask=None, 
+                encoder_hidden_states=None, 
+                split_lengths=None, rel_pos=None):
         mixed_query_layer = self.query(hidden_states)
         if split_lengths:
             assert not self.output_attentions
@@ -269,12 +292,14 @@ class BertSelfAttention(nn.Module):
                 value = _value if value is None else torch.cat((value, _value), dim=1)
                 sum_length += part_length
                 outputs.append(self.multi_head_attention(
-                    query, key, value, attention_mask[:, :, sum_length - part_length: sum_length, :sum_length]
+                    query, key, value, attention_mask[:, :, sum_length - part_length: sum_length, :sum_length], 
+                    rel_pos=None if rel_pos is None else rel_pos[:, :, sum_length - part_length: sum_length, :sum_length], 
                 )[0])
             outputs = (torch.cat(outputs, dim=1), )
         else:
             outputs = self.multi_head_attention(
-                mixed_query_layer, mixed_key_layer, mixed_value_layer, attention_mask)
+                mixed_query_layer, mixed_key_layer, mixed_value_layer, 
+                attention_mask, rel_pos=rel_pos)
         return outputs
 
 
@@ -284,10 +309,12 @@ class BertAttention(nn.Module):
         self.self = BertSelfAttention(config)
         self.output = BertSelfOutput(config)
 
-    def forward(self, hidden_states, attention_mask=None, encoder_hidden_states=None, split_lengths=None):
+    def forward(self, hidden_states, attention_mask=None, encoder_hidden_states=None, 
+                split_lengths=None, rel_pos=None):
         self_outputs = self.self(
             hidden_states, attention_mask=attention_mask,
-            encoder_hidden_states=encoder_hidden_states, split_lengths=split_lengths)
+            encoder_hidden_states=encoder_hidden_states, 
+            split_lengths=split_lengths, rel_pos=rel_pos)
         attention_output = self.output(self_outputs[0], hidden_states)
         outputs = (attention_output,) + self_outputs[1:]  # add attentions if we output them
         return outputs
@@ -300,9 +327,10 @@ class BertLayer(nn.Module):
         self.intermediate = BertIntermediate(config)
         self.output = BertOutput(config)
 
-    def forward(self, hidden_states, attention_mask=None, split_lengths=None):
+    def forward(self, hidden_states, attention_mask=None, split_lengths=None, rel_pos=None):
         self_attention_outputs = self.attention(
-            hidden_states, attention_mask, split_lengths=split_lengths)
+            hidden_states, attention_mask, 
+            split_lengths=split_lengths, rel_pos=rel_pos)
         attention_output = self_attention_outputs[0]
 
         intermediate_output = self.intermediate(attention_output)
@@ -318,14 +346,16 @@ class BertEncoder(nn.Module):
         self.output_hidden_states = config.output_hidden_states
         self.layer = nn.ModuleList([BertLayer(config) for _ in range(config.num_hidden_layers)])
 
-    def forward(self, hidden_states, attention_mask=None, split_lengths=None):
+    def forward(self, hidden_states, attention_mask=None, split_lengths=None, rel_pos=None):
         all_hidden_states = ()
         all_attentions = ()
         for i, layer_module in enumerate(self.layer):
             if self.output_hidden_states:
                 all_hidden_states = all_hidden_states + (hidden_states,)
 
-            layer_outputs = layer_module(hidden_states, attention_mask, split_lengths=split_lengths)
+            layer_outputs = layer_module(
+                hidden_states, attention_mask, 
+                split_lengths=split_lengths, rel_pos=rel_pos)
             hidden_states = layer_outputs[0]
 
             if self.output_attentions:
@@ -341,6 +371,37 @@ class BertEncoder(nn.Module):
         if self.output_attentions:
             outputs = outputs + (all_attentions,)
         return outputs  # last-layer hidden state, (all hidden states), (all attentions)
+
+
+def relative_position_bucket(relative_position, bidirectional=True, num_buckets=32, max_distance=128):
+    """
+    Adapted from Mesh Tensorflow:
+    https://github.com/tensorflow/mesh/blob/0cb87fe07da627bf0b7e60475d59f95ed6b5be3d/mesh_tensorflow/transformer/transformer_layers.py#L593
+    """
+    ret = 0
+    if bidirectional:
+        num_buckets //= 2
+        # mtf.to_int32(mtf.less(n, 0)) * num_buckets
+        ret += (relative_position > 0).long() * num_buckets
+        n = torch.abs(relative_position)
+    else:
+        n = torch.max(-relative_position, torch.zeros_like(relative_position))
+    # now n is in the range [0, inf)
+
+    # half of the buckets are for exact increments in positions
+    max_exact = num_buckets // 2
+    is_small = n < max_exact
+
+    # The other half of the buckets are for logarithmically bigger bins in positions up to max_distance
+    val_if_large = max_exact + (
+        torch.log(n.float() / max_exact) / math.log(max_distance /
+                                                    max_exact) * (num_buckets - max_exact)
+    ).to(torch.long)
+    val_if_large = torch.min(
+        val_if_large, torch.full_like(val_if_large, num_buckets - 1))
+
+    ret += torch.where(is_small, n, val_if_large)
+    return ret
 
 
 class BertModel(BertPreTrainedForSeq2SeqModel):
@@ -378,6 +439,15 @@ class BertModel(BertPreTrainedForSeq2SeqModel):
 
         self.embeddings = BertEmbeddings(config)
         self.encoder = BertEncoder(config)
+        if not isinstance(config, BertForSeq2SeqConfig):
+            self.pooler = BertPooler(config)
+        else:
+            self.pooler = None
+
+        if self.config.rel_pos_bins > 0:
+            self.rel_pos_bias = nn.Linear(self.config.rel_pos_bins, config.num_attention_heads, bias=False)
+        else:
+            self.rel_pos_bias = None
 
     def forward(self, input_ids=None, attention_mask=None, token_type_ids=None,
                 position_ids=None, inputs_embeds=None, split_lengths=None):
@@ -414,14 +484,27 @@ class BertModel(BertPreTrainedForSeq2SeqModel):
         extended_attention_mask = extended_attention_mask.to(dtype=next(self.parameters()).dtype)  # fp16 compatibility
         extended_attention_mask = (1.0 - extended_attention_mask) * -10000.0
 
-        embedding_output = self.embeddings(
+        embedding_output, position_ids = self.embeddings(
             input_ids=input_ids, position_ids=position_ids, token_type_ids=token_type_ids, inputs_embeds=inputs_embeds)
+        if self.config.rel_pos_bins > 0:
+            rel_pos_mat = position_ids.unsqueeze(-2) - position_ids.unsqueeze(-1)
+            rel_pos = relative_position_bucket(
+                rel_pos_mat, num_buckets=self.config.rel_pos_bins, max_distance=self.config.max_rel_pos)
+            rel_pos = F.one_hot(rel_pos, num_classes=self.config.rel_pos_bins).type_as(embedding_output)
+            rel_pos = self.rel_pos_bias(rel_pos).permute(0, 3, 1, 2)
+        else:
+            rel_pos = None
         encoder_outputs = self.encoder(
-            embedding_output, attention_mask=extended_attention_mask, split_lengths=split_lengths)
+            embedding_output, attention_mask=extended_attention_mask, 
+            split_lengths=split_lengths, rel_pos=rel_pos)
         sequence_output = encoder_outputs[0]
 
         outputs = (sequence_output, ) + encoder_outputs[1:]  # add hidden_states and attentions if they are here
-        return outputs  # sequence_output, pooled_output, (hidden_states), (attentions)
+        if self.pooler is None:
+            return outputs  # sequence_output, pooled_output, (hidden_states), (attentions)
+        else:
+            pooled_output = self.pooler(sequence_output)
+            return sequence_output, pooled_output
 
 
 class LabelSmoothingLoss(_Loss):
@@ -490,7 +573,19 @@ class BertOnlyMLMHead(nn.Module):
         return prediction_scores
 
 
+def create_mask_and_position_ids(num_tokens, max_len, offset=None):
+    base_position_matrix = torch.arange(
+        0, max_len, dtype=num_tokens.dtype, device=num_tokens.device).view(1, -1)
+    mask = (base_position_matrix < num_tokens.view(-1, 1)).type_as(num_tokens)
+    if offset is not None:
+        base_position_matrix = base_position_matrix + offset.view(-1, 1)
+    position_ids = base_position_matrix * mask
+    return mask, position_ids
+
+
 class BertForSequenceToSequence(BertPreTrainedForSeq2SeqModel):
+    MODEL_NAME = 'basic class'
+
     def __init__(self, config):
         super(BertForSequenceToSequence, self).__init__(config)
         self.bert = BertModel(config)
@@ -499,7 +594,6 @@ class BertForSequenceToSequence(BertPreTrainedForSeq2SeqModel):
 
         self.log_softmax = nn.LogSoftmax()
 
-        # setattr(config, 'label_smoothing', 0.1)
         self.source_type_id = config.source_type_id
         self.target_type_id = config.target_type_id
 
@@ -511,15 +605,9 @@ class BertForSequenceToSequence(BertPreTrainedForSeq2SeqModel):
             self.crit_mask_lm_smoothed = None
             self.crit_mask_lm = nn.CrossEntropyLoss(reduction='none')
 
-    @staticmethod
-    def create_mask_and_position_ids(num_tokens, max_len, offset=None):
-        base_position_matrix = torch.arange(
-            0, max_len, dtype=num_tokens.dtype, device=num_tokens.device).view(1, -1)
-        mask = (base_position_matrix < num_tokens.view(-1, 1)).type_as(num_tokens)
-        if offset is not None:
-            base_position_matrix = base_position_matrix + offset.view(-1, 1)
-        position_ids = base_position_matrix * mask
-        return mask, position_ids
+
+class BertForSequenceToSequenceWithPseudoMask(BertForSequenceToSequence):
+    MODEL_NAME = "BertForSequenceToSequenceWithPseudoMask"
 
     @staticmethod
     def create_attention_mask(source_mask, target_mask, source_position_ids, target_span_ids):
@@ -534,7 +622,9 @@ class BertForSequenceToSequence(BertPreTrainedForSeq2SeqModel):
 
         return (true_tokens_mask | pseudo_tokens_mask).type_as(source_mask)
 
-    def forward(self, source_ids, target_ids, pseudo_ids, num_source_tokens, num_target_tokens, target_span_ids=None):
+    def forward(
+            self, source_ids, target_ids, label_ids, pseudo_ids, 
+            num_source_tokens, num_target_tokens, target_span_ids=None, target_no_offset=None):
         source_len = source_ids.size(1)
         target_len = target_ids.size(1)
         pseudo_len = pseudo_ids.size(1)
@@ -550,9 +640,10 @@ class BertForSequenceToSequence(BertPreTrainedForSeq2SeqModel):
              torch.ones_like(pseudo_ids) * self.target_type_id), dim=1)
 
         source_mask, source_position_ids = \
-            self.create_mask_and_position_ids(num_source_tokens, source_len)
+            create_mask_and_position_ids(num_source_tokens, source_len)
         target_mask, target_position_ids = \
-            self.create_mask_and_position_ids(num_target_tokens, target_len, offset=num_source_tokens)
+            create_mask_and_position_ids(
+                num_target_tokens, target_len, offset=None if target_no_offset else num_source_tokens)
 
         position_ids = torch.cat((source_position_ids, target_position_ids, target_position_ids), dim=1)
         if target_span_ids is None:
@@ -576,11 +667,166 @@ class BertForSequenceToSequence(BertPreTrainedForSeq2SeqModel):
 
         if self.crit_mask_lm_smoothed:
             masked_lm_loss = self.crit_mask_lm_smoothed(
-                F.log_softmax(prediction_scores_masked.float(), dim=-1), target_ids)
+                F.log_softmax(prediction_scores_masked.float(), dim=-1), label_ids)
         else:
             masked_lm_loss = self.crit_mask_lm(
-                prediction_scores_masked.transpose(1, 2).float(), target_ids)
+                prediction_scores_masked.transpose(1, 2).float(), label_ids)
         pseudo_lm_loss = loss_mask_and_normalize(
             masked_lm_loss.float(), target_mask)
 
         return pseudo_lm_loss
+
+
+class BertForSequenceToSequenceUniLMV1(BertForSequenceToSequence):
+    MODEL_NAME = "BertForSequenceToSequenceUniLMV1"
+
+    @staticmethod
+    def create_attention_mask(source_mask, target_mask, source_position_ids, target_span_ids):
+        weight = torch.cat((torch.zeros_like(source_position_ids), target_span_ids), dim=1)
+        from_weight = weight.unsqueeze(-1)
+        to_weight = weight.unsqueeze(1)
+
+        true_tokens = torch.cat((source_mask, target_mask), dim=1).unsqueeze(1)
+        return ((true_tokens == 1) & (to_weight <= from_weight)).type_as(source_mask)
+
+    def forward(self, source_ids, target_ids, masked_ids, masked_pos, masked_weight, num_source_tokens, num_target_tokens):
+        source_len = source_ids.size(1)
+        target_len = target_ids.size(1)
+        split_lengths = (source_len, target_len)
+
+        input_ids = torch.cat((source_ids, target_ids), dim=1)
+
+        token_type_ids = torch.cat(
+            (torch.ones_like(source_ids) * self.source_type_id,
+             torch.ones_like(target_ids) * self.target_type_id), dim=1)
+
+        source_mask, source_position_ids = \
+            create_mask_and_position_ids(num_source_tokens, source_len)
+        target_mask, target_position_ids = \
+            create_mask_and_position_ids(
+                num_target_tokens, target_len, offset=num_source_tokens)
+
+        position_ids = torch.cat((source_position_ids, target_position_ids), dim=1)
+        attention_mask = self.create_attention_mask(
+            source_mask, target_mask, source_position_ids, target_position_ids)
+
+        outputs = self.bert(
+            input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids,
+            position_ids=position_ids, split_lengths=split_lengths)
+
+        def gather_seq_out_by_pos(seq, pos):
+            return torch.gather(seq, 1, pos.unsqueeze(2).expand(-1, -1, seq.size(-1)))
+        
+        sequence_output = outputs[0]
+        target_sequence_output = sequence_output[:, source_len:, ]
+        masked_sequence_output = gather_seq_out_by_pos(target_sequence_output, masked_pos)
+
+        def loss_mask_and_normalize(loss, mask):
+            mask = mask.type_as(loss)
+            loss = loss * mask
+            denominator = torch.sum(mask) + 1e-5
+            return (loss / denominator).sum()
+
+        prediction_scores_masked = self.cls(masked_sequence_output)
+
+        if self.crit_mask_lm_smoothed:
+            masked_lm_loss = self.crit_mask_lm_smoothed(
+                F.log_softmax(prediction_scores_masked.float(), dim=-1), masked_ids)
+        else:
+            masked_lm_loss = self.crit_mask_lm(
+                prediction_scores_masked.transpose(1, 2).float(), masked_ids)
+        pseudo_lm_loss = loss_mask_and_normalize(
+            masked_lm_loss.float(), masked_weight)
+
+        return pseudo_lm_loss
+
+
+class UniLMForSequenceClassification(BertPreTrainedForSeq2SeqModel):
+    def __init__(self, config):
+        super().__init__(config)
+        self.num_labels = config.num_labels
+
+        self.bert = BertModel(config)
+        self.dropout = nn.Dropout(config.hidden_dropout_prob)
+        self.classifier = nn.Linear(config.hidden_size, config.num_labels)
+
+        self.init_weights()
+
+    def forward(
+        self,
+        input_ids=None,
+        attention_mask=None,
+        token_type_ids=None,
+        position_ids=None,
+        head_mask=None,
+        inputs_embeds=None,
+        labels=None,
+    ):
+        r"""
+        labels (:obj:`torch.LongTensor` of shape :obj:`(batch_size,)`, `optional`, defaults to :obj:`None`):
+            Labels for computing the sequence classification/regression loss.
+            Indices should be in :obj:`[0, ..., config.num_labels - 1]`.
+            If :obj:`config.num_labels == 1` a regression loss is computed (Mean-Square loss),
+            If :obj:`config.num_labels > 1` a classification loss is computed (Cross-Entropy).
+
+    Returns:
+        :obj:`tuple(torch.FloatTensor)` comprising various elements depending on the configuration (:class:`~transformers.BertConfig`) and inputs:
+        loss (:obj:`torch.FloatTensor` of shape :obj:`(1,)`, `optional`, returned when :obj:`label` is provided):
+            Classification (or regression if config.num_labels==1) loss.
+        logits (:obj:`torch.FloatTensor` of shape :obj:`(batch_size, config.num_labels)`):
+            Classification (or regression if config.num_labels==1) scores (before SoftMax).
+        hidden_states (:obj:`tuple(torch.FloatTensor)`, `optional`, returned when ``config.output_hidden_states=True``):
+            Tuple of :obj:`torch.FloatTensor` (one for the output of the embeddings + one for the output of each layer)
+            of shape :obj:`(batch_size, sequence_length, hidden_size)`.
+
+            Hidden-states of the model at the output of each layer plus the initial embedding outputs.
+        attentions (:obj:`tuple(torch.FloatTensor)`, `optional`, returned when ``config.output_attentions=True``):
+            Tuple of :obj:`torch.FloatTensor` (one for each layer) of shape
+            :obj:`(batch_size, num_heads, sequence_length, sequence_length)`.
+
+            Attentions weights after the attention softmax, used to compute the weighted average in the self-attention
+            heads.
+
+    Examples::
+
+        from transformers import BertTokenizer, BertForSequenceClassification
+        import torch
+
+        tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+        model = BertForSequenceClassification.from_pretrained('bert-base-uncased')
+
+        input_ids = torch.tensor(tokenizer.encode("Hello, my dog is cute", add_special_tokens=True)).unsqueeze(0)  # Batch size 1
+        labels = torch.tensor([1]).unsqueeze(0)  # Batch size 1
+        outputs = model(input_ids, labels=labels)
+
+        loss, logits = outputs[:2]
+
+        """
+
+        outputs = self.bert(
+            input_ids,
+            attention_mask=attention_mask,
+            token_type_ids=token_type_ids,
+            position_ids=position_ids,
+            # head_mask=head_mask,
+            inputs_embeds=inputs_embeds,
+        )
+
+        pooled_output = outputs[1]
+
+        pooled_output = self.dropout(pooled_output)
+        logits = self.classifier(pooled_output)
+
+        outputs = (logits,) + outputs[2:]  # add hidden states and attention if they are here
+
+        if labels is not None:
+            if self.num_labels == 1:
+                #  We are doing regression
+                loss_fct = nn.MSELoss()
+                loss = loss_fct(logits.view(-1), labels.view(-1))
+            else:
+                loss_fct = nn.CrossEntropyLoss()
+                loss = loss_fct(logits.view(-1, self.num_labels), labels.view(-1))
+            outputs = (loss,) + outputs
+
+        return outputs  # (loss), logits, (hidden_states), (attentions)
