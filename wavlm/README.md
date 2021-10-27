@@ -13,9 +13,9 @@ Official PyTorch implementation and pretrained models of WavLM
 ## Pre-Trained models
 Model | Pretraining Dataset | Finetuning Dataset | Model
 |---|---|---|---
-WavLM Base |  [960 hrs LibriSpeech](http://www.openslr.org/12)| -  | [download](https://drive.google.com/file/d/1CXF_1VkmQxoYoSGIWqE7mHgozAMJ_tkg/view?usp=sharing)
-WavLM Base+ | [60k hrs Libri-Light](https://github.com/facebookresearch/libri-light) + [10k hrs GigaSpeech](https://github.com/SpeechColab/GigaSpeech) + [24k hrs VoxPopuli](https://github.com/facebookresearch/voxpopuli/tree/main)| -  | [download](https://drive.google.com/file/d/1zZIhdg7yzim7xPPnhMLPy40WfIIRH5tG/view?usp=sharing)
-WavLM Large | [60k hrs Libri-Light](https://github.com/facebookresearch/libri-light) + [10k hrs GigaSpeech](https://github.com/SpeechColab/GigaSpeech) + [24k hrs VoxPopuli](https://github.com/facebookresearch/voxpopuli/tree/main)| -  | [download](https://drive.google.com/file/d/1fQ3T_CQPvLJLsqyHe4qwZNx-SEi5J1KP/view?usp=sharing)
+WavLM Base |  [960 hrs LibriSpeech](http://www.openslr.org/12)| -  | comming soon
+WavLM Base+ | [60k hrs Libri-Light](https://github.com/facebookresearch/libri-light) + [10k hrs GigaSpeech](https://github.com/SpeechColab/GigaSpeech) + [24k hrs VoxPopuli](https://github.com/facebookresearch/voxpopuli/tree/main)| -  | comming soon
+WavLM Large | [60k hrs Libri-Light](https://github.com/facebookresearch/libri-light) + [10k hrs GigaSpeech](https://github.com/SpeechColab/GigaSpeech) + [24k hrs VoxPopuli](https://github.com/facebookresearch/voxpopuli/tree/main)| -  | comming soon
 
 ## Fine-Tuning 
 The authors are preparing simple, clear, and well-documented fine-tuning code of WavLM. The pre-trained models will also release as long as the  fine-tuning code is done.  Stay tuned! 
