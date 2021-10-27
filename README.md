@@ -37,7 +37,7 @@ The family of UniLM AI:
 We are hiring at all levels (including FTE researchers and interns)! If you are interested in working with us on NLP and large-scale pre-trained models, please send your resume to <a href="mailto:fuwei@microsoft.com" class="x-hidden-focus">fuwei@microsoft.com</a>.
 
 ## News
-- [Model Release] October, 2021: [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) - Large-scale self-supervisied pre-trained models for speech. 
+- [Model Release] October, 2021: [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) - Large-scale self-supervised pre-trained models for speech. 
 - [Model Release] October 2021: [**TrOCR**](https://huggingface.co/transformers/master/model_doc/trocr.html) is on [HuggingFace](https://github.com/huggingface/transformers)
 - September 28th, 2021: T-ULRv5 (aka <a href="https://arxiv.org/abs/2106.16138" target="_blank">XLM-E</a>/<a href="https://arxiv.org/abs/2007.07834" target="_blank">InfoXLM</a>) as the SOTA on the <a href="https://sites.research.google/xtreme" target="_blank">XTREME</a> leaderboard. // <a href="https://www.microsoft.com/en-us/research/blog/microsoft-turing-universal-language-representation-model-t-ulrv5-tops-xtreme-leaderboard-and-trains-100x-faster/" target="_blank">Blog</a>
 - [Model Release] September, 2021: [**LayoutLM-cased**](https://huggingface.co/microsoft/layoutlm-base-cased) are on [HuggingFace](https://github.com/huggingface/transformers)
