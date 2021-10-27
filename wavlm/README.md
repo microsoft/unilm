@@ -46,7 +46,7 @@ Evaluate on the [VoxCeleb](https://www.robots.ox.ac.uk/~vgg/data/voxceleb/#:~:te
 
 ### Speech Separation
 
-Evaluation on [LibriCSS](https://github.com/chenzhuo1011/libri_css)
+Evaluation on the [LibriCSS](https://github.com/chenzhuo1011/libri_css)
 | Model         |0S | 0L | OV10     |      OV20     |OV30 |OV40 |
 | ---------------- |------| ------ | ------ | ------ | ------ | ------ |
 | [Conformer](https://ieeexplore.ieee.org/abstract/document/9413423/) (SOTA)   | 4.5	| 4.4	|6.2	|8.5|	11	|12.6|
@@ -59,7 +59,7 @@ Evaluation on [LibriCSS](https://github.com/chenzhuo1011/libri_css)
 
 ### Speaker Diarization
 
-Evaluation on [CALLHOME](https://arxiv.org/pdf/1909.06247.pdf)
+Evaluation on the [CALLHOME](https://arxiv.org/pdf/1909.06247.pdf)
 | Model         |spk_2	|spk_3|	spk_4|	spk_5|	spk_6|	spk_all |
 | ---------------- |------| ------ | ------ | ------ | ------ | ------ |
 | [EEND-vector clustering](https://arxiv.org/pdf/2105.09040.pdf)   | 7.96|	11.93	|16.38|	21.21|	23.1	|12.49||
@@ -71,6 +71,7 @@ Evaluation on [CALLHOME](https://arxiv.org/pdf/1909.06247.pdf)
 | **WavLm large** | 6.46|	10.69|	11.84	|12.89|	20.70|	10.35|
 
 ### Speech Recogntion
+Evaluate on the [LibriSpeech](https://www.openslr.org/12)
 
 ![alt text](ASR.PNG)
 
