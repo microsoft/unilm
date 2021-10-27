@@ -89,6 +89,8 @@ class Preprocess4Seq2seqDecoder(Pipeline):
         self.max_tgt_length = max_tgt_length
         self.pos_shift = pos_shift
 
+        self.delta = 1 if pos_shift else 2
+
         self.cls_token = cls_token
         self.sep_token = sep_token
         self.pad_token = pad_token
@@ -101,14 +103,16 @@ class Preprocess4Seq2seqDecoder(Pipeline):
     def __call__(self, instance):
         tokens_a, max_a_len = instance
 
-        padded_tokens_a = [self.cls_token] + tokens_a + [self.sep_token]
-        assert len(padded_tokens_a) <= max_a_len + 2
-        if max_a_len + 2 > len(padded_tokens_a):
+        padded_tokens_a = [self.cls_token] + tokens_a
+        if not self.pos_shift:
+            padded_tokens_a = padded_tokens_a + [self.sep_token]
+        assert len(padded_tokens_a) <= max_a_len + self.delta
+        if max_a_len + self.delta > len(padded_tokens_a):
             padded_tokens_a += [self.pad_token] * \
-                (max_a_len + 2 - len(padded_tokens_a))
-        assert len(padded_tokens_a) == max_a_len + 2
+                (max_a_len + self.delta - len(padded_tokens_a))
+        assert len(padded_tokens_a) == max_a_len + self.delta
         max_len_in_batch = min(self.max_tgt_length +
-                               max_a_len + 2, self.max_len)
+                               max_a_len + self.delta, self.max_len)
         tokens = padded_tokens_a
         segment_ids = [self.source_type_id] * (len(padded_tokens_a)) \
                 + [self.target_type_id] * (max_len_in_batch - len(padded_tokens_a))
@@ -116,30 +120,33 @@ class Preprocess4Seq2seqDecoder(Pipeline):
         mask_qkv = None
 
         position_ids = []
-        for i in range(len(tokens_a) + 2):
+        for i in range(len(tokens_a) + self.delta):
             position_ids.append(i)
-        for i in range(len(tokens_a) + 2, max_a_len + 2):
+        for i in range(len(tokens_a) + self.delta, max_a_len + self.delta):
             position_ids.append(0)
-        for i in range(max_a_len + 2, max_len_in_batch):
-            position_ids.append(i - (max_a_len + 2) + len(tokens_a) + 2)
+        for i in range(max_a_len + self.delta, max_len_in_batch):
+            position_ids.append(i - (max_a_len + self.delta) + len(tokens_a) + self.delta)
 
         # Token Indexing
         input_ids = self.indexer(tokens)
 
         self.cc += 1
         if self.cc < 20:
-            logger.info("Input src = %s" % " ".join(self.vocab_words[tk_id] for tk_id in input_ids))
+            # print("Vocab size = %d" % len(self.vocab_words))
+            # for tk_id in input_ids:
+            #     print(u"trans %d -> %s" % (tk_id, self.vocab_words[tk_id]))
+            logger.info(u"Input src = %s" % " ".join((self.vocab_words[tk_id]) for tk_id in input_ids))
 
         # Zero Padding
         input_mask = torch.zeros(
             max_len_in_batch, max_len_in_batch, dtype=torch.long)
         if self.mode == "s2s":
-            input_mask[:, :len(tokens_a)+2].fill_(1)
+            input_mask[:, :len(tokens_a) + self.delta].fill_(1)
         else:
-            st, end = 0, len(tokens_a) + 2
+            st, end = 0, len(tokens_a) + self.delta
             input_mask[st:end, st:end].copy_(
                 self._tril_matrix[:end, :end])
-            input_mask[end:, :len(tokens_a)+2].fill_(1)
+            input_mask[end:, :len(tokens_a) + self.delta].fill_(1)
         second_st, second_end = len(padded_tokens_a), max_len_in_batch
 
         input_mask[second_st:second_end, second_st:second_end].copy_(
