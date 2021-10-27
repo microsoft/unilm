@@ -6,12 +6,16 @@
 
  [**WavLM**](https://arxiv.org/pdf/2110.13900.pdf) : **WavLM: Large-Scale Self-Supervised  Pre-training   for Full Stack Speech Processing**
 
+Official PyTorch implementation and pretrained models of WavLM
+
+- Oct 2021: release preprint in [arXiv](https://arxiv.org/pdf/2110.13900.pdf)
+
 ## Pre-Trained models
 Model | Pretraining Dataset | Finetuning Dataset | Model
 |---|---|---|---
-WavLM Base |  [960 hrs LibriSpeech](http://www.openslr.org/12)| -  | [download](https://drive.google.com/file/d/1CXF_1VkmQxoYoSGIWqE7mHgozAMJ_tkg/view?usp=sharing)
-WavLM Base+ | [60k hrs Libri-Light](https://github.com/facebookresearch/libri-light) + [10k hrs GigaSpeech](https://github.com/SpeechColab/GigaSpeech) + [24k hrs VoxPopuli](https://github.com/facebookresearch/voxpopuli/tree/main)| -  | [download](https://drive.google.com/file/d/1zZIhdg7yzim7xPPnhMLPy40WfIIRH5tG/view?usp=sharing)
-WavLM Large | [60k hrs Libri-Light](https://github.com/facebookresearch/libri-light) + [10k hrs GigaSpeech](https://github.com/SpeechColab/GigaSpeech) + [24k hrs VoxPopuli](https://github.com/facebookresearch/voxpopuli/tree/main)| -  | [download](https://drive.google.com/file/d/1fQ3T_CQPvLJLsqyHe4qwZNx-SEi5J1KP/view?usp=sharing)
+WavLM Base |  [960 hrs LibriSpeech](http://www.openslr.org/12)| -  | comming soon
+WavLM Base+ | [60k hrs Libri-Light](https://github.com/facebookresearch/libri-light) + [10k hrs GigaSpeech](https://github.com/SpeechColab/GigaSpeech) + [24k hrs VoxPopuli](https://github.com/facebookresearch/voxpopuli/tree/main)| -  | comming soon
+WavLM Large | [60k hrs Libri-Light](https://github.com/facebookresearch/libri-light) + [10k hrs GigaSpeech](https://github.com/SpeechColab/GigaSpeech) + [24k hrs VoxPopuli](https://github.com/facebookresearch/voxpopuli/tree/main)| -  | comming soon
 
 ## Fine-Tuning 
 The authors are preparing simple, clear, and well-documented fine-tuning code of WavLM. The pre-trained models will also release as long as the  fine-tuning code is done.  Stay tuned! 
@@ -24,6 +28,9 @@ The authors are preparing simple, clear, and well-documented fine-tuning code of
 ## Downstream Task Performance 
 We also evaluate our models on typical speech processing benchmarks.
 ### Speaker Verification
+
+Evaluate on the [VoxCeleb](https://www.robots.ox.ac.uk/~vgg/data/voxceleb/#:~:text=VoxCeleb%20is%20an%20audio%2Dvisual,interview%20videos%20uploaded%20to%20YouTube)
+
 | Model         |Fix pre-train| Vox1-O | Vox1-E     | Vox1-H         |
 | ------------- |------------- | ---------- | ---------- | ---------- |
 | ECAPA-TDNN   | - | 0.87     | 1.12  | 2.12   |
@@ -35,12 +42,11 @@ We also evaluate our models on typical speech processing benchmarks.
 | UniSpeech-SAT large | No | 0.564 | 0.561| 1.23 |
 | **WavLM large** | No | **0.431** | **0.538**| **1.154** |
 
-Regarding reproduction, please contact [Zhengyang](https://github.com/czy97)
 
 
 ### Speech Separation
 
-Evaluation on [LibriCSS](https://github.com/chenzhuo1011/libri_css)
+Evaluation on the [LibriCSS](https://github.com/chenzhuo1011/libri_css)
 | Model         |0S | 0L | OV10     |      OV20     |OV30 |OV40 |
 | ---------------- |------| ------ | ------ | ------ | ------ | ------ |
 | [Conformer](https://ieeexplore.ieee.org/abstract/document/9413423/) (SOTA)   | 4.5	| 4.4	|6.2	|8.5|	11	|12.6|
@@ -51,11 +57,8 @@ Evaluation on [LibriCSS](https://github.com/chenzhuo1011/libri_css)
 | **WavLM large** | 4.2| 4.1	| 4.8	| 5.8 |	7.4|	8.5|
 
 
-Regarding reproduction, please contact [Sanyuan](https://github.com/Sanyuan-Chen)
-
 ### Speaker Diarization
-
-Evaluation on CALLHOME
+Evaluation on the [CALLHOME](https://arxiv.org/pdf/1909.06247.pdf)
 | Model         |spk_2	|spk_3|	spk_4|	spk_5|	spk_6|	spk_all |
 | ---------------- |------| ------ | ------ | ------ | ------ | ------ |
 | [EEND-vector clustering](https://arxiv.org/pdf/2105.09040.pdf)   | 7.96|	11.93	|16.38|	21.21|	23.1	|12.49||
@@ -66,15 +69,10 @@ Evaluation on CALLHOME
 | WavLM Base| 6.99|	11.12|	15.20	|16.48|	21.61|	11.75|
 | **WavLm large** | 6.46|	10.69|	11.84	|12.89|	20.70|	10.35|
 
-
-Regarding reproduction, please contact [Zhengyang](https://github.com/czy97)
-
 ### Speech Recogntion
+Evaluate on the [LibriSpeech](https://www.openslr.org/12)
 
 ![alt text](ASR.PNG)
-
-
-Regarding reproduction, please contact [Chengyi](https://github.com/cywang97)
 
 
 ## More Speech Pre-Trained  Models
@@ -88,10 +86,17 @@ Portions of the source code are based on the [FAIRSEQ](https://github.com/pytorc
 
 
 ### Reference
-If you find Our work is useful in your research, please cite the following paper:
-
-[WavLM: Large-Scale Self-Supervised  Pre-training   for Full Stack Speech Processing](https://arxiv.org/pdf/2110.13900.pdf)
-
+If you find our work is useful in your research, please cite the following paper:
+``` latex
+@article{Chen2021WavLM,
+  title   = {WavLM: Large-Scale Self-Supervised  Pre-training   for Full Stack Speech Processing},
+  author  = {Sanyuan Chen and Chengyi Wang and Zhengyang Chen and Yu Wu and Shujie Liu and Zhuo Chen and Jinyu Li and Naoyuki Kanda and Takuya Yoshioka and Xiong Xiao and Jian Wu and Long Zhou and Shuo Ren and Yanmin Qian and Yao Qian and Jian Wu and Micheal Zeng and Furu Wei},
+  eprint={2110.13900},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL},
+  year={2021}
+}
+```
 
 ### Contact Information
 
