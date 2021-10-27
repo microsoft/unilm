@@ -18,12 +18,13 @@ except:
 
 import tqdm
 
-from s2s_ft.modeling import BertForSequenceToSequence
+from s2s_ft.modeling import BertForSequenceToSequenceWithPseudoMask, BertForSequenceToSequenceUniLMV1
 from transformers import AdamW, get_linear_schedule_with_warmup
 from transformers import \
     RobertaConfig, BertConfig, \
     BertTokenizer, RobertaTokenizer, \
-    XLMRobertaConfig, XLMRobertaTokenizer
+    XLMRobertaConfig, XLMRobertaTokenizer, \
+    ElectraConfig, ElectraTokenizer
 from s2s_ft.configuration_unilm import UnilmConfig
 from s2s_ft.tokenization_unilm import UnilmTokenizer
 from s2s_ft.configuration_minilm import MinilmConfig
@@ -41,6 +42,7 @@ MODEL_CLASSES = {
     'roberta': (RobertaConfig, RobertaTokenizer),
     'xlm-roberta': (XLMRobertaConfig, XLMRobertaTokenizer),
     'unilm': (UnilmConfig, UnilmTokenizer),
+    'electra': (ElectraConfig, ElectraTokenizer),
 }
 
 
@@ -53,14 +55,37 @@ def prepare_for_training(args, model, checkpoint_state_dict, amp):
     ]
     optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
 
+    if checkpoint_state_dict:
+        optimizer.load_state_dict(checkpoint_state_dict['optimizer'])
+        model.load_state_dict(checkpoint_state_dict['model'])
+        
+        # then remove optimizer state to make amp happy
+        # https://github.com/NVIDIA/apex/issues/480#issuecomment-587154020
+        if amp:
+            optimizer.state = {} 
+
     if amp:
         model, optimizer = amp.initialize(model, optimizer, opt_level=args.fp16_opt_level)
         if checkpoint_state_dict:
             amp.load_state_dict(checkpoint_state_dict['amp'])
 
-    if checkpoint_state_dict:
-        optimizer.load_state_dict(checkpoint_state_dict['optimizer'])
-        model.load_state_dict(checkpoint_state_dict['model'])
+            # Black Tech from https://github.com/NVIDIA/apex/issues/480#issuecomment-587154020
+            # forward, backward, optimizer step, zero_grad
+            random_input = {'source_ids': torch.ones(size=(2, 2), device=args.device, dtype=torch.long),
+                            'target_ids': torch.ones(size=(2, 2), device=args.device, dtype=torch.long),
+                            'label_ids': torch.ones(size=(2, 2), device=args.device, dtype=torch.long), 
+                            'pseudo_ids': torch.ones(size=(2, 2), device=args.device, dtype=torch.long),
+                            'num_source_tokens': torch.zeros(size=(2,), device=args.device, dtype=torch.long),
+                            'num_target_tokens': torch.zeros(size=(2,), device=args.device, dtype=torch.long)}
+            loss = model(**random_input)
+            print("Loss = %f" % loss.cpu().item())
+            with amp.scale_loss(loss, optimizer) as scaled_loss:
+                scaled_loss.backward()
+            optimizer.step()
+            model.zero_grad()
+
+            # then load optimizer state_dict again (this time without removing optimizer.state)
+            optimizer.load_state_dict(checkpoint_state_dict['optimizer'])
 
     # multi-gpu training (should be after apex fp16 initialization)
     if args.n_gpu > 1:
@@ -92,29 +117,20 @@ def train(args, training_features, model, tokenizer):
     # model recover
     recover_step = utils.get_max_epoch_model(args.output_dir)
 
-    # if recover_step:
-    #     model_recover_checkpoint = os.path.join(args.output_dir, "model.{}.bin".format(recover_step))
-    #     logger.info(" ** Recover model checkpoint in %s ** ", model_recover_checkpoint)
-    #     model_state_dict = torch.load(model_recover_checkpoint, map_location='cpu')
-    #     optimizer_recover_checkpoint = os.path.join(args.output_dir, "optim.{}.bin".format(recover_step))
-    #     checkpoint_state_dict = torch.load(optimizer_recover_checkpoint, map_location='cpu')
-    #     checkpoint_state_dict['model'] = model_state_dict
-    # else:
-    checkpoint_state_dict = None
+    if recover_step:
+        checkpoint_state_dict = utils.get_checkpoint_state_dict(args.output_dir, recover_step)
+    else:
+        checkpoint_state_dict = None
 
     model.to(args.device)
     model, optimizer = prepare_for_training(args, model, checkpoint_state_dict, amp=amp)
 
-    if args.n_gpu == 0 or args.no_cuda:
-        per_node_train_batch_size = args.per_gpu_train_batch_size * args.gradient_accumulation_steps
-    else:
-        per_node_train_batch_size = args.per_gpu_train_batch_size * args.n_gpu * args.gradient_accumulation_steps
-        
+    per_node_train_batch_size = args.per_gpu_train_batch_size * args.n_gpu * args.gradient_accumulation_steps
     train_batch_size = per_node_train_batch_size * (torch.distributed.get_world_size() if args.local_rank != -1 else 1)
     global_step = recover_step if recover_step else 0
 
     if args.num_training_steps == -1:
-        args.num_training_steps = int(args.num_training_epochs * len(training_features) / train_batch_size)
+        args.num_training_steps = args.num_training_epochs * len(training_features) / train_batch_size
 
     scheduler = get_linear_schedule_with_warmup(
         optimizer, num_warmup_steps=args.num_warmup_steps,
@@ -129,11 +145,13 @@ def train(args, training_features, model, tokenizer):
         cls_id=tokenizer.cls_token_id, sep_id=tokenizer.sep_token_id, pad_id=tokenizer.pad_token_id,
         mask_id=tokenizer.mask_token_id, random_prob=args.random_prob, keep_prob=args.keep_prob,
         offset=train_batch_size * global_step, num_training_instances=train_batch_size * args.num_training_steps,
+        source_mask_prob=args.source_mask_prob, target_mask_prob=args.target_mask_prob, 
+        mask_way=args.mask_way, num_max_mask_token=args.num_max_mask_token, 
     )
 
     logger.info("Check dataset:")
     for i in range(5):
-        source_ids, target_ids, pseudo_ids, num_source_tokens, num_target_tokens = train_dataset.__getitem__(i)
+        source_ids, target_ids = train_dataset.__getitem__(i)[:2]
         logger.info("Instance-%d" % i)
         logger.info("Source tokens = %s" % " ".join(tokenizer.convert_ids_to_tokens(source_ids)))
         logger.info("Target tokens = %s" % " ".join(tokenizer.convert_ids_to_tokens(target_ids)))
@@ -162,7 +180,7 @@ def train(args, training_features, model, tokenizer):
             collate_fn=utils.batch_list_to_batch_tensors)
 
         train_iterator = tqdm.tqdm(
-            train_dataloader, initial=global_step,
+            train_dataloader, initial=global_step * args.gradient_accumulation_steps,
             desc="Iter (loss=X.XXX, lr=X.XXXXXXX)", disable=args.local_rank not in [-1, 0])
 
         model.train()
@@ -171,12 +189,24 @@ def train(args, training_features, model, tokenizer):
         tr_loss, logging_loss = 0.0, 0.0
 
         for step, batch in enumerate(train_iterator):
+            if global_step > args.num_training_steps:
+                break
             batch = tuple(t.to(args.device) for t in batch)
-            inputs = {'source_ids': batch[0],
-                      'target_ids': batch[1],
-                      'pseudo_ids': batch[2],
-                      'num_source_tokens': batch[3],
-                      'num_target_tokens': batch[4]}
+            if args.mask_way == 'v2':
+                inputs = {'source_ids': batch[0],
+                        'target_ids': batch[1],
+                        'label_ids': batch[2], 
+                        'pseudo_ids': batch[3],
+                        'num_source_tokens': batch[4],
+                        'num_target_tokens': batch[5]}
+            elif args.mask_way == 'v1' or args.mask_way == 'v0':
+                inputs = {'source_ids': batch[0],
+                        'target_ids': batch[1],
+                        'masked_ids': batch[2],
+                        'masked_pos': batch[3],
+                        'masked_weight': batch[4],
+                        'num_source_tokens': batch[5],
+                        'num_target_tokens': batch[6]}
             loss = model(**inputs)
             if args.n_gpu > 1:
                 loss = loss.mean()  # mean() to average on multi-gpu parallel (not distributed) training
@@ -217,14 +247,13 @@ def train(args, training_features, model, tokenizer):
                     model_to_save = model.module if hasattr(model, "module") else model
                     model_to_save.save_pretrained(save_path)
                     
-                    # optim_to_save = {
-                    #     "optimizer": optimizer.state_dict(),
-                    #     "lr_scheduler": scheduler.state_dict(),
-                    # }
-                    # if args.fp16:
-                    #     optim_to_save["amp"] = amp.state_dict()
-                    # torch.save(
-                    #     optim_to_save, os.path.join(args.output_dir, 'optim.{}.bin'.format(global_step)))
+                    optim_to_save = {
+                        "optimizer": optimizer.state_dict(),
+                        "lr_scheduler": scheduler.state_dict(),
+                    }
+                    if args.fp16:
+                        optim_to_save["amp"] = amp.state_dict()
+                    torch.save(optim_to_save, os.path.join(save_path, utils.OPTIM_NAME))
 
                     logger.info("Saving model checkpoint %d into %s", global_step, save_path)
 
@@ -295,6 +324,8 @@ def get_args():
                         help="prob to random replace a masked token")
     parser.add_argument("--keep_prob", default=0.1, type=float,
                         help="prob to keep no change for a masked token")
+    parser.add_argument("--fix_word_embedding", action='store_true',
+                        help="Set word embedding no grad when finetuning.")
 
     parser.add_argument('--logging_steps', type=int, default=500,
                         help="Log every X updates steps.")
@@ -314,6 +345,20 @@ def get_args():
                              "See details at https://nvidia.github.io/apex/amp.html")
     parser.add_argument('--server_ip', type=str, default='', help="Can be used for distant debugging.")
     parser.add_argument('--server_port', type=str, default='', help="Can be used for distant debugging.")
+
+    parser.add_argument('--source_mask_prob', type=float, default=-1.0,
+                        help="Probability to mask source sequence in fine-tuning")
+    parser.add_argument('--target_mask_prob', type=float, default=-1.0,
+                        help="Probability to mask target sequence in fine-tuning")
+    parser.add_argument('--num_max_mask_token', type=int, default=0,
+                        help="The number of the max masked tokens in target sequence")
+    parser.add_argument('--mask_way', type=str, default='v2',
+                        help="Fine-tuning method (v0: position shift, v1: masked LM, v2: pseudo-masking)")
+    parser.add_argument("--lmdb_cache", action='store_true',
+                        help="Use LMDB to cache training features")
+    parser.add_argument("--lmdb_dtype", type=str, default='h', 
+                        help="Data type for cached data type for LMDB")
+    parser.add_argument
     args = parser.parse_args()
     return args
 
@@ -375,7 +420,8 @@ def get_model_and_tokenizer(args):
         args.config_name if args.config_name else args.model_name_or_path,
         cache_dir=args.cache_dir if args.cache_dir else None)
     config = BertForSeq2SeqConfig.from_exist_config(
-        config=model_config, label_smoothing=args.label_smoothing,
+        config=model_config, label_smoothing=args.label_smoothing, 
+        fix_word_embedding=args.fix_word_embedding, 
         max_position_embeddings=args.max_source_seq_length + args.max_target_seq_length)
 
     logger.info("Model config for seq2seq: %s", str(config))
@@ -384,7 +430,13 @@ def get_model_and_tokenizer(args):
         args.tokenizer_name if args.tokenizer_name else args.model_name_or_path,
         do_lower_case=args.do_lower_case, cache_dir=args.cache_dir if args.cache_dir else None)
 
-    model = BertForSequenceToSequence.from_pretrained(
+    model_class = \
+        BertForSequenceToSequenceWithPseudoMask if args.mask_way == 'v2' \
+            else BertForSequenceToSequenceUniLMV1
+
+    logger.info("Construct model %s" % model_class.MODEL_NAME)
+
+    model = model_class.from_pretrained(
         args.model_name_or_path, config=config, model_type=args.model_type,
         reuse_position_embedding=True,
         cache_dir=args.cache_dir if args.cache_dir else None)
@@ -407,10 +459,14 @@ def main():
         # Make sure only the first process in distributed training will download model & vocab
 
     if args.cached_train_features_file is None:
-        args.cached_train_features_file = os.path.join(args.output_dir, "cached_features_for_training.pt")
+        if not args.lmdb_cache:
+            args.cached_train_features_file = os.path.join(args.output_dir, "cached_features_for_training.pt")
+        else:
+            args.cached_train_features_file = os.path.join(args.output_dir, "cached_features_for_training_lmdb")
     training_features = utils.load_and_cache_examples(
         example_file=args.train_file, tokenizer=tokenizer, local_rank=args.local_rank,
-        cached_features_file=args.cached_train_features_file, shuffle=True,
+        cached_features_file=args.cached_train_features_file, shuffle=True, 
+        lmdb_cache=args.lmdb_cache, lmdb_dtype=args.lmdb_dtype, 
     )
 
     train(args, training_features, model, tokenizer)

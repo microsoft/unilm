@@ -39,6 +39,9 @@ UNILM_PRETRAINED_CONFIG_ARCHIVE_MAP = {
     'unilm1-large-cased': "https://unilm.blob.core.windows.net/ckpt/unilm1-large-cased-config.json",
     'unilm1-base-cased': "https://unilm.blob.core.windows.net/ckpt/unilm1-base-cased-config.json",
     'unilm1.2-base-uncased': "https://unilm.blob.core.windows.net/ckpt/unilm1.2-base-uncased-config.json",
+    'unilm2-base-uncased': "https://unilm.blob.core.windows.net/ckpt/unilm2-base-uncased-config.json",
+    'unilm2-large-uncased': "https://unilm.blob.core.windows.net/ckpt/unilm2-large-uncased-config.json",
+    'unilm2-large-cased': "https://unilm.blob.core.windows.net/ckpt/unilm2-large-cased-config.json",
 }
 
 
