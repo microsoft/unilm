@@ -71,7 +71,7 @@ Regarding reproduction, please contact [Zhengyang](https://github.com/czy97)
 
 ### Speech Recogntion
 
-![alt text](ASR.png)
+![alt text](ASR.PNG)
 
 
 Regarding reproduction, please contact [Chengyi](https://github.com/cywang97)
