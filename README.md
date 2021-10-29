@@ -31,7 +31,7 @@ The family of UniLM AI:
 
 > [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) (```NEW```): **Transformer-based OCR w/ pre-trained models**
 
-> [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) (```NEW```): **Speech Pre-Training for full stack tasks**
+> [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) (```NEW```): **Speech pre-training for full stack tasks**
 
 # Hiring
 We are hiring at all levels (including FTE researchers and interns)! If you are interested in working with us on NLP and large-scale pre-trained models, please send your resume to <a href="mailto:fuwei@microsoft.com" class="x-hidden-focus">fuwei@microsoft.com</a>.
