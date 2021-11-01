@@ -66,7 +66,7 @@ We summarize the validation results as follows. We also provide the fine-tuned w
 | BEiT-large | [beit_large_patch16_224_pt22k_ft22k](https://unilm.blob.core.windows.net/beit/beit_large_patch16_224_pt22k_ft22k.pth) | 512x512 | 88.60 | 98.66 | 306M | [link](https://unilm.blob.core.windows.net/beit/beit_large_patch16_512_pt22k_ft22kto1k.pth) | [link](https://paste.ubuntu.com/p/Wsb3NwkfCR/) |
 
 
-## Fine-tuning on ADE20K (segmantic segmentation)
+## Fine-tuning on ADE20K (semantic segmentation)
 
 We summarize the validation results as follows. We also provide the fine-tuned weights and fine-tuning logs. The detailed instructions to reproduce the results can be found at [`semantic_segmentation/README.md`](semantic_segmentation/README.md).
 
