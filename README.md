@@ -1,37 +1,47 @@
-# UniLM AI
-<!--**Pre-trained models for natural language understanding (NLU) and generation (NLG) tasks**-->
-**Pre-trained models across tasks (understanding, generation and translation), languages (100+ languages), and modalities (language, image, audio, vision + language, audio + language, etc.)**
+<!--# Large-scale Self-supervised Pre-training Across Tasks, Languages, and Modalities-->
+## Pre-trained Models
 
-The family of UniLM AI:
-> [**UniLM**](https://github.com/microsoft/unilm/tree/master/unilm) (```v1@NeurIPS'19 | v2@ICML'20 | v3@ACL'21```): **unified pre-training for language understanding and generation**
+**Large-scale self-supervised pre-training across ```tasks``` (predictive and generative), ```languages``` (100+ languages), and ```modalities``` (language, image, audio, layout/format + language, vision + language, audio + language, etc.)**
 
-> [**InfoXLM**](https://github.com/microsoft/unilm/tree/master/infoxlm) (```v1@NAACL'21 | v2@ACL'21```): **multilingual/cross-lingual pre-trained models for 100+ languages**
+<!--## Large-scale Self-supervised Pre-training Across Tasks, Languages, and Modalities-->
 
-> [**DeltaLM**](https://github.com/microsoft/unilm/tree/master/deltalm) (```NEW```): **encoder-decoder pre-training for language generation and translation for 100+ languages**
+### Language & Multilingual
+> [**UniLM**](https://github.com/microsoft/unilm/tree/master/unilm): unified pre-training for language understanding and generation
 
-> [**MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm) (```v1@NeurIPS'20 | v2@ACL'21```): **small and fast pre-trained models for language understanding and generation**
+> [**InfoXLM**](https://github.com/microsoft/unilm/tree/master/infoxlm): multilingual/cross-lingual pre-trained models for 100+ languages
 
-> [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm) (```v1@ACL'21```): **domain, language, and task adaptation of pre-trained models**
+> [**DeltaLM**](https://github.com/microsoft/unilm/tree/master/deltalm): encoder-decoder pre-training for language generation and translation for 100+ languages
 
-> [**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm) (```v1@KDD'20 | v2@ACL'21```): **multimodal (text + layout/format + image) pre-training for [Document AI](https://www.microsoft.com/en-us/research/project/document-ai/)** (e.g. scanned documents, PDF, etc.)
+> [**MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm): small and fast pre-trained models for language understanding and generation
 
-> [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm) (```NEW```): **multimodal (text + layout/format + image) pre-training for multilingual document understanding**
+> [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm): domain, language, and task adaptation of pre-trained models
 
-> [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm) (```NEW```): **markup language model pre-training for visually-rich document understanding**
+### Vision
+> [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit) (```NEW```): generative self-supervised pre-training for image / BERT Pre-Training of Image Transformers
 
-> [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader) (```EMNLP'21```): **Pre-training of text and layout for reading order detection**
+### Speech
+> [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) (```NEW```): speech pre-training for full stack tasks
 
-> [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit) (```NEW```): **BERT Pre-Training of Image Transformers**
+### Multimodal (Text + X)
+> [**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm): multimodal (text + layout/format + image) pre-training for [Document AI](https://www.microsoft.com/en-us/research/project/document-ai/) (e.g. scanned documents, PDF, etc.)
 
-> [**UniSpeech**](https://arxiv.org/abs/2101.07597) (```v1@ICML'21```): **Speech Pre-Training for Multi-lingual ASR**
+> [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm): multimodal (text + layout/format + image) pre-training for multilingual document understanding
 
-> [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): **sequence-to-sequence fine-tuning toolkit**
+> [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm) (```NEW```): markup language model pre-training for visually-rich document understanding
 
-> [**XLM-T**](https://github.com/microsoft/unilm/tree/master/xlmt) (```NEW```): **Multilingual NMT w/ pretrained cross-lingual encoders**
+> [**UniSpeech**](https://arxiv.org/abs/2101.07597): Speech pre-training for multi-lingual ASR
 
-> [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) (```NEW```): **Transformer-based OCR w/ pre-trained models**
+### Toolkits
+> [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): sequence-to-sequence fine-tuning toolkit
 
-> [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) (```NEW```): **Speech pre-training for full stack tasks**
+### Applications
+> [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) (```NEW```): transformer-based OCR w/ pre-trained models
+ 
+> [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader): pre-training of text and layout for reading order detection
+
+> [**XLM-T**](https://github.com/microsoft/unilm/tree/master/xlmt): multilingual NMT w/ pretrained cross-lingual encoders
+
+
 
 # Hiring
 We are hiring at all levels (including FTE researchers and interns)! If you are interested in working with us on NLP and large-scale pre-trained models, please send your resume to <a href="mailto:fuwei@microsoft.com" class="x-hidden-focus">fuwei@microsoft.com</a>.
