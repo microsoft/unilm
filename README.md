@@ -33,7 +33,7 @@
 
 > [**UniSpeech-SAT**](https://arxiv.org/pdf/2110.05752.pdf): universal speech representation learning with speaker-aware pre-training
 
-> [**SpeechT5**](https://arxiv.org/abs/2110.07205): encoder-decoder pre-training for spoken language processing
+> [**SpeechT5**](https://arxiv.org/abs/2110.07205) (```NEW```): encoder-decoder pre-training for spoken language processing
 
 ### Toolkits
 > [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): sequence-to-sequence fine-tuning toolkit
