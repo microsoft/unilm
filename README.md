@@ -8,9 +8,9 @@
 ### Language & Multilingual
 > [**UniLM**](https://github.com/microsoft/unilm/tree/master/unilm): unified pre-training for language understanding and generation
 
-> [**InfoXLM / XLM-E**](https://github.com/microsoft/unilm/tree/master/infoxlm): multilingual/cross-lingual pre-trained models for 100+ languages
+> [**InfoXLM/XLM-E**](https://github.com/microsoft/unilm/tree/master/infoxlm): multilingual/cross-lingual pre-trained models for 100+ languages
 
-> [**DeltaLM / mT6**](https://github.com/microsoft/unilm/tree/master/deltalm): encoder-decoder pre-training for language generation and translation for 100+ languages
+> [**DeltaLM/mT6**](https://github.com/microsoft/unilm/tree/master/deltalm): encoder-decoder pre-training for language generation and translation for 100+ languages
 
 > [**MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm): small and fast pre-trained models for language understanding and generation
 
