@@ -4,7 +4,7 @@
 <!--**Pre-trained models for speech related tasks**-->
 
 
- [**WavLM**](https://arxiv.org/pdf/2110.13900.pdf) : **WavLM: Large-Scale Self-Supervised  Pre-training   for Full Stack Speech Processing**
+ [**WavLM**](https://arxiv.org/pdf/2110.13900.pdf) : **WavLM: Large-Scale Self-Supervised  Pre-training  for Full Stack Speech Processing**
 
 Official PyTorch implementation and pretrained models of WavLM
 
@@ -92,7 +92,7 @@ If you find our work is useful in your research, please cite the following paper
 ``` latex
 @article{Chen2021WavLM,
   title   = {WavLM: Large-Scale Self-Supervised  Pre-training   for Full Stack Speech Processing},
-  author  = {Sanyuan Chen and Chengyi Wang and Zhengyang Chen and Yu Wu and Shujie Liu and Zhuo Chen and Jinyu Li and Naoyuki Kanda and Takuya Yoshioka and Xiong Xiao and Jian Wu and Long Zhou and Shuo Ren and Yanmin Qian and Yao Qian and Jian Wu and Micheal Zeng and Furu Wei},
+  author  = {Sanyuan Chen and Chengyi Wang and Zhengyang Chen and Yu Wu and Shujie Liu and Zhuo Chen and Jinyu Li and Naoyuki Kanda and Takuya Yoshioka and Xiong Xiao and Jian Wu and Long Zhou and Shuo Ren and Yanmin Qian and Yao Qian and Jian Wu and Michael Zeng and Furu Wei},
   eprint={2110.13900},
   archivePrefix={arXiv},
   primaryClass={cs.CL},
