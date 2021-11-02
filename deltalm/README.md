@@ -4,6 +4,8 @@
 
 [DeltaLM: Encoder-Decoder Pre-training for Language Generation and Translation by Augmenting Pretrained Multilingual Encoders.](https://arxiv.org/abs/2106.13736) Shuming Ma, Li Dong, Shaohan Huang, Dongdong Zhang, Alexandre Muzio, Saksham Singhal, Hany Hassan Awadalla, Xia Song, Furu Wei. CoRR abs/2106.13736.
 
+[mT6: Multilingual Pretrained Text-to-Text Transformer with Translation Pairs.](https://arxiv.org/abs/2104.08692) Zewen Chi, Li Dong, Shuming Ma, Shaohan Huang, Xian-Ling Mao, Heyan Huang, and Furu Wei. In EMNLP 2021.
+
 - September 2021: DeltaLM ranks first on the [WMT21 multilingual translation task](http://www.statmt.org/wmt21/large-scale-multilingual-translation-task.html).
 - August 2021: release code and pretrained checkpoints.
 
