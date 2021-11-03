@@ -10,6 +10,8 @@ Code for pretraining cross-lingual language models. This repo provides implement
 
 - [2] **InfoXLM** (NAACL 2021, [paper](https://arxiv.org/pdf/2007.07834.pdf), [repo](https://github.com/microsoft/unilm/tree/master/infoxlm), [model](https://huggingface.co/microsoft/infoxlm-base)) InfoXLM: An Information-Theoretic Framework for Cross-Lingual Language Model Pre-Training.
 
+- [4] **XLM-E** (arXiv 2021, [paper](https://arxiv.org/pdf/2106.16138.pdf)) XLM-E: Cross-lingual Language Model Pre-training via ELECTRA
+
 - **mBERT** Pretraining BERT on multilingual text with the masked language modeling (MLM) task.
 
 - **XLM** Pretraining Transformer encoder with masked language modeling (MLM) and translation language modeling (TLM).
@@ -405,6 +407,18 @@ Please cite the papers if you found the resources in this repository useful.
 }
 ```
 
+[4] **XLM-E** (arXiv 2021, [paper](https://arxiv.org/pdf/2106.16138.pdf)) XLM-E: Cross-lingual Language Model Pre-training via ELECTRA
+
+```
+@misc{chi2021xlme,
+      title={XLM-E: Cross-lingual Language Model Pre-training via ELECTRA}, 
+      author={Zewen Chi and Shaohan Huang and Li Dong and Shuming Ma and Saksham Singhal and Payal Bajaj and Xia Song and Furu Wei},
+      year={2021},
+      eprint={2106.16138},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+```
 ## License
 This project is licensed under the license found in the LICENSE file in the root directory of this source tree.
 
