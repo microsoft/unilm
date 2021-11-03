@@ -257,7 +257,7 @@ def main():
         with tqdm(total=total_batch) as pbar:
             batch_count = 0
             first_batch = True
-            while next_i + args.batch_size <= len(input_lines):
+            while first_batch or (next_i + args.batch_size <= len(input_lines)):
             # while next_i < len(input_lines):
                 _chunk = input_lines[next_i:next_i + args.batch_size]
                 buf_id = [x[0] for x in _chunk]
