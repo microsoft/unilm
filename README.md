@@ -35,7 +35,7 @@
 
 > [**SpeechT5**](https://arxiv.org/abs/2110.07205) (```NEW```): encoder-decoder pre-training for spoken language processing
 
-> [**VLMo**](#) (```NEW```): Unified vision-language pre-training - an evolution of **BEiT** to multimodal 
+> [**VLMo**](https://github.com/microsoft/unilm/tree/master/vlmo) (```NEW```): Unified vision-language pre-training - an evolution of **BEiT** to multimodal 
 
 ### Toolkits
 > [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): sequence-to-sequence fine-tuning toolkit
