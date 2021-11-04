@@ -8,18 +8,42 @@
 
 Official PyTorch implementation and pretrained models of WavLM
 
+- Nov 2021: release code and pretrained models (WavLM Base and WavLM Base+)
 - Oct 2021: release preprint in [arXiv](https://arxiv.org/pdf/2110.13900.pdf)
 
 ## Pre-Trained models
 Model | Pretraining Dataset | Finetuning Dataset | Model
 |---|---|---|---
-WavLM Base |  [960 hrs LibriSpeech](http://www.openslr.org/12)| -  | coming soon
-WavLM Base+ | [60k hrs Libri-Light](https://github.com/facebookresearch/libri-light) + [10k hrs GigaSpeech](https://github.com/SpeechColab/GigaSpeech) + [24k hrs VoxPopuli](https://github.com/facebookresearch/voxpopuli/tree/main)| -  | coming soon
+WavLM Base |  [960 hrs LibriSpeech](http://www.openslr.org/12)| -  | [WavLM-Base](https://drive.google.com/file/d/19-C7SMQvEFAYLG5uc47NX_MY03JCbI4x/view?usp=sharing)
+WavLM Base+ | [60k hrs Libri-Light](https://github.com/facebookresearch/libri-light) + [10k hrs GigaSpeech](https://github.com/SpeechColab/GigaSpeech) + [24k hrs VoxPopuli](https://github.com/facebookresearch/voxpopuli/tree/main)| -  | [WavLM-Base+](https://drive.google.com/file/d/1H-er_Ag7KxFyB74tqguoymC7_mxQuxtS/view?usp=sharing)
 WavLM Large | [60k hrs Libri-Light](https://github.com/facebookresearch/libri-light) + [10k hrs GigaSpeech](https://github.com/SpeechColab/GigaSpeech) + [24k hrs VoxPopuli](https://github.com/facebookresearch/voxpopuli/tree/main)| -  | coming soon
 
-## Fine-Tuning 
-The authors are preparing simple, clear, and well-documented fine-tuning code of WavLM. The pre-trained models will also release as long as the  fine-tuning code is done.  Stay tuned! 
+## Load pre-trained models
 
+```python
+import torch
+from WavLM import WavLM, WavLMConfig
+
+# load the pre-trained checkpoints
+checkpoint = torch.load('/path/to/wavlm.pt')
+cfg = WavLMConfig(checkpoint['cfg'])
+model = WavLM(cfg)
+model.load_state_dict(checkpoint['model'])
+model.eval()
+
+# extract the the representation of last layer
+wav_input_16khz = torch.randn(1,10000)
+rep = model.extract_features(wav_input_16khz)[0]
+
+# extract the the representation of each layer
+wav_input_16khz = torch.randn(1,10000)
+rep, layer_results = model.extract_features(wav_input_16khz, output_layer=model.cfg.encoder_layers, ret_layer_results=True)[0]
+layer_reps = [x.transpose(0, 1) for x, _ in layer_results]
+```
+
+
+## Fine-Tuning 
+The authors are preparing simple, clear, and well-documented fine-tuning code of WavLM. Stay tuned!
 
 ## Universal Representation Evaluation on SUPERB 
 ![alt text](SUPERB_Results.png)
