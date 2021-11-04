@@ -4,7 +4,7 @@
 <!--**Pre-trained models for speech related tasks**-->
 
 
- [**WavLM**](https://arxiv.org/pdf/2110.13900.pdf) : **: Large-Scale Self-Supervised  Pre-training  for Full Stack Speech Processing**
+ [**WavLM**](https://arxiv.org/pdf/2110.13900.pdf): **Large-Scale Self-Supervised  Pre-training  for Full Stack Speech Processing**
 
 Official PyTorch implementation and pretrained models of WavLM
 
