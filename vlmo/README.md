@@ -1,6 +1,6 @@
 # [VLMo](https://arxiv.org/abs/2111.02358)
 
-**[Unified Vision-Language Pre-Training with Mixture-of-Modality-Experts](https://arxiv.org/abs/2111.02358). Wenhui Wang, Hangbo Bao, Li Dong, Furu Wei. arXiv 2021.**
+**[VLMo: Unified Vision-Language Pre-Training with Mixture-of-Modality-Experts](https://arxiv.org/abs/2111.02358). Wenhui Wang, Hangbo Bao, Li Dong, Furu Wei. arXiv 2021.**
 
 Official PyTorch implementation and pretrained models of VLMo.
 
