@@ -1,4 +1,7 @@
 <!--# Large-scale Self-supervised Pre-training Across Tasks, Languages, and Modalities-->
+# Hiring
+We are hiring at all levels (including FTE researchers and interns)! If you are interested in working with us on NLP and large-scale pre-trained models, please send your resume to <a href="mailto:fuwei@microsoft.com" class="x-hidden-focus">fuwei@microsoft.com</a>.
+
 ## Pre-trained Models
 
 **Large-scale self-supervised pre-training across ```tasks``` (predictive and generative), ```languages``` (100+ languages), and ```modalities``` (language, image, audio, layout/format + language, vision + language, audio + language, etc.)**
@@ -47,10 +50,6 @@
 
 > [**XLM-T**](https://github.com/microsoft/unilm/tree/master/xlmt): multilingual NMT w/ pretrained cross-lingual encoders
 
-
-
-# Hiring
-We are hiring at all levels (including FTE researchers and interns)! If you are interested in working with us on NLP and large-scale pre-trained models, please send your resume to <a href="mailto:fuwei@microsoft.com" class="x-hidden-focus">fuwei@microsoft.com</a>.
 
 ## News
 - [Model Release] November, 2021: [**VLMo**](https://github.com/microsoft/unilm/tree/master/vlmo) - Unified vision-language pre-training w/ [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit)  
