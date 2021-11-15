@@ -530,7 +530,7 @@ class MultiheadAttention(nn.Module):
                     gate_a, gate_b = torch.sigmoid(self.grep_linear(query_layer).view(
                         _B, _H, _L, 2, 4).sum(-1, keepdim=False)).chunk(2, dim=-1)
                     gate_a_1 = gate_a * (gate_b * self.grep_a - 1.0) + 2.0
-                    attn_mask_rel_pos = gate_a_1 * position_bias
+                    attn_mask_rel_pos = gate_a_1.view(bsz * self.num_heads, -1, 1) * position_bias
 
                 attn_mask_rel_pos = attn_mask_rel_pos.view((-1, tgt_len, tgt_len))
             k_proj_bias = self.k_proj.bias
@@ -734,7 +734,7 @@ class MultiheadAttention(nn.Module):
                 gate_a, gate_b = torch.sigmoid(self.grep_linear(query_layer).view(
                     _B, _H, _L, 2, 4).sum(-1, keepdim=False)).chunk(2, dim=-1)
                 gate_a_1 = gate_a * (gate_b * self.grep_a - 1.0) + 2.0
-                position_bias = gate_a_1 * position_bias
+                position_bias = gate_a_1.view(bsz * self.num_heads, -1, 1) * position_bias
 
             position_bias = position_bias.view(attn_weights.size())
 
