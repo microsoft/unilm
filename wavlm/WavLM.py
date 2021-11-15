@@ -174,6 +174,8 @@ class WavLMConfig:
         self.conv_bias: bool = False     # include bias in conv encoder
         self.feature_grad_mult: float = 1.0     # multiply feature extractor var grads by this
 
+        self.normalize: bool = False  # normalize input to have 0 mean and unit variance during training
+
         # dropouts
         self.dropout: float = 0.1     # dropout probability for the transformer
         self.attention_dropout: float = 0.1     # dropout probability for attention weights
