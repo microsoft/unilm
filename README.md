@@ -137,5 +137,5 @@ Portions of the source code are based on the [transformers](https://github.com/h
 
 For help or issues using UniLM AI models, please submit a GitHub issue.
 
-For other communications related to UniLM AI, please contact [Furu Wei](http://gitnlp.org/) (`fuwei@microsoft.com`).
+For other communications, please contact [Furu Wei](http://gitnlp.org/) (`fuwei@microsoft.com`).
 
