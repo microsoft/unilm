@@ -72,8 +72,8 @@ We summarize the validation results as follows. We also provide the fine-tuned w
 
 |name|initialized checkpoint|method|crop size|Lr schd|mIoU|mIoU (ms+flip)|#params|weight|log|
 |:-----------|:---------------------|:-------:|:---------:|:-------:|:----:|:--------------:|:-------:|:-------|:---:|
-|BEiT-base|[beit_base_patch16_224_pt22k_ft22k](https://unilm.blob.core.windows.net/beit/beit_base_patch16_224_pt22k_ft22k.pth)|UPerNet|640x640|160k|53.6|54.2|194M|[link](https://unilm.blob.core.windows.net/beit/beit_base_patch16_640_pt22k_ft22ktoade20k.pth)|[link](https://paste.ubuntu.com/p/sdsWCDRzk2/)|
-|BEiT-large|[beit_large_patch16_224_pt22k_ft22k](https://unilm.blob.core.windows.net/beit/beit_large_patch16_224_pt22k_ft22k.pth)|UPerNet|640x640|160k|56.7|57.0|502M|[link](https://unilm.blob.core.windows.net/beit/beit_large_patch16_640_pt22k_ft22ktoade20k.pth)|[link](https://paste.ubuntu.com/p/FKc2cvvJsC/)|
+|BEiT-base|[beit_base_patch16_224_pt22k_ft22k](https://unilm.blob.core.windows.net/beit/beit_base_patch16_224_pt22k_ft22k.pth)|UPerNet|640x640|160k|53.6|54.2|163M|[link](https://unilm.blob.core.windows.net/beit/beit_base_patch16_640_pt22k_ft22ktoade20k.pth)|[link](https://paste.ubuntu.com/p/sdsWCDRzk2/)|
+|BEiT-large|[beit_large_patch16_224_pt22k_ft22k](https://unilm.blob.core.windows.net/beit/beit_large_patch16_224_pt22k_ft22k.pth)|UPerNet|640x640|160k|56.7|57.0|441M|[link](https://unilm.blob.core.windows.net/beit/beit_large_patch16_640_pt22k_ft22ktoade20k.pth)|[link](https://paste.ubuntu.com/p/FKc2cvvJsC/)|
 
 
 ## Example: Pre-training BEiT-base on ImageNet-22k
