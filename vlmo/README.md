@@ -1,4 +1,4 @@
-# [VLMo](https://arxiv.org/abs/2111.02358)
+# VLMo - General-purpose Multimodal Pre-training
 
 **[VLMo: Unified Vision-Language Pre-Training with Mixture-of-Modality-Experts](https://arxiv.org/abs/2111.02358). Wenhui Wang, Hangbo Bao, Li Dong, Furu Wei. arXiv 2021.**
 
