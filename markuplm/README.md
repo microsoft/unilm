@@ -10,16 +10,20 @@ MarkupLM is a simple but effective multi-modal pre-training method of text and m
 
 ## Release Notes
 
+******* New Nov 23th, 2021: HuggingFace supported. *******
+
 ******* New Nov 22th, 2021: Initial release of pre-trained models and fine-tuning code for MarkupLM *******
 
 ## Pre-trained Models
 
 We pre-train MarkupLM on a subset of the CommonCrawl dataset.
 
-| Name  | Link |
+| Name  | HuggingFace |
 | - | - | 
-| MarkupLM-Base | [Link-Base](https://layoutlm.blob.core.windows.net/markuplm/models/markuplm-base.zip) |
-| MarkupM-Large | [Link-Large](https://layoutlm.blob.core.windows.net/markuplm/models/markuplm-large.zip) |
+| MarkupLM-Base | [microsoft/markuplm-base](https://huggingface.co/microsoft/markuplm-base) |
+| MarkupM-Large | [microsoft/markuplm-large](https://huggingface.co/microsoft/markuplm-large) |
+
+An example might be ``model = markuplm.from_pretrained("microsoft/markuplm-base")``.
 
 ## Installation
 
@@ -61,7 +65,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python run.py \
 	--train_file /Path/To/WebSRC/websrc1.0_train_.json \
 	--predict_file /Path/To/WebSRC/websrc1.0_dev_.json \
 	--root_dir /Path/To/WebSRC \
-	--model_name_or_path /Path/To/Downloaded/Model \
+	--model_name_or_path microsoft/markuplm-large \
 	--output_dir /Your/Output/Path \
 	--do_train \
 	--do_eval \
@@ -107,7 +111,7 @@ CUDA_VISIBLE_DEVICES=0,1 python run.py \
 	--n_seed 1 \
 	--n_pages 2000 \
 	--prev_nodes_into_account 4 \
-	--model_name_or_path /Path/To/Downloaded/Model \
+	--model_name_or_path microsoft/markuplm-base \
 	--output_dir /Your/Output/Path \
 	--do_train \
 	--do_eval \
