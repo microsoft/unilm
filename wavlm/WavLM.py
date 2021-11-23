@@ -185,7 +185,7 @@ class WavLMConfig:
         self.dropout_features: float = 0.0     # dropout to apply to the features (after feat extr)
 
         # masking
-        self.mask_length: int = 10     # mask length)
+        self.mask_length: int = 10     # mask length
         self.mask_prob: float = 0.65     # probability of replacing a token with mask
         self.mask_selection: str = "static"     # how to choose mask length
         self.mask_other: float = 0     # secondary mask argument (used for more complex distributions), see help in compute_mask_indicesh

@@ -78,7 +78,7 @@ def load_tf_weights_in_openai_gpt(model, config, openai_checkpoint_folder_path):
     init_params.pop(0)
     init_params.pop(0)
 
-    for name, array in zip(names, init_params):  # names[1:n_transfer], init_params[1:n_transfer]):
+    for name, array in zip(names, init_params):  # , names[1:n_transfer], init_params[1:n_transfer]):
         name = name[6:]  # skip "model/"
         assert name[-2:] == ":0"
         name = name[:-2]
