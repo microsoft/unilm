@@ -384,7 +384,7 @@ class PreTrainedTokenizer(object):
             # You can link tokens to special vocabulary when instantiating
             tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', unk_token='<unk>')
             # You should be sure '<unk>' is in the vocabulary when doing that.
-            # Otherwise use tokenizer.add_special_tokens({'unk_token': '<unk>'}) instead)
+            # Otherwise use tokenizer.add_special_tokens({'unk_token': '<unk>'}) instead
             assert tokenizer.unk_token == '<unk>'
 
         """

@@ -251,7 +251,7 @@ class TFXLMMainLayer(tf.keras.layers.Layer):
             )
         self.embeddings = TFSharedEmbeddings(
             self.n_words, self.dim, initializer_range=config.embed_init_std, name="embeddings"
-        )  # padding_idx=self.pad_index)
+        )  # , padding_idx=self.pad_index)
         self.layer_norm_emb = tf.keras.layers.LayerNormalization(epsilon=config.layer_norm_eps, name="layer_norm_emb")
 
         # transformer layers

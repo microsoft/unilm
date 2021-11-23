@@ -73,7 +73,7 @@ class TFEmbeddings(tf.keras.layers.Layer):
         self.initializer_range = config.initializer_range
         self.word_embeddings = TFSharedEmbeddings(
             config.vocab_size, config.dim, initializer_range=config.initializer_range, name="word_embeddings"
-        )  # padding_idx=0)
+        )  # , padding_idx=0)
         self.position_embeddings = tf.keras.layers.Embedding(
             config.max_position_embeddings,
             config.dim,
