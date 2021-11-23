@@ -10,12 +10,12 @@ MarkupLM is a simple but effective multi-modal pre-training method of text and m
 
 The overview of our framework is as follows:
 <div align="center">
-<img src="overview.PNG" width="100%" height="100%" />
+<img src="https://user-images.githubusercontent.com/45759388/142979309-9b3ba8ce-d76c-482a-8ded-f837037e9e81.PNG" width="100%" height="100%" />
 </div>
 
 And the core XPath Embedding Layer is as follows:
 <div align="center">
-<img src="xpath_emb_fin.PNG" width="70%" height="70%" />
+<img src="https://user-images.githubusercontent.com/45759388/142979238-22bc4910-1236-4c72-9292-47d613c39daa.PNG" width="70%" height="70%" />
 </div>
 
 ## Release Notes
