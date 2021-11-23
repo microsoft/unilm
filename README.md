@@ -52,6 +52,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 
 
 ## News
+- [Model Release] November, 2021: [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm)
 - [Model Release] November, 2021: [**VLMo**](https://github.com/microsoft/unilm/tree/master/vlmo) - Unified vision-language pre-training w/ [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit)  
 - [Model Release] October, 2021: [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) - Large-scale self-supervised pre-trained models for speech. 
 - [Model Release] October 2021: [**TrOCR**](https://huggingface.co/transformers/master/model_doc/trocr.html) is on [HuggingFace](https://github.com/huggingface/transformers)
