@@ -5,12 +5,11 @@
 
 Code for pretraining cross-lingual language models. This repo provides implementations of various cross-lingual language models, including:
 
-- [1] **XLM-Align** (ACL 2021, [paper](https://aclanthology.org/2021.acl-long.265/), [repo](https://github.com/CZWin32768/XLM-Align), [model](https://huggingface.co/microsoft/xlm-align-base)) Improving Pretrained Cross-Lingual Language Models via Self-Labeled Word Alignment
+- [1] **InfoXLM** (NAACL 2021, [paper](https://arxiv.org/pdf/2007.07834.pdf), [repo](https://github.com/microsoft/unilm/tree/master/infoxlm), [model](https://huggingface.co/microsoft/infoxlm-base)) InfoXLM: An Information-Theoretic Framework for Cross-Lingual Language Model Pre-Training.
 
+- [2] **XLM-E** (arXiv 2021, [paper](https://arxiv.org/pdf/2106.16138.pdf)) XLM-E: Cross-lingual Language Model Pre-training via ELECTRA
 
-- [2] **InfoXLM** (NAACL 2021, [paper](https://arxiv.org/pdf/2007.07834.pdf), [repo](https://github.com/microsoft/unilm/tree/master/infoxlm), [model](https://huggingface.co/microsoft/infoxlm-base)) InfoXLM: An Information-Theoretic Framework for Cross-Lingual Language Model Pre-Training.
-
-- [4] **XLM-E** (arXiv 2021, [paper](https://arxiv.org/pdf/2106.16138.pdf)) XLM-E: Cross-lingual Language Model Pre-training via ELECTRA
+- [3] **XLM-Align** (ACL 2021, [paper](https://aclanthology.org/2021.acl-long.265/), [repo](https://github.com/CZWin32768/XLM-Align), [model](https://huggingface.co/microsoft/xlm-align-base)) Improving Pretrained Cross-Lingual Language Models via Self-Labeled Word Alignment
 
 - **mBERT** Pretraining BERT on multilingual text with the masked language modeling (MLM) task.
 
