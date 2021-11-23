@@ -52,7 +52,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 
 
 ## News
-- [Blog] November 2021, [Multilingual translation at scale: 10000 language pairs and beyond](https://www.microsoft.com/en-us/translator/blog/2021/11/22/multilingual-translation-at-scale-10000-language-pairs-and-beyond/)
+- November, 2021: [Multilingual translation at scale: 10000 language pairs and beyond](https://www.microsoft.com/en-us/translator/blog/2021/11/22/multilingual-translation-at-scale-10000-language-pairs-and-beyond/)
 - [Model Release] November, 2021: [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm)
 - [Model Release] November, 2021: [**VLMo**](https://github.com/microsoft/unilm/tree/master/vlmo) - Unified vision-language pre-training w/ [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit)  
 - [Model Release] October, 2021: [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) - Large-scale self-supervised pre-trained models for speech. 
