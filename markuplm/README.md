@@ -8,6 +8,16 @@ MarkupLM is a simple but effective multi-modal pre-training method of text and m
 
 [MarkupLM: Pre-training of Text and Markup Language for Visually-rich Document Understanding](https://arxiv.org/abs/2110.08518)  Junlong Li, Yiheng Xu, Lei Cui, Furu Wei, [Preprint](https://github.com/microsoft/unilm/tree/master/markuplm#)
 
+The overview of our framework is as follows:
+<div align="center">
+<img src="overview.PNG" width="100%" height="100%" />
+</div>
+
+And the core XPath Embedding Layer is as follows:
+<div align="center">
+<img src="xpath_emb_fin.PNG" width="70%" height="70%" />
+</div>
+
 ## Release Notes
 
 ******* New Nov 23th, 2021: HuggingFace supported. *******
