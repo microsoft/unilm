@@ -95,7 +95,7 @@ OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=16 run_bei
         --data_path ${DATA_PATH} --output_dir ${OUTPUT_DIR} --num_mask_patches 75 \
         --model beit_base_patch16_224_8k_vocab --discrete_vae_weight_path ${TOKENIZER_PATH} \
         --batch_size 128 --lr 1.5e-3 --warmup_steps 10000 --epochs 150 \
-        --clip_grad 3.0 --drop_path 0.1 --layer_scale_init_value 0.1
+        --clip_grad 3.0 --drop_path 0 --layer_scale_init_value 0.1
 ```
 - `--num_mask_patches`: number of the input patches need be masked.
 - `--batch_size`: batch size per GPU.
@@ -126,7 +126,7 @@ OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=16 run_bei
         --data_path ${DATA_PATH} --output_dir ${OUTPUT_DIR} --num_mask_patches 75 \
         --model beit_base_patch16_224_8k_vocab --discrete_vae_weight_path ${TOKENIZER_PATH} \
         --batch_size 128 --lr 1.5e-3 --warmup_epochs 10 --epochs 800 \
-        --clip_grad 3.0 --drop_path 0.1 --layer_scale_init_value 0.1 \
+        --clip_grad 3.0 --drop_path 0 --layer_scale_init_value 0.1 \
         --imagenet_default_mean_and_std
 ```
 
