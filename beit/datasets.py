@@ -31,7 +31,6 @@ class DataAugmentationForBEiT(object):
         std = IMAGENET_INCEPTION_STD if not imagenet_default_mean_and_std else IMAGENET_DEFAULT_STD
 
         self.common_transform = transforms.Compose([
-            transforms.ColorJitter(0.4, 0.4, 0.4),
             transforms.RandomHorizontalFlip(p=0.5),
             RandomResizedCropAndInterpolationWithTwoPic(
                 size=args.input_size, second_size=args.second_input_size,

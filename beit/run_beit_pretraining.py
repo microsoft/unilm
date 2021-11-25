@@ -58,16 +58,16 @@ def get_args():
     parser.add_argument('--second_input_size', default=112, type=int,
                         help='images input size for discrete vae')
 
-    parser.add_argument('--drop_path', type=float, default=0.1, metavar='PCT',
-                        help='Drop path rate (default: 0.1)')
+    parser.add_argument('--drop_path', type=float, default=0, metavar='PCT',
+                        help='Drop path rate (default: 0)')
 
     # Optimizer parameters
     parser.add_argument('--opt', default='adamw', type=str, metavar='OPTIMIZER',
                         help='Optimizer (default: "adamw"')
     parser.add_argument('--opt_eps', default=1e-8, type=float, metavar='EPSILON',
                         help='Optimizer Epsilon (default: 1e-8)')
-    parser.add_argument('--opt_betas', default=None, type=float, nargs='+', metavar='BETA',
-                        help='Optimizer Betas (default: None, use opt default)')
+    parser.add_argument('--opt_betas', default=[0.9, 0.98], type=float, nargs='+', metavar='BETA',
+                        help='Optimizer Betas (default: 0.9, 0.98, use opt default)')
     parser.add_argument('--clip_grad', type=float, default=None, metavar='NORM',
                         help='Clip gradient norm (default: None, no clipping)')
     parser.add_argument('--momentum', type=float, default=0.9, metavar='M',
@@ -91,8 +91,6 @@ def get_args():
                         help='epochs to warmup LR, if scheduler supports')
 
     # Augmentation parameters
-    parser.add_argument('--color_jitter', type=float, default=0.4, metavar='PCT',
-                        help='Color jitter factor (default: 0.4)')
     parser.add_argument('--train_interpolation', type=str, default='bicubic',
                         help='Training interpolation (random, bilinear, bicubic default: "bicubic")')
     parser.add_argument('--second_interpolation', type=str, default='lanczos',
