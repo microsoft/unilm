@@ -91,6 +91,8 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python run.py \
 
 Download the dataset from the [official website](https://archive.codeplex.com/?p=swde).
 
+Update: the above website is down, please use this [backup](http://web.archive.org/web/20210630013015/https://codeplexarchive.blob.core.windows.net/archive/projects/swde/swde.zip).
+
 Unzip **swde.zip**, and extract everything in **/sourceCode**, make sure we have folders like **auto / book / camera** ... under this directory, and we name this path as **/Path/To/SWDE**.
 
 #### Generate dataset
