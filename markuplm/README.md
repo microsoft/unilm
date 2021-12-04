@@ -20,8 +20,6 @@ And the core XPath Embedding Layer is as follows:
 
 ## Release Notes
 
-******* New Nov 23th, 2021: HuggingFace supported. *******
-
 ******* New Nov 22th, 2021: Initial release of pre-trained models and fine-tuning code for MarkupLM *******
 
 ## Pre-trained Models
