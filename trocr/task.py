@@ -1,10 +1,9 @@
 import os
-import torch
+from fairseq import search
 
-from fairseq import metrics, search, tokenizer, utils
-from fairseq.data import Dictionary
+from fairseq.data import Dictionary, encoders
 from fairseq.tasks import LegacyFairseqTask, register_task
-from torchvision.transforms.transforms import ToTensor
+from fairseq.tasks.fairseq_task import FairseqTask
 
 try:
     from .data import SROIETextRecognitionDataset, SyntheticTextRecognitionDataset
@@ -24,20 +23,24 @@ class SROIETextRecognitionTask(LegacyFairseqTask):
     @staticmethod
     def add_args(parser):
         parser.add_argument('data', metavar='DIR',
-                            help='the path to the data dir')
-        parser.add_argument('--max-tgt-len', default=64, type=int,
-                            help='the max bpe num of the output')
+                            help='the path to the data dir')                
+        # parser.add_argument('--max-tgt-len', default=64, type=int,
+        #                     help='the max bpe num of the output')
         parser.add_argument('--preprocess', default='ResizeNormalize', type=str,
                             help='the image preprocess methods (ResizeNormalize|DeiT)')     
-        parser.add_argument('--decoder-pretrained', default='roberta', type=str,
-                            help='seted to load the RoBERTa parameters to the decoder.')                                                   
+        parser.add_argument('--decoder-pretrained', default=None, type=str,
+                            help='seted to load the RoBERTa parameters to the decoder.')    
+        parser.add_argument('--decoder-pretrained-url', default=None, type=str,
+                            help='the ckpt url for decoder pretraining (only unilm for now)')     
+        parser.add_argument('--dict-path-or-url', default=None, type=str,
+                            help='the local path or url for dictionary file')                          
         # parser.add_argument('--resize-img-size', type=int,
         #                     help='the output image size of h and w (h=w) of the image transform')   
         parser.add_argument('--input-size', type=int, nargs='+', help='images input size')
-        parser.add_argument('--text-recog-gen', action="store_true",
-                            help='if use the TextRecognitionGenerator')       
-        parser.add_argument('--crop-img-output-dir', type=str, default=None,
-                            help='the output dir for the crop images')   
+        # parser.add_argument('--text-recog-gen', action="store_true",
+        #                     help='if use the TextRecognitionGenerator')       
+        # parser.add_argument('--crop-img-output-dir', type=str, default=None,
+        #                     help='the output dir for the crop images')   
         parser.add_argument('--data-type', type=str, default='SROIE',
                             help='the dataset type used for the task (SROIE or Receipt53K)')        
 
@@ -65,28 +68,47 @@ class SROIETextRecognitionTask(LegacyFairseqTask):
         parser.add_argument('--resplit', action='store_true', default=False,
                             help='Do not random erase first (clean) augmentation split')
                    
-
     @classmethod
     def setup_task(cls, args, **kwargs):
-        # label_vocab = Dictionary.load(os.path.join(args.data, 'dict.label.txt'))
-        # print('| [label] dictionary: {} types'.format(len(label_vocab)))
-        return SROIETextRecognitionTask(args)
+        import urllib.request
+        import io            
 
-    def __init__(self, args):
+        if getattr(args, "decoder_pretrained", None) is not None:
+            if args.decoder_pretrained == 'unilm':            
+                url = 'https://layoutlm.blob.core.windows.net/trocr/dictionaries/unilm3.dict.txt'
+                logger.info('Load unilm dictionary from {}'.format(url))            
+                dict_content = urllib.request.urlopen(url).read().decode()
+                dict_file_like = io.StringIO(dict_content)
+                target_dict = Dictionary.load(dict_file_like)
+            elif args.decoder_pretrained.startswith('roberta'):
+                url = 'https://layoutlm.blob.core.windows.net/trocr/dictionaries/gpt2_with_mask.dict.txt'
+                logger.info('Load gpt2 dictionary from {}'.format(url))            
+                dict_content = urllib.request.urlopen(url).read().decode()
+                dict_file_like = io.StringIO(dict_content)
+                target_dict = Dictionary.load(dict_file_like)
+            else:
+                raise ValueError('Unknown decoder_pretrained: {}'.format(args.decoder_pretrained))
+        else:
+            assert getattr(args, "dict_path_or_url", None) is not None, "You must specify the dict_path_or_url when decoder_pretrained is not specified"
+            if args.dict_path_or_url.startswith('http'):
+                logger.info('Load dictionary from {}'.format(args.dict_path_or_url))  
+                dict_content = urllib.request.urlopen(args.dict_path_or_url).read().decode()
+                dict_file_like = io.StringIO(dict_content)
+                target_dict = Dictionary.load(dict_file_like)
+            else:
+                target_dict = Dictionary.load(args.dict_path_or_url)        
+        
+        logger.info('[label] load dictionary: {} types'.format(len(target_dict)))
+
+        return SROIETextRecognitionTask(args, target_dict)
+
+    def __init__(self, args, target_dict):
+
         super().__init__(args)
         self.args = args
-        self.data_dir = args.data
-        if getattr(args, "decoder_pretrained", None) == 'unilm':
-            self.target_dict = Dictionary.load('unilm3.dict.txt')
-        else:
-            self.target_dict = Dictionary.load(os.path.join(args.data, 'gpt2.dict.txt'))
-        if getattr(args, "decoder_pretrained", None).startswith('roberta'):
-            self.target_dict.add_symbol('<mask>') # to be consistent with roberta
-        # roberta = torch.hub.load('pytorch/fairseq', 'roberta.base', verbose=False)
-        # self.target_dict = roberta.task.dictionary
-        print('| [label] load dictionary: {} types'.format(len(self.target_dict)))
-        self.bpe = self.build_bpe(args)        
-      
+        self.data_dir = args.data            
+        self.target_dict = target_dict
+        self.bpe = self.build_bpe(args)            
 
     def load_dataset(self, split, **kwargs):
         if not hasattr(self.args, 'input_size') or not self.args.input_size:
@@ -103,16 +125,18 @@ class SROIETextRecognitionTask(LegacyFairseqTask):
                 input_size = tuple(input_size)
         elif isinstance(input_size, int):
             input_size = (input_size, input_size)
-        if self.args.preprocess == 'DA2':
-            tfm = build_data_aug(input_size, mode=split)
+
+        if self.args.preprocess == 'DA2':            
+            tfm = build_data_aug(input_size, mode=split)            
         else:
             raise Exception('Undeined image preprocess method.')
         
+        # load the dataset
         if self.args.data_type == 'SROIE':
             root_dir = os.path.join(self.data_dir, split)
-            self.datasets[split] = SROIETextRecognitionDataset(root_dir, tfm, self.bpe, self.target_dict, self.args.crop_img_output_dir)        
+            self.datasets[split] = SROIETextRecognitionDataset(root_dir, tfm, self.bpe, self.target_dict)        
         elif self.args.data_type == 'STR':
-            gt_path = os.path.join(self.data_dir, 'gt_{}.txt'.format(split))
+            gt_path = os.path.join(self.data_dir, 'gt_{}.txt'.format(split))            
             self.datasets[split] = SyntheticTextRecognitionDataset(gt_path, tfm, self.bpe, self.target_dict)
         else:
             raise Exception('Not defined dataset type: ' + self.args.data_type)
@@ -144,6 +168,7 @@ class SROIETextRecognitionTask(LegacyFairseqTask):
             from .generator import TextRecognitionGenerator
         except:
             from generator import TextRecognitionGenerator
+
         try:
             from fairseq.fb_sequence_generator import FBSequenceGenerator
         except ModuleNotFoundError:
