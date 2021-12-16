@@ -1,10 +1,25 @@
 import torchvision.transforms as transforms
+# from torchvision.transforms.functional import InterpolationMode
 from PIL import Image, ImageFilter
 import random
 import torch
 import numpy as np
 import logging
-import math
+from enum import Enum
+
+# 0: InterpolationMode.NEAREST,
+# 2: InterpolationMode.BILINEAR,
+# 3: InterpolationMode.BICUBIC,
+# 4: InterpolationMode.BOX,
+# 5: InterpolationMode.HAMMING,
+# 1: InterpolationMode.LANCZOS,
+class InterpolationMode():
+    NEAREST = 0
+    BILINEAR = 2
+    BICUBIC = 3
+    BOX = 4
+    HAMMING = 5
+    LANCZOS = 1
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +59,7 @@ class WeightedRandomChoice:
         try:
             tfm_img = t(img)
         except Exception as e:
-            logger.warning('Error during data_aug:'+str(e))
+            logger.warning('Error during data_aug: '+str(e))
             return img
 
         return tfm_img
@@ -111,12 +126,6 @@ class KeepOriginal(torch.nn.Module):
         return img    
 
 
-# 0: InterpolationMode.NEAREST,
-# 2: InterpolationMode.BILINEAR,
-# 3: InterpolationMode.BICUBIC,
-# 4: InterpolationMode.BOX,
-# 5: InterpolationMode.HAMMING,
-# 1: InterpolationMode.LANCZOS,
 def build_data_aug(size, mode, resnet=False, resizepad=False):
     if resnet:
         norm_tfm = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
@@ -125,7 +134,7 @@ def build_data_aug(size, mode, resnet=False, resizepad=False):
     if resizepad:
         resize_tfm = ResizePad(imgH=size[0], imgW=size[1])
     else:
-        resize_tfm = transforms.Resize(size, interpolation=3)
+        resize_tfm = transforms.Resize(size, interpolation=InterpolationMode.BICUBIC)
     if mode == 'train':
         return transforms.Compose([
             WeightedRandomChoice([
@@ -134,7 +143,7 @@ def build_data_aug(size, mode, resnet=False, resizepad=False):
                 transforms.GaussianBlur(3),
                 Dilation(3),
                 Erosion(3),
-                transforms.Resize((size[0] // 3, size[1] // 3), interpolation=0),
+                transforms.Resize((size[0] // 3, size[1] // 3), interpolation=InterpolationMode.NEAREST),
                 Underline(),
                 KeepOriginal(),
             ]),
