@@ -412,6 +412,7 @@ def beit_base_decoder_large(args):
 
 @register_model_architecture('TrOCR', 'trocr_large')
 @register_model_architecture('DeiT_TR', 'beit_large_decoder_large')
+@register_model_architecture('DeiT_TR', 'DeiT_TR_LargeR_BEiT_Large')
 def beit_large_decoder_large(args):
     # DeiT Encoder  deit_base_distilled_patch16_384
     args.deit_arch = getattr(args, "deit_arch", "beit_large_patch16_384")
