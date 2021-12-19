@@ -405,7 +405,9 @@ def get_dataset_and_info_for_websites(websites, evaluate=False):
 
 
 def do_something(train_websites, test_websites, args, config, tokenizer):
-
+    # before each run, we reset the seed
+    set_seed(args)
+    
     model = MarkupLMForTokenClassification.from_pretrained(args.model_name_or_path, config=config)
     model.resize_token_embeddings(len(tokenizer))
 
