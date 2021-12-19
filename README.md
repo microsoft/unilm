@@ -52,6 +52,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 
 
 ## News
+- [Model Release] December 16th, 2021: [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) small models for handwritten and printed texts.
 - November 24th, 2021: [**VLMo**](https://github.com/microsoft/unilm/tree/master/vlmo) as the new SOTA on the [VQA Challenge](https://eval.ai/web/challenges/challenge-page/830/leaderboard/2278)
 - November, 2021: [Multilingual translation at scale: 10000 language pairs and beyond](https://www.microsoft.com/en-us/translator/blog/2021/11/22/multilingual-translation-at-scale-10000-language-pairs-and-beyond/)
 - [Model Release] November, 2021: [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm)

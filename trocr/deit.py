@@ -1,5 +1,6 @@
 # Copyright (c) 2015-present, Facebook, Inc.
 # All rights reserved.
+import os
 import logging
 import torch
 import torch.nn as nn
@@ -251,6 +252,33 @@ def deit_small_distilled_patch16_224(pretrained=False, **kwargs):
         model.load_state_dict(checkpoint["model"])
     return model
 
+@register_model
+def deit_small_distilled_patch16_384(pretrained=False, **kwargs):
+    model = DistilledVisionTransformer(
+        img_size=384, patch_size=16, embed_dim=384, depth=12, num_heads=6, mlp_ratio=4, qkv_bias=True,
+        norm_layer=partial(nn.LayerNorm, eps=1e-6), **kwargs)
+    model.default_cfg = _cfg()
+    if pretrained:
+        checkpoint = torch.hub.load_state_dict_from_url(
+            url="https://dl.fbaipublicfiles.com/deit/deit_small_distilled_patch16_224-649709d9.pth",
+            map_location="cpu", check_hash=True
+        )
+        # adapt 224 model to 384
+        model_seq_len = model.state_dict()['pos_embed'].shape[1]
+        ckpt_seq_len = checkpoint['model']['pos_embed'].shape[1]
+        logger.warning('Deit load {:d} seq len to {:d} APE {}'.format(ckpt_seq_len, model_seq_len, str(model.ape)))
+        if not model.ape:
+            if model_seq_len <= ckpt_seq_len:
+                checkpoint['model']['pos_embed'] = checkpoint['model']['pos_embed'][:, :model_seq_len, :]
+            else:
+                t = model.state_dict()['pos_embed']
+                t[:, :ckpt_seq_len, :] = checkpoint['model']['pos_embed']
+                checkpoint['model']['pos_embed'] = t
+
+        model.load_state_dict(checkpoint["model"])
+    return model
+
+
 
 @register_model
 def deit_base_distilled_patch16_224(pretrained=False, **kwargs):
@@ -312,7 +340,7 @@ def deit_base_distilled_patch16_custom_size(pretrained=False, img_size=384, **kw
         # ape torch.Size([1, 578, 768]) from checkpoint, the shape in current model is torch.Size([1, 1026, 768]).
         model_seq_len = model.state_dict()['pos_embed'].shape[1]
         ckpt_seq_len = checkpoint['model']['pos_embed'].shape[1]
-        logger.info('Deit load {:d} seq len to {:d} APE {}'.format(ckpt_seq_len, model_seq_len, str(model.ape)))
+        logger.warning('Deit load {:d} seq len to {:d} APE {}'.format(ckpt_seq_len, model_seq_len, str(model.ape)))
         if not model.ape:
             if model_seq_len <= ckpt_seq_len:
                 checkpoint['model']['pos_embed'] = checkpoint['model']['pos_embed'][:, :model_seq_len, :]

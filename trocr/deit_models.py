@@ -1,10 +1,7 @@
-import torch.nn as nn
 from fairseq.models import FairseqEncoder, register_model, FairseqEncoderDecoderModel, register_model_architecture
 from fairseq.models.transformer import TransformerDecoder, Embedding, TransformerModel
 from fairseq.models.transformer import base_architecture as base_transformer
 from fairseq.models.fairseq_encoder import EncoderOut
-from fairseq.modules import MultiheadAttention
-from fairseq.modules.quant_noise import quant_noise
 from torch.nn import Parameter
 from fairseq import utils
 from torch import Tensor
@@ -18,307 +15,25 @@ from functools import partial
 import logging
 import argparse
 from typing import Dict, Optional, Tuple
-import re
+from collections import OrderedDict
+import os
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_MAX_TARGET_POSITIONS = 1024
 
-class UniLMMultiheadAttention(MultiheadAttention):
-    def __init__(
-        self,         
-        embed_dim,
-        num_heads,
-        kdim=None,
-        vdim=None,
-        dropout=0.0,
-        bias=True,
-        add_bias_kv=False,
-        add_zero_attn=False,
-        self_attention=False,
-        encoder_decoder_attention=False,
-        q_noise=0.0,
-        qn_block_size=8):
-        super().__init__(embed_dim, num_heads, kdim=kdim, vdim=vdim, dropout=dropout, bias=bias, add_bias_kv=add_bias_kv, add_zero_attn=add_zero_attn, self_attention=self_attention, encoder_decoder_attention=encoder_decoder_attention, q_noise=q_noise, qn_block_size=qn_block_size)
-        self.qk_head_dim = 96
-        self.scaling = self.qk_head_dim ** -0.5
-
-        qk_output_dim = self.qk_head_dim * self.num_heads
-        assert qk_output_dim == 1152
-        self.k_proj = quant_noise(
-            nn.Linear(self.kdim, qk_output_dim, bias=bias), q_noise, qn_block_size
-        )
-        self.q_proj = quant_noise(
-            nn.Linear(embed_dim, qk_output_dim, bias=bias), q_noise, qn_block_size
-        )
-        if add_bias_kv:
-            self.bias_k = Parameter(torch.Tensor(1, 1, qk_output_dim))
-        else:
-            self.bias_k = None
-    
-    def forward(
-        self,
-        query,
-        key: Optional[Tensor],
-        value: Optional[Tensor],
-        key_padding_mask: Optional[Tensor] = None,
-        incremental_state: Optional[Dict[str, Dict[str, Optional[Tensor]]]] = None,
-        need_weights: bool = True,
-        static_kv: bool = False,
-        attn_mask: Optional[Tensor] = None,
-        before_softmax: bool = False,
-        need_head_weights: bool = False,
-    ) -> Tuple[Tensor, Optional[Tensor]]:
-        if need_head_weights:
-            need_weights = True
-
-        is_tpu = query.device.type == "xla"
-
-        tgt_len, bsz, embed_dim = query.size()
-        src_len = tgt_len
-        assert embed_dim == self.embed_dim
-        assert list(query.size()) == [tgt_len, bsz, embed_dim]
-        if key is not None:
-            src_len, key_bsz, _ = key.size()
-            if not torch.jit.is_scripting():
-                assert key_bsz == bsz
-                assert value is not None
-                assert src_len, bsz == value.shape[:2]
-
-        # Disabled 
-        # if (
-        #     not self.onnx_trace
-        #     and not is_tpu  # don't use PyTorch version on TPUs
-        #     and incremental_state is None
-        #     and not static_kv
-        #     # A workaround for quantization to work. Otherwise JIT compilation
-        #     # treats bias in linear module as method.
-        #     and not torch.jit.is_scripting()
-        # ):
-        #     assert key is not None and value is not None
-        #     return F.multi_head_attention_forward(
-        #         query,
-        #         key,
-        #         value,
-        #         self.embed_dim,
-        #         self.num_heads,
-        #         torch.empty([0]),
-        #         torch.cat((self.q_proj.bias, self.k_proj.bias, self.v_proj.bias)),
-        #         self.bias_k,
-        #         self.bias_v,
-        #         self.add_zero_attn,
-        #         self.dropout_module.p,
-        #         self.out_proj.weight,
-        #         self.out_proj.bias,
-        #         self.training or self.dropout_module.apply_during_inference,
-        #         key_padding_mask,
-        #         need_weights,
-        #         attn_mask,
-        #         use_separate_proj_weight=True,
-        #         q_proj_weight=self.q_proj.weight,
-        #         k_proj_weight=self.k_proj.weight,
-        #         v_proj_weight=self.v_proj.weight,
-        #     )
-
-        if incremental_state is not None:
-            saved_state = self._get_input_buffer(incremental_state)
-            if saved_state is not None and "prev_key" in saved_state:
-                # previous time steps are cached - no need to recompute
-                # key and value if they are static
-                if static_kv:
-                    assert self.encoder_decoder_attention and not self.self_attention
-                    key = value = None
-        else:
-            saved_state = None
-
-        if self.self_attention:
-            q = self.q_proj(query)
-            k = self.k_proj(query)
-            v = self.v_proj(query)
-        elif self.encoder_decoder_attention:
-            # encoder-decoder attention
-            q = self.q_proj(query)
-            if key is None:
-                assert value is None
-                k = v = None
-            else:
-                k = self.k_proj(key)
-                v = self.v_proj(key)
-
-        else:
-            assert key is not None and value is not None
-            q = self.q_proj(query)
-            k = self.k_proj(key)
-            v = self.v_proj(value)
-        q *= self.scaling
-
-        if self.bias_k is not None:
-            assert self.bias_v is not None
-            k = torch.cat([k, self.bias_k.repeat(1, bsz, 1)])
-            v = torch.cat([v, self.bias_v.repeat(1, bsz, 1)])
-            if attn_mask is not None:
-                attn_mask = torch.cat(
-                    [attn_mask, attn_mask.new_zeros(attn_mask.size(0), 1)], dim=1
-                )
-            if key_padding_mask is not None:
-                key_padding_mask = torch.cat(
-                    [
-                        key_padding_mask,
-                        key_padding_mask.new_zeros(key_padding_mask.size(0), 1),
-                    ],
-                    dim=1,
-                )
-
-        q = (
-            q.contiguous()
-            .view(tgt_len, bsz * self.num_heads, self.qk_head_dim)
-            .transpose(0, 1)
-        )
-        if k is not None:
-            k = (
-                k.contiguous()
-                .view(-1, bsz * self.num_heads, self.qk_head_dim)
-                .transpose(0, 1)
-            )
-        if v is not None:
-            v = (
-                v.contiguous()
-                .view(-1, bsz * self.num_heads, self.head_dim)
-                .transpose(0, 1)
-            )
-
-        if saved_state is not None:
-            # saved states are stored with shape (bsz, num_heads, seq_len, head_dim)
-            if "prev_key" in saved_state:
-                _prev_key = saved_state["prev_key"]
-                assert _prev_key is not None
-                prev_key = _prev_key.view(bsz * self.num_heads, -1, self.qk_head_dim)
-                if static_kv:
-                    k = prev_key
-                else:
-                    assert k is not None
-                    k = torch.cat([prev_key, k], dim=1)
-                src_len = k.size(1)
-            if "prev_value" in saved_state:
-                _prev_value = saved_state["prev_value"]
-                assert _prev_value is not None
-                prev_value = _prev_value.view(bsz * self.num_heads, -1, self.head_dim)
-                if static_kv:
-                    v = prev_value
-                else:
-                    assert v is not None
-                    v = torch.cat([prev_value, v], dim=1)
-            prev_key_padding_mask: Optional[Tensor] = None
-            if "prev_key_padding_mask" in saved_state:
-                prev_key_padding_mask = saved_state["prev_key_padding_mask"]
-            assert k is not None and v is not None
-            key_padding_mask = MultiheadAttention._append_prev_key_padding_mask(
-                key_padding_mask=key_padding_mask,
-                prev_key_padding_mask=prev_key_padding_mask,
-                batch_size=bsz,
-                src_len=k.size(1),
-                static_kv=static_kv,
-            )
-
-            saved_state["prev_key"] = k.view(bsz, self.num_heads, -1, self.qk_head_dim)
-            saved_state["prev_value"] = v.view(bsz, self.num_heads, -1, self.head_dim)
-            saved_state["prev_key_padding_mask"] = key_padding_mask
-            # In this branch incremental_state is never None
-            assert incremental_state is not None
-            incremental_state = self._set_input_buffer(incremental_state, saved_state)
-        assert k is not None
-        assert k.size(1) == src_len
-
-        # This is part of a workaround to get around fork/join parallelism
-        # not supporting Optional types.
-        if key_padding_mask is not None and key_padding_mask.dim() == 0:
-            key_padding_mask = None
-
-        if key_padding_mask is not None:
-            assert key_padding_mask.size(0) == bsz
-            assert key_padding_mask.size(1) == src_len
-
-        if self.add_zero_attn:
-            assert v is not None
-            src_len += 1
-            k = torch.cat([k, k.new_zeros((k.size(0), 1) + k.size()[2:])], dim=1)
-            v = torch.cat([v, v.new_zeros((v.size(0), 1) + v.size()[2:])], dim=1)
-            if attn_mask is not None:
-                attn_mask = torch.cat(
-                    [attn_mask, attn_mask.new_zeros(attn_mask.size(0), 1)], dim=1
-                )
-            if key_padding_mask is not None:
-                key_padding_mask = torch.cat(
-                    [
-                        key_padding_mask,
-                        torch.zeros(key_padding_mask.size(0), 1).type_as(
-                            key_padding_mask
-                        ),
-                    ],
-                    dim=1,
-                )
-
-        attn_weights = torch.bmm(q, k.transpose(1, 2))
-        attn_weights = self.apply_sparse_mask(attn_weights, tgt_len, src_len, bsz)
-
-        assert list(attn_weights.size()) == [bsz * self.num_heads, tgt_len, src_len]
-
-        if attn_mask is not None:
-            attn_mask = attn_mask.unsqueeze(0)
-            if self.onnx_trace:
-                attn_mask = attn_mask.repeat(attn_weights.size(0), 1, 1)
-            attn_weights += attn_mask
-
-        if key_padding_mask is not None:
-            # don't attend to padding symbols
-            attn_weights = attn_weights.view(bsz, self.num_heads, tgt_len, src_len)
-            if not is_tpu:
-                attn_weights = attn_weights.masked_fill(
-                    key_padding_mask.unsqueeze(1).unsqueeze(2).to(torch.bool),
-                    float("-inf"),
-                )
-            else:
-                attn_weights = attn_weights.transpose(0, 2)
-                attn_weights = attn_weights.masked_fill(key_padding_mask, float("-inf"))
-                attn_weights = attn_weights.transpose(0, 2)
-            attn_weights = attn_weights.view(bsz * self.num_heads, tgt_len, src_len)
-
-        if before_softmax:
-            return attn_weights, v
-
-        attn_weights_float = utils.softmax(
-            attn_weights, dim=-1, onnx_trace=self.onnx_trace
-        )
-        attn_weights = attn_weights_float.type_as(attn_weights)
-        attn_probs = self.dropout_module(attn_weights)
-
-        assert v is not None
-        attn = torch.bmm(attn_probs, v)
-        assert list(attn.size()) == [bsz * self.num_heads, tgt_len, self.head_dim]
-        if self.onnx_trace and attn.size(1) == 1:
-            # when ONNX tracing a single decoder step (sequence length == 1)
-            # the transpose is a no-op copy before view, thus unnecessary
-            attn = attn.contiguous().view(tgt_len, bsz, embed_dim)
-        else:
-            attn = attn.transpose(0, 1).contiguous().view(tgt_len, bsz, embed_dim)
-        attn = self.out_proj(attn)
-        attn_weights: Optional[Tensor] = None
-        if need_weights:
-            attn_weights = attn_weights_float.view(
-                bsz, self.num_heads, tgt_len, src_len
-            ).transpose(1, 0)
-            if not need_head_weights:
-                # average attention weights over heads
-                attn_weights = attn_weights.mean(dim=0)
-
-        return attn, attn_weights
-
 from argparse import Namespace
 from omegaconf import DictConfig
 from fairseq.dataclass.utils import convert_namespace_to_omegaconf
 
+try:
+    from .unilm_models import UniLMDecoder
+except:
+    from unilm_models import UniLMDecoder
+
 @register_model('DeiT_TR')
-class DeiTTRModel(FairseqEncoderDecoderModel):
+@register_model('TrOCR')
+class TrOCRModel(FairseqEncoderDecoderModel):
 
     def load_state_dict(
         self,
@@ -340,13 +55,18 @@ class DeiTTRModel(FairseqEncoderDecoderModel):
         if not model_cfg.ape:
             model_seq_len = self.state_dict()['encoder.deit.pos_embed'].shape[1]
             ckpt_seq_len = new_state_dict['encoder.deit.pos_embed'].shape[1]
-            logger.info('Load from {:d} seq len to {:d}'.format(ckpt_seq_len, model_seq_len))
+            logger.warning('Load from encoder.deit {:d} seq len to {:d}'.format(ckpt_seq_len, model_seq_len))
             if model_seq_len <= ckpt_seq_len:
                 new_state_dict['encoder.deit.pos_embed'] = new_state_dict['encoder.deit.pos_embed'][:, :model_seq_len, :]
             else:
                 t = self.state_dict()['encoder.deit.pos_embed']
                 t[:, :ckpt_seq_len, :] = new_state_dict['encoder.deit.pos_embed']
                 new_state_dict['encoder.deit.pos_embed'] = t
+
+        if hasattr(model_cfg, "reset_dictionary") and model_cfg.reset_dictionary:
+            logger.info('Reset token embed weights and output projection during loading pretrained models')
+            del new_state_dict['decoder.embed_tokens.weight'] 
+            del new_state_dict['decoder.output_projection.weight']
 
         return super().load_state_dict(new_state_dict, strict=False)
     
@@ -362,6 +82,15 @@ class DeiTTRModel(FairseqEncoderDecoderModel):
             help='if use absolute_pos_embed'
         )        
         parser.set_defaults(ape=False)
+        parser.add_argument(
+            '--reset-dictionary', action='store_true',
+            help='if reset dictionary and related parameters'
+        )
+        parser.add_argument(
+            '--adapt-dictionary', action='store_true',
+            help='if adapt dictionary and related parameters'
+        )
+        parser.set_defaults(reset_dictionary=False)
         parser.add_argument(
             '--mask-ratio', default=0.0, type=float,
             help='the mask ratio for the encoder output masking.'
@@ -395,23 +124,22 @@ class DeiTTRModel(FairseqEncoderDecoderModel):
 
     @classmethod
     def build_model(cls, args, task):
-        encoder = DeiTTREncoder(
+        encoder = TrOCREncoder(
             args = args,
             dictionary = task.source_dictionary
         )
 
+        args.encoder_embed_dim = encoder.deit.embed_dim
+
         if getattr(args, "max_target_positions", None) is None:
             args.max_target_positions = DEFAULT_MAX_TARGET_POSITIONS
 
-        decoder_embed_tokens = cls.build_embedding(
-            args, task.target_dictionary, args.decoder_embed_dim, args.decoder_embed_path
-        )
-
-        if getattr(args, "decoder_pretrained", None) == 'unilm':
-            args.decoder_attention_heads = 12
-
         if getattr(args, "decoder_pretrained", None).startswith('roberta2'):         
-            logger.info('Using the tengchao version loading roberta.')
+            logger.info('Using the learned pos embedding version loading roberta.')
+            decoder_embed_tokens = cls.build_embedding(
+                args, task.target_dictionary, args.decoder_embed_dim, args.decoder_embed_path
+            )
+            
             pretrained_model = getattr(args, "decoder_pretrained", None)
             specified = pretrained_model.find('-')!=-1
 
@@ -430,7 +158,7 @@ class DeiTTRModel(FairseqEncoderDecoderModel):
 
             roberta.model.args.encoder_layers = args.decoder_layers
             roberta.model.args.fp16 = args.fp16
-            roberta_args = DeiTTRModel.read_args_from_roberta(roberta.model.args)
+            roberta_args = TrOCRModel.read_args_from_roberta(roberta.model.args)
             roberta_args.encoder_embed_dim = args.encoder_embed_dim
 
             decoder = TransformerDecoder(
@@ -488,7 +216,108 @@ class DeiTTRModel(FairseqEncoderDecoderModel):
                 new_decoder_dict, strict=False
             )
 
-        elif getattr(args, "decoder_pretrained", None).startswith('roberta'):          
+        elif getattr(args, "decoder_pretrained", None) == 'unilm':
+            logger.info('Decoder is pretrained using the unilm.')
+            
+            prefix_of_parameter = 'bert'
+
+            decoder_embed_tokens = cls.build_embedding(
+                args, task.target_dictionary, args.decoder_embed_dim, args.decoder_embed_path
+            )
+
+            decoder = UniLMDecoder(
+                args,
+                task.target_dictionary,
+                decoder_embed_tokens,
+                no_encoder_attn=False,
+            )            
+
+            if hasattr(args, 'decoder_pretrained_url') and args.decoder_pretrained_url != None and args.decoder_pretrained_url != '':                
+                unilm_url = args.decoder_pretrained_url
+                logger.info('The unilm model url: {}.'.format(unilm_url[:unilm_url.find('?')]))
+                unilm_state_dict = torch.hub.load_state_dict_from_url(unilm_url)            
+
+                unilm_layers = OrderedDict([(k, unilm_state_dict[k]) for k in unilm_state_dict.keys() if k.startswith(prefix_of_parameter + '.encoder.layer.')])
+                unilm_layers_num = []
+                for k in unilm_layers.keys():
+                    t = k.replace(prefix_of_parameter + '.encoder.layer.', '')
+                    t = t[:t.find('.')]
+                    unilm_layers_num.append(int(t))
+                unilm_layers_num = max(unilm_layers_num) + 1
+
+                offset = unilm_layers_num - len(decoder.layers)
+                assert offset == 0
+
+                decoder_dict = decoder.state_dict()
+                # embedding
+                new_pos_weight = torch.zeros_like(decoder_dict['embed_positions.weight'])
+                # position padding will right offset padding idx + 1
+                new_pos_weight[task.target_dictionary.pad() + 1:, :] = unilm_state_dict[prefix_of_parameter + '.embeddings.position_embeddings.weight']
+                new_decoder_dict = {
+                    'embed_tokens.weight': unilm_state_dict[prefix_of_parameter + '.embeddings.word_embeddings.weight'],
+                    'embed_positions.weight': new_pos_weight,
+                    'layernorm_embedding.weight': unilm_state_dict[prefix_of_parameter + '.embeddings.LayerNorm.weight'],
+                    'layernorm_embedding.bias': unilm_state_dict[prefix_of_parameter + '.embeddings.LayerNorm.bias']
+                }            
+
+                # layers
+                key_map = {
+                    'self_attn.k_proj': 'attention.self.key',
+                    'self_attn.v_proj': 'attention.self.value',                
+                    'self_attn.q_proj': 'attention.self.query',
+                    'self_attn.out_proj': 'attention.output.dense',
+                    'self_attn_layer_norm': 'attention.output.LayerNorm',
+                    'fc1': 'intermediate.dense',
+                    'fc2': 'output.dense',
+                    'final_layer_norm': 'output.LayerNorm'
+                }
+                for layer_id in range(unilm_layers_num):
+                    unilm_prefix = prefix_of_parameter + '.encoder.layer.{}.'.format(layer_id)
+                    decoder_prefix = 'layers.{}.'.format(layer_id)
+
+                    for key in key_map:
+                        for suffix in ['.weight', '.bias']:
+                            decoder_key = decoder_prefix + key + suffix
+                            unilm_key = unilm_prefix + key_map[key] + suffix
+                            if decoder_key in decoder_dict and unilm_key in unilm_state_dict:
+                                new_decoder_dict[decoder_key] = unilm_state_dict[unilm_key]
+                            
+                if hasattr(args, "reset_dictionary") and args.reset_dictionary:
+                    logger.info('Reset token embedding weights during decoder initialization.')
+                    del new_decoder_dict['embed_tokens.weight']
+                elif hasattr(args, "adapt_dictionary") and args.adapt_dictionary:
+                    unilm_embed_tokens_weight = new_decoder_dict['embed_tokens.weight']
+                    logger.info('Adapt token embedding weights during decoder initialization from {} to {}'.format(unilm_embed_tokens_weight.shape[0], decoder_embed_tokens.weight.shape[0]))                
+                    new_decoder_dict['embed_tokens.weight'] = torch.zeros_like(decoder_dict['embed_tokens.weight'])
+                    new_decoder_dict['embed_tokens.weight'][:min(unilm_embed_tokens_weight.shape[0], decoder_dict['embed_tokens.weight'].shape[0]), :] = unilm_embed_tokens_weight[:min(unilm_embed_tokens_weight.shape[0], decoder_dict['embed_tokens.weight'].shape[0]), :]
+
+                missing_keys, unexpected_keys = decoder.load_state_dict(
+                    new_decoder_dict, strict=False
+                )
+            else:
+                logger.warning('You must specify the unilm model url or the decoder is randomly initialized.')
+
+            # freeze k_proj bias
+            for layer in decoder.layers:
+                layer.self_attn.k_proj.bias.requires_grad = False
+
+        elif getattr(args, "decoder_pretrained", None).upper() == 'None' or getattr(args, "decoder_pretrained", None) == None:
+            logger.info('Decoder is randomly initialized.')            
+            decoder_embed_tokens = cls.build_embedding(
+                args, task.target_dictionary, args.decoder_embed_dim, args.decoder_embed_path
+            )            
+            decoder = TransformerDecoder(
+                args = args,
+                dictionary=task.target_dictionary,
+                embed_tokens=decoder_embed_tokens,
+                no_encoder_attn=False
+            )
+
+        elif getattr(args, "decoder_pretrained", None).startswith('roberta'):  
+            logger.info('Using the old version loading roberta.')
+            decoder_embed_tokens = cls.build_embedding(
+                args, task.target_dictionary, args.decoder_embed_dim, args.decoder_embed_path
+            )        
             decoder = TransformerDecoder(
                 args = args,
                 dictionary=task.target_dictionary,
@@ -523,6 +352,8 @@ class DeiTTRModel(FairseqEncoderDecoderModel):
                 decoder_layers[i].self_attn.load_state_dict(roberta_layers[roberta_i].self_attn.state_dict())
                 decoder_layers[i].self_attn_layer_norm.load_state_dict(roberta_layers[roberta_i].self_attn_layer_norm.state_dict())
 
+        else:
+            raise Exception('Undefined decoder pretraining method.')
         model = cls(encoder, decoder)
         return model
 
@@ -546,85 +377,59 @@ class DeiTTRModel(FairseqEncoderDecoderModel):
         return decoder_out
 
 
-# @register_model_architecture('DeiT_TR', 'DeiT_TR_base')
-# def DeiT_TR_base(args):
-#     # DeiT Encoder  deit_base_distilled_patch16_224
-#     args.deit_arch = getattr(args, "deit_arch", "deit_base_distilled_patch16_224")
-#     # Transformer Decoder
-#     args.encoder_embed_dim = 768
-#     base_transformer(args)
-
 @register_model_architecture('DeiT_TR', 'deit_base_decoder_base')
 def deit_base_decoder_base(args):
     # DeiT Encoder  deit_base_distilled_patch16_384
     args.deit_arch = getattr(args, "deit_arch", "deit_base_distilled_patch16_384")
     # Transformer Decoder
-    args.encoder_embed_dim = 768
+    # args.encoder_embed_dim = 768
     base_transformer(args)
-
-# @register_model_architecture('DeiT_TR', 'DeiT_TR_large_12layers')
-# def DeiT_TR_large_12layers(args):
-#     # DeiT Encoder  deit_base_distilled_patch16_384
-#     args.deit_arch = getattr(args, "deit_arch", "deit_base_distilled_patch16_384")
-#     # Transformer Decoder
-#     args.encoder_embed_dim = 768
-#     args.decoder_layers = getattr(args, "decoder_layers", 12)
-#     base_transformer(args)
 
 @register_model_architecture('DeiT_TR', 'deit_base_decoder_large')
 def deit_base_decoder_large(args):
     # DeiT Encoder  deit_base_distilled_patch16_384
     args.deit_arch = getattr(args, "deit_arch", "deit_base_distilled_patch16_384")
     # Transformer Decoder
-    args.encoder_embed_dim = 768
+    # args.encoder_embed_dim = 768
     args.decoder_layers = getattr(args, "decoder_layers", 12)
     args.decoder_embed_dim = getattr(args, "decoder_embed_dim", 1024)
     args.decoder_ffn_embed_dim = getattr(args, "decoder_ffn_embed_dim", 4096)
     args.decoder_attention_heads = getattr(args, "decoder_attention_heads", 16)
     base_transformer(args)
 
+@register_model_architecture('TrOCR', 'trocr_base')
 @register_model_architecture('DeiT_TR', 'beit_base_decoder_large')
 def beit_base_decoder_large(args):
     # DeiT Encoder  deit_base_distilled_patch16_384
     args.deit_arch = getattr(args, "deit_arch", "beit_base_patch16_384")
     # Transformer Decoder
-    args.encoder_embed_dim = 768
+    # args.encoder_embed_dim = 768
     args.decoder_layers = getattr(args, "decoder_layers", 12)
     args.decoder_embed_dim = getattr(args, "decoder_embed_dim", 1024)
     args.decoder_ffn_embed_dim = getattr(args, "decoder_ffn_embed_dim", 4096)
     args.decoder_attention_heads = getattr(args, "decoder_attention_heads", 16)
     base_transformer(args)
 
+@register_model_architecture('TrOCR', 'trocr_large')
 @register_model_architecture('DeiT_TR', 'beit_large_decoder_large')
-def beit_large_decoder_large(args):
-    # DeiT Encoder  deit_base_distilled_patch16_384
-    args.deit_arch = getattr(args, "deit_arch", "beit_large_patch16_384")
-    # Transformer Decoder
-    args.encoder_embed_dim = 1024
-    args.decoder_layers = getattr(args, "decoder_layers", 12)
-    args.decoder_embed_dim = getattr(args, "decoder_embed_dim", 1024)
-    args.decoder_ffn_embed_dim = getattr(args, "decoder_ffn_embed_dim", 4096)
-    args.decoder_attention_heads = getattr(args, "decoder_attention_heads", 16)
-    base_transformer(args)
-
 @register_model_architecture('DeiT_TR', 'DeiT_TR_LargeR_BEiT_Large')
 def beit_large_decoder_large(args):
     # DeiT Encoder  deit_base_distilled_patch16_384
     args.deit_arch = getattr(args, "deit_arch", "beit_large_patch16_384")
     # Transformer Decoder
-    args.encoder_embed_dim = 1024
+    # args.encoder_embed_dim = 1024
     args.decoder_layers = getattr(args, "decoder_layers", 12)
     args.decoder_embed_dim = getattr(args, "decoder_embed_dim", 1024)
     args.decoder_ffn_embed_dim = getattr(args, "decoder_ffn_embed_dim", 4096)
     args.decoder_attention_heads = getattr(args, "decoder_attention_heads", 16)
     base_transformer(args)
-
+    
 @register_model_architecture('DeiT_TR', 'deit_base_decoder_large_custom_size')
 def deit_base_decoder_large_custom_size(args):
     # DeiT Encoder  deit_base_distilled_patch16_custom_size
     args.deit_arch = getattr(args, "deit_arch", "deit_base_distilled_patch16_custom_size")
     # Transformer Decoder
-    args.encoder_embed_dim = 768
+    # args.encoder_embed_dim = 768
     args.decoder_layers = getattr(args, "decoder_layers", 12)
     args.decoder_embed_dim = getattr(args, "decoder_embed_dim", 1024)
     args.decoder_ffn_embed_dim = getattr(args, "decoder_ffn_embed_dim", 4096)
@@ -632,7 +437,37 @@ def deit_base_decoder_large_custom_size(args):
     base_transformer(args)
 
 
-class DeiTTREncoder(FairseqEncoder):
+def nlrv4_compressed_tiny(args):
+    args.decoder_learned_pos = True
+    args.layernorm_embedding = True
+    args.decoder_attention_heads = 8
+    args.decoder_embed_dim = 256
+    args.decoder_output_dim = 256
+    args.decoder_ffn_embed_dim = 1024
+    args.dropout = 0.1
+    args.decoder_layers = 6
+    args.max_target_positions = 512
+
+@register_model_architecture('TrOCR', 'trocr_small_224')
+def trocr_small(args):
+    # DeiT Encoder  deit_base_distilled_patch16_384
+    args.deit_arch = getattr(args, "deit_arch", "deit_small_distilled_patch16_224")
+
+    nlrv4_compressed_tiny(args)
+    # Transformer Decoder
+    base_transformer(args)    
+
+@register_model_architecture('TrOCR', 'trocr_small')
+@register_model_architecture('TrOCR', 'trocr_small_384')
+def trocr_small_384(args):
+    # DeiT Encoder  deit_base_distilled_patch16_384
+    args.deit_arch = getattr(args, "deit_arch", "deit_small_distilled_patch16_384")
+
+    nlrv4_compressed_tiny(args)
+    # Transformer Decoder
+    base_transformer(args)    
+
+class TrOCREncoder(FairseqEncoder):
     def __init__(self, args, dictionary):
         super().__init__(dictionary)
         

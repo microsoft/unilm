@@ -12,8 +12,10 @@ The TrOCR is currently implemented with the fairseq library. We hope to convert 
  
 | Model                          |  #Param   | Test set | Score          |
 |--------------------------------|-----------|----------|----------------|
+| TrOCR-Small                    | 62M        | IAM     | 4.22 (Cased CER)     |
 | TrOCR-Base                     | 334M       | IAM     | 3.42 (Cased CER)     |
 | TrOCR-Large                    | 558M       | IAM     | 2.89 (Cased CER)     |
+| TrOCR-Small                    | 62M        | SROIE   | 95.86 (F1)  |
 | TrOCR-Base                     | 334M       | SROIE   | 96.34 (F1)  |
 | TrOCR-Large                    | 558M       | SROIE   | 96.60 (F1)  |
 
@@ -32,10 +34,13 @@ pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cud
 ## Fine-tuning and evaluation
 |   Model  | Download |
 | -------- | -------- |
+| TrOCR-Small-IAM    | [trocr-small-handwritten.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-small-handwritten.pt) |
 | TrOCR-Base-IAM     | [trocr-base-handwritten.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-handwritten.pt) |
 | TrOCR-Large-IAM    | [trocr-large-handwritten.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-handwritten.pt) |
+| TrOCR-Small-SROIE  | [trocr-small-printed.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-small-printed.pt) |
 | TrOCR-Base-SROIE   | [trocr-base-printed.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-printed.pt) |
 | TrOCR-Large-SROIE  | [trocr-large-printed.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-printed.pt) |
+| TrOCR-Small-Stage1 | [trocr-small-stage1.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-small-stage1.pt) |
 | TrOCR-Base-Stage1  | [trocr-base-stage1.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-stage1.pt) |
 | TrOCR-Large-Stage1 | [trocr-large-stage1.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-stage1.pt) |
 
@@ -59,14 +64,15 @@ export valid_BSZ=16
 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_per_node=8 \
     $(which fairseq-train) \
     --data-type STR --user-dir ./ --task text_recognition \
-    --arch beit_large_decoder_large \   # or beit_base_decoder_large
-    --seed 1111 --optimizer adam --lr 2e-05 --bpe gpt2 --lr-scheduler inverse_sqrt \
+    --arch trocr_large \   # or trocr_base
+    --seed 1111 --optimizer adam --lr 2e-05 --lr-scheduler inverse_sqrt \
     --warmup-init-lr 1e-8 --warmup-updates 500 --weight-decay 0.0001 --log-format tqdm \
     --log-interval 10 --batch-size ${BSZ} --batch-size-valid ${valid_BSZ} --save-dir ${SAVE_PATH} \
     --tensorboard-logdir ${LOG_DIR} --max-epoch 300 --patience 20 --ddp-backend legacy_ddp \
-    --num-workers 8 --preprocess DA2 --decoder-pretrained roberta --update-freq 1 \
+    --num-workers 8 --preprocess DA2 --update-freq 1 \
+    --bpe gpt2 --decoder-pretrained roberta \ # --bpe sentencepiece --sentencepiece-model ./unilm3-cased.model --decoder-pretrained unilm ## For small models
     --finetune-from-model /path/to/model --fp16 \
-    ${DATA} \
+    ${DATA} 
 ~~~
 
 ### Evaluation on IAM
@@ -78,8 +84,9 @@ export BSZ=16
 
 $(which fairseq-generate) \
         --data-type STR --user-dir ./ --task text_recognition --input-size 384 \
-        --beam 10 --bpe gpt2 --scoring cer2 --gen-subset test --batch-size ${BSZ} \
-        --path ${MODEL} --results-path ${RESULT_PATH} --text-recog-gen --preprocess DA2 \
+        --beam 10 --scoring cer2 --gen-subset test --batch-size ${BSZ} \
+        --path ${MODEL} --results-path ${RESULT_PATH} --preprocess DA2 \
+        --bpe gpt2 --dict-path-or-url https://layoutlm.blob.core.windows.net/trocr/dictionaries/gpt2_with_mask.dict.txt \ # --bpe sentencepiece --sentencepiece-model ./unilm3-cased.model --dict-path-or-url https://layoutlm.blob.core.windows.net/trocr/dictionaries/unilm3.dict.txt ## For small models
         --fp16 \
         ${DATA}
 ~~~
@@ -97,13 +104,14 @@ export valid_BSZ=16
 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_per_node=8 \
     $(which fairseq-train) \
     --data-type SROIE --user-dir ./ --task text_recognition \
-    --arch beit_large_decoder_large \   # or beit_base_decoder_large
-    --seed 1111 --optimizer adam --lr 5e-05 --bpe gpt2 --lr-scheduler inverse_sqrt \
+    --arch trocr_large \   # or trocr_base
+    --seed 1111 --optimizer adam --lr 5e-05 --lr-scheduler inverse_sqrt \
     --warmup-init-lr 1e-8 --warmup-updates 800 --weight-decay 0.0001 --log-format tqdm \
     --log-interval 10 --batch-size ${BSZ} --batch-size-valid ${valid_BSZ} \
     --save-dir ${SAVE_PATH} --tensorboard-logdir ${LOG_DIR} --max-epoch 300 \
     --patience 10 --ddp-backend legacy_ddp --num-workers 10 --preprocess DA2 \
-    --decoder-pretrained roberta --update-freq 16 --finetune-from-model /path/to/model --fp16 \
+    --bpe gpt2 --decoder-pretrained roberta \ # --bpe sentencepiece --sentencepiece-model ./unilm3-cased.model --decoder-pretrained unilm ## For small models
+    --update-freq 16 --finetune-from-model /path/to/model --fp16 \
     ${DATA}
 ~~~
 
@@ -115,9 +123,10 @@ export RESULT_PATH=/path/to/result
 export BSZ=16
 $(which fairseq-generate) \
         --data-type SROIE --user-dir ./ --task text_recognition --input-size 384 \
-        --beam 10 --nbest 1 --bpe gpt2 --scoring sroie --gen-subset test \
+        --beam 10 --nbest 1 --scoring sroie --gen-subset test \
         --batch-size ${BSZ} --path ${MODEL} --results-path ${RESULT_PATH} \
-        --text-recog-gen --preprocess DA2 \
+        --bpe gpt2 --dict-path-or-url https://layoutlm.blob.core.windows.net/trocr/dictionaries/gpt2_with_mask.dict.txt \ # --bpe sentencepiece --sentencepiece-model ./unilm3-cased.model --dict-path-or-url https://layoutlm.blob.core.windows.net/trocr/dictionaries/unilm3.dict.txt ## For small models
+        --preprocess DA2 \
         --fp16 \
         ${DATA}
 ~~~

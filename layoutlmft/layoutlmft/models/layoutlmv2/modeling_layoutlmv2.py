@@ -603,8 +603,8 @@ class VisualBackbone(nn.Module):
             config.image_feature_pool_shape.append(self.backbone.output_shape()[self.out_feature_key].channels)
         assert self.backbone.output_shape()[self.out_feature_key].channels == config.image_feature_pool_shape[2]
 
-    def forward(self, images):
-        images_input = (images.tensor - self.pixel_mean) / self.pixel_std
+    def forward(self, images):      
+        images_input = ((images if torch.is_tensor(images) else images.tensor) - self.pixel_mean) / self.pixel_std
         features = self.backbone(images_input)
         features = features[self.out_feature_key]
         features = self.pool(features).flatten(start_dim=2).transpose(1, 2).contiguous()
