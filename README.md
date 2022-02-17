@@ -17,6 +17,8 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 
 > [**MiniLM**](https://github.com/microsoft/unilm/tree/master/minilm): small and fast pre-trained models for language understanding and generation
 
+> [**EdgeLMLM**](https://github.com/microsoft/unilm/tree/master/edgelm): small pre-trained models on edge/client devices
+
 > [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm): domain, language, and task adaptation of pre-trained models
 
 ### Vision
