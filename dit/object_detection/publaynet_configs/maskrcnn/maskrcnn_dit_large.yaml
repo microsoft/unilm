@@ -1,0 +1,22 @@
+_BASE_: "../Base-RCNN-FPN.yaml"
+MODEL:
+  PIXEL_MEAN: [ 127.5, 127.5, 127.5 ]
+  PIXEL_STD: [ 127.5, 127.5, 127.5 ]
+  WEIGHTS: "https://conversationhub.blob.core.windows.net/yihengxu/models/dit/dit-large-224-p16-500k-d7a2fb.pth"
+  VIT:
+    NAME: "dit_large_patch16"
+    OUT_FEATURES: [ "layer7", "layer11", "layer15", "layer23" ]
+    DROP_PATH: 0.2
+  FPN:
+    IN_FEATURES: [ "layer7", "layer11", "layer15", "layer23" ]
+SOLVER:
+  WARMUP_ITERS: 1000
+  IMS_PER_BATCH: 16
+  MAX_ITER: 60000
+  CHECKPOINT_PERIOD: 2000
+  BASE_LR: 0.0001
+  AMP:
+    ENABLED: False
+TEST:
+  EVAL_PERIOD: 2000
+OUTPUT_DIR: "output/publaynet/mask_rcnn/dit_base_multistep_3x_ms"
