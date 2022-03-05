@@ -15,9 +15,7 @@ A soft link needs to be created to make the data accessible for the program:`ln 
 
 Download the data from this [link](https://github.com/cndplab-founder/ICDAR2019_cTDaR). Assume path to this repository is named as `PATH-to-ICDARrepo`.
 
-_**Here we need some processing (from yiheng)...**_
-
-Now the path to data is `PATH-to-ICDAR`.
+Then run `python convert_to_coco_format.py --root_dir=PATH-to-ICDARrepo --target_dir=PATH-toICDAR`. Now the path to processed data is `PATH-to-ICDAR`.
 
 Run the following command to get the adaptively binarized images for archival subset.
 
@@ -31,8 +29,6 @@ The binarized archival subset will be in `PATH-to-ICDAR/at_trackA_archival`.
 According to the subset you want to evaluate/fine-tune, a soft link should be created:`ln -s PATH-to-ICDAR/trackA_modern data` or `ln -s PATH-to-ICDAR/at_trackA_archival data`.
 
 ### Evaluation
-
-_**This part needs tengchao checking...**_
 
 Following commands provide two examples to evaluate the fine-tuned checkpoints.
 
