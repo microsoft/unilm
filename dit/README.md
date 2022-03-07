@@ -130,4 +130,4 @@ This project is licensed under the license found in the LICENSE file in the root
 
 For help or issues using DiT models, please submit a GitHub issue.
 
-For other communications related to UniLM AI, please contact Lei Cui (`lecu@microsoft.com`), Furu Wei (`fuwei@microsoft.com`).
+For other communications related to DiT, please contact Lei Cui (`lecu@microsoft.com`), Furu Wei (`fuwei@microsoft.com`).
