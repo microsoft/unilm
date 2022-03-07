@@ -28,7 +28,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 ### Vision
 > [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit) (```NEW```): generative self-supervised pre-training for image / BERT Pre-Training of Image Transformers
 
-> [**DiT**](https://github.com/microsoft/unilm/tree/master/dit) (```NEW```): self-supervised pre-training for Document Image Transfomrers
+> [**DiT**](https://github.com/microsoft/unilm/tree/master/dit) (```NEW```): self-supervised pre-training for Document Image Transformers
 
 ### Speech
 > [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) (```NEW```): speech pre-training for full stack tasks
