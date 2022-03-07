@@ -1,0 +1,16 @@
+# timm==0.4.12
+git+https://github.com/rwightman/pytorch-image-models.git
+taming-transformers-rom1504
+deepspeed==0.4.0
+Pillow
+numpy
+requests
+einops
+tensorboard
+scipy
+attrs
+pybase64
+pyyaml
+webdataset
+omegaconf==2.0.0
+pytorch-lightning==1.0.8

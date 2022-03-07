@@ -1,0 +1,28 @@
+{
+    "train_batch_size": 2048,
+    "train_micro_batch_size_per_gpu": 32,
+    "steps_per_print": 1000,
+    "optimizer": {
+        "type": "Adam",
+        "adam_w_mode": true,
+        "params": {
+            "lr": 0.001,
+            "weight_decay": 0.05,
+            "bias_correction": true,
+            "betas": [
+                0.9,
+                0.999
+            ]
+        }
+    },
+    "gradient_clipping": 1,
+    "fp16": {
+        "enabled": true,
+        "loss_scale": 0,
+        "initial_scale_power": 7,
+        "loss_scale_window": 128
+    },
+    "zero_optimization": {
+        "stage": 1
+    }
+}

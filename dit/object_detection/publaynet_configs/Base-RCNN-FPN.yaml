@@ -1,0 +1,69 @@
+MODEL:
+  MASK_ON: True
+  META_ARCHITECTURE: "GeneralizedRCNN"
+  PIXEL_MEAN: [123.675, 116.280, 103.530]
+  PIXEL_STD: [58.395, 57.120, 57.375]
+  BACKBONE:
+    NAME: "build_vit_fpn_backbone"
+  VIT:
+    OUT_FEATURES: ["layer3", "layer5", "layer7", "layer11"]
+    DROP_PATH: 0.1
+    IMG_SIZE: [224,224]
+    POS_TYPE: "abs"
+  FPN:
+    IN_FEATURES: ["layer3", "layer5", "layer7", "layer11"]
+  ANCHOR_GENERATOR:
+    SIZES: [[32], [64], [128], [256], [512]]  # One size for each in feature map
+    ASPECT_RATIOS: [[0.5, 1.0, 2.0]]  # Three aspect ratios (same for all in feature maps)
+  RPN:
+    IN_FEATURES: ["p2", "p3", "p4", "p5", "p6"]
+    PRE_NMS_TOPK_TRAIN: 2000  # Per FPN level
+    PRE_NMS_TOPK_TEST: 1000  # Per FPN level
+    # Detectron1 uses 2000 proposals per-batch,
+    # (See "modeling/rpn/rpn_outputs.py" for details of this legacy issue)
+    # which is approximately 1000 proposals per-image since the default batch size for FPN is 2.
+    POST_NMS_TOPK_TRAIN: 1000
+    POST_NMS_TOPK_TEST: 1000
+  ROI_HEADS:
+    NAME: "StandardROIHeads"
+    IN_FEATURES: ["p2", "p3", "p4", "p5"]
+    NUM_CLASSES: 5
+  ROI_BOX_HEAD:
+    NAME: "FastRCNNConvFCHead"
+    NUM_FC: 2
+    POOLER_RESOLUTION: 7
+  ROI_MASK_HEAD:
+    NAME: "MaskRCNNConvUpsampleHead"
+    NUM_CONV: 4
+    POOLER_RESOLUTION: 14
+DATASETS:
+  TRAIN: ("publaynet_train",)
+  TEST: ("publaynet_val",)
+SOLVER:
+  LR_SCHEDULER_NAME: "WarmupCosineLR"
+  AMP:
+    ENABLED: True
+  OPTIMIZER: "ADAMW"
+  BACKBONE_MULTIPLIER: 1.0
+  CLIP_GRADIENTS:
+    ENABLED: True
+    CLIP_TYPE: "full_model"
+    CLIP_VALUE: 1.0
+    NORM_TYPE: 2.0
+  WARMUP_FACTOR: 0.01
+  BASE_LR: 0.0004
+  WEIGHT_DECAY: 0.05
+  IMS_PER_BATCH: 32
+INPUT:
+  CROP:
+    ENABLED: True
+    TYPE: "absolute_range"
+    SIZE: (384, 600)
+  MIN_SIZE_TRAIN: (480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800)
+  FORMAT: "RGB"
+DATALOADER:
+  FILTER_EMPTY_ANNOTATIONS: False
+VERSION: 2
+AUG:
+  DETR: True
+SEED: 42
