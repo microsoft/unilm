@@ -55,7 +55,7 @@ We summarize the validation results as follows. We also provide the fine-tuned w
 
 | name | initialized checkpoint | resolution | accuracy  | weight |
 |------------|:----------------------------------------|:----------:|:-------:|-----|
-| DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | 224x224 | 92.14 | [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/rvlcdip_dit-b.pth) |
+| DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | 224x224 | 92.11 | [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/rvlcdip_dit-b.pth) |
 | DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | 224x224 | 92.69 | [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/rvlcdip_dit-l.pth) |
 
 
@@ -66,7 +66,7 @@ We summarize the validation results as follows. We also provide the fine-tuned w
 | name | initialized checkpoint | detection algorithm  |  mAP| weight |
 |------------|:----------------------------------------|:----------:|-------------------|-----|
 | DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Mask R-CNN | 0.935 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/publaynet_dit-b_mrcnn.pth) |
-| DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Mask R-CNN | 0.935 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/publaynet_dit-l_mrcnn.pth) | 
+| DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Mask R-CNN | 0.941 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/publaynet_dit-l_mrcnn.pth) | 
 | DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Cascade Mask R-CNN | 0.945 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/publaynet_dit-b_cascade.pth) |
 | DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Cascade Mask R-CNN | 0.949 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/publaynet_dit-l_cascade.pth) |
 
@@ -130,4 +130,4 @@ This project is licensed under the license found in the LICENSE file in the root
 
 For help or issues using DiT models, please submit a GitHub issue.
 
-For other communications related to UniLM AI, please contact Lei Cui (`lecu@microsoft.com`), Furu Wei (`fuwei@microsoft.com`).
+For other communications related to DiT, please contact Lei Cui (`lecu@microsoft.com`), Furu Wei (`fuwei@microsoft.com`).

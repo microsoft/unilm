@@ -60,6 +60,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 
 
 ## News
+- [Model Release] March, 2022: [**DiT**](https://github.com/microsoft/unilm/tree/master/dit) - Self-supervised Document Image Transformer
 - Januray, 2022: [**BEiT**](https://openreview.net/forum?id=p-BhZSz59o4) was accepted by **ICLR 2022 as Oral presentation** (54 out of 3391).
 - [Model Release] December 16th, 2021: [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) **small** models for handwritten and printed texts, with 3x inference speedup.
 - November 24th, 2021: [**VLMo**](https://github.com/microsoft/unilm/tree/master/vlmo) as the new SOTA on the [VQA Challenge](https://eval.ai/web/challenges/challenge-page/830/leaderboard/2278)
