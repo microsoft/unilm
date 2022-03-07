@@ -28,6 +28,8 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 ### Vision
 > [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit) (```NEW```): generative self-supervised pre-training for image / BERT Pre-Training of Image Transformers
 
+> [**DiT**](https://github.com/microsoft/unilm/tree/master/dit) (```NEW```): self-supervised pre-training for Document Image Transformers
+
 ### Speech
 > [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) (```NEW```): speech pre-training for full stack tasks
 
@@ -88,15 +90,19 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 - September, 2019: [UniLMv1](https://github.com/microsoft/unilm/tree/master/unilm-v1) was accepted by NeurIPS 2019.
 
 ## Release
+**\*\*\*\*\* ```New March, 2022```: [DiT](https://github.com/microsoft/unilm/tree/master/dit) release \*\*\*\*\***
 
-**\*\*\*\*\* ```New October, 2021```: [WavLM](https://github.com/microsoft/unilm/tree/master/wavlm) release \*\*\*\*\***
+- [x] [**DiT**](https://github.com/microsoft/unilm/tree/master/dit) (March 4, 2022): DiT, a self-supervised pre-trained Document Image Transformer model using large-scale unlabeled text images for Document AI tasks, which is essential since no supervised counterparts ever exist due to the lack of human labeled document images. We leverage DiT as the backbone network in a variety of vision-based Document AI tasks, including document image classification, document layout analysis, as well as table detection. Experiment results have illustrated that the self-supervised pre-trained DiT model achieves new state-of-the-art results on these downstream tasks, e.g. document image classification (91.11 → 92.69), document layout analysis (91.0 → 94.9) and table detection (94.23 → 96.55) "[DiT: Self-supervised Pre-training for Document Image Transformer](https://arxiv.org/abs/2203.02378)"
+
+
+**\*\*\*\*\* ```October, 2021```: [WavLM](https://github.com/microsoft/unilm/tree/master/wavlm) release \*\*\*\*\***
 
 - [x] [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) (October 27, 2021):  WavLM, a new pre-trained speech model, to solve full-stack downstream speech tasks. 
 WavLM integrates the gated relative position embedding structure and the utterance mixing method, to model both spoken content and speaker identity preservation. WavLM is trained on  94k hours of public audio data, which is larger than other released checkpoints for English Speech modeling. WavLM Large achieves state-of-the-art performance on the SUPERB benchmark, and brings significant improvements for various speech processing tasks on their representative benchmarks. "[WavLM: Large-Scale Self-Supervised  Pre-training   for Full Stack Speech Processing](https://arxiv.org/pdf/2110.13900.pdf)"
 
-**\*\*\*\*\* ```New October, 2021```: [MarkupLM](https://github.com/microsoft/unilm/tree/master/markuplm) release \*\*\*\*\***
+**\*\*\*\*\* ```October, 2021```: [MarkupLM](https://github.com/microsoft/unilm/tree/master/markuplm) release \*\*\*\*\***
 
-- [x] [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm) (October 19, 2021): MarkupLM, a simple yet effective pre-training approach for text and markup language. With the Transformer architecture, MarkupLM integrates different input embeddings including text embeddings, position embeddings, and XPath embeddings. Furthermore, we also propose new pre-training objectives that are specially designed for understanding the markup language. We evaluate the pre-trained MarkupLM model on the WebSRC and SWDE datasets. Experiments show that MarkupLM significantly outperforms several SOTA baselines in these tasks. "[MarkupLM: Pre-training of Text and Markup Language for Visually-rich Document Understanding](https://arxiv.org/abs/2110.08518)"
+- [x] [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm) (October 19, 2021): MarkupLM, a simple yet effective pre-training approach for text and markup language. With the Transformer architecture, MarkupLM integrates different input embeddings including text embeddings, position embeddings, and XPath embeddings. Furthermore, we also propose new pre-training objectives that are specially designed for understanding the markup language. We evaluate the pre-trained MarkupLM model on the WebSRC and SWDE datasets. Experiments show that MarkupLM significantly outperforms several SOTA baselines in these tasks. "[MarkupLM: Pre-training of Text and Markup Language for Visually-rich Document Understanding](https://arxiv.org/abs/2110.08518) ```ACL 2022```"
 
 **\*\*\*\*\* ```September, 2021```: [TrOCR](https://github.com/microsoft/unilm/tree/master/trocr) release \*\*\*\*\***
 
