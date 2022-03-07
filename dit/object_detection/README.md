@@ -13,7 +13,7 @@ A soft link needs to be created to make the data accessible for the program:`ln 
 
 **ICDAR 2019 cTDaR**
 
-Download the data from this [link](https://github.com/cndplab-founder/ICDAR2019_cTDaR). Assume path to this repository is named as `PATH-to-ICDARrepo`.
+Download the data from this [link](https://github.com/cndplab-founder/ICDAR2019_cTDaR) (~4GB). Assume path to this repository is named as `PATH-to-ICDARrepo`.
 
 Then run `python convert_to_coco_format.py --root_dir=PATH-to-ICDARrepo --target_dir=PATH-toICDAR`. Now the path to processed data is `PATH-to-ICDAR`.
 

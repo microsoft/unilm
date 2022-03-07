@@ -1,9 +1,9 @@
-# [DiT: Self-Supervised Pre-Training for Document Image Transformer](https://xxxxx)
+# [DiT: Self-Supervised Pre-Training for Document Image Transformer](https://arxiv.org/abs/2203.02378)
 
 Official PyTorch implementation and pre-trained models of DiT.
 
 - March 2022: release pre-trained checkpoints and fine-tuning codes (DiT-base and DiT-large)
-- March 2022: release preprint in [arXiv](https://xxxxx)
+- March 2022: release preprint in [arXiv](https://arxiv.org/abs/2203.02378)
 
 
 ---
