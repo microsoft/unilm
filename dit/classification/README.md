@@ -60,4 +60,4 @@ python -m torch.distributed.launch --nproc_per_node=8 run_class_finetuning.py
 ```
 
 ## Acknowledgment
-This repository is built using the [timm](https://github.com/rwightman/pytorch-image-models) library, the [Beit](https://github.com/microsoft/unilm/tree/master/beit) repository, the [DeiT](https://github.com/facebookresearch/deit) repository and the [Dino](https://github.com/facebookresearch/dino) repository.
+This part is built using the [timm](https://github.com/rwightman/pytorch-image-models) library, the [Beit](https://github.com/microsoft/unilm/tree/master/beit) repository, the [DeiT](https://github.com/facebookresearch/deit) repository and the [Dino](https://github.com/facebookresearch/dino) repository.
