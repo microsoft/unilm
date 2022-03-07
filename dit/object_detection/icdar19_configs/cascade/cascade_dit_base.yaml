@@ -2,7 +2,7 @@ _BASE_: "../Base-RCNN-FPN.yaml"
 MODEL:
   PIXEL_MEAN: [ 127.5, 127.5, 127.5 ]
   PIXEL_STD: [ 127.5, 127.5, 127.5 ]
-  WEIGHTS: "https://conversationhub.blob.core.windows.net/yihengxu/models/dit/dit-large-224-p16-500k-d7a2fb.pth"
+  WEIGHTS: "https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth"
   VIT:
     NAME: "dit_base_patch16"
   ROI_HEADS:
