@@ -88,9 +88,9 @@ We summarize the validation results as follows. We also provide the fine-tuned w
 | name | initialized checkpoint | detection algorithm  |  Weighted Average F1 | weight |
 |------------|:----------------------------------------|:----------:|-------------------|-----|
 | DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Mask R-CNN | 96.24 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/icdar19archival_dit-b_mrcnn.pth) |
-| DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Mask R-CNN | 96.46 |  link (need link here) | 
-| DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Cascade Mask R-CNN | 96.63 |  link (need link here) |
-| DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Cascade Mask R-CNN | 97.00 |  link (need link here) |
+| DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Mask R-CNN | 96.46 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/icdar19archival_dit-l_mrcnn.pth) | 
+| DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Cascade Mask R-CNN | 96.63 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/icdar19archival_dit-b_cascade.pth) |
+| DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Cascade Mask R-CNN | 97.00 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/icdar19archival_dit-l_cascade.pth) |
 
 **Combined (Combine the inference results of Modern and Archival)**
 
