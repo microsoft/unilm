@@ -1,5 +1,7 @@
 # DiT for Image Classification
 
+This folder contains the image classification running instructions on DiT for RVL-CDIP.
+
 ## Usage
 ### Data Preparation
 
@@ -56,3 +58,6 @@ python -m torch.distributed.launch --nproc_per_node=8 run_class_finetuning.py
         --abs_pos_emb 
         --disable_rel_pos_bias 
 ```
+
+## Acknowledgment
+This repository is built using the [timm](https://github.com/rwightman/pytorch-image-models) library, the [Beit](https://github.com/microsoft/unilm/tree/master/beit) repository, the [DeiT](https://github.com/facebookresearch/deit) repository and the [Dino](https://github.com/facebookresearch/dino) repository.

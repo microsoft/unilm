@@ -55,8 +55,8 @@ We summarize the validation results as follows. We also provide the fine-tuned w
 
 | name | initialized checkpoint | resolution | accuracy  | weight |
 |------------|:----------------------------------------|:----------:|:-------:|-----|
-| DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | 224x224 | 92.14 | link (need link here) |
-| DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | 224x224 | 92.69 | link (need link here) |
+| DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | 224x224 | 92.14 | [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/rvlcdip_dit-b.pth) |
+| DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | 224x224 | 92.69 | [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/rvlcdip_dit-l.pth) |
 
 
 ## Fine-tuning on PubLayNet (Document Layout Analysis)
@@ -106,8 +106,13 @@ We summarize the validation results as follows. We also provide the fine-tuned w
 
 If you find this repository useful, please consider citing our work:
 ```
-@article{dit,
-      ?
+@misc{li2022dit,
+    title={DiT: Self-supervised Pre-training for Document Image Transformer},
+    author={Junlong Li and Yiheng Xu and Tengchao Lv and Lei Cui and Cha Zhang and Furu Wei},
+    year={2022},
+    eprint={2203.02378},
+    archivePrefix={arXiv},
+    primaryClass={cs.CV}
 }
 ```
 
