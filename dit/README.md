@@ -121,7 +121,6 @@ If you find this repository useful, please consider citing our work:
 
 This repository is built using the [timm](https://github.com/rwightman/pytorch-image-models) library, the [detectron2](https://github.com/facebookresearch/detectron2) library, the [DeiT](https://github.com/facebookresearch/deit) repository, the [Dino](https://github.com/facebookresearch/dino) repository, the [BEiT](https://github.com/microsoft/unilm/tree/master/beit) repository and the [MPViT](https://github.com/youngwanLEE/MPViT) repository.
 
-
 ## License
 This project is licensed under the license found in the LICENSE file in the root directory of this source tree.
 

@@ -45,7 +45,7 @@ python train_net.py --config-file icdar19_configs/cascade/cascade_dit_large.yaml
 ```
 
 **Note**: There is a **bug** in the [ICDAR2019 measurement tool](https://github.com/cndplab-founder/ctdar_measurement_tool).
-We have fixed this bug during integrating the tool into our code. So if you want to use the tool to get a score, please modify the [code](https://github.com/cndplab-founder/ctdar_measurement_tool/blob/738456d3164a838ffaeefe7d1b5e64f3a4368a0e/evaluate.py#L146
+We have fixed this bug during integrating the tool into our code. But if you want to use the tool to get a score, please modify the [code](https://github.com/cndplab-founder/ctdar_measurement_tool/blob/738456d3164a838ffaeefe7d1b5e64f3a4368a0e/evaluate.py#L146
 ) as follows:
 ```bash
     ...
