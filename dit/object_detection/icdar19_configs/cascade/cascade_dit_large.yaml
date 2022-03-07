@@ -2,9 +2,13 @@ _BASE_: "../Base-RCNN-FPN.yaml"
 MODEL:
   PIXEL_MEAN: [ 127.5, 127.5, 127.5 ]
   PIXEL_STD: [ 127.5, 127.5, 127.5 ]
-  WEIGHTS: "https://conversationhub.blob.core.windows.net/yihengxu/models/dit/dit-large-224-p16-500k-d7a2fb.pth"
+  WEIGHTS: "https://conversationhub.blob.core.windows.net/junlongli/models/dit/dit-base-224-p16-500k-62d53a.pth"
   VIT:
-    NAME: "dit_base_patch16"
+    NAME: "dit_large_patch16"
+    OUT_FEATURES: [ "layer7", "layer11", "layer15", "layer23" ]
+    DROP_PATH: 0.2
+  FPN:
+    IN_FEATURES: [ "layer7", "layer11", "layer15", "layer23" ]
   ROI_HEADS:
     NAME: CascadeROIHeads
   ROI_BOX_HEAD:
