@@ -16,7 +16,7 @@ We provide two DiT weights pretrained on [IIT-CDIP Test Collection 1.0](https://
 - `DiT-base`: #layer=12; hidden=768; FFN factor=4x; #head=12; patch=16x16 (#parameters: 86M)
 - `DiT-large`: #layer=24; hidden=1024; FFN factor=4x; #head=16; patch=16x16 (#parameters: 304M)
 
-Download checkpoints that are **self-supervised pretrained** on ImageNet-22k:
+Download checkpoints that are **self-supervised pretrained** on IIT-CDIP Test Collection 1.0:
 - DiT-base: [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth)
 - DiT-large: [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth)
 
