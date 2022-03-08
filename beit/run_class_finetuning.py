@@ -42,7 +42,7 @@ def get_args():
     parser.add_argument('--save_ckpt_freq', default=5, type=int)
 
     # Model parameters
-    parser.add_argument('--model', default='deit_base_patch16_224', type=str, metavar='MODEL',
+    parser.add_argument('--model', default='beit_base_patch16_224', type=str, metavar='MODEL',
                         help='Name of model to train')
     parser.add_argument('--rel_pos_bias', action='store_true')
     parser.add_argument('--disable_rel_pos_bias', action='store_false', dest='rel_pos_bias')
