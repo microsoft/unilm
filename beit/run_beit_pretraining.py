@@ -38,7 +38,7 @@ def get_args():
     parser.add_argument("--discrete_vae_weight_path", type=str)
     parser.add_argument("--discrete_vae_type", type=str, default="dall-e")
     # Model parameters
-    parser.add_argument('--model', default='deit_base_patch16_224', type=str, metavar='MODEL',
+    parser.add_argument('--model', default='beit_base_patch16_224_8k_vocab', type=str, metavar='MODEL',
                         help='Name of model to train')
     parser.add_argument('--rel_pos_bias', action='store_true')
     parser.add_argument('--disable_rel_pos_bias', action='store_false', dest='rel_pos_bias')
