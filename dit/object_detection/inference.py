@@ -26,6 +26,8 @@ def main():
     cfg.merge_from_file(args.config_file)
     # Step 2: set model weights
     cfg.merge_from_list(args.opts)
+    # Step 3: set device
+    cfg.MODEL.DEVICE='cpu'
     # Step 3: define model
     model = build_model(cfg)
     model.eval()
