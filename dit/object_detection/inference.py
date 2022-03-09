@@ -25,18 +25,22 @@ def main():
     cfg = get_cfg()
     add_vit_config(cfg)
     cfg.merge_from_file(args.config_file)
-    # Step 2: set model weights
+    # Step 2: add model weights URL to config
     cfg.merge_from_list(args.opts)
     # Step 3: set device
     cfg.MODEL.DEVICE='cpu'
-    # Step 3: define model
+    # Step 4: define model
     model = build_model(cfg)
     model.eval()
-    # Step 4: load weights
+    # Step 5: load weights
     checkpointer = DetectionCheckpointer(model)
     checkpointer.load(cfg.MODEL.WEIGHTS)
+
+    print("Weights loaded")
+    print(model)
     
-    # outputs = predictor(im)
+    # Step 6: run inference
+
 
 if __name__ == '__main__':
     main()
