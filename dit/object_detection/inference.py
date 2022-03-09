@@ -1,11 +1,14 @@
 import argparse
 import torch
+from torchvision.transforms import Compose, ToTensor, Resize, Normalize
 from PIL import Image
 from ditod import add_vit_config
 from detectron2.config import get_cfg
 from detectron2.modeling import build_model
 from detectron2.checkpoint import DetectionCheckpointer
-from torchvision.transforms import Compose, ToTensor, Resize, Normalize
+from detectron2.utils.visualizer import ColorMode, Visualizer
+from detectron2.data.detection_utils import read_image
+
 
 def main():
     parser = argparse.ArgumentParser(description="Detectron2 inference script")
@@ -14,6 +17,11 @@ def main():
         help="Path to input image",
         type=str,
         required=True,
+    )
+    parser.add_argument(
+        "--output",
+        help="Path to save output image",
+        type=str,
     )
     parser.add_argument(
         "--config-file",
@@ -65,6 +73,13 @@ def main():
         print("Outputs:", outputs)
         print(outputs["instances"].pred_classes)
         print(outputs["instances"].pred_boxes)
+
+    # step 7: visualize
+    image = read_image(args.input, format="BGR")
+    metadata = MetadataCatalog.get(cfg.DATASETS.TEST[0] if len(cfg.DATASETS.TEST) else "__unused")
+    visualizer = Visualizer(image, metadata, instance_mode=ColorMode.IMAGE)
+    vis_output = visualizer.draw_instance_predictions(predictions=outputs["instances"])
+    vis_output.save(args.output)
 
 if __name__ == '__main__':
     main()
