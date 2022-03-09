@@ -45,7 +45,7 @@ def main():
     inputs = {"image": image, "height": height, "width": width}
     
     with torch.no_grad():
-        outputs = model([inputs])
+        outputs = model(inputs)
         print("Outputs:", outputs)
 
 if __name__ == '__main__':
