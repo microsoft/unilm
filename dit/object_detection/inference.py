@@ -51,7 +51,7 @@ def main():
     transforms = Compose([
         Resize((224,224)),
         ToTensor,
-        Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])),
+        Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
     ])
 
     pixel_values = transforms(image)
