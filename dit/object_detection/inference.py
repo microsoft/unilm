@@ -87,6 +87,9 @@ def main():
     # TODO also support GPU
     cfg.MODEL.DEVICE='cpu'
 
+    print("Config dataset test:")
+    print(cfg.DATASETS.TEST)
+
     # Step 4: define model
     model = build_model(cfg)
     model.eval()
