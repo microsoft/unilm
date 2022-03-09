@@ -8,6 +8,7 @@ from detectron2.modeling import build_model
 from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.utils.visualizer import ColorMode, Visualizer
 from detectron2.data.detection_utils import read_image
+from detectron2.data import MetadataCatalog
 
 
 def main():
