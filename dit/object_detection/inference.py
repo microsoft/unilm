@@ -107,7 +107,7 @@ def main():
         Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
     ])
 
-    resized_image = resize(image, min_size=800, max_size=1333)
+    resized_image = resize(image, size=800, max_size=1333)
     pixel_values = transforms(resized_image)
     print("Shape of pixel values:", pixel_values.shape)
     height, width = pixel_values.shape[-2:]
