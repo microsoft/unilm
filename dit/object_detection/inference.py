@@ -37,11 +37,11 @@ def main():
     checkpointer = DetectionCheckpointer(model)
     checkpointer.load(cfg.MODEL.WEIGHTS)
 
-    print("Weights loaded")
-    print(model)
+    print("Weights loaded!")
     
     # Step 6: run inference
     image = torch.rand(1, 3, 512, 512)
+    height, width = image.shape[-2:]
     inputs = {"image": image, "height": height, "width": width}
     
     with torch.no_grad():
