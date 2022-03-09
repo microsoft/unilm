@@ -61,7 +61,7 @@ def main():
     inputs = {"image": pixel_values, "height": height, "width": width}
     
     with torch.no_grad():
-        outputs = model([inputs])
+        outputs = model([inputs])[0]
         print("Outputs:", outputs)
         print(outputs["instances"].pred_classes)
         print(outputs["instances"].pred_boxes)
