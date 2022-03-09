@@ -1,4 +1,5 @@
 import argparse
+import torch
 from ditod import add_vit_config
 from detectron2.config import get_cfg
 from detectron2.modeling import build_model
@@ -40,7 +41,8 @@ def main():
     print(model)
     
     # Step 6: run inference
-
+    with torch.no_grad():
+        outputs = model(torch.rand(1, 3, 512, 512))
 
 if __name__ == '__main__':
     main()
