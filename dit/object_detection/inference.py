@@ -41,8 +41,12 @@ def main():
     print(model)
     
     # Step 6: run inference
+    image = torch.rand(1, 3, 512, 512)
+    inputs = {"image": image, "height": height, "width": width}
+    
     with torch.no_grad():
-        outputs = model(torch.rand(1, 3, 512, 512))
+        outputs = model([inputs])
+        print("Outputs:", outputs)
 
 if __name__ == '__main__':
     main()
