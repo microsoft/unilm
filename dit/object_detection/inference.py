@@ -10,6 +10,12 @@ from torchvision.transforms import Compose, ToTensor, Resize, Normalize
 def main():
     parser = argparse.ArgumentParser(description="Detectron2 inference script")
     parser.add_argument(
+        "--input",
+        help="Path to input image",
+        type=str,
+        required=True,
+    )
+    parser.add_argument(
         "--config-file",
         default="configs/quick_schedules/mask_rcnn_R_50_FPN_inference_acc_test.yaml",
         metavar="FILE",
@@ -20,10 +26,6 @@ def main():
         help="Modify config options using the command-line 'KEY VALUE' pairs",
         default=[],
         nargs=argparse.REMAINDER,
-    )
-    parser.add_argument(
-        "--input",
-        help="Path to input image",
     )
 
     args = parser.parse_args()
