@@ -1,9 +1,11 @@
 import argparse
 import torch
+from PIL import Image
 from ditod import add_vit_config
 from detectron2.config import get_cfg
 from detectron2.modeling import build_model
 from detectron2.checkpoint import DetectionCheckpointer
+from torchvision.transforms import Compose, ToTensor, Resize, Normalize
 
 def main():
     parser = argparse.ArgumentParser(description="Detectron2 inference script")
@@ -18,6 +20,10 @@ def main():
         help="Modify config options using the command-line 'KEY VALUE' pairs",
         default=[],
         nargs=argparse.REMAINDER,
+    )
+    parser.add_argument(
+        "--input",
+        help="Path to input image",
     )
 
     args = parser.parse_args()
@@ -40,13 +46,22 @@ def main():
     print("Weights loaded!")
     
     # Step 6: run inference
-    image = torch.rand(3, 512, 512)
-    height, width = image.shape[-2:]
-    inputs = {"image": image, "height": height, "width": width}
+    image = Image.open(args.input)
+
+    transforms = Compose([
+        Resize((224,224)),
+        ToTensor,
+        Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])),
+    ])
+
+    pixel_values = transforms(image)
+    height, width = pixel_values.shape[-2:]
+    inputs = {"image": pixel_values, "height": height, "width": width}
     
     with torch.no_grad():
         outputs = model([inputs])
-        print("Outputs:", outputs)
+        print(outputs["instances"].pred_classes)
+        print(outputs["instances"].pred_boxes)
 
 if __name__ == '__main__':
     main()
