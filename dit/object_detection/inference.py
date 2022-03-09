@@ -2,6 +2,7 @@ import argparse
 from ditod import add_vit_config
 from detectron2.config import get_cfg
 from detectron2.modeling import build_model
+from detectron2.checkpoint import DetectionCheckpointer
 
 def main():
     parser = argparse.ArgumentParser(description="Detectron2 inference script")
