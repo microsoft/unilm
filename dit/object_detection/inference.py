@@ -1,11 +1,21 @@
-from argparse import ArgumentParser
+import argparse
 from detectron2.config import get_cfg
 from detectron2.engine import DefaultPredictor
 
 def main():
-    parser = ArgumentParser()
-    parser.add_argument('config', help='Config file')
-    parser.add_argument('opts', help='Additional options, such as model weights')
+    parser = argparse.ArgumentParser(description="Detectron2 inference script")
+    parser.add_argument(
+        "--config-file",
+        default="configs/quick_schedules/mask_rcnn_R_50_FPN_inference_acc_test.yaml",
+        metavar="FILE",
+        help="path to config file",
+    )
+    parser.add_argument(
+        "--opts",
+        help="Modify config options using the command-line 'KEY VALUE' pairs",
+        default=[],
+        nargs=argparse.REMAINDER,
+    )
 
     args = parser.parse_args()
 
