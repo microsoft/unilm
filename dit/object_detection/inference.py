@@ -62,6 +62,7 @@ def main():
     
     with torch.no_grad():
         outputs = model([inputs])
+        print("Outputs:", outputs)
         print(outputs["instances"].pred_classes)
         print(outputs["instances"].pred_boxes)
 
