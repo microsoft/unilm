@@ -1,6 +1,7 @@
 import argparse
+from ditod import add_vit_config
 from detectron2.config import get_cfg
-from detectron2.engine import DefaultPredictor
+from detectron2.modeling import build_model
 
 def main():
     parser = argparse.ArgumentParser(description="Detectron2 inference script")
@@ -19,12 +20,18 @@ def main():
 
     args = parser.parse_args()
 
+    # Step 1: set config
     cfg = get_cfg()
-    # Set config
+    add_vit_config(cfg)
     cfg.merge_from_file(args.config_file)
-    # Set weights using opts argument
+    # Step 2: set model weights
     cfg.merge_from_list(args.opts)
-    predictor = DefaultPredictor(cfg)
+    # Step 3: define model
+    model = build_model(cfg)
+    model.eval()
+    # Step 4: load weights
+    checkpointer = DetectionCheckpointer(model)
+    checkpointer.load(cfg.MODEL.WEIGHTS)
     
     # outputs = predictor(im)
 
