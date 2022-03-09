@@ -1,6 +1,6 @@
 import argparse
 import torch
-from torchvision.transforms import Compose, ToTensor, Resize, Normalize
+from torchvision.transforms import Compose, ToTensor, Resize, Normalize, functional
 from PIL import Image
 import numpy as np
 from ditod import add_vit_config
@@ -10,6 +10,41 @@ from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.utils.visualizer import ColorMode, Visualizer
 from detectron2.data.detection_utils import read_image
 from detectron2.data import MetadataCatalog
+
+
+def resize(image, size, max_size=None):
+    # size can be min_size (scalar) or (w, h) tuple
+
+    def get_size_with_aspect_ratio(image_size, size, max_size=None):
+        w, h = image_size
+        if max_size is not None:
+            min_original_size = float(min((w, h)))
+            max_original_size = float(max((w, h)))
+            if max_original_size / min_original_size * size > max_size:
+                size = int(round(max_size * min_original_size / max_original_size))
+
+        if (w <= h and w == size) or (h <= w and h == size):
+            return (h, w)
+
+        if w < h:
+            ow = size
+            oh = int(size * h / w)
+        else:
+            oh = size
+            ow = int(size * w / h)
+
+        return (oh, ow)
+
+    def get_size(image_size, size, max_size=None):
+        if isinstance(size, (list, tuple)):
+            return size[::-1]
+        else:
+            return get_size_with_aspect_ratio(image_size, size, max_size)
+
+    size = get_size(image.size, size, max_size)
+    rescaled_image = functional.resize(image, size)
+
+    return rescaled_image
 
 
 def main():
@@ -68,12 +103,13 @@ def main():
     image = Image.open(args.input)
 
     transforms = Compose([
-        Resize((224,224)),
         ToTensor(),
         Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
     ])
 
-    pixel_values = transforms(image)
+    resized_image = resize(image, min_size=800, max_size=1333)
+    pixel_values = transforms(resized_image)
+    print("Shape of pixel values:", pixel_values.shape)
     height, width = pixel_values.shape[-2:]
     inputs = {"image": pixel_values, "height": height, "width": width}
     
@@ -83,9 +119,8 @@ def main():
         print(outputs["instances"].pred_boxes)
 
     # step 7: visualize
-    print("Size of image: ", image.size)
     metadata = MetadataCatalog.get(cfg.DATASETS.TEST[0] if len(cfg.DATASETS.TEST) else "__unused")
-    visualizer = Visualizer(np.array(image), metadata, instance_mode=ColorMode.IMAGE)
+    visualizer = Visualizer(np.array(resized_image), metadata, instance_mode=ColorMode.IMAGE)
     vis_output = visualizer.draw_instance_predictions(predictions=outputs["instances"])
     vis_output.save(args.output)
 
