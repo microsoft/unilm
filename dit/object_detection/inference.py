@@ -57,7 +57,7 @@ def main():
     )
     parser.add_argument(
         "--output",
-        help="Path to save output image",
+        help="A file or directory to save output visualizations.",
         type=str,
     )
     parser.add_argument(
@@ -75,28 +75,25 @@ def main():
 
     args = parser.parse_args()
 
-    # Step 1: set config
+    # Step 1: instantiate config
     cfg = get_cfg()
     add_vit_config(cfg)
     cfg.merge_from_file(args.config_file)
+    
     # Step 2: add model weights URL to config
     cfg.merge_from_list(args.opts)
+    
     # Step 3: set device
+    # TODO also support GPU
     cfg.MODEL.DEVICE='cpu'
-
-    print("Image sizes:")
-    print(cfg.INPUT.MIN_SIZE_TRAIN)
-    print(cfg.INPUT.MAX_SIZE_TRAIN)
-    print(cfg.INPUT.MIN_SIZE_TEST)
-    print(cfg.INPUT.MAX_SIZE_TEST)
 
     # Step 4: define model
     model = build_model(cfg)
     model.eval()
+    
     # Step 5: load weights
     checkpointer = DetectionCheckpointer(model)
     checkpointer.load(cfg.MODEL.WEIGHTS)
-
     print("Weights loaded!")
     
     # Step 6: run inference
@@ -109,7 +106,6 @@ def main():
 
     resized_image = resize(image, size=800, max_size=1333)
     pixel_values = transforms(resized_image)
-    print("Shape of pixel values:", pixel_values.shape)
     height, width = pixel_values.shape[-2:]
     inputs = {"image": pixel_values, "height": height, "width": width}
     
