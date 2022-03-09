@@ -2,6 +2,7 @@ import argparse
 import torch
 from torchvision.transforms import Compose, ToTensor, Resize, Normalize
 from PIL import Image
+import numpy as np
 from ditod import add_vit_config
 from detectron2.config import get_cfg
 from detectron2.modeling import build_model
@@ -47,6 +48,13 @@ def main():
     cfg.merge_from_list(args.opts)
     # Step 3: set device
     cfg.MODEL.DEVICE='cpu'
+
+    print("Image sizes:")
+    print(cfg.INPUT.MIN_SIZE_TRAIN)
+    print(cfg.INPUT.MAX_SIZE_TRAIN)
+    print(cfg.INPUT.MIN_SIZE_TEST)
+    print(cfg.INPUT.MAX_SIZE_TEST)
+
     # Step 4: define model
     model = build_model(cfg)
     model.eval()
@@ -71,14 +79,13 @@ def main():
     
     with torch.no_grad():
         outputs = model([inputs])[0]
-        print("Outputs:", outputs)
         print(outputs["instances"].pred_classes)
         print(outputs["instances"].pred_boxes)
 
     # step 7: visualize
-    image = read_image(args.input, format="BGR")
+    print("Size of image: ", image.size)
     metadata = MetadataCatalog.get(cfg.DATASETS.TEST[0] if len(cfg.DATASETS.TEST) else "__unused")
-    visualizer = Visualizer(image, metadata, instance_mode=ColorMode.IMAGE)
+    visualizer = Visualizer(np.array(image), metadata, instance_mode=ColorMode.IMAGE)
     vis_output = visualizer.draw_instance_predictions(predictions=outputs["instances"])
     vis_output.save(args.output)
 
