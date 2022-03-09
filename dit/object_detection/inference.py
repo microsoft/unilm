@@ -40,12 +40,12 @@ def main():
     print("Weights loaded!")
     
     # Step 6: run inference
-    image = torch.rand(1, 3, 512, 512)
+    image = torch.rand(3, 512, 512)
     height, width = image.shape[-2:]
     inputs = {"image": image, "height": height, "width": width}
     
     with torch.no_grad():
-        outputs = model(inputs)
+        outputs = model([inputs])
         print("Outputs:", outputs)
 
 if __name__ == '__main__':
