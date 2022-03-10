@@ -6,6 +6,8 @@ This folder contains Mask R-CNN Cascade Mask R-CNN running instructions on top o
 
 ### Inference
 
+The quickest way to try out DiT for document layout analysis is the web demo: [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/nielsr/dit-document-layout-analysis).
+
 One can run inference using the `inference.py` script. It can be run as follows (from the root of the unilm repository):
 
 ```
