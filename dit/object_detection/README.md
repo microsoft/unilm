@@ -3,6 +3,23 @@
 This folder contains Mask R-CNN Cascade Mask R-CNN running instructions on top of [Detectron2](https://github.com/facebookresearch/detectron2) for PubLayNet and ICDAR 2019 cTDaR.
 
 ## Usage
+
+### Inference
+
+The quickest way to try out DiT for document layout analysis is the web demo: [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/nielsr/dit-document-layout-analysis).
+
+One can run inference using the `inference.py` script. It can be run as follows (from the root of the unilm repository):
+
+```
+python ./dit/object_detection/inference.py \
+--image_path ./dit/object_detection/publaynet_example.jpeg \
+--output_file_name output.jpg \
+--config ./dit/object_detection/publaynet_configs/maskrcnn/maskrcnn_dit_base.yaml \
+--opts MODEL.WEIGHTS https://layoutlm.blob.core.windows.net/dit/dit-fts/publaynet_dit-b_mrcnn.pth \
+```
+
+Make sure that the configuration file (YAML) and PyTorch checkpoint match. The example above uses DiT-base with the Mask R-CNN framework fine-tuned on PubLayNet.
+
 ### Data Preparation
 
 **PubLayNet**

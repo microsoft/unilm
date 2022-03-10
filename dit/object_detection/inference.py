@@ -1,63 +1,28 @@
 import argparse
-import torch
-from torchvision.transforms import Compose, ToTensor, Resize, Normalize, functional
-from PIL import Image
-import numpy as np
+
+import cv2
+
 from ditod import add_vit_config
+
+import torch
+
 from detectron2.config import get_cfg
-from detectron2.modeling import build_model
-from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.utils.visualizer import ColorMode, Visualizer
-from detectron2.data.detection_utils import read_image
 from detectron2.data import MetadataCatalog
-
-
-def resize(image, size, max_size=None):
-    # size can be min_size (scalar) or (w, h) tuple
-
-    def get_size_with_aspect_ratio(image_size, size, max_size=None):
-        w, h = image_size
-        if max_size is not None:
-            min_original_size = float(min((w, h)))
-            max_original_size = float(max((w, h)))
-            if max_original_size / min_original_size * size > max_size:
-                size = int(round(max_size * min_original_size / max_original_size))
-
-        if (w <= h and w == size) or (h <= w and h == size):
-            return (h, w)
-
-        if w < h:
-            ow = size
-            oh = int(size * h / w)
-        else:
-            oh = size
-            ow = int(size * w / h)
-
-        return (oh, ow)
-
-    def get_size(image_size, size, max_size=None):
-        if isinstance(size, (list, tuple)):
-            return size[::-1]
-        else:
-            return get_size_with_aspect_ratio(image_size, size, max_size)
-
-    size = get_size(image.size, size, max_size)
-    rescaled_image = functional.resize(image, size)
-
-    return rescaled_image
+from detectron2.engine import DefaultPredictor
 
 
 def main():
     parser = argparse.ArgumentParser(description="Detectron2 inference script")
     parser.add_argument(
-        "--input",
+        "--image_path",
         help="Path to input image",
         type=str,
         required=True,
     )
     parser.add_argument(
-        "--output",
-        help="A file or directory to save output visualizations.",
+        "--output_file_name",
+        help="Name of the output visualization file.",
         type=str,
     )
     parser.add_argument(
@@ -84,41 +49,31 @@ def main():
     cfg.merge_from_list(args.opts)
     
     # Step 3: set device
-    # TODO also support GPU
-    cfg.MODEL.DEVICE='cpu'
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    cfg.MODEL.DEVICE = device
 
     # Step 4: define model
-    model = build_model(cfg)
-    model.eval()
+    predictor = DefaultPredictor(cfg)
     
-    # Step 5: load weights
-    checkpointer = DetectionCheckpointer(model)
-    checkpointer.load(cfg.MODEL.WEIGHTS)
-    print("Weights loaded!")
-    
-    # Step 6: run inference
-    image = Image.open(args.input)
+    # Step 5: run inference
+    img = cv2.imread(args.image_path)
 
-    transforms = Compose([
-        ToTensor(),
-        Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
-    ])
+    md = MetadataCatalog.get(cfg.DATASETS.TEST[0])
+    if cfg.DATASETS.TEST[0]=='icdar2019_test':
+        md.set(thing_classes=["table"])
+    else:
+        md.set(thing_classes=["text","title","list","table","figure"])
 
-    resized_image = resize(image, size=800, max_size=1333)
-    pixel_values = transforms(resized_image)
-    height, width = pixel_values.shape[-2:]
-    inputs = {"image": pixel_values, "height": height, "width": width}
-    
-    with torch.no_grad():
-        outputs = model([inputs])[0]
-        print(outputs["instances"].pred_classes)
-        print(outputs["instances"].pred_boxes)
+    output = predictor(img)["instances"]
+    v = Visualizer(img[:, :, ::-1],
+                    md,
+                    scale=1.0,
+                    instance_mode=ColorMode.SEGMENTATION)
+    result = v.draw_instance_predictions(output.to("cpu"))
+    result_image = result.get_image()[:, :, ::-1]
 
-    # step 7: visualize
-    metadata = MetadataCatalog.get(cfg.DATASETS.TEST[0] if len(cfg.DATASETS.TEST) else "__unused")
-    visualizer = Visualizer(np.array(resized_image), metadata, instance_mode=ColorMode.IMAGE)
-    vis_output = visualizer.draw_instance_predictions(predictions=outputs["instances"])
-    vis_output.save(args.output)
+    # step 6: save
+    cv2.imwrite(args.output_file_name, result_image)
 
 if __name__ == '__main__':
     main()
