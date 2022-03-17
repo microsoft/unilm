@@ -7,6 +7,7 @@ DiT (Document Image Transformer) is a self-supervised pre-trained Document Image
 </div>
 
 ## What's New
+- Demos on HuggingFace: [Document Layout Analysis](https://huggingface.co/spaces/nielsr/dit-document-layout-analysis)
 - March 2022: release pre-trained checkpoints and fine-tuning codes (DiT-base and DiT-large)
 - March 2022: release preprint in [arXiv](https://arxiv.org/abs/2203.02378)
 
