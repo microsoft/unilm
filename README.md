@@ -60,6 +60,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 
 
 ## News
+- [Model Release] March, 2022: [**EdgeFormer**](https://github.com/microsoft/unilm/tree/master/edgelm) - Parameter-efficient Transformer for On-device Seq2seq Generation
 - [Model Release] March, 2022: [**DiT**](https://github.com/microsoft/unilm/tree/master/dit) - Self-supervised Document Image Transformer. Demos: [Document Layout Analysis](https://huggingface.co/spaces/nielsr/dit-document-layout-analysis), [Document Image Classification](https://huggingface.co/spaces/microsoft/document-image-transformer)
 - Januray, 2022: [**BEiT**](https://openreview.net/forum?id=p-BhZSz59o4) was accepted by **ICLR 2022 as Oral presentation** (54 out of 3391).
 - [Model Release] December 16th, 2021: [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) **small** models for handwritten and printed texts, with 3x inference speedup.
@@ -91,6 +92,11 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 - September, 2019: [UniLMv1](https://github.com/microsoft/unilm/tree/master/unilm-v1) was accepted by NeurIPS 2019.
 
 ## Release
+**\*\*\*\*\* ```New March, 2022```: [EdgeFormer](https://github.com/microsoft/unilm/tree/master/edgelm) release \*\*\*\*\***
+
+- [x] [**EdgeFormer**](https://github.com/microsoft/unilm/tree/master/edgelm) (March 18, 2022): EdgeFormer, the first publicly available pretrained parameter-efficient Transformer for on-device seq2seq generation. EdgeFormer has only 11 million parameters, taking up less than 15MB disk size after int8 quantization and compression, which can process a sentence of the length of 20-30 tokens with acceptable latency on two middle-to-high end CPU cores and less than 50MB memory footprint. The pretrained EdgeFormer can be fine-tuned to English seq2seq tasks and achieve promising results -- significantly better than the strong paramter-efficient Transformer baseline (pretrained Universal Transformer) and full-parameterized Transformer-base model without pretraining, which we believe can largely facilitate on-device seq2seq generation in practice. "[EdgeFormer: A Parameter-Efficient Transformer for On-Device Seq2seq Generation](https://arxiv.org/abs/2202.07959)"
+
+
 **\*\*\*\*\* ```New March, 2022```: [DiT](https://github.com/microsoft/unilm/tree/master/dit) release \*\*\*\*\***
 
 - [x] [**DiT**](https://github.com/microsoft/unilm/tree/master/dit) (March 4, 2022): DiT, a self-supervised pre-trained Document Image Transformer model using large-scale unlabeled text images for Document AI tasks, which is essential since no supervised counterparts ever exist due to the lack of human labeled document images. We leverage DiT as the backbone network in a variety of vision-based Document AI tasks, including document image classification, document layout analysis, as well as table detection. Experiment results have illustrated that the self-supervised pre-trained DiT model achieves new state-of-the-art results on these downstream tasks, e.g. document image classification (91.11 → 92.69), document layout analysis (91.0 → 94.9) and table detection (94.23 → 96.55) "[DiT: Self-supervised Pre-training for Document Image Transformer](https://arxiv.org/abs/2203.02378)"
