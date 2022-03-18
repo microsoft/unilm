@@ -124,4 +124,4 @@ This project is licensed under the license found in the LICENSE file in the root
 
 For help or issues using EdgeFormer models, please submit a GitHub issue.
 
-For other communications related to EdgeFormer, please contact Tao Ge (`tage@microsoft.com`), [Furu Wei](http://gitnlp.org/) (`fuwei@microsoft.com`).
+For other communications related to EdgeFormer, please contact [Tao Ge](https://www.microsoft.com/en-us/research/people/tage/) (`tage@microsoft.com`), [Furu Wei](http://gitnlp.org/) (`fuwei@microsoft.com`).
