@@ -69,8 +69,8 @@ We summarize the validation results as follows. We also provide the fine-tuned w
 |------------|:----------------------------------------|:----------:|-------------------|-----|
 | DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Mask R-CNN | 0.935 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/publaynet_dit-b_mrcnn.pth) |
 | DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Mask R-CNN | 0.941 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/publaynet_dit-l_mrcnn.pth) | 
-| DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Cascade Mask R-CNN | 0.945 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/publaynet_dit-b_cascade.pth) |
-| DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Cascade Mask R-CNN | 0.949 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/publaynet_dit-l_cascade.pth) |
+| DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Cascade R-CNN | 0.945 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/publaynet_dit-b_cascade.pth) |
+| DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Cascade R-CNN | 0.949 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/publaynet_dit-l_cascade.pth) |
 
 ## Fine-tuning on ICDAR 2019 cTDaR (Table Detection)
 
@@ -82,8 +82,8 @@ We summarize the validation results as follows. We also provide the fine-tuned w
 |------------|:----------------------------------------|:----------:|-------------------|-----|
 | DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Mask R-CNN | 94.74 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/icdar19modern_dit-b_mrcnn.pth) |
 | DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Mask R-CNN | 95.50 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/icdar19modern_dit-l_mrcnn.pth) | 
-| DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Cascade Mask R-CNN | 95.85 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/icdar19modern_dit-b_cascade.pth) |
-| DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Cascade Mask R-CNN | 96.29 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/icdar19modern_dit-l_cascade.pth) |
+| DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Cascade R-CNN | 95.85 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/icdar19modern_dit-b_cascade.pth) |
+| DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Cascade R-CNN | 96.29 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/icdar19modern_dit-l_cascade.pth) |
 
 **Archival**
 
@@ -91,8 +91,8 @@ We summarize the validation results as follows. We also provide the fine-tuned w
 |------------|:----------------------------------------|:----------:|-------------------|-----|
 | DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Mask R-CNN | 96.24 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/icdar19archival_dit-b_mrcnn.pth) |
 | DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Mask R-CNN | 96.46 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/icdar19archival_dit-l_mrcnn.pth) | 
-| DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Cascade Mask R-CNN | 96.63 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/icdar19archival_dit-b_cascade.pth) |
-| DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Cascade Mask R-CNN | 97.00 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/icdar19archival_dit-l_cascade.pth) |
+| DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Cascade R-CNN | 96.63 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/icdar19archival_dit-b_cascade.pth) |
+| DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Cascade R-CNN | 97.00 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/icdar19archival_dit-l_cascade.pth) |
 
 **Combined (Combine the inference results of Modern and Archival)**
 
@@ -100,8 +100,8 @@ We summarize the validation results as follows. We also provide the fine-tuned w
 |------------|:----------------------------------------|:----------:|-------------------|-----|
 | DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Mask R-CNN | 95.30 |  - |
 | DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Mask R-CNN | 95.85 |  - | 
-| DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Cascade Mask R-CNN | 96.14 |  - |
-| DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Cascade Mask R-CNN | 96.55 |  - |
+| DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Cascade R-CNN | 96.14 |  - |
+| DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Cascade R-CNN | 96.55 |  - |
 
 
 ## Citation
