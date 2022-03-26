@@ -115,3 +115,15 @@ Expected results:
 ```
 * Acc@1 88.600 Acc@5 98.658 loss 0.474
 ```
+
+## Example: Linear classification on ImageNet
+
+To train supervised linear classifier on frozen weights on a single node with 8 gpus, run:
+```
+python -m torch.distributed.launch --nproc_per_node=8 run_linear_eval.py \
+    --model beit_base_patch16_224 \
+    --pretrained_weights https://unilm.blob.core.windows.net/beit/beit_base_patch16_224_pt22k.pth \
+    --data_path /path/to/imagenet \
+    --lr 4e-3 \
+    --output_dir /path/to/save
+```

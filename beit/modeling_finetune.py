@@ -166,7 +166,7 @@ class Block(nn.Module):
         mlp_hidden_dim = int(dim * mlp_ratio)
         self.mlp = Mlp(in_features=dim, hidden_features=mlp_hidden_dim, act_layer=act_layer, drop=drop)
 
-        if init_values > 0:
+        if init_values is not None and init_values > 0:
             self.gamma_1 = nn.Parameter(init_values * torch.ones((dim)),requires_grad=True)
             self.gamma_2 = nn.Parameter(init_values * torch.ones((dim)),requires_grad=True)
         else:
@@ -290,12 +290,14 @@ class VisionTransformer(nn.Module):
             trunc_normal_(self.pos_embed, std=.02)
         trunc_normal_(self.cls_token, std=.02)
         # trunc_normal_(self.mask_token, std=.02)
-        trunc_normal_(self.head.weight, std=.02)
+        if isinstance(self.head, nn.Linear):
+            trunc_normal_(self.head.weight, std=.02)
         self.apply(self._init_weights)
         self.fix_init_weight()
 
-        self.head.weight.data.mul_(init_scale)
-        self.head.bias.data.mul_(init_scale)
+        if isinstance(self.head, nn.Linear):
+            self.head.weight.data.mul_(init_scale)
+            self.head.bias.data.mul_(init_scale)
 
     def fix_init_weight(self):
         def rescale(param, layer_id):
@@ -353,6 +355,24 @@ class VisionTransformer(nn.Module):
         x = self.forward_features(x)
         x = self.head(x)
         return x
+
+    def get_intermediate_layers(self, x):
+        x = self.patch_embed(x)
+        batch_size, seq_len, _ = x.size()
+
+        cls_tokens = self.cls_token.expand(batch_size, -1, -1)  # stole cls_tokens impl from Phil Wang, thanks
+        x = torch.cat((cls_tokens, x), dim=1)
+        if self.pos_embed is not None:
+            x = x + self.pos_embed
+        x = self.pos_drop(x)
+
+        features = []
+        rel_pos_bias = self.rel_pos_bias() if self.rel_pos_bias is not None else None
+        for blk in self.blocks:
+            x = blk(x, rel_pos_bias)
+            features.append(x)
+
+        return features
 
 
 @register_model
