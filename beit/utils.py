@@ -400,6 +400,16 @@ def cosine_scheduler(base_value, final_value, epochs, niter_per_ep, warmup_epoch
     return schedule
 
 
+def accuracy(output, target, topk=(1,)):
+    """Computes the accuracy over the k top predictions for the specified values of k"""
+    maxk = max(topk)
+    batch_size = target.size(0)
+    _, pred = output.topk(maxk, 1, True, True)
+    pred = pred.t()
+    correct = pred.eq(target.reshape(1, -1).expand_as(pred))
+    return [correct[:k].reshape(-1).float().sum(0) * 100. / batch_size for k in topk]
+
+
 def save_model(args, epoch, model, model_without_ddp, optimizer, loss_scaler, model_ema=None):
     output_dir = Path(args.output_dir)
     epoch_name = str(epoch)
@@ -423,6 +433,41 @@ def save_model(args, epoch, model, model_without_ddp, optimizer, loss_scaler, mo
         if model_ema is not None:
             client_state['model_ema'] = get_state_dict(model_ema)
         model.save_checkpoint(save_dir=args.output_dir, tag="checkpoint-%s" % epoch_name, client_state=client_state)
+
+
+def restart_from_checkpoint(ckp_path, run_variables=None, **kwargs):
+    """
+    Re-start from checkpoint
+    """
+    if not os.path.isfile(ckp_path):
+        return
+    print("Found checkpoint at {}".format(ckp_path))
+
+    # open checkpoint file
+    checkpoint = torch.load(ckp_path, map_location="cpu")
+
+    # key is what to look for in the checkpoint file
+    # value is the object to load
+    # example: {'state_dict': model}
+    for key, value in kwargs.items():
+        if key in checkpoint and value is not None:
+            try:
+                msg = value.load_state_dict(checkpoint[key], strict=False)
+                print("=> loaded '{}' from checkpoint '{}' with msg {}".format(key, ckp_path, msg))
+            except TypeError:
+                try:
+                    msg = value.load_state_dict(checkpoint[key])
+                    print("=> loaded '{}' from checkpoint: '{}'".format(key, ckp_path))
+                except ValueError:
+                    print("=> failed to load '{}' from checkpoint: '{}'".format(key, ckp_path))
+        else:
+            print("=> key '{}' not found in checkpoint: '{}'".format(key, ckp_path))
+
+    # re load variable important for the run
+    if run_variables is not None:
+        for var_name in run_variables:
+            if var_name in checkpoint:
+                run_variables[var_name] = checkpoint[var_name]
 
 
 def auto_load_model(args, model, model_without_ddp, optimizer, loss_scaler, model_ema=None):
