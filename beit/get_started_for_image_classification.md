@@ -116,7 +116,7 @@ Expected results:
 * Acc@1 88.600 Acc@5 98.658 loss 0.474
 ```
 
-## Example: Linear classification on ImageNet
+## Example: Linear probe on ImageNet
 
 To train supervised linear classifier on frozen weights on a single node with 8 gpus, run:
 ```
