@@ -122,8 +122,8 @@ DATA_PATH=/path/to/imagenet1k_train_set
 # Download the tokenizer weight from OpenAI's DALL-E
 TOKENIZER_PATH=/path/to/save/dall_e_tokenizer_weight
 mkdir -p $TOKENIZER_PATH
-wget -o $TOKENIZER_PATH/encoder.pkl https://cdn.openai.com/dall-e/encoder.pkl
-wget -o $TOKENIZER_PATH/decoder.pkl https://cdn.openai.com/dall-e/decoder.pkl
+wget -o $TOKENIZER_PATH/encoder.pkl https://conversationhub.blob.core.windows.net/beit-share-public/dall-e_vae/encoder.pkl
+wget -o $TOKENIZER_PATH/decoder.pkl https://conversationhub.blob.core.windows.net/beit-share-public/dall-e_vae/decoder.pkl
 
 OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=16 run_beit_pretraining.py \
         --data_path ${DATA_PATH} --output_dir ${OUTPUT_DIR} --num_mask_patches 75 \
