@@ -103,7 +103,7 @@ class XFUN(datasets.GeneratorBasedBuilder):
     def _generate_examples(self, filepaths):
         for filepath in filepaths:
             logger.info("Generating examples from = %s", filepath)
-            with open(filepath[0], "r") as f:
+            with open(filepath[0], "r", encoding="utf-8") as f:
                 data = json.load(f)
 
             for doc in data["documents"]:
