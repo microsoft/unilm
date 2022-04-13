@@ -103,6 +103,12 @@ We summarize the validation results as follows. We also provide the fine-tuned w
 | DiT-base | [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth) | Cascade R-CNN | 96.14 |  - |
 | DiT-large | [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth) | Cascade R-CNN | 96.55 |  - |
 
+## Fine-tuning on FUNSD (Text Detection)
+We summarize the validation results as follows. We also provide the fine-tuned weights. The detailed instructions to reproduce the results can be found at [`text_detection/README.md`](text_detection/README.md). 
+| name | initialized checkpoint | detection algorithm  |  F1 | weight |
+|------------|:----------------------------------------|:----------:|-------------------|-----|
+| DiT-base-syn | [dit_base_patch16_224_syn](https://layoutlm.blob.core.windows.net/dit/dit-fts/td-syn_dit-b_mrcnn.pth) | Mask R-CNN | 94.25 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/funsd_dit-b_mrcnn.pth) |
+| DiT-large-syn | [dit_large_patch16_224_syn](https://layoutlm.blob.core.windows.net/dit/dit-fts/td-syn_dit-l_mrcnn.pth) | Mask R-CNN | 94.29 |  [link](https://layoutlm.blob.core.windows.net/dit/dit-fts/funsd_dit-l_mrcnn.pth) | 
 
 ## Citation
 
