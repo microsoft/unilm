@@ -3,11 +3,7 @@
 DiT (Document Image Transformer) is a self-supervised pre-trained Document Image Transformer model using large-scale unlabeled text images for Document AI tasks, which is essential since no supervised counterparts ever exist due to the lack of human labeled document images. 
 
 <div align="center">
-  <img src="https://user-images.githubusercontent.com/45008728/157173825-0949218a-61f5-4acb-949b-bbc499ab49f2.png" width="500" /><img src="https://user-images.githubusercontent.com/45008728/157173843-796dc878-2607-48d7-85cb-f54a2c007687.png" width="500"/> Table Detection outputs with PubLayNet (left) and ICDAR 2019 cTDaR (right)
-</div>
-
-<div align="center">
-  <img src="https://user-images.githubusercontent.com/45008728/163219997-90d15c1b-e1d1-4bb3-ae46-774e54b89dc6.png" width="500" /><img src="https://user-images.githubusercontent.com/45008728/163220437-ab6a3fd2-0a4f-49c5-810c-e05dda7eb9e1.png" width="500"/> Text Detection outputs with FUNSD
+  <img src="https://user-images.githubusercontent.com/45008728/157173825-0949218a-61f5-4acb-949b-bbc499ab49f2.png" width="500" /><img src="https://user-images.githubusercontent.com/45008728/157173843-796dc878-2607-48d7-85cb-f54a2c007687.png" width="500"/> Model outputs with PubLayNet (left) and ICDAR 2019 cTDaR (right)
 </div>
 
 ## What's New
