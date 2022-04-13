@@ -17,9 +17,7 @@ We summarize the validation results as follows. We also provide the fine-tuned w
 
 ### Data Preparation
 
-Follow [these steps](https://mmocr.readthedocs.io/en/latest/datasets/det.html#funsd) to download and process the FUNSD.
-
-The resulting directory structure looks like the following:
+Follow [these steps](https://mmocr.readthedocs.io/en/latest/datasets/det.html#funsd) to download and process the FUNSD. The resulting directory structure looks like the following:
 ```
 │── data
 │   ├── annotations
@@ -28,7 +26,6 @@ The resulting directory structure looks like the following:
 │   └── instances_training.json
 
 ```
-
 ### Training
 The following command provide example to train the Mask R-CNN with DiT backbone on 8 32GB Nvidia V100 GPUs.
 
@@ -39,7 +36,7 @@ python train_net.py --config-file configs/mask_rcnn_dit_base.yaml --num-gpus 8 -
 ``` 
 
 ### Evaluation
-The following commands provide examples to evaluate the fine-tuned checkpoint of DiT-Base with Mask R-CNN on the FUNSD.
+The following commands provide examples to evaluate the fine-tuned checkpoint of DiT-Base with Mask R-CNN.
 
 ```bash
 python train_net.py --config-file configs/mask_rcnn_dit_base.yaml --eval-only --num-gpus 8  --resume  MODEL.WEIGHTS path/to/model OUTPUT_DIR path/to/output
