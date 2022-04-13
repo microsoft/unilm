@@ -37,6 +37,4 @@ python train_net.py --config-file configs/mask_rcnn_dit_base.yaml --num-gpus 8 -
 ``` 
 
 ## Acknowledgment
-Thanks to [Detectron2](https://github.com/facebookresearch/detectron2) for Mask R-CNN implementation.
-
-Thanks to [MMOCR](https://github.com/open-mmlab/mmocr) for the data preprocessing implementation of the FUNSD  
+Thanks to [Detectron2](https://github.com/facebookresearch/detectron2) for Mask R-CNN implementation and [MMOCR](https://github.com/open-mmlab/mmocr) for the data preprocessing implementation of the FUNSD  
