@@ -2,10 +2,6 @@
 
 This folder contains DiT running instructions on top of [Detectron2](https://github.com/facebookresearch/detectron2) for Text Detection.
 
-<div align="center">
-  <img src="https://user-images.githubusercontent.com/45008728/157173825-0949218a-61f5-4acb-949b-bbc499ab49f2.png" height="500" /><img src="https://user-images.githubusercontent.com/45008728/157173843-796dc878-2607-48d7-85cb-f54a2c007687.png" height="500"/>
-</div>
-
 ## Usage
 
 ### Data Preparation
