@@ -7,12 +7,6 @@ MODEL:
     NAME: "dit_large_patch16"
     OUT_FEATURES: [ "layer7", "layer11", "layer15", "layer23" ]
     DROP_PATH: 0.2
-  RPN:
-    IN_FEATURES: ["p2", "p3", "p4", "p5", "p6"]
-    PRE_NMS_TOPK_TRAIN: 12000  # Per FPN level
-    PRE_NMS_TOPK_TEST: 6000  # Per FPN level
-    POST_NMS_TOPK_TRAIN: 2000
-    POST_NMS_TOPK_TEST: 1000
   FPN:
     IN_FEATURES: [ "layer7", "layer11", "layer15", "layer23" ]
   ANCHOR_GENERATOR:
