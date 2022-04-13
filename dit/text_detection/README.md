@@ -1,1 +1,46 @@
-Text detection models based on DiT
+# DiT for Text Detection
+
+This folder contains DiT running instructions on top of [Detectron2](https://github.com/facebookresearch/detectron2) for Text Detection.
+
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/45008728/157173825-0949218a-61f5-4acb-949b-bbc499ab49f2.png" height="500" /><img src="https://user-images.githubusercontent.com/45008728/157173843-796dc878-2607-48d7-85cb-f54a2c007687.png" height="500"/>
+</div>
+
+## Usage
+
+### Data Preparation
+
+**FUNSD**
+
+Flower [these steps](https://mmocr.readthedocs.io/en/latest/datasets/det.html#funsd) to download and process the dataset.
+
+The resulting directory structure looks like the following:
+```
+│── data
+│   ├── annotations
+│   ├── imgs
+│   ├── instances_test.json
+│   └── instances_training.json
+
+```
+
+### Evaluation
+
+The following commands provide examples to evaluate the fine-tuned checkpoint of DiT-Base with Mask R-CNN on the FUNSD.
+
+The config files can be found in `configs`.
+
+```bash
+python train_net.py --config-file configs/mask_rcnn_dit_base.yaml --eval-only --num-gpus 8  --resume  MODEL.WEIGHTS <finetuned_checkpoint_file_path or link> OUTPUT_DIR <your_output_dir>
+``` 
+
+### Training
+The following command provide example to train the Mask R-CNN with DiT backbone on 8 32GB Nvidia V100 GPUs.
+```bash
+python train_net.py --config-file configs/mask_rcnn_dit_base.yaml --num-gpus 8 --resume MODEL.WEIGHTS <DiT-Base_file_path or link> OUTPUT_DIR <your_output_dir> 
+``` 
+
+## Acknowledgment
+Thanks to [Detectron2](https://github.com/facebookresearch/detectron2) for Mask R-CNN implementation.
+
+Thanks to [MMOCR](https://github.com/open-mmlab/mmocr) for the data preprocessing implementation of the FUNSD  
