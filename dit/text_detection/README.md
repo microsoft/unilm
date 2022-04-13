@@ -4,7 +4,7 @@
   <img src="https://user-images.githubusercontent.com/45008728/163219997-90d15c1b-e1d1-4bb3-ae46-774e54b89dc6.png" width="500" /><img src="https://user-images.githubusercontent.com/45008728/163220437-ab6a3fd2-0a4f-49c5-810c-e05dda7eb9e1.png" width="500"/> Model outputs with FUNSD
 </div>
 
-## Fine-tuning on FUNSD (Text Detection)
+## Fine-tuning on FUNSD
 We summarize the validation results as follows. We also provide the fine-tuned weights. 
 
 | name | initialized checkpoint | detection algorithm  |  F1 | weight |
