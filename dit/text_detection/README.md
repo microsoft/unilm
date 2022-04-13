@@ -31,14 +31,15 @@ The resulting directory structure looks like the following:
 
 ### Training
 The following command provide example to train the Mask R-CNN with DiT backbone on 8 32GB Nvidia V100 GPUs.
+
+The config files can be found in `configs`.
+
 ```bash
 python train_net.py --config-file configs/mask_rcnn_dit_base.yaml --num-gpus 8 --resume MODEL.WEIGHTS path/to/model OUTPUT_DIR path/to/output
 ``` 
 
 ### Evaluation
 The following commands provide examples to evaluate the fine-tuned checkpoint of DiT-Base with Mask R-CNN on the FUNSD.
-
-The config files can be found in `configs`.
 
 ```bash
 python train_net.py --config-file configs/mask_rcnn_dit_base.yaml --eval-only --num-gpus 8  --resume  MODEL.WEIGHTS path/to/model OUTPUT_DIR path/to/output
