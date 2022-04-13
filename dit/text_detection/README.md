@@ -8,7 +8,7 @@ This folder contains DiT running instructions on top of [Detectron2](https://git
 
 **FUNSD**
 
-Flower [these steps](https://mmocr.readthedocs.io/en/latest/datasets/det.html#funsd) to download and process the dataset.
+Follow [these steps](https://mmocr.readthedocs.io/en/latest/datasets/det.html#funsd) to download and process the dataset.
 
 The resulting directory structure looks like the following:
 ```
