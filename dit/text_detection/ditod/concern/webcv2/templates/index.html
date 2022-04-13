@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <title>{{title}}</title>
+    <link rel="icon" href="//assets.megvii.com/static%2Ffavicon.ico?ver=1498037959257">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.min.js"></script>
+</head>
+
+<body>
+    <script language="javascript" type="text/javascript">
+        var vm = null;
+        function isCharacterKeyPress(evt) {
+            if (typeof evt.which == "undefined") {
+                // This is IE, which only fires keypress events for printable keys
+                return true;
+            } else if (typeof evt.which == "number" && evt.which > 0) {
+                // In other browsers except old versions of WebKit, evt.which is
+                // only greater than zero if the keypress is a printable key.
+                // We need to filter out backspace and ctrl/alt/meta key combinations
+                return !evt.ctrlKey && !evt.metaKey && !evt.altKey && evt.which != 8;
+            }
+            return false;
+        };
+        $(function() {
+            vm = new Vue({
+                el: '#board',
+                data: {
+                    websocket: null,
+                    // resources
+                    delay: -1,
+                    data_alive: null,
+                    img_lst: null,
+                    // network
+                    package_size: 0,
+                    download_time: 0,
+                    net_speed: 0,
+                    // timer
+                    timer_interval: null,
+                    timer_step: 100,
+                },
+                created: function() {
+                    this.create_connection();
+                    document.addEventListener("keypress", this.send_key, false);
+                },
+                computed: {
+                    connection_alive: function() {
+                        return (this.websocket != null) &&
+                            !(this.websocket.readyState == this.websocket.CLOSING || this.websocket.readyState == this.websocket.CLOSED);
+                    },
+                },
+                methods: {
+                    get_ws_url: function(s) {
+                        var l = window.location;
+                        return ((l.protocol === "https:") ? "wss://" : "ws://") + l.hostname + (((l.port != 80) && (l.port != 443)) ? ":" + l.port : "") + l.pathname + s;
+                    },
+                    create_connection: function() {
+                        this.websocket = new WebSocket(this.get_ws_url("stream"));
+                        this.websocket.binaryType = "arraybuffer";
+                        this.websocket.onopen = function(evt) { console.log("connected"); };
+                        this.websocket.onclose = this.close_connection;
+                        this.websocket.onerror = function(evt) { console.log("error occurred"); console.log(evt); };
+                        this.websocket.onmessage = this.receive_message;
+                    },
+                    close_connection: function() {
+                        console.log("disconnected");
+                        this.websocket = null;
+                    },
+                    receive_message: function(evt) {
+                        var obj = JSON.parse(evt.data);
+                        var send_time = obj[0], recv_time = (new Date()).getTime() / 1000;
+                        this.package_size = evt.data.length * 8;
+                        this.download_time = recv_time - send_time;
+                        this.net_speed = this.package_size / this.download_time;
+                        console.log(obj);
+                        this.data_alive = obj[1];
+                        this.delay = obj[2];
+                        this.img_lst = obj[3];
+                        this.start_timer();
+                    },
+                    send_key: function(evt) {
+                        if (!this.connection_alive || !this.data_alive) return;
+                        if (!isCharacterKeyPress(evt)) return;
+                        this.delay = 0;
+                        this.data_alive = false;
+                        var keycode = evt.keyCode;
+                        console.log("key pressed " + keycode + " " + String.fromCharCode(keycode));
+                        this.websocket.send(keycode);
+                    },
+                    update_timer: function() {
+                        if (this.delay > 0) this.delay -= this.timer_step;
+                        if (this.delay <= 0) {
+                            this.data_alive = false;
+                            if (this.timer_interval != null) {
+                                clearInterval(this.timer_interval);
+                                this.timer_interval = null;
+                            }
+                        }
+                    },
+                    start_timer: function() {
+                        if (this.timer_interval != null) {
+                            clearInterval(this.timer_interval);
+                            this.timer_interval = null;
+                        }
+                        if (this.delay > 0) this.timer_interval = setInterval(this.update_timer, this.timer_step);
+                    },
+                },
+                filters: {
+                    decimal: function(num, fixed_point) {
+                        return num.toFixed(fixed_point);
+                    },
+                },
+            });
+        });
+    </script>
+
+    {% raw %}
+    <!-- Vue template -->
+    <div id="board">
+        <template v-if="connection_alive">
+            <template v-if="data_alive">
+                <p v-if="delay > 0">Press any key in {{delay / 1000 | decimal(1)}} seconds. </p>
+                <p v-else>Press any key to continue. </p>
+            </template>
+            <template v-else>
+                <p>Waiting for response from server. </p>
+            </template>
+        </template>
+        <template v-else>
+            <p>Disconnected from server. </p>
+        </template>
+        <p>Network: {{net_speed / 1000000 | decimal(2)}} MB/s * {{download_time | decimal(2)}} s = {{package_size / 1000000 | decimal(2)}} MB</p>
+        <div style="display:inline-block">
+            <div style="display:inline-block; vertical-align: top;" v-for="obj in img_lst">
+                <p>{{obj[0]}}</p>
+                <img :src="'data:image/png;base64,' + obj[1]" />
+            </div>
+        </div>
+    </div>
+    {% endraw %}
+
+</body>
+</html>
