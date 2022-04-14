@@ -59,5 +59,21 @@ python -m torch.distributed.launch --nproc_per_node=8 run_class_finetuning.py
         --disable_rel_pos_bias 
 ```
 
+
+## Citation
+
+If you find this repository useful, please consider citing our work:
+```
+@misc{li2022dit,
+    title={DiT: Self-supervised Pre-training for Document Image Transformer},
+    author={Junlong Li and Yiheng Xu and Tengchao Lv and Lei Cui and Cha Zhang and Furu Wei},
+    year={2022},
+    eprint={2203.02378},
+    archivePrefix={arXiv},
+    primaryClass={cs.CV}
+}
+```
+
+
 ## Acknowledgment
 This part is built using the [timm](https://github.com/rwightman/pytorch-image-models) library, the [Beit](https://github.com/microsoft/unilm/tree/master/beit) repository, the [DeiT](https://github.com/facebookresearch/deit) repository and the [Dino](https://github.com/facebookresearch/dino) repository.
