@@ -43,5 +43,20 @@ python train_net.py --config-file configs/mask_rcnn_dit_base.yaml --eval-only --
 ``` 
 
 
+## Citation
+
+If you find this repository useful, please consider citing our work:
+```
+@misc{li2022dit,
+    title={DiT: Self-supervised Pre-training for Document Image Transformer},
+    author={Junlong Li and Yiheng Xu and Tengchao Lv and Lei Cui and Cha Zhang and Furu Wei},
+    year={2022},
+    eprint={2203.02378},
+    archivePrefix={arXiv},
+    primaryClass={cs.CV}
+}
+```
+
+
 ## Acknowledgment
 Thanks to [Detectron2](https://github.com/facebookresearch/detectron2) for Mask R-CNN implementation and [MMOCR](https://github.com/open-mmlab/mmocr) for the data preprocessing implementation of the FUNSD  
