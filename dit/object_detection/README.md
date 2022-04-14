@@ -100,5 +100,21 @@ python train_net.py --config-file icdar19_configs/markrcnn/maskrcnn_dit_large.ya
 [Detectron2's document](https://detectron2.readthedocs.io/en/latest/tutorials/getting_started.html) may help you for more details.
 
 
+## Citation
+
+If you find this repository useful, please consider citing our work:
+```
+@misc{li2022dit,
+    title={DiT: Self-supervised Pre-training for Document Image Transformer},
+    author={Junlong Li and Yiheng Xu and Tengchao Lv and Lei Cui and Cha Zhang and Furu Wei},
+    year={2022},
+    eprint={2203.02378},
+    archivePrefix={arXiv},
+    primaryClass={cs.CV}
+}
+```
+
+
+
 ## Acknowledgment
 Thanks to [Detectron2](https://github.com/facebookresearch/detectron2) for Mask R-CNN and Cascade Mask R-CNN implementation.
