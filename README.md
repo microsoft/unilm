@@ -34,7 +34,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 > [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) (```NEW```): speech pre-training for full stack tasks
 
 ### Multimodal (X + Language)
-> [**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm): multimodal (text + layout/format + image) pre-training for [Document AI](https://www.microsoft.com/en-us/research/project/document-ai/) (e.g. scanned documents, PDF, etc.)
+> [**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm)/[**LayoutLMv2**](https://github.com/microsoft/unilm/tree/master/layoutlmv2): multimodal (text + layout/format + image) pre-training for [Document AI](https://www.microsoft.com/en-us/research/project/document-ai/) (e.g. scanned documents, PDF, etc.)
 
 > [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm): multimodal (text + layout/format + image) pre-training for multilingual document understanding
 
