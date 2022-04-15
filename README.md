@@ -66,7 +66,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 - [Model Release] December 16th, 2021: [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) **small** models for handwritten and printed texts, with 3x inference speedup.
 - November 24th, 2021: [**VLMo**](https://github.com/microsoft/unilm/tree/master/vlmo) as the new SOTA on the [VQA Challenge](https://eval.ai/web/challenges/challenge-page/830/leaderboard/2278)
 - November, 2021: [Multilingual translation at scale: 10000 language pairs and beyond](https://www.microsoft.com/en-us/translator/blog/2021/11/22/multilingual-translation-at-scale-10000-language-pairs-and-beyond/)
-- [Model Release] November, 2021: [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm)
+- [Model Release] November, 2021: [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm) - Pre-training for text and markup language (e.g. HTML/XML)
 - [Model Release] November, 2021: [**VLMo**](https://github.com/microsoft/unilm/tree/master/vlmo) - Unified vision-language pre-training w/ [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit)
 - October, 2021: [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) Large achieves state-of-the-art performance on the [SUPERB](https://superbbenchmark.org/leaderboard) benchmark
 - [Model Release] October, 2021: [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) - Large-scale self-supervised pre-trained models for speech. 
