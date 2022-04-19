@@ -87,7 +87,7 @@ If you find LayoutLMv3 helpful, please cite us:
       title={LayoutLMv3: Pre-training for Document AI with Unified Text and Image Masking}, 
       author={Yupan Huang and Tengchao Lv and Lei Cui and Yutong Lu and Furu Wei},
       year={2022},
-      eprint={2204.TODO},
+      eprint={2204.08387},
       archivePrefix={arXiv},
       primaryClass={cs.CL}
 }
