@@ -81,7 +81,7 @@ In the folder of layoutlmv3/examples/object_detecion:
   | [HYPJUDY/layoutlmv3-base-finetuned-publaynet](https://huggingface.co/HYPJUDY/layoutlmv3-base-finetuned-publaynet) | 94.5        | 90.6 | 95.5 |  97.9     |  97.0      |   95.1      | 
 
 ## Citation
-If you find LayoutLMv3 helpful, please generously cite us:
+If you find LayoutLMv3 helpful, please cite us:
 ```
 @article{huang2022layoutlmv3,
       title={LayoutLMv3: Pre-training for Document AI with Unified Text and Image Masking}, 
