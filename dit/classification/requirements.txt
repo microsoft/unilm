@@ -13,4 +13,4 @@ pybase64
 pyyaml
 webdataset
 omegaconf==2.0.0
-pytorch-lightning==1.0.8
+pytorch-lightning==1.6.0
