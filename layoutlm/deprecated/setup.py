@@ -18,7 +18,7 @@ setup(
         "tensorboardX==2.0",
         "lxml==4.6.5",
         "seqeval==0.0.12",
-        "Pillow==8.3.2",
+        "Pillow==9.0.1",
     ],
     extras_require={
         "dev": ["flake8==3.8.2", "isort==4.3.21", "black==19.10b0", "pre-commit==2.4.0"]
