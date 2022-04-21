@@ -63,6 +63,7 @@ Transformers at Scale = DeepNet + X-MoE
 
 
 ## News
+- April, 2022: **Transformers at Scale** = [DeepNet](https://arxiv.org/abs/2203.00555) + [X-MoE](https://arxiv.org/abs/2204.09179)
 - [Model Release] April, 2022: [**LayoutLMv3**](https://github.com/microsoft/unilm/tree/master/layoutlmv3) - Pre-training for Document AI with Unified Text and Image Masking
 - [Model Release] March, 2022: [**EdgeFormer**](https://github.com/microsoft/unilm/tree/master/edgelm) - Parameter-efficient Transformer for On-device Seq2seq Generation
 - [Model Release] March, 2022: [**DiT**](https://github.com/microsoft/unilm/tree/master/dit) - Self-supervised Document Image Transformer. Demos: [Document Layout Analysis](https://huggingface.co/spaces/nielsr/dit-document-layout-analysis), [Document Image Classification](https://huggingface.co/spaces/microsoft/document-image-transformer)
