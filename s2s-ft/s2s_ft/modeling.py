@@ -27,18 +27,18 @@ logger = logging.getLogger(__name__)
 BertLayerNorm = torch.nn.LayerNorm
 
 UNILM_PRETRAINED_MODEL_ARCHIVE_MAP = {
-    'unilm-base-cased': "https://unilm.blob.core.windows.net/ckpt/unilm1-base-cased.bin",
-    'unilm-large-cased': "https://unilm.blob.core.windows.net/ckpt/unilm1-large-cased.bin",
-    'unilm1-base-cased': "https://unilm.blob.core.windows.net/ckpt/unilm1-base-cased.bin",
-    'unilm1-large-cased': "https://unilm.blob.core.windows.net/ckpt/unilm1-large-cased.bin",
-    'unilm1.2-base-uncased': "https://unilm.blob.core.windows.net/ckpt/unilm1.2-base-uncased.bin", 
-    'unilm2-base-uncased': "https://unilm.blob.core.windows.net/ckpt/unilm2-base-uncased.bin", 
-    'unilm2-large-uncased': "https://unilm.blob.core.windows.net/ckpt/unilm2-large-uncased.bin", 
-    'unilm2-large-cased': "https://unilm.blob.core.windows.net/ckpt/unilm2-large-cased.bin", 
+    'unilm-base-cased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1-base-cased.bin",
+    'unilm-large-cased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1-large-cased.bin",
+    'unilm1-base-cased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1-base-cased.bin",
+    'unilm1-large-cased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1-large-cased.bin",
+    'unilm1.2-base-uncased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1.2-base-uncased.bin", 
+    'unilm2-base-uncased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm2-base-uncased.bin", 
+    'unilm2-large-uncased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm2-large-uncased.bin", 
+    'unilm2-large-cased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm2-large-cased.bin", 
 }
 
 MINILM_PRETRAINED_MODEL_ARCHIVE_MAP = {
-    'minilm-l12-h384-uncased': "https://unilm.blob.core.windows.net/ckpt/minilm-l12-h384-uncased.bin",
+    'minilm-l12-h384-uncased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/minilm-l12-h384-uncased.bin",
 }
 
 class BertPreTrainedForSeq2SeqModel(BertPreTrainedModel):

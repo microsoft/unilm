@@ -39,7 +39,7 @@ VOCAB_FILES_NAMES = {'vocab_file': 'vocab.txt'}
 PRETRAINED_VOCAB_FILES_MAP = {
     'vocab_file':
     {
-        'minilm-l12-h384-uncased': "https://unilm.blob.core.windows.net/ckpt/minilm-l12-h384-uncased-vocab.txt",
+        'minilm-l12-h384-uncased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/minilm-l12-h384-uncased-vocab.txt",
     }
 }
 

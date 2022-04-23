@@ -34,7 +34,7 @@ from transformers.configuration_utils import PretrainedConfig
 logger = logging.getLogger(__name__)
 
 MINILM_PRETRAINED_CONFIG_ARCHIVE_MAP = {
-    'minilm-l12-h384-uncased': "https://unilm.blob.core.windows.net/ckpt/minilm-l12-h384-uncased-config.json",
+    'minilm-l12-h384-uncased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/minilm-l12-h384-uncased-config.json",
 }
 
 
