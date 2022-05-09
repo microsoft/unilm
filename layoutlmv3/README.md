@@ -54,8 +54,8 @@ We provide some fine-tuned models and their train/test logs.
   ```
   | Model on FUNSD                                                                                              | precision | recall |    f1    |
   |-----------|:------------|:------:|:--------:|
-  | [HYPJUDY/layoutlmv3-base-finetuned-funsd](https://huggingface.co/HYPJUDY/layoutlmv3-base-finetuned-funsd)   |   0.8955  | 0.9165 |  0.9059  | 
-  | [HYPJUDY/layoutlmv3-large-finetuned-funsd](https://huggingface.co/HYPJUDY/layoutlmv3-large-finetuned-funsd) | 0.9219    | 0.9210 |  0.9215  | 
+  | [layoutlmv3-base-finetuned-funsd](https://huggingface.co/HYPJUDY/layoutlmv3-base-finetuned-funsd)   |   0.8955  | 0.9165 |  0.9059  | 
+  | [layoutlmv3-large-finetuned-funsd](https://huggingface.co/HYPJUDY/layoutlmv3-large-finetuned-funsd) | 0.9219    | 0.9210 |  0.9215  | 
 
 ### Document Layout Detection on PubLayNet
 Please follow [unilm/dit/object_detection](https://github.com/microsoft/unilm/blob/master/dit/object_detection/README.md) to prepare data and read more details about this task.
@@ -78,7 +78,7 @@ In the folder of layoutlmv3/examples/object_detecion:
   ```
   | Model on PubLayNet                                                                                                  | Text   | Title       |  List  | Table | Figure | Overall |
   |-------------------------------------------------------------------------------------------|:------------|:------:|:------:|-------|--------|---------|
-  | [HYPJUDY/layoutlmv3-base-finetuned-publaynet](https://huggingface.co/HYPJUDY/layoutlmv3-base-finetuned-publaynet) | 94.5        | 90.6 | 95.5 |  97.9     |  97.0      |   95.1      | 
+  | [layoutlmv3-base-finetuned-publaynet](https://huggingface.co/HYPJUDY/layoutlmv3-base-finetuned-publaynet) | 94.5        | 90.6 | 95.5 |  97.9     |  97.0      |   95.1      | 
 
 ## Citation
 If you find LayoutLMv3 helpful, please cite us:
