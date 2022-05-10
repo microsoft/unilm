@@ -70,7 +70,7 @@ In the folder of layoutlmv3/examples/object_detecion:
   ```
 * Test 
 
-  If you want to test the [HYPJUDY/layoutlmv3-base-finetuned-publaynet](https://huggingface.co/HYPJUDY/layoutlmv3-base-finetuned-publaynet) model, please download it to `/path/to/layoutlmv3-base-finetuned-publaynet`, then run:
+  If you want to test the [layoutlmv3-base-finetuned-publaynet](https://huggingface.co/HYPJUDY/layoutlmv3-base-finetuned-publaynet) model, please download it to `/path/to/layoutlmv3-base-finetuned-publaynet`, then run:
   ``` bash
   python train_net.py --config-file cascade_layoutlmv3.yaml --eval-only --num-gpus 8 \
           MODEL.WEIGHTS /path/to/layoutlmv3-base-finetuned-publaynet/model_final.pth \
