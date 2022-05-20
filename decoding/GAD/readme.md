@@ -1,7 +1,6 @@
 # Generalized Aggressive Decoding
 
-Codes (originally from https://github.com/hemingkx/GAD) for the paper [Lossless Speedup of Autoregressive Translation with
-Generalized Aggressive Decoding](https://arxiv.org/pdf/2203.16487.pdf).
+Codes (originally from https://github.com/hemingkx/GAD) for Generalized Aggressive Decoding that is originally proposed in the paper [Lossless Speedup of Autoregressive Translation with Generalized Aggressive Decoding](https://arxiv.org/pdf/2203.16487.pdf).
 
 ### Download model
 

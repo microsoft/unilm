@@ -1,5 +1,5 @@
-# Shallow-Aggressive-Decoding
-Codes (originally from https://github.com/AutoTemp/Shallow-Aggressive-Decoding) for the paper "Instantaneous Grammatical Error Correction with Shallow Aggressive Decoding" (ACL-IJCNLP 2021)
+# Input-guided Aggressive Decoding
+Codes (originally from https://github.com/AutoTemp/Shallow-Aggressive-Decoding) for Input-guided Aggressive Decoding (IAD) that is originally proposed in the paper "Instantaneous Grammatical Error Correction with Shallow Aggressive Decoding" (ACL-IJCNLP 2021)
 ![SAD](aggdec.gif)
 
 ## Results
@@ -103,13 +103,7 @@ BEAM=xxx
 bash interactive.sh $PTPATH $BATCH $BEAM $INPPATH $BINDIR $OUTPATH
 ```
 
-## Simplified greedy decoding:
-
-```
-python inference.py --checkpoint-path $PTPATH --bin-data $BINDIR --input-path $INPPATH --output-path $OUTPATH --baseline 
-```
-
-## Aggressive decoding:
+## use Input-guided Aggressive Decoding:
 
 ```
 python inference.py --checkpoint-path $PTPATH --bin-data $BINDIR --input-path $INPPATH --output-path $OUTPATH --aggressive 
