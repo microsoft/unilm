@@ -63,6 +63,7 @@ Transformers at Scale = DeepNet + X-MoE
 
 
 ## News
+- May, 2022: [**Aggressive Decoding**](https://github.com/microsoft/unilm/tree/master/decoding) - Lossless Speedup of Seq2seq Generation
 - April, 2022: **Transformers at Scale** = [DeepNet](https://arxiv.org/abs/2203.00555) + [X-MoE](https://arxiv.org/abs/2204.09179)
 - [Model Release] April, 2022: [**LayoutLMv3**](https://github.com/microsoft/unilm/tree/master/layoutlmv3) - Pre-training for Document AI with Unified Text and Image Masking
 - [Model Release] March, 2022: [**EdgeFormer**](https://github.com/microsoft/unilm/tree/master/edgelm) - Parameter-efficient Transformer for On-device Seq2seq Generation
@@ -97,6 +98,11 @@ Transformers at Scale = DeepNet + X-MoE
 - September, 2019: [UniLMv1](https://github.com/microsoft/unilm/tree/master/unilm-v1) was accepted by NeurIPS 2019.
 
 ## Release
+
+**\*\*\*\*\* ```New May, 2022```: [Aggressive Decoding](https://github.com/microsoft/unilm/tree/master/decoding) release \*\*\*\*\***
+
+- [x] [**Aggressive Decoding**](https://github.com/microsoft/unilm/tree/master/decoding) (May 20, 2022): Aggressive Decoding, a novel decoding paradigm for lossless speedup of seq2seq generation. Unlike the previous efforts (e.g., non-autoregressive decoding) speeding up seq2seq generation at the cost of quality loss, Aggressive Decoding aims to yield the identical (or better) generation compared with autoregressive decoding but in a significant speedup: For the seq2seq tasks characterized by highly similar inputs and outputs (e.g., Grammatical Error Correction and Text Simplification), the Input-guided Aggressive Decoding can introduce a 7x-9x speedup for the popular 6-layer Transformer on GPU with the identical results as greedy decoding; For other general seq2seq tasks (e.g., Machine Translation and Abstractive Summarization), the Generalized Aggressive Decoding can have a 3x-5x speedup with the identical or even better quality. "[Lossless Acceleration for Seq2seq Generation with Aggressive Decoding](https://arxiv.org/abs/2205.xxxxx)"
+
 **\*\*\*\*\* ```New April, 2022```: [LayoutLMv3](https://github.com/microsoft/unilm/tree/master/layoutlmv3) release \*\*\*\*\***
 
 - [x] [**LayoutLM 3.0**](https://github.com/microsoft/unilm/tree/master/layoutlmv3) (April 19, 2022): LayoutLMv3, a multimodal pre-trained Transformer for Document AI with unified text and image masking. Additionally, it is also pre-trained with a word-patch alignment objective to learn cross-modal alignment by predicting whether the corresponding image patch of a text word is masked. The simple unified architecture and training objectives make LayoutLMv3 a general-purpose pre-trained model for both text-centric and image-centric Document AI tasks. Experimental results show that LayoutLMv3 achieves state-of-the-art performance not only in text-centric tasks, including form understanding, receipt understanding, and document visual question answering, but also in image-centric tasks such as document image classification and document layout analysis. "[LayoutLMv3: Pre-training for Document AI with Unified Text and Image Masking](https://arxiv.org/abs/2204.08387)"
@@ -172,4 +178,3 @@ Portions of the source code are based on the [transformers](https://github.com/h
 For help or issues using the pre-trained models, please submit a GitHub issue.
 
 For other communications, please contact [Furu Wei](http://gitnlp.org/) (`fuwei@microsoft.com`).
-
