@@ -54,7 +54,7 @@ Transformers at Scale = DeepNet + X-MoE
 ### Toolkits
 > [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): sequence-to-sequence fine-tuning toolkit
 
-> [**Aggressive Decoding**](https://github.com/microsoft/unilm/tree/master/decoding): lossless and efficient sequence-to-sequence decoding algorithm
+> [**Aggressive Decoding**](https://github.com/microsoft/unilm/tree/master/decoding) (```NEW```): lossless and efficient sequence-to-sequence decoding algorithm
 
 ### Applications
 > [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) (```NEW```): transformer-based OCR w/ pre-trained models
@@ -65,7 +65,7 @@ Transformers at Scale = DeepNet + X-MoE
 
 
 ## News
-- May, 2022: [**Aggressive Decoding**](https://github.com/microsoft/unilm/tree/master/decoding) - Lossless Speedup for Seq2seq Generation
+- [Code Release] May, 2022: [**Aggressive Decoding**](https://github.com/microsoft/unilm/tree/master/decoding) - Lossless Speedup for Seq2seq Generation
 - April, 2022: **Transformers at Scale** = [DeepNet](https://arxiv.org/abs/2203.00555) + [X-MoE](https://arxiv.org/abs/2204.09179)
 - [Model Release] April, 2022: [**LayoutLMv3**](https://github.com/microsoft/unilm/tree/master/layoutlmv3) - Pre-training for Document AI with Unified Text and Image Masking
 - [Model Release] March, 2022: [**EdgeFormer**](https://github.com/microsoft/unilm/tree/master/edgelm) - Parameter-efficient Transformer for On-device Seq2seq Generation
