@@ -54,6 +54,8 @@ Transformers at Scale = DeepNet + X-MoE
 ### Toolkits
 > [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): sequence-to-sequence fine-tuning toolkit
 
+> [**Aggressive Decoding**](https://github.com/microsoft/unilm/tree/master/decoding): lossless and efficient sequence-to-sequence decoding algorithm
+
 ### Applications
 > [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) (```NEW```): transformer-based OCR w/ pre-trained models
  
@@ -63,7 +65,7 @@ Transformers at Scale = DeepNet + X-MoE
 
 
 ## News
-- May, 2022: [**Aggressive Decoding**](https://github.com/microsoft/unilm/tree/master/decoding) - Lossless Speedup of Seq2seq Generation
+- May, 2022: [**Aggressive Decoding**](https://github.com/microsoft/unilm/tree/master/decoding) - Lossless Speedup for Seq2seq Generation
 - April, 2022: **Transformers at Scale** = [DeepNet](https://arxiv.org/abs/2203.00555) + [X-MoE](https://arxiv.org/abs/2204.09179)
 - [Model Release] April, 2022: [**LayoutLMv3**](https://github.com/microsoft/unilm/tree/master/layoutlmv3) - Pre-training for Document AI with Unified Text and Image Masking
 - [Model Release] March, 2022: [**EdgeFormer**](https://github.com/microsoft/unilm/tree/master/edgelm) - Parameter-efficient Transformer for On-device Seq2seq Generation
@@ -101,7 +103,7 @@ Transformers at Scale = DeepNet + X-MoE
 
 **\*\*\*\*\* ```New May, 2022```: [Aggressive Decoding](https://github.com/microsoft/unilm/tree/master/decoding) release \*\*\*\*\***
 
-- [x] [**Aggressive Decoding**](https://github.com/microsoft/unilm/tree/master/decoding) (May 20, 2022): Aggressive Decoding, a novel decoding paradigm for lossless speedup of seq2seq generation. Unlike the previous efforts (e.g., non-autoregressive decoding) speeding up seq2seq generation at the cost of quality loss, Aggressive Decoding aims to yield the identical (or better) generation compared with autoregressive decoding but in a significant speedup: For the seq2seq tasks characterized by highly similar inputs and outputs (e.g., Grammatical Error Correction and Text Simplification), the Input-guided Aggressive Decoding can introduce a 7x-9x speedup for the popular 6-layer Transformer on GPU with the identical results as greedy decoding; For other general seq2seq tasks (e.g., Machine Translation and Abstractive Summarization), the Generalized Aggressive Decoding can have a 3x-5x speedup with the identical or even better quality. "[Lossless Acceleration for Seq2seq Generation with Aggressive Decoding](https://arxiv.org/abs/2205.xxxxx)"
+- [x] [**Aggressive Decoding**](https://github.com/microsoft/unilm/tree/master/decoding) (May 20, 2022): Aggressive Decoding, a novel decoding paradigm for lossless speedup for seq2seq generation. Unlike the previous efforts (e.g., non-autoregressive decoding) speeding up seq2seq generation at the cost of quality loss, Aggressive Decoding aims to yield the identical (or better) generation compared with autoregressive decoding but in a significant speedup: For the seq2seq tasks characterized by highly similar inputs and outputs (e.g., Grammatical Error Correction and Text Simplification), the Input-guided Aggressive Decoding can introduce a 7x-9x speedup for the popular 6-layer Transformer on GPU with the identical results as greedy decoding; For other general seq2seq tasks (e.g., Machine Translation and Abstractive Summarization), the Generalized Aggressive Decoding can have a 3x-5x speedup with the identical or even better quality. "[Lossless Acceleration for Seq2seq Generation with Aggressive Decoding](https://arxiv.org/abs/2205.xxxxx)"
 
 **\*\*\*\*\* ```New April, 2022```: [LayoutLMv3](https://github.com/microsoft/unilm/tree/master/layoutlmv3) release \*\*\*\*\***
 
