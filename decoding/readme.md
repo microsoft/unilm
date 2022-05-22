@@ -1,6 +1,6 @@
 # Aggressive Decoding
 
-**Lossless Acceleration for Seq2seq Generation with Aggressive Decoding. Tao Ge, Heming Xia, Xin Sun, Si-Qing Chen, Furu Wei. Arxiv 2022.**
+**Lossless Acceleration for Seq2seq Generation with Aggressive Decoding. Arxiv 2022.**
 
 - May 2022: preprint [arXiv](https://arxiv.org) released; code updated and integrated
 
