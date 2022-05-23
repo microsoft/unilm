@@ -1,6 +1,6 @@
 # Aggressive Decoding
 
-**Lossless Acceleration for Seq2seq Generation with Aggressive Decoding. Arxiv 2022.**
+**Lossless Acceleration for Seq2seq Generation with Aggressive Decoding. https://arxiv.org/pdf/2205.10350.pdf**
 
 - May 2022: preprint [arXiv](https://arxiv.org/pdf/2205.10350.pdf) released; code updated and integrated
 
