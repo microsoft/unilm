@@ -2,7 +2,7 @@
 
 **Lossless Acceleration for Seq2seq Generation with Aggressive Decoding. Arxiv 2022.**
 
-- May 2022: preprint [arXiv](https://arxiv.org) released; code updated and integrated
+- May 2022: preprint [arXiv](https://arxiv.org/pdf/2205.10350.pdf) released; code updated and integrated
 
 ## Introduction
 
