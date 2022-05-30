@@ -4,6 +4,7 @@
 
 Official PyTorch implementation and pretrained models of VLMo.
 
+- May 30th, 2022: new version of [**VLMo** paper on arXiv](https://arxiv.org/pdf/2111.02358.pdf).
 - November 24th, 2021: **VLMo** Large (**single** model) as the new SOTA on the [VQA Challenge](https://eval.ai/web/challenges/challenge-page/830/leaderboard/2278)
 - Nov 2021: release preprint in [arXiv](https://arxiv.org/abs/2111.02358)
 
