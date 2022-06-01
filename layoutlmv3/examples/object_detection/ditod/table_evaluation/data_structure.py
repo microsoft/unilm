@@ -3,7 +3,10 @@ Data structures used by the evaluation process.
 Yu Fang - March 2019
 """
 
-from collections import Iterable
+try:
+    from collections.abc import Iterable
+except ImportError:
+    from collections import Iterable
 
 import numpy as np
 from shapely.geometry import Polygon
