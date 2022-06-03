@@ -29,27 +29,29 @@ Transformers at Scale = DeepNet + X-MoE
 > [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm): domain, language, and task adaptation of pre-trained models
 
 ### Vision
-> [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit) (```NEW```): generative self-supervised pre-training for vision / BERT Pre-Training of Image Transformers
+> [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit): generative self-supervised pre-training for vision / BERT Pre-Training of Image Transformers
 
 > [**DiT**](https://github.com/microsoft/unilm/tree/master/dit) (```NEW```): self-supervised pre-training for Document Image Transformers
 
 ### Speech
-> [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm) (```NEW```): speech pre-training for full stack tasks
+> [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm): speech pre-training for full stack tasks
 
 ### Multimodal (X + Language)
 > [**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm)/[**LayoutLMv2**](https://github.com/microsoft/unilm/tree/master/layoutlmv2)/[**LayoutLMv3**](https://github.com/microsoft/unilm/tree/master/layoutlmv3): multimodal (text + layout/format + image) pre-training for [Document AI](https://www.microsoft.com/en-us/research/project/document-ai/) (e.g. scanned documents, PDF, etc.)
 
 > [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm): multimodal (text + layout/format + image) pre-training for multilingual document understanding
 
-> [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm) (```NEW```): markup language model pre-training for visually-rich document understanding
+> [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm): markup language model pre-training for visually-rich document understanding
 
 > [**UniSpeech**](https://arxiv.org/abs/2101.07597): unified pre-training for self-supervised learning and supervised learning for ASR
 
 > [**UniSpeech-SAT**](https://arxiv.org/pdf/2110.05752.pdf): universal speech representation learning with speaker-aware pre-training
 
-> [**SpeechT5**](https://arxiv.org/abs/2110.07205) (```NEW```): encoder-decoder pre-training for spoken language processing
+> [**SpeechT5**](https://arxiv.org/abs/2110.07205): encoder-decoder pre-training for spoken language processing
 
-> [**VLMo**](https://github.com/microsoft/unilm/tree/master/vlmo) (```NEW```): Unified vision-language pre-training - evolution of **BEiT** to multimodal 
+> [**VLMo**](https://github.com/microsoft/unilm/tree/master/vlmo): Unified vision-language pre-training - evolution of **BEiT** to multimodal 
+
+> [**VL-BEiT**](https://github.com/microsoft/unilm/tree/master/vl-beit) (```NEW```): Generative Vision-Language Pre-training 
 
 ### Toolkits
 > [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): sequence-to-sequence fine-tuning toolkit
@@ -57,7 +59,7 @@ Transformers at Scale = DeepNet + X-MoE
 > [**Aggressive Decoding**](https://arxiv.org/pdf/2205.10350.pdf) (```NEW```): lossless and efficient sequence-to-sequence decoding algorithm
 
 ### Applications
-> [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) (```NEW```): transformer-based OCR w/ pre-trained models
+> [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr): transformer-based OCR w/ pre-trained models
  
 > [**LayoutReader**](https://github.com/microsoft/unilm/tree/master/layoutreader): pre-training of text and layout for reading order detection
 
@@ -65,6 +67,7 @@ Transformers at Scale = DeepNet + X-MoE
 
 
 ## News
+- June, 2022: [**VL-BEiT**](https://github.com/microsoft/unilm/tree/master/vl-beit) - bidirectional multimodal Transformer learned from scratch with one unified pretraining task, one shared backbone, and one-stage training, supporting both vision and vision-language tasks.
 - [Code Release] May, 2022: [**Aggressive Decoding**](https://github.com/microsoft/unilm/tree/master/decoding) - Lossless Speedup for Seq2seq Generation
 - April, 2022: **Transformers at Scale** = [DeepNet](https://arxiv.org/abs/2203.00555) + [X-MoE](https://arxiv.org/abs/2204.09179)
 - [Model Release] April, 2022: [**LayoutLMv3**](https://github.com/microsoft/unilm/tree/master/layoutlmv3) - Pre-training for Document AI with Unified Text and Image Masking
