@@ -49,9 +49,9 @@ Transformers at Scale = DeepNet + X-MoE
 
 > [**SpeechT5**](https://arxiv.org/abs/2110.07205): encoder-decoder pre-training for spoken language processing
 
-> [**VLMo**](https://github.com/microsoft/unilm/tree/master/vlmo): Unified vision-language pre-training - evolution of **BEiT** to multimodal 
+> [**VLMo**](https://github.com/microsoft/unilm/tree/master/vlmo): Unified vision-language pre-training 
 
-> [**VL-BEiT**](https://github.com/microsoft/unilm/tree/master/vl-beit) (```NEW```): Generative Vision-Language Pre-training 
+> [**VL-BEiT**](https://github.com/microsoft/unilm/tree/master/vl-beit) (```NEW```): Generative Vision-Language Pre-training - evolution of **BEiT** to multimodal
 
 ### Toolkits
 > [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): sequence-to-sequence fine-tuning toolkit
