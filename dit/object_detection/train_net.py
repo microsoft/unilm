@@ -20,7 +20,12 @@ from typing import Any, Dict, List, Set
 from detectron2.data import build_detection_train_loader
 from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.config import get_cfg
-from detectron2.engine import DefaultTrainer, default_argument_parser, default_setup, launch
+from detectron2.engine import (
+    DefaultTrainer,
+    default_argument_parser,
+    default_setup,
+    launch,
+)
 from detectron2.evaluation import COCOEvaluator
 from detectron2.solver.build import maybe_add_gradient_clipping
 
@@ -57,32 +62,16 @@ def main(args):
     register publaynet first
     """
     register_coco_instances(
-        "publaynet_train",
-        {},
-        "./publaynet_data/train.json",
-        "./publaynet_data/train"
+        "publaynet_train", {}, "./publaynet_data/train.json", "./publaynet_data/train"
     )
 
     register_coco_instances(
-        "publaynet_val",
-        {},
-        "./publaynet_data/val.json",
-        "./publaynet_data/val"
+        "publaynet_val", {}, "./publaynet_data/val.json", "./publaynet_data/val"
     )
 
-    register_coco_instances(
-        "icdar2019_train",
-        {},
-        "data/train.json",
-        "data/train"
-    )
+    register_coco_instances("icdar2019_train", {}, "data/train.json", "data/train")
 
-    register_coco_instances(
-        "icdar2019_test",
-        {},
-        "data/test.json",
-        "data/test"
-    )
+    register_coco_instances("icdar2019_test", {}, "data/test.json", "data/test")
 
     cfg = setup(args)
 
@@ -99,7 +88,7 @@ def main(args):
     return trainer.train()
 
 
-if __name__ == "__main__":
+def exec():
     parser = default_argument_parser()
     parser.add_argument("--debug", action="store_true", help="enable debug mode")
     args = parser.parse_args()
@@ -109,7 +98,7 @@ if __name__ == "__main__":
         import debugpy
 
         print("Enabling attach starts.")
-        debugpy.listen(address=('0.0.0.0', 9310))
+        debugpy.listen(address=("0.0.0.0", 9310))
         debugpy.wait_for_client()
         print("Enabling attach ends.")
 
@@ -121,3 +110,7 @@ if __name__ == "__main__":
         dist_url=args.dist_url,
         args=(args,),
     )
+
+
+if __name__ == "__main__":
+    exec()
