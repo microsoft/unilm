@@ -3,6 +3,9 @@
 We are hiring at all levels (including FTE researchers and interns)! If you are interested in working with us on NLP and large-scale pre-trained models, please send your resume to <a href="mailto:fuwei@microsoft.com" class="x-hidden-focus">fuwei@microsoft.com</a>.
 
 ## AI Fundamentals
+### General-purpose AI
+> [**MetaLM**](https://github.com/microsoft/unilm/tree/master/metalm): **Language Models are General-Purpose Interfaces**
+
 ### Extremely Deep/Large Models
 Transformers at Scale = DeepNet + X-MoE
 > [**DeepNet**](https://github.com/microsoft/unilm/tree/master/deepnet): scaling Transformers to 1,000 Layers and beyond
@@ -67,6 +70,7 @@ Transformers at Scale = DeepNet + X-MoE
 
 
 ## News
+- June, 2022: [**MetaLM**](https://github.com/microsoft/unilm/tree/master/metalm) - Language models are general-purpose interfaces to foudation models (language/multilingual, vision, speech, and multimodal).
 - June, 2022: [**VL-BEiT**](https://github.com/microsoft/unilm/tree/master/vl-beit) - bidirectional multimodal Transformer learned from scratch with one unified pretraining task, one shared backbone, and one-stage training, supporting both vision and vision-language tasks.
 - [Code Release] May, 2022: [**Aggressive Decoding**](https://github.com/microsoft/unilm/tree/master/decoding) - Lossless Speedup for Seq2seq Generation
 - April, 2022: **Transformers at Scale** = [DeepNet](https://arxiv.org/abs/2203.00555) + [X-MoE](https://arxiv.org/abs/2204.09179)
