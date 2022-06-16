@@ -100,7 +100,7 @@ The resulting directory structure looks like the following:
       --data_dir data --language zh \
       --do_train --do_eval \
       --model_name_or_path microsoft/layoutlmv3-base-chinese \
-      --output_dir output/layoutlmv3-zh-base-finetuned-xfund \
+      --output_dir path/to/output \
       --segment_level_layout 1 --visual_embed 1 --input_size 224 \
       --max_steps 1000 --save_steps -1 --evaluation_strategy steps --eval_steps 20 \
       --learning_rate 7e-5 --per_device_train_batch_size 2 --gradient_accumulation_steps 1 \
@@ -114,7 +114,7 @@ The resulting directory structure looks like the following:
     --data_dir data --language zh \
     --do_eval \
     --model_name_or_path path/to/model \
-    --output_dir /path/to/layoutlmv3-base-finetuned-xfund \
+    --output_dir /path/to/output \
     --segment_level_layout 1 --visual_embed 1 --input_size 224 \
     --dataloader_num_workers 8
   ```
