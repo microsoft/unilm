@@ -27,7 +27,7 @@ pip install -e .
 
 ## Fine-tuning Examples
 We provide some fine-tuned models and their train/test logs.
-### Receipt Understanding on FUNSD
+### Form Understanding on FUNSD
 * Train
   ``` bash
   python -m torch.distributed.launch \
@@ -80,7 +80,7 @@ In the folder of layoutlmv3/examples/object_detecion:
   |-------------------------------------------------------------------------------------------|:------------|:------:|:------:|-------|--------|---------|
   | [layoutlmv3-base-finetuned-publaynet](https://huggingface.co/HYPJUDY/layoutlmv3-base-finetuned-publaynet) | 94.5        | 90.6 | 95.5 |  97.9     |  97.0      |   95.1      | 
 
-### Receipt Understanding on XFUND
+### Form Understanding on XFUND
 A demo for LayoutLMv3-chinese to train and evaluate model.
 #### Data Preparation
 Download the chinese data in XFUND from this [link](https://github.com/doc-analysis/XFUND/releases/tag/v1.0). 
