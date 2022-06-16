@@ -12,6 +12,14 @@ from transformers.file_utils import PaddingStrategy
 from typing import NewType
 InputDataClass = NewType("InputDataClass", Any)
 
+def pre_calc_rel_mat(segment_ids):
+    valid_span = torch.zeros((segment_ids.shape[0], segment_ids.shape[1], segment_ids.shape[1]),
+                             device=segment_ids.device, dtype=torch.bool)
+    for i in range(segment_ids.shape[0]):
+        for j in range(segment_ids.shape[1]):
+            valid_span[i, j, :] = segment_ids[i, :] == segment_ids[i, j]
+
+    return valid_span
 
 @dataclass
 class DataCollatorForKeyValueExtraction(DataCollatorMixin):
@@ -94,7 +102,20 @@ class DataCollatorForKeyValueExtraction(DataCollatorMixin):
                 batch["position_ids"] = [[padding_idx] * (sequence_length - len(position_id))
                                           + position_id for position_id in batch["position_ids"]]
 
+        if 'segment_ids' in batch:
+            assert 'position_ids' in batch
+            for i in range(len(batch['segment_ids'])):
+                batch['segment_ids'][i] = batch['segment_ids'][i] + [batch['segment_ids'][i][-1] + 1] * (sequence_length - len(batch['segment_ids'][i])) + [
+                    batch['segment_ids'][i][-1] + 2] * IMAGE_LEN
+
         batch = {k: torch.tensor(v, dtype=torch.int64) if isinstance(v[0], list) else v for k, v in batch.items()}
+
+        if 'segment_ids' in batch:
+            valid_span = pre_calc_rel_mat(
+                segment_ids=batch['segment_ids']
+            )
+            batch['valid_span'] = valid_span
+            del batch['segment_ids']
 
         if images is not None:
             visual_labels = torch.ones((len(batch['input_ids']), IMAGE_LEN), dtype=torch.long) * -100
