@@ -81,7 +81,7 @@ In the folder of layoutlmv3/examples/object_detecion:
   | [layoutlmv3-base-finetuned-publaynet](https://huggingface.co/HYPJUDY/layoutlmv3-base-finetuned-publaynet) | 94.5        | 90.6 | 95.5 |  97.9     |  97.0      |   95.1      | 
 
 ### Form Understanding on XFUND
-An example for LayoutLMv3-chinese to train and evaluate model.
+An example for the LayoutLMv3 Chinese model to train and evaluate model.
 #### Data Preparation
 Download the chinese data in XFUND from this [link](https://github.com/doc-analysis/XFUND/releases/tag/v1.0). 
 The resulting directory structure looks like the following:
