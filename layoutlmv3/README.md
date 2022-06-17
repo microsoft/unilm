@@ -123,7 +123,7 @@ The resulting directory structure looks like the following:
   |-----------|:------------|:------:|:--------:|
   | [layoutlmv3-base-chinese](https://huggingface.co/microsoft/layoutlmv3-base-chinese)   |   0.8910  | 0.9374 |  0.9136  |  
 
-We also provide the scores on [EPHOIE](https://github.com/HCIILAB/EPHOIE) for reference.
+We also fine-tune the LayoutLMv3 Chinese model on [EPHOIE](https://github.com/HCIILAB/EPHOIE) for reference.
   
   | Pre-trained Model  | Subject | Test Time |    Name    | School | Examination Number | Seat Number | Class | Student Number | Grade | Score | **Mean** |        
   |-----------------|:------------|:------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|
