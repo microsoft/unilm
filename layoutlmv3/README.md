@@ -57,7 +57,7 @@ We provide some fine-tuned models and their train/test logs.
   | [layoutlmv3-base-finetuned-funsd](https://huggingface.co/HYPJUDY/layoutlmv3-base-finetuned-funsd)   |   0.8955  | 0.9165 |  0.9059  | 
   | [layoutlmv3-large-finetuned-funsd](https://huggingface.co/HYPJUDY/layoutlmv3-large-finetuned-funsd) | 0.9219    | 0.9210 |  0.9215  | 
 
-### Document Layout Detection on PubLayNet
+### Document Layout Analysis on PubLayNet
 Please follow [unilm/dit/object_detection](https://github.com/microsoft/unilm/blob/master/dit/object_detection/README.md) to prepare data and read more details about this task.
 In the folder of layoutlmv3/examples/object_detecion:
 * Train
