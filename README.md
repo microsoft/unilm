@@ -3,7 +3,7 @@
 We are hiring at all levels (including FTE researchers and interns)! If you are interested in working with us on NLP and large-scale pre-trained models, please send your resume to <a href="mailto:fuwei@microsoft.com" class="x-hidden-focus">fuwei@microsoft.com</a>.
 
 ## AI Fundamentals
-### General-purpose AI
+### General-purpose Foundation Model
 > [**MetaLM**](https://github.com/microsoft/unilm/tree/master/metalm): **Language Models are General-Purpose Interfaces**
 
 ### Extremely Deep/Large Models
