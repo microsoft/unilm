@@ -70,6 +70,7 @@ Transformers at Scale = DeepNet + X-MoE
 
 
 ## News
+- June, 2022: [DiT](https://github.com/microsoft/unilm/tree/master/dit) and [LayoutLMv3](https://github.com/microsoft/unilm/tree/master/layoutlmv3) were accepted by ACM Multimedia 2022.
 - June, 2022: [**MetaLM**](https://github.com/microsoft/unilm/tree/master/metalm) - Language models are general-purpose interfaces to foudation models (language/multilingual, vision, speech, and multimodal).
 - June, 2022: [**VL-BEiT**](https://github.com/microsoft/unilm/tree/master/vl-beit) - bidirectional multimodal Transformer learned from scratch with one unified pretraining task, one shared backbone, and one-stage training, supporting both vision and vision-language tasks.
 - [Model Release] June, 2022: [**LayoutLMv3 Chinese**](https://github.com/microsoft/unilm/tree/master/layoutlmv3) - Chinese version of LayoutLMv3
