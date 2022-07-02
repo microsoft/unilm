@@ -29,7 +29,7 @@ We pre-train MarkupLM on a subset of the CommonCrawl dataset.
 | Name  | HuggingFace |
 | - | - | 
 | MarkupLM-Base | [microsoft/markuplm-base](https://huggingface.co/microsoft/markuplm-base) |
-| MarkupM-Large | [microsoft/markuplm-large](https://huggingface.co/microsoft/markuplm-large) |
+| MarkupLM-Large | [microsoft/markuplm-large](https://huggingface.co/microsoft/markuplm-large) |
 
 An example might be ``model = markuplm.from_pretrained("microsoft/markuplm-base")``.
 
