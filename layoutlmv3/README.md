@@ -121,13 +121,13 @@ The resulting directory structure looks like the following:
   
   | Pre-trained Model | precision | recall |    f1    |
   |-----------|:------------|:------:|:--------:|
-  | [layoutlmv3-base-chinese](https://huggingface.co/microsoft/layoutlmv3-base-chinese)   |   0.8910  | 0.9374 |  0.9136  |  
+  | [layoutlmv3-base-chinese](https://huggingface.co/microsoft/layoutlmv3-base-chinese)   |   0.8980  | 0.9435 |  0.9202  |  
 
 We also fine-tune the LayoutLMv3 Chinese model on [EPHOIE](https://github.com/HCIILAB/EPHOIE) for reference.
   
   | Pre-trained Model  | Subject | Test Time |    Name    | School | Examination Number | Seat Number | Class | Student Number | Grade | Score | **Mean** |        
   |-----------------|:------------|:------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|:--------:|
-  | [layoutlmv3-base-chinese](https://huggingface.co/microsoft/layoutlmv3-base-chinese)   |   98.48 | 100 | 99.36 | 98.86 | 100 | 100 | 98.73 | 98.89 | 97.59 | 97.78 | 98.97 |
+  | [layoutlmv3-base-chinese](https://huggingface.co/microsoft/layoutlmv3-base-chinese)   |   98.99 | 100 | 99.77 | 99.2 | 100 | 100 | 98.82 | 99.78 | 98.31 | 97.27 | 99.21 |
   
 
 
