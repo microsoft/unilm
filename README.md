@@ -14,7 +14,9 @@ Transformers at Scale = DeepNet + X-MoE
 ### General-purpose Foundation Model
 > [**MetaLM**](https://github.com/microsoft/unilm/tree/master/metalm): **Language Models are General-Purpose Interfaces**
 
-**Large-scale self-supervised pre-training across ```tasks``` (predictive and generative), ```languages``` (100+ languages), and ```modalities``` (language, image, audio, layout/format + language, vision + language, audio + language, etc.)**
+
+
+**The Big Convergence** - Large-scale self-supervised pre-training across ```tasks``` (predictive and generative), ```languages``` (100+ languages), and ```modalities``` (language, image, audio, layout/format + language, vision + language, audio + language, etc.)
 
 <!--## Large-scale Self-supervised Pre-training Across Tasks, Languages, and Modalities-->
 
