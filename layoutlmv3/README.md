@@ -62,7 +62,7 @@ Please follow [unilm/dit/object_detection](https://github.com/microsoft/unilm/bl
 In the folder of layoutlmv3/examples/object_detecion:
 * Train
 
-  Please firstly download the [pre-trained models](#Pre-trained Models) to `/path/to/microsoft/layoutlmv3-base`, then run:
+  Please firstly download the [pre-trained models](#pre-trained-models) to `/path/to/microsoft/layoutlmv3-base`, then run:
   ``` bash
   python train_net.py --config-file cascade_layoutlmv3.yaml --num-gpus 16 \
           MODEL.WEIGHTS /path/to/microsoft/layoutlmv3-base/pytorch_model.bin \
@@ -134,13 +134,11 @@ We also fine-tune the LayoutLMv3 Chinese model on [EPHOIE](https://github.com/HC
 ## Citation
 If you find LayoutLMv3 helpful, please cite us:
 ```
-@article{huang2022layoutlmv3,
-      title={LayoutLMv3: Pre-training for Document AI with Unified Text and Image Masking}, 
-      author={Yupan Huang and Tengchao Lv and Lei Cui and Yutong Lu and Furu Wei},
-      year={2022},
-      eprint={2204.08387},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL}
+@inproceedings{huang2022layoutlmv3,
+  author={Yupan Huang and Tengchao Lv and Lei Cui and Yutong Lu and Furu Wei},
+  title={LayoutLMv3: Pre-training for Document AI with Unified Text and Image Masking},
+  booktitle={Proceedings of the 30th ACM International Conference on Multimedia},
+  year={2022}
 }
 ```
 
