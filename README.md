@@ -33,6 +33,8 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 
 > [**AdaLM**](https://github.com/microsoft/unilm/tree/master/adalm): domain, language, and task adaptation of pre-trained models
 
+> [**SimLM**](https://github.com/microsoft/unilm/tree/master/simlm) (```NEW```): similarity matching with language model pre-training
+
 ### Vision
 > [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit): generative self-supervised pre-training for vision / BERT Pre-Training of Image Transformers
 
