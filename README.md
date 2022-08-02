@@ -84,7 +84,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 - [Model Release] April, 2022: [**LayoutLMv3**](https://github.com/microsoft/unilm/tree/master/layoutlmv3) - Pre-training for Document AI with Unified Text and Image Masking
 - [Model Release] March, 2022: [**EdgeFormer**](https://github.com/microsoft/unilm/tree/master/edgelm) - Parameter-efficient Transformer for On-device Seq2seq Generation
 - [Model Release] March, 2022: [**DiT**](https://github.com/microsoft/unilm/tree/master/dit) - Self-supervised Document Image Transformer. Demos: [Document Layout Analysis](https://huggingface.co/spaces/nielsr/dit-document-layout-analysis), [Document Image Classification](https://huggingface.co/spaces/microsoft/document-image-transformer)
-- Januray, 2022: [**BEiT**](https://openreview.net/forum?id=p-BhZSz59o4) was accepted by **ICLR 2022 as Oral presentation** (54 out of 3391).
+- January, 2022: [**BEiT**](https://openreview.net/forum?id=p-BhZSz59o4) was accepted by **ICLR 2022 as Oral presentation** (54 out of 3391).
 - [Model Release] December 16th, 2021: [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) **small** models for handwritten and printed texts, with 3x inference speedup.
 - November 24th, 2021: [**VLMo**](https://github.com/microsoft/unilm/tree/master/vlmo) as the new SOTA on the [VQA Challenge](https://eval.ai/web/challenges/challenge-page/830/leaderboard/2278)
 - November, 2021: [Multilingual translation at scale: 10000 language pairs and beyond](https://www.microsoft.com/en-us/translator/blog/2021/11/22/multilingual-translation-at-scale-10000-language-pairs-and-beyond/)
