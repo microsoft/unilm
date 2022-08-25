@@ -60,6 +60,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 
 > [**VL-BEiT**](https://github.com/microsoft/unilm/tree/master/vl-beit) (```NEW```): Generative Vision-Language Pre-training - evolution of **BEiT** to multimodal
 
+> [**BEiT-3**](https://github.com/microsoft/unilm/tree/master/vl-beit) (```NEW```): a general-purpose multimodal foundation model, and a major milestone of **The Big Convergence** of Large-scale Pre-training Across Tasks, Languages, and Modalities.
 ### Toolkits
 > [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): sequence-to-sequence fine-tuning toolkit
 
@@ -74,6 +75,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 
 
 ## News
+- August, 2022: [**BEiT-3**](https://arxiv.org/abs/2208.10442)- a general-purpose multimodal foundation model, which achieves state-of-the-art transfer performance on both vision and vision-language tasks
 - July, 2022: [**SimLM**](https://github.com/microsoft/unilm/tree/master/simlm) - Large-scale self-supervised pre-training for similarity matching
 - June, 2022: [**DiT**](https://arxiv.org/abs/2203.02378) and [**LayoutLMv3**](https://arxiv.org/abs/2204.08387) were accepted by ACM Multimedia 2022
 - June, 2022: [**MetaLM**](https://github.com/microsoft/unilm/tree/master/metalm) - Language models are general-purpose interfaces to foudation models (language/multilingual, vision, speech, and multimodal)
