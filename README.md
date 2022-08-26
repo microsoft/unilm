@@ -60,7 +60,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 
 > [**VL-BEiT**](https://github.com/microsoft/unilm/tree/master/vl-beit) (```NEW```): Generative Vision-Language Pre-training - evolution of **BEiT** to multimodal
 
-> [**BEiT-3**](https://github.com/microsoft/unilm/tree/master/vl-beit) (```NEW```): a general-purpose multimodal foundation model, and a major milestone of **The Big Convergence** of Large-scale Pre-training Across Tasks, Languages, and Modalities.
+> [**BEiT-3**](https://github.com/microsoft/unilm/tree/master/beit) (```NEW```): a general-purpose multimodal foundation model, and a major milestone of **The Big Convergence** of Large-scale Pre-training Across Tasks, Languages, and Modalities.
 ### Toolkits
 > [**s2s-ft**](https://github.com/microsoft/unilm/tree/master/s2s-ft): sequence-to-sequence fine-tuning toolkit
 
