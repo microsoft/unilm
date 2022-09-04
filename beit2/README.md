@@ -11,12 +11,12 @@ We provide four BEiT weights pretrained on **ImageNet-1k**. The models were pret
 - `BEiT-large`: #layer=24; hidden=1024; FFN factor=4x; #head=16; patch=16x16 (#parameters: 304M)
 
 Download checkpoints that are self-supervised pretrained on ImageNet-1k and then intermediate finetuned on ImageNet-21k (**recommended**):
-- BEiT-base: [beitv2_base_patch16_224_pt1k_ft21k](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/pt_cls_pt_base_early_9_head_2_vqkd_encoder_base_decoder_3x768x12_clip_1600e-6d32a5f7.pth)
-- BEiT-large: [beitv2_large_patch16_224_pt1k_ft21k](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/pt_cls_pt_large_early_21_head_2_vqkd_encoder_base_decoder_3x768x12_clip_1600e-726bb6d5.pth)
+- BEiT-base: [beitv2_base_patch16_224_pt1k_ft21k](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_ft21k.pth)
+- BEiT-large: [beitv2_large_patch16_224_pt1k_ft21k](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft21k.pth)
 
 Download checkpoints that are self-supervised pretrained on ImageNet-1k:
-- BEiT-base: [beitv2_base_patch16_224_pt1k](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/pt_cls_pt_base_early_9_head_2_vqkd_encoder_base_decoder_3x768x12_clip_1600e-6d32a5f7.pth)
-- BEiT-large: [beitv2_large_patch16_224_pt1k](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/pt_cls_pt_large_early_21_head_2_vqkd_encoder_base_decoder_3x768x12_clip_1600e-726bb6d5.pth)
+- BEiT-base: [beitv2_base_patch16_224_pt1k](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k.pth)
+- BEiT-large: [beitv2_large_patch16_224_pt1k](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k.pth)
 
 ## Setup
 
