@@ -71,7 +71,7 @@ export valid_BSZ=16
 
 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_per_node=8 \
     $(which fairseq-train) \
-    --data-type STR --user-dir ./ --task text_recognition \
+    --data-type STR --user-dir ./ --task text_recognition --input-size 384 \
     --arch trocr_large \   # or trocr_base
     --seed 1111 --optimizer adam --lr 2e-05 --lr-scheduler inverse_sqrt \
     --warmup-init-lr 1e-8 --warmup-updates 500 --weight-decay 0.0001 --log-format tqdm \
@@ -111,7 +111,7 @@ export valid_BSZ=16
 
 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_per_node=8 \
     $(which fairseq-train) \
-    --data-type SROIE --user-dir ./ --task text_recognition \
+    --data-type SROIE --user-dir ./ --task text_recognition --input-size 384 \
     --arch trocr_large \   # or trocr_base
     --seed 1111 --optimizer adam --lr 5e-05 --lr-scheduler inverse_sqrt \
     --warmup-init-lr 1e-8 --warmup-updates 800 --weight-decay 0.0001 --log-format tqdm \
@@ -151,8 +151,8 @@ export valid_BSZ=16
 
 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_per_node=8  \
         $(which fairseq-train)  \
-        --data-type Receipt53K  --user-dir ./  --task text_recognition  \
-        --arch trocr_base  \ # or trocr_base
+        --data-type Receipt53K  --user-dir ./  --task text_recognition --input-size 384 \
+        --arch trocr_large  \ # or trocr_base
         --seed 1111  --optimizer adam  --lr 2e-05  \
         --lr-scheduler inverse_sqrt  --warmup-init-lr 1e-8  --warmup-updates 500  \
         --weight-decay 0.0001  --log-format tqdm  --log-interval 10 \
