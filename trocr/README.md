@@ -78,7 +78,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_
     --log-interval 10 --batch-size ${BSZ} --batch-size-valid ${valid_BSZ} --save-dir ${SAVE_PATH} \
     --tensorboard-logdir ${LOG_DIR} --max-epoch 300 --patience 20 --ddp-backend legacy_ddp \
     --num-workers 8 --preprocess DA2 --update-freq 1 \
-    --bpe gpt2 --decoder-pretrained roberta \ # --bpe sentencepiece --sentencepiece-model ./unilm3-cased.model --decoder-pretrained unilm ## For small models
+    --bpe gpt2 --decoder-pretrained roberta2 \ # --bpe sentencepiece --sentencepiece-model ./unilm3-cased.model --decoder-pretrained unilm ## For small models
     --finetune-from-model /path/to/model --fp16 \
     ${DATA} 
 ~~~
@@ -118,7 +118,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_
     --log-interval 10 --batch-size ${BSZ} --batch-size-valid ${valid_BSZ} \
     --save-dir ${SAVE_PATH} --tensorboard-logdir ${LOG_DIR} --max-epoch 300 \
     --patience 10 --ddp-backend legacy_ddp --num-workers 10 --preprocess DA2 \
-    --bpe gpt2 --decoder-pretrained roberta \ # --bpe sentencepiece --sentencepiece-model ./unilm3-cased.model --decoder-pretrained unilm ## For small models
+    --bpe gpt2 --decoder-pretrained roberta2 \ # --bpe sentencepiece --sentencepiece-model ./unilm3-cased.model --decoder-pretrained unilm ## For small models
     --update-freq 16 --finetune-from-model /path/to/model --fp16 \
     ${DATA}
 ~~~
