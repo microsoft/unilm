@@ -76,6 +76,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 
 ## News
 - [Model Release] September, 2022: [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) **BASE** and **LARGE** models for Scene Text Recognition (STR).
+- [Model Release] September, 2022: [BEiT v2](https://github.com/microsoft/unilm/tree/master/beit2) code and pretrained models
 - August, 2022: [**BEiT-3**](https://arxiv.org/abs/2208.10442)- a general-purpose multimodal foundation model, which achieves state-of-the-art transfer performance on both vision and vision-language tasks
 - July, 2022: [**SimLM**](https://github.com/microsoft/unilm/tree/master/simlm) - Large-scale self-supervised pre-training for similarity matching
 - June, 2022: [**DiT**](https://arxiv.org/abs/2203.02378) and [**LayoutLMv3**](https://arxiv.org/abs/2204.08387) were accepted by ACM Multimedia 2022
