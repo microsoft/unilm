@@ -160,7 +160,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_
         --tensorboard-logdir ${LOG_DIR}  --max-epoch 500  --patience 20 \
         --preprocess RandAugment  --update-freq 1  --ddp-backend legacy_ddp \
         --num-workers 8  --finetune-from-model /path/to/model  \
-        --bpe gpt2  --decoder-pretrained roberta2  --fp16 \
+        --bpe gpt2  --decoder-pretrained roberta2 \
         ${DATA} 
 ~~~
 
