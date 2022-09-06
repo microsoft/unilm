@@ -55,18 +55,19 @@ class TrOCRModel(FairseqEncoderDecoderModel):
         if not model_cfg.ape:
             model_seq_len = self.state_dict()['encoder.deit.pos_embed'].shape[1]
             ckpt_seq_len = new_state_dict['encoder.deit.pos_embed'].shape[1]
-            logger.warning('Load from encoder.deit {:d} seq len to {:d}'.format(ckpt_seq_len, model_seq_len))
-            if model_seq_len <= ckpt_seq_len:
-                new_state_dict['encoder.deit.pos_embed'] = new_state_dict['encoder.deit.pos_embed'][:, :model_seq_len, :]
-            else:
-                t = self.state_dict()['encoder.deit.pos_embed']
-                t[:, :ckpt_seq_len, :] = new_state_dict['encoder.deit.pos_embed']
-                new_state_dict['encoder.deit.pos_embed'] = t
+            if model_seq_len != ckpt_seq_len and getattr(args, "adapt_encoder_pos_embed", None):
+                logger.warning('Load from encoder.deit {:d} seq len to {:d}'.format(ckpt_seq_len, model_seq_len))
+                if model_seq_len <= ckpt_seq_len:
+                    new_state_dict['encoder.deit.pos_embed'] = new_state_dict['encoder.deit.pos_embed'][:, :model_seq_len, :]
+                else:
+                    t = self.state_dict()['encoder.deit.pos_embed']
+                    t[:, :ckpt_seq_len, :] = new_state_dict['encoder.deit.pos_embed']
+                    new_state_dict['encoder.deit.pos_embed'] = t
 
-        if hasattr(model_cfg, "reset_dictionary") and model_cfg.reset_dictionary:
-            logger.info('Reset token embed weights and output projection during loading pretrained models')
-            del new_state_dict['decoder.embed_tokens.weight'] 
-            del new_state_dict['decoder.output_projection.weight']
+        # if hasattr(model_cfg, "reset_dictionary") and model_cfg.reset_dictionary:
+        #     logger.info('Reset token embed weights and output projection during loading pretrained models')
+        #     del new_state_dict['decoder.embed_tokens.weight'] 
+        #     del new_state_dict['decoder.output_projection.weight']
 
         return super().load_state_dict(new_state_dict, strict=False)
     
@@ -83,17 +84,16 @@ class TrOCRModel(FairseqEncoderDecoderModel):
         )        
         parser.set_defaults(ape=False)
         parser.add_argument(
-            '--reset-dictionary', action='store_true',
-            help='if reset dictionary and related parameters'
-        )
-        parser.add_argument(
-            '--adapt-dictionary', action='store_true',
-            help='if adapt dictionary and related parameters'
-        )
-        parser.set_defaults(reset_dictionary=False)
-        parser.add_argument(
             '--mask-ratio', default=0.0, type=float,
             help='the mask ratio for the encoder output masking.'
+        )
+        parser.add_argument(
+            '--only-keep-pretrained-decoder-structure', action='store_true',
+            help='if only keep the pretrained decoder structure'
+        )
+        parser.add_argument(
+            '--only-keep-pretrained-encoder-structure', action='store_true',
+            help='if only keep the pretrained encoder structure'
         )
 
     @staticmethod
@@ -134,7 +134,19 @@ class TrOCRModel(FairseqEncoderDecoderModel):
         if getattr(args, "max_target_positions", None) is None:
             args.max_target_positions = DEFAULT_MAX_TARGET_POSITIONS
 
-        if getattr(args, "decoder_pretrained", None).startswith('roberta2'):         
+        if getattr(args, "decoder_pretrained", None) == None or getattr(args, "decoder_pretrained", None).upper() == 'None':
+            logger.info('Decoder is randomly initialized.')            
+            decoder_embed_tokens = cls.build_embedding(
+                args, task.target_dictionary, args.decoder_embed_dim, args.decoder_embed_path
+            )            
+            decoder = TransformerDecoder(
+                args = args,
+                dictionary=task.target_dictionary,
+                embed_tokens=decoder_embed_tokens,
+                no_encoder_attn=False
+            )
+
+        elif getattr(args, "decoder_pretrained", None).startswith('roberta2'):         
             logger.info('Using the learned pos embedding version loading roberta.')
             decoder_embed_tokens = cls.build_embedding(
                 args, task.target_dictionary, args.decoder_embed_dim, args.decoder_embed_path
@@ -143,6 +155,8 @@ class TrOCRModel(FairseqEncoderDecoderModel):
             pretrained_model = getattr(args, "decoder_pretrained", None)
             specified = pretrained_model.find('-')!=-1
 
+            if 'LOCAL_RANK' in os.environ and os.environ['LOCAL_RANK'] != '0':
+                torch.distributed.barrier()
             if specified:
                 pretrained_model = pretrained_model.replace('-', '.')
                 logger.info('Load pre-trained decoder parameters from {}'.format(pretrained_model))
@@ -151,10 +165,13 @@ class TrOCRModel(FairseqEncoderDecoderModel):
                 logger.info('Load pre-trained decoder parameters from roberta.base')
                 roberta = torch.hub.load('pytorch/fairseq:main', 'roberta.base')
             elif args.decoder_layers == 12:
-                logger.info('Load pre-trained decoder parameters from roberta.large')
+                logger.info('Load pre-trained decoder parameters from roberta.large')                    
                 roberta = torch.hub.load('pytorch/fairseq:main', 'roberta.large')
             else:
                 raise AttributeError('Cannot determind the pre-trained model')
+
+            if 'LOCAL_RANK' in os.environ and os.environ['LOCAL_RANK'] == '0':
+                torch.distributed.barrier()
 
             roberta.model.args.encoder_layers = args.decoder_layers
             roberta.model.args.fp16 = args.fp16
@@ -212,9 +229,13 @@ class TrOCRModel(FairseqEncoderDecoderModel):
                     key = key[len('model.encoder.'):]
                 new_decoder_dict[key] = val
 
-            missing_keys, unexpected_keys = decoder.load_state_dict(
-                new_decoder_dict, strict=False
-            )
+            if hasattr(args, 'only_keep_pretrained_decoder_structure') and args.only_keep_pretrained_decoder_structure:
+                logger.info('Only keep the pretrained decoder structure.')                
+                pass
+            else:
+                missing_keys, unexpected_keys = decoder.load_state_dict(
+                    new_decoder_dict, strict=False
+                )
 
         elif getattr(args, "decoder_pretrained", None) == 'unilm':
             logger.info('Decoder is pretrained using the unilm.')
@@ -291,27 +312,19 @@ class TrOCRModel(FairseqEncoderDecoderModel):
                     new_decoder_dict['embed_tokens.weight'] = torch.zeros_like(decoder_dict['embed_tokens.weight'])
                     new_decoder_dict['embed_tokens.weight'][:min(unilm_embed_tokens_weight.shape[0], decoder_dict['embed_tokens.weight'].shape[0]), :] = unilm_embed_tokens_weight[:min(unilm_embed_tokens_weight.shape[0], decoder_dict['embed_tokens.weight'].shape[0]), :]
 
-                missing_keys, unexpected_keys = decoder.load_state_dict(
-                    new_decoder_dict, strict=False
-                )
+                if hasattr(args, 'only_keep_pretrained_decoder_structure') and args.only_keep_pretrained_decoder_structure:
+                    logger.info('Only keep the pretrained decoder structure.')
+                    pass
+                else:
+                    missing_keys, unexpected_keys = decoder.load_state_dict(
+                        new_decoder_dict, strict=False
+                    )
             else:
                 logger.warning('You must specify the unilm model url or the decoder is randomly initialized.')
 
             # freeze k_proj bias
             for layer in decoder.layers:
-                layer.self_attn.k_proj.bias.requires_grad = False
-
-        elif getattr(args, "decoder_pretrained", None).upper() == 'None' or getattr(args, "decoder_pretrained", None) == None:
-            logger.info('Decoder is randomly initialized.')            
-            decoder_embed_tokens = cls.build_embedding(
-                args, task.target_dictionary, args.decoder_embed_dim, args.decoder_embed_path
-            )            
-            decoder = TransformerDecoder(
-                args = args,
-                dictionary=task.target_dictionary,
-                embed_tokens=decoder_embed_tokens,
-                no_encoder_attn=False
-            )
+                layer.self_attn.k_proj.bias.requires_grad = False        
 
         elif getattr(args, "decoder_pretrained", None).startswith('roberta'):  
             logger.info('Using the old version loading roberta.')
@@ -328,6 +341,9 @@ class TrOCRModel(FairseqEncoderDecoderModel):
             pretrained_model = getattr(args, "decoder_pretrained", None)
             specified = pretrained_model.find('-')!=-1
 
+            if 'LOCAL_RANK' in os.environ and os.environ['LOCAL_RANK'] != '0':
+                torch.distributed.barrier()
+
             if specified:
                 pretrained_model = pretrained_model.replace('-', '.')
                 logger.info('Load pre-trained decoder parameters from {}'.format(pretrained_model))
@@ -341,16 +357,23 @@ class TrOCRModel(FairseqEncoderDecoderModel):
             else:
                 raise AttributeError('Cannot determind the pre-trained model')
 
-            decoder.embed_tokens.load_state_dict(roberta.model.encoder.sentence_encoder.embed_tokens.state_dict())
-            roberta_layers = roberta.model.encoder.sentence_encoder.layers
-            decoder_layers = decoder.layers
-            offset = len(roberta_layers) - len(decoder_layers)
-            assert offset >= 0
+            if 'LOCAL_RANK' in os.environ and os.environ['LOCAL_RANK'] == '0':
+                torch.distributed.barrier()
 
-            for i in range(len(decoder_layers)):
-                roberta_i = i + offset
-                decoder_layers[i].self_attn.load_state_dict(roberta_layers[roberta_i].self_attn.state_dict())
-                decoder_layers[i].self_attn_layer_norm.load_state_dict(roberta_layers[roberta_i].self_attn_layer_norm.state_dict())
+            if hasattr(args, 'only_keep_pretrained_decoder_structure') and args.only_keep_pretrained_decoder_structure:
+                logger.info('Only keep the pretrained decoder structure.')
+                pass
+            else:
+                decoder.embed_tokens.load_state_dict(roberta.model.encoder.sentence_encoder.embed_tokens.state_dict())
+                roberta_layers = roberta.model.encoder.sentence_encoder.layers
+                decoder_layers = decoder.layers
+                offset = len(roberta_layers) - len(decoder_layers)
+                assert offset >= 0
+                
+                for i in range(len(decoder_layers)):
+                    roberta_i = i + offset
+                    decoder_layers[i].self_attn.load_state_dict(roberta_layers[roberta_i].self_attn.state_dict())
+                    decoder_layers[i].self_attn_layer_norm.load_state_dict(roberta_layers[roberta_i].self_attn_layer_norm.state_dict())
 
         else:
             raise Exception('Undefined decoder pretraining method.')
@@ -370,10 +393,10 @@ class TrOCRModel(FairseqEncoderDecoderModel):
         return emb
 
     def forward(self, imgs, prev_output_tokens, **kwargs):
-        encoder_out = self.encoder(imgs, **kwargs)
+        encoder_out = self.encoder(imgs, **kwargs) # (seq_len, batch, embed_dim)
         decoder_out = self.decoder(
             prev_output_tokens, encoder_out=encoder_out, **kwargs
-        )
+        )   # (batch, seq_len, vocab_size)
         return decoder_out
 
 
@@ -412,7 +435,6 @@ def beit_base_decoder_large(args):
 
 @register_model_architecture('TrOCR', 'trocr_large')
 @register_model_architecture('DeiT_TR', 'beit_large_decoder_large')
-@register_model_architecture('DeiT_TR', 'DeiT_TR_LargeR_BEiT_Large')
 def beit_large_decoder_large(args):
     # DeiT Encoder  deit_base_distilled_patch16_384
     args.deit_arch = getattr(args, "deit_arch", "beit_large_patch16_384")
@@ -470,11 +492,16 @@ def trocr_small_384(args):
 class TrOCREncoder(FairseqEncoder):
     def __init__(self, args, dictionary):
         super().__init__(dictionary)
+
+        if hasattr(args, 'only_keep_pretrained_encoder_structure') and args.only_keep_pretrained_encoder_structure:
+            pretrained = False
+        else:
+            pretrained = True
         
         if 'custom_size' in args.deit_arch:
-            self.deit = create_model(args.deit_arch, pretrained=True, img_size=args.input_size, ape=args.ape, mask_ratio=args.mask_ratio)
+            self.deit = create_model(args.deit_arch, pretrained=pretrained, img_size=args.input_size, ape=args.ape, mask_ratio=args.mask_ratio)
         else:
-            self.deit = create_model(args.deit_arch, pretrained=True, ape=args.ape, mask_ratio=args.mask_ratio)
+            self.deit = create_model(args.deit_arch, pretrained=pretrained, ape=args.ape, mask_ratio=args.mask_ratio)
         
         self.fp16 = args.fp16
 
@@ -518,8 +545,6 @@ class TrOCREncoder(FairseqEncoder):
                 "src_tokens": [],
                 "src_lengths": [],
         }
-
     
-
 if __name__ == '__main__':
     pass
