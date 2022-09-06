@@ -171,13 +171,13 @@ export MODEL=/path/to/model
 export RESULT_PATH=/path/to/result
 export BSZ=16
 $(which fairseq-generate) \
-		--data-type Receipt53K --user-dir ./ --task text_recognition \
+        --data-type Receipt53K --user-dir ./ --task text_recognition \
         --input-size 384 --beam 10 --nbest 1 --scoring wpa \
         --gen-subset test --batch-size ${BSZ} --bpe gpt2 \
-		--dict-path-or-url https://layoutlm.blob.core.windows.net/trocr/dictionaries/gpt2_with_mask.dict.txt \
-		--path ${MODEL} --results-path ${RESULT_PATH} \
-		--preprocess RandAugment \
-		${DATA}
+        --dict-path-or-url https://layoutlm.blob.core.windows.net/trocr/dictionaries/gpt2_with_mask.dict.txt \
+        --path ${MODEL} --results-path ${RESULT_PATH} \
+        --preprocess RandAugment \
+        ${DATA}
 ~~~
 
 Please convert the output file to zip format using "convert_to_sroie_format.py" and submit it on the [website](https://rrc.cvc.uab.es/?ch=13&com=evaluation&task=2) to get the  score.
