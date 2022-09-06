@@ -1,31 +1,42 @@
 import os
 from fairseq import search
 
+from fairseq import scoring, utils, metrics
 from fairseq.data import Dictionary, encoders
 from fairseq.tasks import LegacyFairseqTask, register_task
 from fairseq.tasks.fairseq_task import FairseqTask
 
 try:
-    from .data import SROIETextRecognitionDataset, SyntheticTextRecognitionDataset
-    from .data_aug import build_data_aug
-except:
-    from data import SROIETextRecognitionDataset, SyntheticTextRecognitionDataset
-    from data_aug import build_data_aug
+    from .data import SROIETextRecognitionDataset, Receipt53KDataset, SyntheticTextRecognitionDataset
+    from .data_aug import build_data_aug, OptForDataAugment, DataAugment
+except ImportError:
+    from data import SROIETextRecognitionDataset, Receipt53KDataset, SyntheticTextRecognitionDataset
+    from data_aug import build_data_aug, OptForDataAugment, DataAugment
 
 import logging
+import torch
+
 
 logger = logging.getLogger(__name__)
 
 
 @register_task('text_recognition')
-class SROIETextRecognitionTask(LegacyFairseqTask):
+class TextRecognitionTask(LegacyFairseqTask):
     
     @staticmethod
     def add_args(parser):
         parser.add_argument('data', metavar='DIR',
-                            help='the path to the data dir')                
-        # parser.add_argument('--max-tgt-len', default=64, type=int,
-        #                     help='the max bpe num of the output')
+                            help='the path to the data dir')         
+
+        parser.add_argument('--reset-dictionary', action='store_true',
+                            help='if reset dictionary and related parameters')
+        parser.add_argument('--adapt-dictionary', action='store_true',
+                            help='if adapt dictionary and related parameters')
+        parser.add_argument('--adapt-encoder-pos-embed', action='store_true',
+                            help='if adapt encoder pos embed')
+
+        parser.add_argument('--add-empty-sample', action='store_true',
+                            help='add empty samples to the dataset (for multilingual dataset).')
         parser.add_argument('--preprocess', default='ResizeNormalize', type=str,
                             help='the image preprocess methods (ResizeNormalize|DeiT)')     
         parser.add_argument('--decoder-pretrained', default=None, type=str,
@@ -34,13 +45,7 @@ class SROIETextRecognitionTask(LegacyFairseqTask):
                             help='the ckpt url for decoder pretraining (only unilm for now)')     
         parser.add_argument('--dict-path-or-url', default=None, type=str,
                             help='the local path or url for dictionary file')                          
-        # parser.add_argument('--resize-img-size', type=int,
-        #                     help='the output image size of h and w (h=w) of the image transform')   
-        parser.add_argument('--input-size', type=int, nargs='+', help='images input size')
-        # parser.add_argument('--text-recog-gen', action="store_true",
-        #                     help='if use the TextRecognitionGenerator')       
-        # parser.add_argument('--crop-img-output-dir', type=str, default=None,
-        #                     help='the output dir for the crop images')   
+        parser.add_argument('--input-size', type=int, nargs='+', help='images input size', required=True)
         parser.add_argument('--data-type', type=str, default='SROIE',
                             help='the dataset type used for the task (SROIE or Receipt53K)')        
 
@@ -73,7 +78,15 @@ class SROIETextRecognitionTask(LegacyFairseqTask):
         import urllib.request
         import io            
 
-        if getattr(args, "decoder_pretrained", None) is not None:
+        if getattr(args, "dict_path_or_url", None) is not None:
+            if args.dict_path_or_url.startswith('http'):
+                logger.info('Load dictionary from {}'.format(args.dict_path_or_url))  
+                dict_content = urllib.request.urlopen(args.dict_path_or_url).read().decode()
+                dict_file_like = io.StringIO(dict_content)
+                target_dict = Dictionary.load(dict_file_like)
+            else:
+                target_dict = Dictionary.load(args.dict_path_or_url)      
+        elif getattr(args, "decoder_pretrained", None) is not None:
             if args.decoder_pretrained == 'unilm':            
                 url = 'https://layoutlm.blob.core.windows.net/trocr/dictionaries/unilm3.dict.txt'
                 logger.info('Load unilm dictionary from {}'.format(url))            
@@ -89,18 +102,11 @@ class SROIETextRecognitionTask(LegacyFairseqTask):
             else:
                 raise ValueError('Unknown decoder_pretrained: {}'.format(args.decoder_pretrained))
         else:
-            assert getattr(args, "dict_path_or_url", None) is not None, "You must specify the dict_path_or_url when decoder_pretrained is not specified"
-            if args.dict_path_or_url.startswith('http'):
-                logger.info('Load dictionary from {}'.format(args.dict_path_or_url))  
-                dict_content = urllib.request.urlopen(args.dict_path_or_url).read().decode()
-                dict_file_like = io.StringIO(dict_content)
-                target_dict = Dictionary.load(dict_file_like)
-            else:
-                target_dict = Dictionary.load(args.dict_path_or_url)        
-        
+            raise ValueError('Either dict_path_or_url or decoder_pretrained should be set.')
+          
         logger.info('[label] load dictionary: {} types'.format(len(target_dict)))
 
-        return SROIETextRecognitionTask(args, target_dict)
+        return cls(args, target_dict)
 
     def __init__(self, args, target_dict):
 
@@ -108,15 +114,14 @@ class SROIETextRecognitionTask(LegacyFairseqTask):
         self.args = args
         self.data_dir = args.data            
         self.target_dict = target_dict
-        self.bpe = self.build_bpe(args)            
+        if 'LOCAL_RANK' in os.environ and os.environ['LOCAL_RANK'] != '0':
+            torch.distributed.barrier()
+        self.bpe = self.build_bpe(args)
+        if 'LOCAL_RANK' in os.environ and os.environ['LOCAL_RANK'] == '0':
+            torch.distributed.barrier()
 
     def load_dataset(self, split, **kwargs):
-        if not hasattr(self.args, 'input_size') or not self.args.input_size:
-            assert hasattr(self.args, 'deit_arch')
-            temp = self.args.deit_arch
-            temp = temp[temp.rfind('_') + 1:]
-            assert 'x' not in temp, 'Please specify input_size when h != w.'
-            self.args.input_size = int(temp)
+
         input_size = self.args.input_size         
         if isinstance(input_size, list):
             if len(input_size) == 1:
@@ -126,15 +131,23 @@ class SROIETextRecognitionTask(LegacyFairseqTask):
         elif isinstance(input_size, int):
             input_size = (input_size, input_size)
 
+        logger.info('The input size is {}, the height is {} and the width is {}'.format(input_size, input_size[0], input_size[1]))
+
         if self.args.preprocess == 'DA2':            
-            tfm = build_data_aug(input_size, mode=split)            
+            tfm = build_data_aug(input_size, mode=split)     
+        elif self.args.preprocess == 'RandAugment':
+            opt = OptForDataAugment(eval= (split != 'train'), isrand_aug=True, imgW=input_size[1], imgH=input_size[0], intact_prob=0.5, augs_num=3, augs_mag=None)
+            tfm = DataAugment(opt)
         else:
-            raise Exception('Undeined image preprocess method.')
+            raise Exception('Undeined image preprocess method.')        
         
         # load the dataset
         if self.args.data_type == 'SROIE':
             root_dir = os.path.join(self.data_dir, split)
             self.datasets[split] = SROIETextRecognitionDataset(root_dir, tfm, self.bpe, self.target_dict)        
+        elif self.args.data_type == 'Receipt53K':
+            gt_path = os.path.join(self.data_dir, 'gt_{}.txt'.format(split))            
+            self.datasets[split] = Receipt53KDataset(gt_path, tfm, self.bpe, self.target_dict)
         elif self.args.data_type == 'STR':
             gt_path = os.path.join(self.data_dir, 'gt_{}.txt'.format(split))            
             self.datasets[split] = SyntheticTextRecognitionDataset(gt_path, tfm, self.bpe, self.target_dict)
@@ -152,6 +165,7 @@ class SROIETextRecognitionTask(LegacyFairseqTask):
     def build_generator(
         self, models, args, seq_gen_cls=None, extra_gen_cls_kwargs=None
     ):
+
         if getattr(args, "score_reference", False):
             from fairseq.sequence_scorer import SequenceScorer
 
@@ -260,3 +274,8 @@ class SROIETextRecognitionTask(LegacyFairseqTask):
             search_strategy=search_strategy,
             **extra_gen_cls_kwargs,
         )
+
+    def filter_indices_by_size(
+        self, indices, dataset, max_positions=None, ignore_invalid_inputs=False
+    ):
+        return indices

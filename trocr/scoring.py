@@ -2,9 +2,11 @@ from fairseq.scoring import BaseScorer, register_scorer
 from nltk.metrics.distance import edit_distance
 from fairseq.dataclass import FairseqDataclass
 import fastwer
+from Levenshtein import distance
+import string
 
-@register_scorer("cer2", dataclass=FairseqDataclass)
-class CER2Scorer(BaseScorer):
+@register_scorer("cer", dataclass=FairseqDataclass)
+class CERScorer(BaseScorer):
     def __init__(self, cfg):
         super().__init__(cfg)
         self.refs = []
@@ -18,51 +20,39 @@ class CER2Scorer(BaseScorer):
         return fastwer.score(self.preds, self.refs, char_level=True)
 
     def result_string(self) -> str:
-        return f"CER2: {self.score():.2f}"
+        return f"CER: {self.score():.2f}"
 
-# def levenshtein(u, v):
-#     prev = None
-#     curr = [0] + range(1, len(v) + 1)
-#     # Operations: (SUB, DEL, INS)
-#     prev_ops = None
-#     curr_ops = [(0, 0, i) for i in range(len(v) + 1)]
-#     for x in xrange(1, len(u) + 1):
-#         prev, curr = curr, [x] + ([None] * len(v))
-#         prev_ops, curr_ops = curr_ops, [(0, x, 0)] + ([None] * len(v))
-#         for y in xrange(1, len(v) + 1):
-#             delcost = prev[y] + 1
-#             addcost = curr[y - 1] + 1
-#             subcost = prev[y - 1] + int(u[x - 1] != v[y - 1])
-#             curr[y] = min(subcost, delcost, addcost)
-#             if curr[y] == subcost:
-#                 (n_s, n_d, n_i) = prev_ops[y - 1]
-#                 curr_ops[y] = (n_s + int(u[x - 1] != v[y - 1]), n_d, n_i)
-#             elif curr[y] == delcost:
-#                 (n_s, n_d, n_i) = prev_ops[y]
-#                 curr_ops[y] = (n_s, n_d + 1, n_i)
-#             else:
-#                 (n_s, n_d, n_i) = curr_ops[y - 1]
-#                 curr_ops[y] = (n_s, n_d, n_i + 1)
-#     return curr[len(v)], curr_ops[len(v)]
 
-# @register_scorer("cer", dataclass=FairseqDataclass)
-# class CERScorer(BaseScorer):
-#     def __init__(self, cfg):
-#         super().__init__(cfg)
-#         self.cer_s, self.cer_i, self.cer_d, self.cer_n = 0, 0, 0, 0
-#
-#     def add_string(self, ref, pred):
-#         _, (s, i, d) = levenshtein(ref, pred)
-#         self.cer_s += s
-#         self.cer_i += i
-#         self.cer_d += d
-#         self.cer_n += len(ref)
-#
-#     def score(self):
-#         return 100.0 * (self.cer_s + self.cer_i + self.cer_d) / self.cer_n
-#
-#     def result_string(self) -> str:
-#         return f"CER: {self.score():.2f}"
+@register_scorer("wpa", dataclass=FairseqDataclass)
+class WPAScorer(BaseScorer):
+    def __init__(self, cfg):
+        super().__init__(cfg)
+        self.refs = []
+        self.preds = []
+        self.alphabet = string.digits + string.ascii_lowercase
+
+    def filter(self, string):
+        string = ''.join([i for i in string if i in self.alphabet])
+        return string
+
+    def add_string(self, ref, pred):
+        # print(f'[Pred] gt: "{ref}" | pred: "{pred}"')
+        self.refs.append(self.filter(ref.lower()))
+        self.preds.append(self.filter(pred.lower()))
+    
+    def score(self):
+
+        length = len(self.refs)
+        correct = 0
+        for i in range(length):
+            if self.refs[i] == self.preds[i]:
+                correct += 1
+        return round(correct / length * 100, 2)
+
+        # return 100 - fastwer.score(self.preds, self.refs, char_level=False)
+
+    def result_string(self) -> str:
+        return f"WPA: {self.score():.2f}"
 
 @register_scorer("acc_ed", dataclass=FairseqDataclass)
 class AccEDScorer(BaseScorer):
@@ -72,11 +62,11 @@ class AccEDScorer(BaseScorer):
         self.n_correct = 0
         self.ed = 0
 
-    def add_string(self, ref, pred):
+    def add_string(self, ref, pred):        
         self.n_data += 1
         if ref == pred:
             self.n_correct += 1
-        self.ed += edit_distance(ref, pred)
+        self.ed += edit_distance(ref, pred) 
         self.ref.append(ref)
         self.pred.append(pred)
 

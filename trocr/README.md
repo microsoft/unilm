@@ -20,6 +20,10 @@ The TrOCR models are also provided in the Huggingface format.[[Documentation](ht
 | TrOCR-Base                     | 334M       | SROIE   | 96.34 (F1)  |
 | TrOCR-Large                    | 558M       | SROIE   | 96.60 (F1)  |
 
+| Model       | IIIT5K-3000 | SVT-647 | ICDAR2013-857 | ICDAR2013-1015 | ICDAR2015-1811 | ICDAR2015-2077 | SVTP-645 | CT80-288 |
+|-------------|-------------|---------|---------------|----------------|----------------|----------------|----------|----------|
+| TrOCR-Base (Word Accuracy)  | 93.4        | 95.2    | 98.4          | 97.4           | 86.9           | 81.2           | 92.1     | 90.6     |
+| TrOCR-Large (Word Accuracy) | 94.1        | 96.1    | 98.4          | 97.3           | 88.1           | 84.1           | 93.0     | 95.1     |
 ## Installation
 ~~~bash
 conda create -n trocr python=3.7
@@ -44,11 +48,14 @@ pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cud
 | TrOCR-Small-Stage1 | [trocr-small-stage1.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-small-stage1.pt) |
 | TrOCR-Base-Stage1  | [trocr-base-stage1.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-stage1.pt) |
 | TrOCR-Large-Stage1 | [trocr-large-stage1.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-stage1.pt) |
+| TrOCR-Base-STR | [trocr-base-str.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-base-str.pt) |
+| TrOCR-Large-STR | [trocr-large-str.pt](https://layoutlm.blob.core.windows.net/trocr/model_zoo/fairseq/trocr-large-str.pt) |
 
 |   Test set  | Download |
 | --------| -------- |
 | IAM     | [IAM.tar.gz](https://layoutlm.blob.core.windows.net/trocr/dataset/IAM.tar.gz) |
 | SROIE   | [SROIE_Task2_Original.tar.gz](https://layoutlm.blob.core.windows.net/trocr/dataset/SROIE_Task2_Original.tar.gz) |
+| STR Benchmarks   | [STR_BENCHMARKS.zip](https://layoutlm.blob.core.windows.net/trocr/dataset/STR_BENCHMARKS.zip) |
 
 
 
@@ -64,14 +71,14 @@ export valid_BSZ=16
 
 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_per_node=8 \
     $(which fairseq-train) \
-    --data-type STR --user-dir ./ --task text_recognition \
+    --data-type STR --user-dir ./ --task text_recognition --input-size 384 \
     --arch trocr_large \   # or trocr_base
     --seed 1111 --optimizer adam --lr 2e-05 --lr-scheduler inverse_sqrt \
     --warmup-init-lr 1e-8 --warmup-updates 500 --weight-decay 0.0001 --log-format tqdm \
     --log-interval 10 --batch-size ${BSZ} --batch-size-valid ${valid_BSZ} --save-dir ${SAVE_PATH} \
     --tensorboard-logdir ${LOG_DIR} --max-epoch 300 --patience 20 --ddp-backend legacy_ddp \
     --num-workers 8 --preprocess DA2 --update-freq 1 \
-    --bpe gpt2 --decoder-pretrained roberta \ # --bpe sentencepiece --sentencepiece-model ./unilm3-cased.model --decoder-pretrained unilm ## For small models
+    --bpe gpt2 --decoder-pretrained roberta2 \ # --bpe sentencepiece --sentencepiece-model ./unilm3-cased.model --decoder-pretrained unilm ## For small models
     --finetune-from-model /path/to/model --fp16 \
     ${DATA} 
 ~~~
@@ -104,14 +111,14 @@ export valid_BSZ=16
 
 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_per_node=8 \
     $(which fairseq-train) \
-    --data-type SROIE --user-dir ./ --task text_recognition \
+    --data-type SROIE --user-dir ./ --task text_recognition --input-size 384 \
     --arch trocr_large \   # or trocr_base
     --seed 1111 --optimizer adam --lr 5e-05 --lr-scheduler inverse_sqrt \
     --warmup-init-lr 1e-8 --warmup-updates 800 --weight-decay 0.0001 --log-format tqdm \
     --log-interval 10 --batch-size ${BSZ} --batch-size-valid ${valid_BSZ} \
     --save-dir ${SAVE_PATH} --tensorboard-logdir ${LOG_DIR} --max-epoch 300 \
     --patience 10 --ddp-backend legacy_ddp --num-workers 10 --preprocess DA2 \
-    --bpe gpt2 --decoder-pretrained roberta \ # --bpe sentencepiece --sentencepiece-model ./unilm3-cased.model --decoder-pretrained unilm ## For small models
+    --bpe gpt2 --decoder-pretrained roberta2 \ # --bpe sentencepiece --sentencepiece-model ./unilm3-cased.model --decoder-pretrained unilm ## For small models
     --update-freq 16 --finetune-from-model /path/to/model --fp16 \
     ${DATA}
 ~~~
@@ -129,6 +136,47 @@ $(which fairseq-generate) \
         --bpe gpt2 --dict-path-or-url https://layoutlm.blob.core.windows.net/trocr/dictionaries/gpt2_with_mask.dict.txt \ # --bpe sentencepiece --sentencepiece-model ./unilm3-cased.model --dict-path-or-url https://layoutlm.blob.core.windows.net/trocr/dictionaries/unilm3.dict.txt ## For small models
         --preprocess DA2 \
         --fp16 \
+        ${DATA}
+~~~
+
+### Fine-tuning on STR Benchmarks
+~~~bash
+export MODEL_NAME=ft_str_benchmarks
+export SAVE_PATH=/path/to/save/${MODEL_NAME}
+export LOG_DIR=log_${MODEL_NAME}
+export DATA=/path/to/data
+mkdir ${LOG_DIR}
+export BSZ=8
+export valid_BSZ=16
+
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_per_node=8  \
+        $(which fairseq-train)  \
+        --data-type Receipt53K  --user-dir ./  --task text_recognition --input-size 384 \
+        --arch trocr_large  \ # or trocr_base
+        --seed 1111  --optimizer adam  --lr 2e-05  \
+        --lr-scheduler inverse_sqrt  --warmup-init-lr 1e-8  --warmup-updates 500  \
+        --weight-decay 0.0001  --log-format tqdm  --log-interval 10 \
+        --batch-size ${BSZ}  --batch-size-valid ${valid_BSZ}  --save-dir ${SAVE_PATH}  \
+        --tensorboard-logdir ${LOG_DIR}  --max-epoch 500  --patience 20 \
+        --preprocess RandAugment  --update-freq 1  --ddp-backend legacy_ddp \
+        --num-workers 8  --finetune-from-model /path/to/model  \
+        --bpe gpt2  --decoder-pretrained roberta2 \
+        ${DATA} 
+~~~
+
+### Evaluation on STR Benchmarks
+~~~bash
+export DATA=/path/to/data
+export MODEL=/path/to/model
+export RESULT_PATH=/path/to/result
+export BSZ=16
+$(which fairseq-generate) \
+        --data-type Receipt53K --user-dir ./ --task text_recognition \
+        --input-size 384 --beam 10 --nbest 1 --scoring wpa \
+        --gen-subset test --batch-size ${BSZ} --bpe gpt2 \
+        --dict-path-or-url https://layoutlm.blob.core.windows.net/trocr/dictionaries/gpt2_with_mask.dict.txt \
+        --path ${MODEL} --results-path ${RESULT_PATH} \
+        --preprocess RandAugment \
         ${DATA}
 ~~~
 
