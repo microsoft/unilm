@@ -209,4 +209,4 @@ This project is licensed under the license found in the LICENSE file in the root
 
 For help or issues using BEiT models, please submit a GitHub issue.
 
-For other communications related to UniLM AI, please contact Li Dong (`lidong1@microsoft.com`), [Furu Wei](http://gitnlp.org/) (`fuwei@microsoft.com`).
+For other communications, please contact Li Dong (`lidong1@microsoft.com`), [Furu Wei](http://gitnlp.org/) (`fuwei@microsoft.com`).
