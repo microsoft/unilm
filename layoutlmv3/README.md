@@ -153,7 +153,7 @@ We sincerely thank them for their contributions!
 
 ## License
 
-The content of this project itself is licensed under the [Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+This project is licensed under the license found in the LICENSE file in the root directory of this source tree.
 Portions of the source code are based on the [transformers](https://github.com/huggingface/transformers) project.
 [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct)
 
