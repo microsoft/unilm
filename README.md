@@ -36,7 +36,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 > [**SimLM**](https://github.com/microsoft/unilm/tree/master/simlm) (```NEW```): similarity matching with language model pre-training
 
 ### Vision
-> [**BEiT(-2)**](https://github.com/microsoft/unilm/tree/master/beit): generative self-supervised pre-training for vision / BERT Pre-Training of Image Transformers
+> [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit)/[**BEiT-2**](https://github.com/microsoft/unilm/tree/master/beit2): generative self-supervised pre-training for vision / BERT Pre-Training of Image Transformers
 
 > [**DiT**](https://github.com/microsoft/unilm/tree/master/dit) (```NEW```): self-supervised pre-training for Document Image Transformers
 
