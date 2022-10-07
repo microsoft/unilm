@@ -50,6 +50,8 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 
 > [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm): markup language model pre-training for visually-rich document understanding
 
+> [**XDoc**](https://github.com/microsoft/unilm/tree/master/xdoc): unified pre-training for cross-format document understanding
+
 > [**UniSpeech**](https://arxiv.org/abs/2101.07597): unified pre-training for self-supervised learning and supervised learning for ASR
 
 > [**UniSpeech-SAT**](https://arxiv.org/pdf/2110.05752.pdf): universal speech representation learning with speaker-aware pre-training
@@ -118,6 +120,10 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 - September, 2019: [UniLMv1](https://github.com/microsoft/unilm/tree/master/unilm-v1) was accepted by NeurIPS 2019.
 
 ## Release
+
+**\*\*\*\*\* ```New Octorber, 2022```: [XDoc](https://github.com/microsoft/unilm/tree/master/xdoc) release \*\*\*\*\***
+
+- [x] [**XDoc**](https://github.com/microsoft/unilm/tree/master/xdoc) (October 7, 2022): XDoc, a unified pre-trained model which deals with different document formats in a single model. For parameter efficiency, we share backbone parameters for different formats such as the word embedding layer and the Transformer layers. Meanwhile, we introduce adaptive layers with lightweight parameters to enhance the distinction across different formats. Experimental results have demonstrated that with only 36.7% parameters, XDoc achieves comparable or even better performance on a variety of downstream tasks compared with the individual pre-trained models, which is cost effective for real-world deployment. "[XDoc: Unified Pre-training for Cross-Format Document Understanding](https://arxiv.org/abs/2210.02849) ```EMNLP 2022```"
 
 **\*\*\*\*\* ```New May, 2022```: [Aggressive Decoding](https://github.com/microsoft/unilm/tree/master/decoding) release \*\*\*\*\***
 
