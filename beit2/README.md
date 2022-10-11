@@ -27,7 +27,7 @@ alias=`whoami | cut -d'.' -f2`; docker run -it --rm --runtime=nvidia --ipc=host 
 First, clone the repo and install required packages:
 ```
 git clone https://github.com/microsoft/unilm.git
-cd unilm/beitv2
+cd unilm/beit2
 pip install -r requirements.txt
 ```
 
