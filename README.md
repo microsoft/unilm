@@ -4,7 +4,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 
 ## AI Fundamentals
 ### Foundation of Large Models
-**Transformers at Scale** = DeepNet + X-MoE
+**OpenScale - Transformers at (any) Scale** 
 > Stability - [**DeepNet**](https://github.com/microsoft/unilm/tree/master/deepnet): scaling Transformers to 1,000 Layers and beyond
 
 >Efficiency & Transferability - [**X-MoE**](https://github.com/microsoft/unilm/tree/master/xmoe): scalable & finetunable sparse Mixture-of-Experts (MoE)
