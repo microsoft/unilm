@@ -6,7 +6,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 ### OpenScale - Transformers at (any) Scale
 > Stability - [**DeepNet**](https://github.com/microsoft/unilm/tree/master/deepnet): scaling Transformers to 1,000 Layers and beyond
 
-> Generality: [**Foundation Transformers (Magneto)88](https://arxiv.org/abs/2210.06423)
+> Generality: [**Foundation Transformers (Magneto)**](https://arxiv.org/abs/2210.06423)
 
 > Efficiency & Transferability - [**X-MoE**](https://github.com/microsoft/unilm/tree/master/xmoe): scalable & finetunable sparse Mixture-of-Experts (MoE)
 
