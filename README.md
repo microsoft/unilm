@@ -59,6 +59,8 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 
 > [**SpeechT5**](https://arxiv.org/abs/2110.07205): encoder-decoder pre-training for spoken language processing
 
+> [**SpeechLM**](https://arxiv.org/abs/2209.15329): Enhanced Speech Pre-Training with Unpaired Textual Data
+
 > [**VLMo**](https://github.com/microsoft/unilm/tree/master/vlmo): Unified vision-language pre-training 
 
 > [**VL-BEiT**](https://github.com/microsoft/unilm/tree/master/vl-beit) (```NEW```): Generative Vision-Language Pre-training - evolution of **BEiT** to multimodal
