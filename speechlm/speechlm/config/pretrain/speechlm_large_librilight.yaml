@@ -1,0 +1,144 @@
+# @package _group_
+
+common:
+  fp16: true
+  log_format: json
+  log_interval: 200
+  seed: 1234
+  tensorboard_logdir: tblog
+
+checkpoint:
+  save_dir: ???
+  save_interval: 1
+  keep_last_epochs: 4
+  save_interval_updates: 10000
+  keep_interval_updates: 40
+  keep_interval_updates_pattern: 10000
+  # no_epoch_checkpoints: true
+
+distributed_training:
+  ddp_backend: legacy_ddp
+  distributed_backend: 'nccl'
+  distributed_port: -1
+  distributed_world_size: 32
+  nprocs_per_node: 8
+  find_unused_parameters: true
+
+task:
+  _name: joint_sc2t_pretraining
+  data: ???
+  label_dir: ???
+  labels: ???
+  label_rate: ${model.label_rate}
+  store_labels: true
+  sample_rate: 16000
+  max_sample_size: 250000
+  min_sample_size: 32000
+  pad_audio: false
+  random_crop: true
+  normalize: true # must be consistent with extractor
+  add_decoder_target: false
+  text_cfg:
+    seed: ${common.seed}
+    text_data: ???
+    data_config: config.yaml
+    sample_break_mode: eos
+    tokens_per_sample: 1024
+    shorten_method: "random_crop"
+    text_maxtokens_ratio: 1.0
+
+dataset:
+  num_workers: 1
+  max_tokens: 900000
+  skip_invalid_size_inputs_valid_test: true
+  validate_interval: ${checkpoint.save_interval}
+  validate_interval_updates: ${checkpoint.save_interval_updates}
+  required_batch_size_multiple: 2
+
+criterion:
+  _name: speechlm_criterion
+  pred_masked_weight: 1.0
+  pred_nomask_weight: 0.0
+  loss_weights: [10,]
+  text_ctc_weight: 0.1
+  text_mum_weight: 0.0
+
+optimization:
+  max_update: 400000
+  lr: [0.001]
+  clip_norm: 1.0
+
+optimizer:
+  _name: adam
+  adam_betas: (0.9,0.98)
+  adam_eps: 1e-06
+  weight_decay: 0.01
+
+lr_scheduler:
+  _name: polynomial_decay
+  warmup_updates: 32000
+
+model:
+  _name: speechlm
+  label_rate: ???
+  activation_fn: "gelu"
+  encoder_layers: 12
+  encoder_embed_dim: 1024
+  encoder_ffn_embed_dim: 4096
+  encoder_attention_heads: 16
+  final_dim: 256
+  skip_masked: false
+  skip_nomask: false
+  mask_prob: 0.80
+  extractor_mode: layer_norm
+  conv_feature_layers: '[(512,10,5)] + [(512,3,2)] * 4 + [(512,2,2)] * 2'
+  encoder_layerdrop: 0.0
+  dropout_input: 0.0
+  dropout_features: 0.0
+  dropout: 0.0
+  attention_dropout: 0.0
+  layer_norm_first: true
+  feature_grad_mult: 1.0
+  untie_final_proj: true
+  activation_dropout: 0.0
+  use_rel_pos_enc: true
+  add_unit_encoder: true
+  add_text_ctc: true
+  mask_u2t: true
+  compute_mum: false
+  mix_with_unit: true
+  scaling_for_att: 32
+  text_transformer:
+    activation_fn: ${model.activation_fn}
+    dropout: ${model.dropout}
+    attention_dropout: ${model.attention_dropout}
+    activation_dropout: ${model.activation_dropout}
+    max_source_positions: 3000
+    no_scale_embedding: true
+    layernorm_embedding: true
+    no_token_positional_embeddings: false
+    encoder:
+      embed_dim: 1024
+      ffn_embed_dim: 4096
+      layers: 12
+      attention_heads: 16
+      normalize_before: ${model.layer_norm_first}
+      learned_pos: true
+      layerdrop: ${model.encoder_layerdrop}
+
+hydra:
+  job:
+    config:
+      override_dirname:
+        kv_sep: '-'
+        item_sep: '__'
+        exclude_keys:
+          - run
+          - task.data
+          - task.label_dir
+  run:
+    dir: ???
+  sweep:
+    dir: ???
+    subdir: ${hydra.job.config_name}__${hydra.job.override_dirname}
+

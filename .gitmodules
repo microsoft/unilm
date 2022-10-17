@@ -1,3 +1,6 @@
 [submodule "deltalm/fairseq"]
 	path = deltalm/fairseq
 	url = https://github.com/pytorch/fairseq.git
+[submodule "speechlm/fairseq"]
+	path = speechlm/fairseq
+	url = https://github.com/facebookresearch/fairseq.git

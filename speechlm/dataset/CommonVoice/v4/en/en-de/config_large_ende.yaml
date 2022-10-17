@@ -1,0 +1,14 @@
+bpe_tokenizer:
+  bpe: sentencepiece
+  sentencepiece_model: spm_char_st_en_de.model
+
+shuffle: false
+use_audio_input: true
+use_sample_rate: 16000
+standardize_audio: true
+vocab_filename: spm_char_st_en_de.txt
+              
+# required by speech_to_text task but never used  
+input_channels: 1
+input_feat_per_channel: 1
+

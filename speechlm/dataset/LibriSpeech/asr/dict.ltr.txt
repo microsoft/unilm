@@ -1,0 +1,1 @@
+../../LibriLM/phone_unit/bin-idx/dict.ltr.txt

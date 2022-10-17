@@ -1,0 +1,13 @@
+audio_root: /home/v-ziqzhang/dataset/librispeech_phone2unit
+features:
+  energy_max: 5.733445167541504
+  energy_min: 1.0e-08
+  eps: 1.0e-05
+  hop_length: 256
+  pitch_max: 6.608609099713706
+  pitch_min: 1.0e-08
+  sample_rate: 16000
+sample_rate: 16000
+vocab_filename: dict.km.txt
+src_vocab_filename: dict.phn.txt
+

@@ -1,0 +1,98 @@
+# @package _group_
+
+common:
+  fp16: true
+  log_format: json
+  log_interval: 200
+  tensorboard_logdir: tblog
+
+checkpoint:
+  save_interval: 1
+  keep_last_epochs: 5
+  keep_best_checkpoints: 5
+  best_checkpoint_metric: wer
+  restore_file: checkpoint_last.pt
+
+distributed_training:
+  ddp_backend: legacy_ddp
+  find_unused_parameters: true
+  distributed_world_size: 32
+  distributed_port: -1
+  nprocs_per_node: 8
+
+task:
+  _name: joint_sc2t_pretraining
+  data: ???
+  fine_tuning: true
+  label_dir: ???
+  normalize: true  # must be consistent with pre-training
+  labels: ["ltr"]
+  store_labels: true
+  single_target: true
+  add_decoder_target: false
+  pad_audio: false
+  random_crop: true
+  hubert_tokenizer: "none"
+  sp_path: None
+
+dataset:
+  num_workers: 0
+  max_tokens: 900000
+  skip_invalid_size_inputs_valid_test: true
+  train_subset: train_960
+  valid_subset: dev_other
+  required_batch_size_multiple: 1
+
+criterion:
+  _name: ctc
+  zero_infinity: true
+
+optimization:
+  max_update: 200000
+  lr: [0.00001]
+  sentence_avg: true
+  update_freq: [1]
+
+optimizer:
+  _name: adam
+  adam_betas: (0.9,0.98)
+  adam_eps: 1e-08
+  weight_decay: 0.0
+
+lr_scheduler:
+  _name: tri_stage
+  phase_ratio: [0.1, 0.4, 0.5]
+  final_lr_scale: 0.05
+
+model:
+  _name: speechlm_ctc
+  w2v_path: ???
+  apply_mask: true
+  mask_prob: 0.5
+  mask_channel_prob: 0.25
+  mask_channel_length: 64
+  layerdrop: 0.0
+  activation_dropout: 0.1
+  feature_grad_mult: 0.0
+  freeze_finetune_updates: 0
+
+hydra:
+  job:
+    config:
+      override_dirname:
+        kv_sep: '-'
+        item_sep: '__'
+        exclude_keys:
+          - run
+          - task.data
+          - task.label_dir
+          - model.w2v_path
+          - dataset.train_subset
+          - dataset.valid_subset
+          - criterion.wer_kenlm_model
+          - criterion.wer_lexicon
+  run:
+    dir: ???
+  sweep:
+    dir: ???
+    subdir: ${hydra.job.config_name}__${hydra.job.override_dirname}

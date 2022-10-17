@@ -1,0 +1,37 @@
+# @package _group_
+
+defaults:
+  - model: null
+
+hydra:
+  run:
+    dir: ${common_eval.results_path}/viterbi
+  sweep:
+    dir: ${common_eval.results_path}
+    subdir: viterbi
+
+task:
+  _name: joint_sc2t_pretraining
+  data: ???
+  label_dir: ???
+  labels: ["ltr"]
+  store_labels: true
+  single_target: true
+  fine_tuning: true
+  normalize: ???  # must be consistent with pre-training
+  add_decoder_target: false
+  pad_audio: false
+  random_crop: true
+  hubert_tokenizer: "none"
+  sp_path: None
+
+decoding:
+  type: viterbi
+  unique_wer_file: true
+common_eval:
+  results_path: ???
+  path: ???
+  post_process: letter
+dataset:
+  batch_size: 1
+  gen_subset: ???
