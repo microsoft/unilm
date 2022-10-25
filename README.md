@@ -4,6 +4,9 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 
 ## AI Fundamentals
 ### OpenScale - Transformers at (any) Scale
+
+Fundamental research to improve modeling generality and capability, as well as training stability and efficiency of scaling Transformers at any scale.
+
 > Stability - [**DeepNet**](https://github.com/microsoft/unilm/tree/master/deepnet): scaling Transformers to 1,000 Layers and beyond
 
 > Generality: [**Foundation Transformers (Magneto)**](https://arxiv.org/abs/2210.06423)
