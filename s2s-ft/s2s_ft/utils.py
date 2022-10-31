@@ -349,10 +349,10 @@ def load_and_cache_examples(
                 for idx, feature in enumerate(features):
                     write_to_lmdb(
                         db, b"src_ids_%d" % idx, 
-                        serialize_array(feature["source_ids"], dtype=lmdb_dtype))
+                        serialize_array(feature.source_ids, dtype=lmdb_dtype))
                     write_to_lmdb(
                         db, b"tgt_ids_%d" % idx,
-                        serialize_array(feature["target_ids"], dtype=lmdb_dtype))
+                        serialize_array(feature.target_ids, dtype=lmdb_dtype))
                 write_to_lmdb(db, b"__start__", serialize_str(0))
                 write_to_lmdb(db, b"__size__", serialize_str(len(features)))
                 write_to_lmdb(db, b"__dtype__", serialize_str(lmdb_dtype))
