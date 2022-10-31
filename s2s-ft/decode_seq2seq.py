@@ -229,7 +229,7 @@ def main():
 
         input_lines = []
         for line in to_pred:
-            input_lines.append(tokenizer.convert_ids_to_tokens(line["source_ids"])[:max_src_length])
+            input_lines.append(tokenizer.convert_ids_to_tokens(line.source_ids)[:max_src_length])
         if args.subset > 0:
             logger.info("Decoding subset: %d", args.subset)
             input_lines = input_lines[:args.subset]

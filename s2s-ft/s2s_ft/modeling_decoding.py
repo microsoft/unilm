@@ -15,6 +15,8 @@ import tempfile
 import shutil
 import numpy as np
 
+from functools import partial
+
 import torch
 from torch import nn
 from torch.nn import CrossEntropyLoss, MSELoss
@@ -1083,6 +1085,33 @@ def relative_position_bucket(relative_position, bidirectional=True, num_buckets=
     return ret
 
 
+def get_div_func():
+    # a crude code fix floor div for multiple torch version
+    # https://github.com/microsoft/unilm/issues/297
+    # Thanks github user @guijuzhejiang, @piskunow and @zengyan-97
+    x = torch.ones(size=(1,), dtype=torch.long) * 11
+    try:
+        # for pytorch 1.8+
+        div_func = partial(torch.div, rounding_mode='floor')
+        y = div_func(x, 4)
+        return div_func
+    except:
+        pass
+    try:
+        # for pytorch 1.6 & 1.7
+        div_func = torch.floor_divide
+        y = div_func(x, 4)
+        return div_func
+    except:
+        pass
+
+    div_func = torch.div
+    y = div_func(x, 4)
+    if y.dtype != torch.long:
+        raise NotImplementedError("Can not found right floor div function !")
+    return div_func
+
+
 class BertForSeq2SeqDecoder(PreTrainedBertModel):
     """refer to BertForPreTraining"""
 
@@ -1110,6 +1139,8 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
         assert mode in ("s2s", "l2r")
         self.mode = mode
         self.pos_shift = pos_shift
+
+        self.div_func = get_div_func()
 
     def forward(self, input_ids, token_type_ids, position_ids, attention_mask, task_idx=None, mask_qkv=None):
         if self.search_beam_size > 1:
@@ -1284,7 +1315,8 @@ class BertForSeq2SeqDecoder(PreTrainedBertModel):
                 kk_scores += last_eos * (-10000.0) + last_seq_scores
                 kk_scores = torch.reshape(kk_scores, [batch_size, K * K])
                 k_scores, k_ids = torch.topk(kk_scores, k=K)
-                back_ptrs = torch.div(k_ids, K)
+                # back_ptrs = torch.div(k_ids, K)
+                back_ptrs = self.div_func(k_ids, K)
                 kk_ids = torch.reshape(kk_ids, [batch_size, K * K])
                 k_ids = torch.gather(kk_ids, 1, k_ids)
             step_back_ptrs.append(back_ptrs)
