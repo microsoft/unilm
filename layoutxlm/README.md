@@ -1,4 +1,4 @@
-# LayoutXLM
+# LayoutXLM (Document Foundation Model)
 **Multimodal (text + layout/format + image) pre-training for multilingual [Document AI](https://www.microsoft.com/en-us/research/project/document-ai/)**
 
 ## Introduction
