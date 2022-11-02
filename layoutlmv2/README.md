@@ -1,4 +1,4 @@
-# LayoutLMv2 (Document Foundation )
+# LayoutLMv2 (Document Foundation Model)
 **Multimodal (text + layout/format + image) pre-training for [Document AI](https://www.microsoft.com/en-us/research/project/document-ai/)**
 
 ## Introduction
