@@ -1,4 +1,4 @@
-# LayoutLM
+# LayoutLM (Document Foundation Model)
 **Multimodal (text + layout/format + image) pre-training for [Document AI](https://www.microsoft.com/en-us/research/project/document-ai/)**
 
 - April, 2021: [LayoutXLM](https://github.com/microsoft/unilm/tree/master/layoutxlm) is coming by extending the LayoutLM into multilingual support! A multilingual form understanding benchmark [XFUND](https://github.com/doc-analysis/XFUND) is also introduced, which includes forms with human labeled key-value pairs in 7 languages (Chinese, Japanese, Spanish, French, Italian, German, Portuguese).
