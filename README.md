@@ -51,7 +51,7 @@ Fundamental research to improve modeling generality and capability, as well as t
 ### Multimodal (X + Language)
 > [**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm)/[**LayoutLMv2**](https://github.com/microsoft/unilm/tree/master/layoutlmv2)/[**LayoutLMv3**](https://github.com/microsoft/unilm/tree/master/layoutlmv3): multimodal (text + layout/format + image) **Document Foundation Model** for [Document AI](https://www.microsoft.com/en-us/research/project/document-ai/) (e.g. scanned documents, PDF, etc.)
 
-> [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm): multimodal (text + layout/format + image) **Document Foundation Model** for multilingual document understanding
+> [**LayoutXLM**](https://github.com/microsoft/unilm/tree/master/layoutxlm): multimodal (text + layout/format + image) **Document Foundation Model** for multilingual Document AI
 
 > [**MarkupLM**](https://github.com/microsoft/unilm/tree/master/markuplm): markup language model pre-training for visually-rich document understanding
 
