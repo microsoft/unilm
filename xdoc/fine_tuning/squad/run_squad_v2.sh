@@ -1,0 +1,13 @@
+CUDA_VISIBLE_DEVICES=0 python run_squad.py \
+  --model_name_or_path /path/to/xdoc-pretrain-roberta-1M \
+  --dataset_name squad_v2 \
+  --do_train \
+  --do_eval \
+  --version_2_with_negative \
+  --per_device_train_batch_size 16 \
+  --learning_rate 3e-5 \
+  --num_train_epochs 4 \
+  --max_seq_length 384 \
+  --doc_stride 128 \
+  --output_dir ./squadv2.0_result \
+  --overwrite_output_dir
