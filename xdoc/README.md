@@ -1,10 +1,11 @@
 # XDoc
-Our paper "XDoc: Unified Pre-training for Cross-Format Document Understanding" has been accepted by EMNLP 2022. https://arxiv.org/abs/2210.02849
-
 
 ## Introduction
 
 XDoc is a unified pre-trained model that deals with different document formats in a single model. With only 36.7% parameters, XDoc achieves comparable or better performance on downstream tasks, which is cost-effective for real-world deployment.
+
+[XDoc: Unified Pre-training for Cross-Format Document Understanding](https://arxiv.org/abs/2210.02849)
+Jingye Chen, Tengchao Lv, Lei Cui, Cha Zhang, Furu Wei, [EMNLP 2022](#)
 
 The overview of our framework is as follows:
 
