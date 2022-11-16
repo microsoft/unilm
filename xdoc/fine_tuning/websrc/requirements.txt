@@ -1,0 +1,10 @@
+torch
+transformers==4.5.1
+torchvision==0.2.1
+tensorboard
+pillow==5.2.0
+textdistance
+h5py
+bs4
+networkx
+lxml

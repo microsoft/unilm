@@ -1,0 +1,4 @@
+from .configuration_layoutlmv2 import LayoutLMv2Config
+from .modeling_layoutlmv2 import LayoutLMv2ForRelationExtraction, LayoutLMv2ForTokenClassification, LayoutLMv2Model
+from .tokenization_layoutlmv2 import LayoutLMv2Tokenizer
+from .tokenization_layoutlmv2_fast import LayoutLMv2TokenizerFast

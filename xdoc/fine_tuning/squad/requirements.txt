@@ -1,0 +1,6 @@
+sklearn
+transformers==4.23.1
+datasets==2.6.1
+numpy==1.21.6
+torch
+IPython

@@ -1,0 +1,7 @@
+torchvision==0.8 
+transformers==4.5.1
+scikit-learn==1.0.2
+datasets==2.6.1
+pillow==5.2.0
+torch
+seqeval
