@@ -175,7 +175,7 @@ CUDA_VISIBLE_DEVICES=0 python run_docvqa.py --do_train True --do_eval True  --mo
 
 #### Test
 ```bash
-CUDA_VISIBLE_DEVICES=0 python run_docvqa.py --do_train False --do_eval False --model_name_or_path microsoft/xdoc-base-websrc
+CUDA_VISIBLE_DEVICES=0 python run_docvqa.py --do_train False --do_eval True --model_name_or_path microsoft/xdoc-base-websrc
 ```
 
 
