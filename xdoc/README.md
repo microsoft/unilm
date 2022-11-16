@@ -18,64 +18,19 @@ The overview of our framework is as follows:
 ### Pre-trained Model
 |   Model  | Download |
 | -------- | -------- |
-| xdoc-pretrain-roberta-1M    | []() |
+| xdoc-pretrain-roberta-1M    | [xdoc-base](https://huggingface.co/microsoft/xdoc-base) |
 
 ### Fine-tuning Models
 |   Model  | Download |
 | -------- | -------- |
-| xdoc-squad1.1    | []() |
-| xdoc-squad2.0    | []() |
-| xdoc-funsd    | []() |
+| xdoc-squad1.1    | [xdoc-squad1.1](https://huggingface.co/microsoft/xdoc-base-squad1.1) |
+| xdoc-squad2.0    | [xdoc-squad2.0](https://huggingface.co/microsoft/xdoc-base-squad2.0) |
+| xdoc-funsd    | [xdoc-funsd](https://huggingface.co/microsoft/xdoc-base-funsd) |
+| xdoc-websrc | [xdoc-websrc](https://huggingface.co/microsoft/xdoc-base-websrc) |
 
 
 
 ## Fine-tune
-
-
-### FUNSD
-The dataset will be **automatically downloaded**. Please refer to ```./fine_tuning/funsd/```.
-
-#### Installation
-
-```bash
-pip install -r requirements.txt
-```
-
-Also, you need to install ```detectron2```. For example, if you use torch1.8 with cuda version 10.1, you can use the following command
-
-```bash
-pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu101/torch1.8/index.html
-```
-
-#### Train
-
-```bash
-CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --nproc_per_node=1 --master_port 5678 run_funsd.py \
-        --model_name_or_path /path/to/xdoc-pretrain-roberta-1M \
-        --output_dir camera_ready_funsd_1M \
-        --do_train \
-        --do_eval \
-        --max_steps 1000 \
-        --warmup_ratio 0.1 \
-        --fp16 \
-        --overwrite_output_dir \
-        --seed 42
-```
-
-#### Test
-
-```
-CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --nproc_per_node=1 --master_port 5678 run_funsd.py \
-        --model_name_or_path /path/to/xdoc-funsd \
-        --output_dir camera_ready_funsd_1M \
-        --do_eval \
-        --max_steps 1000 \
-        --warmup_ratio 0.1 \
-        --fp16 \
-        --overwrite_output_dir \
-        --seed 42
-
-```
 
 
 ### SQuAD
@@ -157,6 +112,71 @@ CUDA_VISIBLE_DEVICES=0 python run_squad.py \
   --overwrite_output_dir
 ```
 
+
+
+### FUNSD
+The dataset will be **automatically downloaded**. Please refer to ```./fine_tuning/funsd/```.
+
+#### Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+Also, you need to install ```detectron2```. For example, if you use torch1.8 with cuda version 10.1, you can use the following command
+
+```bash
+pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu101/torch1.8/index.html
+```
+
+#### Train
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --nproc_per_node=1 --master_port 5678 run_funsd.py \
+        --model_name_or_path /path/to/xdoc-pretrain-roberta-1M \
+        --output_dir camera_ready_funsd_1M \
+        --do_train \
+        --do_eval \
+        --max_steps 1000 \
+        --warmup_ratio 0.1 \
+        --fp16 \
+        --overwrite_output_dir \
+        --seed 42
+```
+
+#### Test
+
+```
+CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --nproc_per_node=1 --master_port 5678 run_funsd.py \
+        --model_name_or_path /path/to/xdoc-funsd \
+        --output_dir camera_ready_funsd_1M \
+        --do_eval \
+        --max_steps 1000 \
+        --warmup_ratio 0.1 \
+        --fp16 \
+        --overwrite_output_dir \
+        --seed 42
+```
+
+### WebSRC
+The dataset will be **manually downloaded**. After downloading, please modify the argument ```--web_train_file```, ```--web_eval_file```, ```web_root_dir```, and ```root_dir``` in args.py.
+
+#### Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+#### Train
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python run_docvqa.py --do_train True --do_eval True  --model_name_or_path /path/to/xdoc-docvqa
+```
+
+#### Test
+```bash
+CUDA_VISIBLE_DEVICES=0 python run_docvqa.py --do_train False --do_eval False --model_name_or_path /path/to/xdoc-docvqa
+```
 
 
 ## Result
