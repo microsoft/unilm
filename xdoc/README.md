@@ -46,7 +46,7 @@ To train XDoc on SQuADv1.1
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python run_squad.py \
-  --model_name_or_path /path/to/xdoc-pretrain-roberta-1M \
+  --model_name_or_path microsoft/xdoc-base \
   --dataset_name squad \
   --do_train \
   --do_eval \
@@ -63,7 +63,7 @@ To train XDoc on SQuADv2.0
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python run_squad.py \
-  --model_name_or_path /path/to/xdoc-pretrain-roberta-1M \
+  --model_name_or_path microsoft/xdoc-base \
   --dataset_name squad_v2 \
   --do_train \
   --do_eval \
@@ -83,7 +83,7 @@ To test XDoc on SQuADv1.1
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python run_squad.py \
-  --model_name_or_path /path/to/xdoc-squad1.1 \
+  --model_name_or_path microsoft/xdoc-base-squad1.1 \
   --dataset_name squad \
   --do_eval \
   --per_device_train_batch_size 16 \
@@ -99,7 +99,7 @@ To test XDoc on SQuADv2.0
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python run_squad.py \
-  --model_name_or_path /path/to/xdoc-squad2.0 \
+  --model_name_or_path microsoft/xdoc-base-squad2.0 \
   --dataset_name squad_v2 \
   --do_eval \
   --version_2_with_negative \
@@ -133,7 +133,7 @@ pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu101
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --nproc_per_node=1 --master_port 5678 run_funsd.py \
-        --model_name_or_path /path/to/xdoc-pretrain-roberta-1M \
+        --model_name_or_path microsoft/xdoc-base \
         --output_dir camera_ready_funsd_1M \
         --do_train \
         --do_eval \
@@ -148,7 +148,7 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --nproc_per_node=1 --m
 
 ```
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --nproc_per_node=1 --master_port 5678 run_funsd.py \
-        --model_name_or_path /path/to/xdoc-funsd \
+        --model_name_or_path microsoft/xdoc-base-funsd \
         --output_dir camera_ready_funsd_1M \
         --do_eval \
         --max_steps 1000 \
@@ -170,12 +170,12 @@ pip install -r requirements.txt
 #### Train
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python run_docvqa.py --do_train True --do_eval True  --model_name_or_path /path/to/xdoc-docvqa
+CUDA_VISIBLE_DEVICES=0 python run_docvqa.py --do_train True --do_eval True  --model_name_or_path microsoft/xdoc-base
 ```
 
 #### Test
 ```bash
-CUDA_VISIBLE_DEVICES=0 python run_docvqa.py --do_train False --do_eval False --model_name_or_path /path/to/xdoc-docvqa
+CUDA_VISIBLE_DEVICES=0 python run_docvqa.py --do_train False --do_eval False --model_name_or_path microsoft/xdoc-base-websrc
 ```
 
 
