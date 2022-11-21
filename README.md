@@ -84,6 +84,7 @@ Fundamental research to improve modeling generality and capability, as well as t
 
 
 ## News
+- November, 2022: [**TrOCR**](https://arxiv.org/abs/2109.10282) was accepted by AAAI 2023
 - [Model Release] November, 2022: [**XDoc**](https://github.com/microsoft/unilm/tree/master/xdoc) **BASE** models for cross-format document understanding.
 - [Model Release] September, 2022: [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) **BASE** and **LARGE** models for Scene Text Recognition (STR).
 - [Model Release] September, 2022: [**BEiT v2**](https://github.com/microsoft/unilm/tree/master/beit2) code and pretrained models
