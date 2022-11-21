@@ -5,7 +5,7 @@ TrOCR is an end-to-end text recognition approach with pre-trained image Transfor
 
 ![TrOCR](https://pbs.twimg.com/media/FADdTXEVgAAsTWL?format=jpg&name=4096x4096)
  
- [TrOCR: Transformer-based Optical Character Recognition with Pre-trained Models](https://arxiv.org/abs/2109.10282), Minghao Li, Tengchao Lv, Lei Cui, Yijuan Lu, Dinei Florencio, Cha Zhang, Zhoujun Li, Furu Wei, ```AAAI 2023'''.
+ [TrOCR: Transformer-based Optical Character Recognition with Pre-trained Models](https://arxiv.org/abs/2109.10282), Minghao Li, Tengchao Lv, Lei Cui, Yijuan Lu, Dinei Florencio, Cha Zhang, Zhoujun Li, Furu Wei, ```AAAI 2023```.
 
 <!-- The TrOCR is currently implemented with the fairseq library. We hope to convert the models to the Huggingface format later. -->
 The TrOCR models are also provided in the Huggingface format.[[Documentation](https://huggingface.co/docs/transformers/model_doc/trocr)][[Models](https://huggingface.co/models?filter=trocr)]
