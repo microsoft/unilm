@@ -84,13 +84,13 @@ Fundamental research to improve modeling generality and capability, as well as t
 
 
 ## News
-- November, 2022: [**TrOCR**](https://arxiv.org/abs/2109.10282) was accepted by AAAI 2023
+- November, 2022: [**TrOCR**](https://arxiv.org/abs/2109.10282) was accepted by AAAI 2023.
 - [Model Release] November, 2022: [**XDoc**](https://github.com/microsoft/unilm/tree/master/xdoc) **BASE** models for cross-format document understanding.
 - [Model Release] September, 2022: [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) **BASE** and **LARGE** models for Scene Text Recognition (STR).
 - [Model Release] September, 2022: [**BEiT v2**](https://github.com/microsoft/unilm/tree/master/beit2) code and pretrained models
 - August, 2022: [**BEiT-3**](https://arxiv.org/abs/2208.10442)- a general-purpose multimodal foundation model, which achieves state-of-the-art transfer performance on both vision and vision-language tasks
 - July, 2022: [**SimLM**](https://github.com/microsoft/unilm/tree/master/simlm) - Large-scale self-supervised pre-training for similarity matching
-- June, 2022: [**DiT**](https://arxiv.org/abs/2203.02378) and [**LayoutLMv3**](https://arxiv.org/abs/2204.08387) were accepted by ACM Multimedia 2022
+- June, 2022: [**DiT**](https://arxiv.org/abs/2203.02378) and [**LayoutLMv3**](https://arxiv.org/abs/2204.08387) were accepted by ACM Multimedia 2022.
 - June, 2022: [**MetaLM**](https://github.com/microsoft/unilm/tree/master/metalm) - Language models are general-purpose interfaces to foudation models (language/multilingual, vision, speech, and multimodal)
 - June, 2022: [**VL-BEiT**](https://github.com/microsoft/unilm/tree/master/vl-beit) - bidirectional multimodal Transformer learned from scratch with one unified pretraining task, one shared backbone, and one-stage training, supporting both vision and vision-language tasks.
 - [Model Release] June, 2022: [**LayoutLMv3 Chinese**](https://github.com/microsoft/unilm/tree/master/layoutlmv3#form-understanding-on-xfund) - Chinese version of LayoutLMv3
