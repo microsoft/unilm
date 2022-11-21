@@ -162,7 +162,7 @@ WavLM integrates the gated relative position embedding structure and the utteran
 
 **\*\*\*\*\* ```September, 2021```: [TrOCR](https://github.com/microsoft/unilm/tree/master/trocr) release \*\*\*\*\***
 
-- [x] [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) (September 22, 2021): Transformer-based OCR with pre-trained models, which leverages the Transformer architecture for both image understanding and bpe-level text generation. The TrOCR model is simple but effective (convolution free), and can be pre-trained with large-scale synthetic data and fine-tuned with human-labeled datasets. "[TrOCR: Transformer-based Optical Character Recognition with Pre-trained Models](https://arxiv.org/abs/2109.10282)"
+- [x] [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) (September 22, 2021): Transformer-based OCR with pre-trained models, which leverages the Transformer architecture for both image understanding and bpe-level text generation. The TrOCR model is simple but effective (convolution free), and can be pre-trained with large-scale synthetic data and fine-tuned with human-labeled datasets. "[TrOCR: Transformer-based Optical Character Recognition with Pre-trained Models](https://arxiv.org/abs/2109.10282) ```AAAI 2023```"
 
 **\*\*\*\*\* ```August, 2021```: [LayoutReader](https://github.com/microsoft/unilm/tree/master/layoutreader) release \*\*\*\*\***
 
