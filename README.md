@@ -4,7 +4,7 @@
 We are hiring at all levels (including FTE researchers and interns)! If you are interested in working with us on Foundation Models (aka large-scale pre-trained models) and AGI, NLP, MT, Speech, Document AI and Multimodal AI, please send your resume to <a href="mailto:fuwei@microsoft.com" class="x-hidden-focus">fuwei@microsoft.com</a>.
 
 ## AI Fundamentals
-### OpenScale - Transformers at (any) Scale
+### [TorchScale - Transformers at (any) Scale](https://github.com/microsoft/torchscale)
 
 Fundamental research to improve modeling generality and capability, as well as training stability and efficiency of scaling Transformers at any scale.
 
