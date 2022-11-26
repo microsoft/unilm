@@ -6,7 +6,7 @@ We are hiring at all levels (including FTE researchers and interns)! If you are 
 ## AI Fundamentals
 ### [TorchScale - Transformers at (any) Scale](https://github.com/microsoft/torchscale)
 
-Fundamental research to improve modeling generality and capability, as well as training stability and efficiency of scaling Transformers at any scale.
+Fundamental research to improve modeling generality and capability, as well as training stability and efficiency for Transformers at any scale.
 
 > Stability - [**DeepNet**](https://github.com/microsoft/unilm/tree/master/deepnet): scaling Transformers to 1,000 Layers and beyond
 
