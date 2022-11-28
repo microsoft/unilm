@@ -4,13 +4,13 @@
 We are hiring at all levels (including FTE researchers and interns)! If you are interested in working with us on Foundation Models (aka large-scale pre-trained models) and AGI, NLP, MT, Speech, Document AI and Multimodal AI, please send your resume to <a href="mailto:fuwei@microsoft.com" class="x-hidden-focus">fuwei@microsoft.com</a>.
 
 ## AI Fundamentals
-### [TorchScale - Transformers at (any) Scale](https://github.com/microsoft/torchscale)
+### TorchScale - Transformers at (any) Scale ([repo](https://github.com/microsoft/torchscale)
 
 Fundamental research to improve modeling generality and capability, as well as training stability and efficiency for Transformers at any scale.
 
 > Stability - [**DeepNet**](https://github.com/microsoft/unilm/tree/master/deepnet): scaling Transformers to 1,000 Layers and beyond
 
-> Generality: [**Foundation Transformers (Magneto)**](https://arxiv.org/abs/2210.06423)
+> Generality: [**Foundation Transformers (Magneto)**](https://arxiv.org/abs/2210.06423): towards true general-purpose modeling across tasks and modalities (including language, vision, speech, and multimodal)
 
 > Efficiency & Transferability - [**X-MoE**](https://github.com/microsoft/unilm/tree/master/xmoe): scalable & finetunable sparse Mixture-of-Experts (MoE)
 
