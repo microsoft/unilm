@@ -86,19 +86,19 @@ for i, (top5_label_prob, top5_label_idx) in enumerate(zip(*probs.topk(k=5))):
 
 ## Evaluation Results
 
-## Comparing with the SOTA Single Models
+### Comparing with the SOTA Single Models
 ![alt text](Evaluation_Results/Comparing_with_the_SOTA_Single_Models.png)
 
 
-## Comparing with the SOTA Ensemble Models
+### Comparing with the SOTA Ensemble Models
 ![alt text](Evaluation_Results/Comparing_with_the_SOTA_Ensemble_Models.png)
 
 
-## Comparing Different BEATS Tokenizers
+### Comparing Different BEATS Tokenizers
 ![alt text](Evaluation_Results/Comparing_Different_BEATS_Tokenizers.png)
 
 
-## Comparing Different Pre-Training Targets
+### Comparing Different Pre-Training Targets
 ![alt text](Evaluation_Results/Comparing_Different_Pre-Training_Targets.png)
 
 
