@@ -4,6 +4,6 @@ datasets>=2.2.0
 tqdm
 numpy==1.21.4
 sentencepiece==0.1.96
-protobuf==3.20.0
+protobuf==3.20.2
 beir
 mteb
