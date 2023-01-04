@@ -5,11 +5,11 @@ Liang Wang, Nan Yang, Xiaolong Huang, Binxing Jiao, Linjun Yang, Daxin Jiang, Ra
 
 ## Pre-trained Models
 
-|          | # of layers | embedding size |                              OneDrive link                               |
-|----------|:-----------:|:--------------:|:------------------------------------------------------------------------:|
-| E5-small |      6      |      384       |  [e5-small](https://1drv.ms/u/s!Ap3CZfrY6o7cgSRb_1wwJ2sxw34f?e=32vp1D)   |
-| E5-base  |      12     |      768       |   [e5-base](https://1drv.ms/u/s!Ap3CZfrY6o7cgSbGDfaT56j1Wf0Q?e=huiOWd)   |
-| E5-large |      24     |      1024      |  [e5-large](https://1drv.ms/u/s!Ap3CZfrY6o7cgSUQ-UWcZxBO1Sig?e=Tg30wc)   |
+|          | # of layers | embedding dimension | Huggingface                                                   |                              OneDrive link                               |
+|----------|:-----------:|:-------------------:|---------------------------------------------------------------|:------------------------------------------------------------------------:|
+| E5-small |     12      |         384         | [intfloat/e5-small](https://huggingface.co/intfloat/e5-small) |  [e5-small](https://1drv.ms/u/s!Ap3CZfrY6o7cgSRb_1wwJ2sxw34f?e=32vp1D)   |
+| E5-base  |     12      |         768         | [intfloat/e5-base](https://huggingface.co/intfloat/e5-base)   |   [e5-base](https://1drv.ms/u/s!Ap3CZfrY6o7cgSbGDfaT56j1Wf0Q?e=huiOWd)   |
+| E5-large |     24      |        1024         | [intfloat/e5-large](https://huggingface.co/intfloat/e5-large) |  [e5-large](https://1drv.ms/u/s!Ap3CZfrY6o7cgSUQ-UWcZxBO1Sig?e=Tg30wc)   |
 
 ## Install Python Package Requirements
 
@@ -23,10 +23,10 @@ After installing the required python packages,
 run the following command on GPU machines:
 
 ```shell
-bash scripts/eval_mteb_beir.sh /local_dir/to/model
+bash scripts/eval_mteb_beir.sh intfloat/e5-small
 ```
 
-Please replace `/local_dir/to/model` with local directory that stores the downloaded E5 model from OneDrive.
+You can also change the model name to local directory that stores the downloaded E5 model from OneDrive.
 By default,
 the evaluation script will use all the available GPUs.
 
@@ -37,7 +37,7 @@ Caution: it could take quite a long time (~10 hours) due to corpus encoding.
 Run the following command:
 
 ```shell
-bash scripts/eval_mteb.sh /local_dir/to/model
+bash scripts/eval_mteb.sh intfloat/e5-small
 ```
 
 ## Citation
