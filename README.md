@@ -52,6 +52,8 @@ Fundamental research to improve modeling generality and capability, as well as t
 ### Speech
 > [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm): speech pre-training for full stack tasks
 
+> [**VALL-E**](https://github.com/microsoft/unilm/tree/master/valle): a neural codec language model for TTS
+
 ### Multimodal (X + Language)
 > [**LayoutLM**](https://github.com/microsoft/unilm/tree/master/layoutlm)/[**LayoutLMv2**](https://github.com/microsoft/unilm/tree/master/layoutlmv2)/[**LayoutLMv3**](https://github.com/microsoft/unilm/tree/master/layoutlmv3): multimodal (text + layout/format + image) **Document Foundation Model** for [Document AI](https://www.microsoft.com/en-us/research/project/document-ai/) (e.g. scanned documents, PDF, etc.)
 
@@ -88,6 +90,7 @@ Fundamental research to improve modeling generality and capability, as well as t
 
 
 ## News
+- January, 2023: [**VALL-E**](https://arxiv.org/abs/2301.02111)-  a language modeling approach for text to speech synthesis (TTS), which achieves state-of-the-art zero-shot TTS performance. See https://aka.ms/valle for demos of our work
 - November, 2022: [**TorchScale 0.1.1**](https://github.com/microsoft/torchscale) was released!
 - November, 2022: [**TrOCR**](https://arxiv.org/abs/2109.10282) was accepted by AAAI 2023.
 - [Model Release] November, 2022: [**XDoc**](https://github.com/microsoft/unilm/tree/master/xdoc) **BASE** models for cross-format document understanding.
