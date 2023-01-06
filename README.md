@@ -90,7 +90,7 @@ Fundamental research to improve modeling generality and capability, as well as t
 
 
 ## News
-- January, 2023: [**VALL-E**](https://arxiv.org/abs/2301.02111)-  a language modeling approach for text to speech synthesis (TTS), which achieves state-of-the-art zero-shot TTS performance. See https://aka.ms/valle for demos of our work
+- January, 2023: [**VALL-E**](https://arxiv.org/abs/2301.02111)  a language modeling approach for text to speech synthesis (TTS), which achieves state-of-the-art zero-shot TTS performance. See https://aka.ms/valle for demos of our work
 - November, 2022: [**TorchScale 0.1.1**](https://github.com/microsoft/torchscale) was released!
 - November, 2022: [**TrOCR**](https://arxiv.org/abs/2109.10282) was accepted by AAAI 2023.
 - [Model Release] November, 2022: [**XDoc**](https://github.com/microsoft/unilm/tree/master/xdoc) **BASE** models for cross-format document understanding.
