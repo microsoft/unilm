@@ -168,7 +168,7 @@ class TrOCRModel(FairseqEncoderDecoderModel):
                 logger.info('Load pre-trained decoder parameters from roberta.large')                    
                 roberta = torch.hub.load('pytorch/fairseq:main', 'roberta.large')
             else:
-                raise AttributeError('Cannot determind the pre-trained model')
+                raise AttributeError('Cannot determined the pre-trained model')
 
             if 'LOCAL_RANK' in os.environ and os.environ['LOCAL_RANK'] == '0':
                 torch.distributed.barrier()
@@ -355,7 +355,7 @@ class TrOCRModel(FairseqEncoderDecoderModel):
                 logger.info('Load pre-trained decoder parameters from roberta.large')
                 roberta = torch.hub.load('pytorch/fairseq:main', 'roberta.large')
             else:
-                raise AttributeError('Cannot determind the pre-trained model')
+                raise AttributeError('Cannot determined the pre-trained model')
 
             if 'LOCAL_RANK' in os.environ and os.environ['LOCAL_RANK'] == '0':
                 torch.distributed.barrier()
