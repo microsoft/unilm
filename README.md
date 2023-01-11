@@ -138,7 +138,7 @@ Fundamental research to improve modeling generality and capability, as well as t
 
 ## Release
 
-**\*\*\*\*\* ```New Octorber, 2022```: [XDoc](https://github.com/microsoft/unilm/tree/master/xdoc) release \*\*\*\*\***
+**\*\*\*\*\* ```New October, 2022```: [XDoc](https://github.com/microsoft/unilm/tree/master/xdoc) release \*\*\*\*\***
 
 - [x] [**XDoc**](https://github.com/microsoft/unilm/tree/master/xdoc) (October 7, 2022): XDoc, a unified pre-trained model which deals with different document formats in a single model. For parameter efficiency, we share backbone parameters for different formats such as the word embedding layer and the Transformer layers. Meanwhile, we introduce adaptive layers with lightweight parameters to enhance the distinction across different formats. Experimental results have demonstrated that with only 36.7% parameters, XDoc achieves comparable or even better performance on a variety of downstream tasks compared with the individual pre-trained models, which is cost effective for real-world deployment. "[XDoc: Unified Pre-training for Cross-Format Document Understanding](https://arxiv.org/abs/2210.02849) ```EMNLP 2022```"
 
