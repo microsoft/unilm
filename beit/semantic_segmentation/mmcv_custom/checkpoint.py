@@ -129,9 +129,9 @@ def load_pavimodel_dist(model_path, map_location=None):
     rank 0."""
     try:
         from pavi import modelcloud
-    except ImportError:
+    except ImportError as e:
         raise ImportError(
-            'Please install pavi to load checkpoint from modelcloud.')
+            'Please install pavi to load checkpoint from modelcloud.') from e
     rank, world_size = get_dist_info()
     rank = int(os.environ.get('LOCAL_RANK', rank))
     if rank == 0:
@@ -603,9 +603,9 @@ def save_checkpoint(model, filename, optimizer=None, meta=None):
         try:
             from pavi import modelcloud
             from pavi.exception import NodeNotFoundError
-        except ImportError:
+        except ImportError as e:
             raise ImportError(
-                'Please install pavi to load checkpoint from modelcloud.')
+                'Please install pavi to load checkpoint from modelcloud.') from e
         model_path = filename[7:]
         root = modelcloud.Folder()
         model_dir, model_name = osp.split(model_path)
