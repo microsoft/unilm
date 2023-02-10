@@ -5,11 +5,16 @@ Liang Wang, Nan Yang, Xiaolong Huang, Binxing Jiao, Linjun Yang, Daxin Jiang, Ra
 
 ## Pre-trained Models
 
-|          | # of layers | embedding dimension | Huggingface                                                   |                              OneDrive link                               |
-|----------|:-----------:|:-------------------:|---------------------------------------------------------------|:------------------------------------------------------------------------:|
-| E5-small |     12      |         384         | [intfloat/e5-small](https://huggingface.co/intfloat/e5-small) |  [e5-small](https://1drv.ms/u/s!Ap3CZfrY6o7cgSRb_1wwJ2sxw34f?e=32vp1D)   |
-| E5-base  |     12      |         768         | [intfloat/e5-base](https://huggingface.co/intfloat/e5-base)   |   [e5-base](https://1drv.ms/u/s!Ap3CZfrY6o7cgSbGDfaT56j1Wf0Q?e=huiOWd)   |
-| E5-large |     24      |        1024         | [intfloat/e5-large](https://huggingface.co/intfloat/e5-large) |  [e5-large](https://1drv.ms/u/s!Ap3CZfrY6o7cgSUQ-UWcZxBO1Sig?e=Tg30wc)   |
+|          | # of layers | embedding dimension | Huggingface                                                                |                              OneDrive link                               |
+|----------|:-----------:|:-------------------:|----------------------------------------------------------------------------|:------------------------------------------------------------------------:|
+| E5-small |     12      |         384         | [intfloat/e5-small](https://huggingface.co/intfloat/e5-small)              |  [e5-small](https://1drv.ms/u/s!Ap3CZfrY6o7cgSRb_1wwJ2sxw34f?e=32vp1D)   |
+| E5-base  |     12      |         768         | [intfloat/e5-base](https://huggingface.co/intfloat/e5-base)                |   [e5-base](https://1drv.ms/u/s!Ap3CZfrY6o7cgSbGDfaT56j1Wf0Q?e=huiOWd)   |
+| E5-large |     24      |        1024         | [intfloat/e5-large](https://huggingface.co/intfloat/e5-large)              |  [e5-large](https://1drv.ms/u/s!Ap3CZfrY6o7cgSUQ-UWcZxBO1Sig?e=Tg30wc)   |
+| E5-small-unsupervised |     12      |         384         | [intfloat/e5-small-unsupervised](https://huggingface.co/intfloat/e5-small-unsupervised) |     |
+| E5-base-unsupervised  |     12      |         768         | [intfloat/e5-base-unsupervised](https://huggingface.co/intfloat/e5-base-unsupervised)                |      |
+| E5-large-unsupervised |     24      |        1024         | [intfloat/e5-large-unsupervised](https://huggingface.co/intfloat/e5-large-unsupervised)              |     |
+
+The models with `-unsupervised` suffix only pre-trains on unlabeled datasets.
 
 ## Install Python Package Requirements
 
