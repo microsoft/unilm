@@ -17,9 +17,9 @@ Official PyTorch implementation and pretrained models of WavLM
 ## Pre-Trained Models
 Model | Pre-training Dataset | Fine-tuning Dataset | Model
 |---|---|---|---
-WavLM Base |  [960 hrs LibriSpeech](http://www.openslr.org/12)| -  | [Azure Storage](https://msranlcmtteamdrive.blob.core.windows.net/share/wavlm/WavLM-Base.pt?sv=2020-08-04&st=2022-11-11T04%3A48%3A41Z&se=2023-11-12T04%3A48%3A00Z&sr=b&sp=r&sig=ijzDudpNmXlD3VDtHC3l6jkyCsA7NcwlzamFup7guIE%3D) <br> [Google Drive](https://drive.google.com/file/d/1BhTPLUkfN6e2xkqR8LEm9lByXbLY1IYd/view?usp=share_link)
-WavLM Base+ | [60k hrs Libri-Light](https://github.com/facebookresearch/libri-light) + [10k hrs GigaSpeech](https://github.com/SpeechColab/GigaSpeech) + [24k hrs VoxPopuli](https://github.com/facebookresearch/voxpopuli/tree/main)| -  |  [Azure Storage](https://msranlcmtteamdrive.blob.core.windows.net/share/wavlm/WavLM-Base+.pt?sv=2020-08-04&st=2022-11-11T04%3A49%3A19Z&se=2023-11-12T04%3A49%3A00Z&sr=b&sp=r&sig=h0IVMLf2HQ3xV8EvslQYeo1O9DwHCB4CIYpG60fzjno%3D) <br> [Google Drive](https://drive.google.com/file/d/1-zlAj2SyVJVsbhifwpTlAfrgc9qu-HDb/view?usp=share_link) 
-WavLM Large | [60k hrs Libri-Light](https://github.com/facebookresearch/libri-light) + [10k hrs GigaSpeech](https://github.com/SpeechColab/GigaSpeech) + [24k hrs VoxPopuli](https://github.com/facebookresearch/voxpopuli/tree/main)| -  | [Azure Storage](https://msranlcmtteamdrive.blob.core.windows.net/share/wavlm/WavLM-Large.pt?sv=2020-08-04&st=2022-11-11T04%3A49%3A54Z&se=2023-11-12T04%3A49%3A00Z&sr=b&sp=r&sig=7jUNrI8FgkE6amYy1ge4Lqj0JhdNUxCCA1KF89YvV8s%3D) <br> [Google Drive](https://drive.google.com/file/d/12-cB34qCTvByWT-QtOcZaqwwO21FLSqU/view?usp=share_link) 
+WavLM Base |  [960 hrs LibriSpeech](http://www.openslr.org/12)| -  | [Azure Storage](https://valle.blob.core.windows.net/share/wavlm/WavLM-Base.pt?sv=2020-08-04&st=2023-03-01T07%3A51%3A05Z&se=2033-03-02T07%3A51%3A00Z&sr=c&sp=rl&sig=QJXmSJG9DbMKf48UDIU1MfzIro8HQOf3sqlNXiflY1I%3D) <br> [Google Drive](https://drive.google.com/file/d/1BhTPLUkfN6e2xkqR8LEm9lByXbLY1IYd/view?usp=share_link)
+WavLM Base+ | [60k hrs Libri-Light](https://github.com/facebookresearch/libri-light) + [10k hrs GigaSpeech](https://github.com/SpeechColab/GigaSpeech) + [24k hrs VoxPopuli](https://github.com/facebookresearch/voxpopuli/tree/main)| -  |  [Azure Storage](https://valle.blob.core.windows.net/share/wavlm/WavLM-Base+.pt?sv=2020-08-04&st=2023-03-01T07%3A51%3A05Z&se=2033-03-02T07%3A51%3A00Z&sr=c&sp=rl&sig=QJXmSJG9DbMKf48UDIU1MfzIro8HQOf3sqlNXiflY1I%3D) <br> [Google Drive](https://drive.google.com/file/d/1-zlAj2SyVJVsbhifwpTlAfrgc9qu-HDb/view?usp=share_link) 
+WavLM Large | [60k hrs Libri-Light](https://github.com/facebookresearch/libri-light) + [10k hrs GigaSpeech](https://github.com/SpeechColab/GigaSpeech) + [24k hrs VoxPopuli](https://github.com/facebookresearch/voxpopuli/tree/main)| -  | [Azure Storage](https://valle.blob.core.windows.net/share/wavlm/WavLM-Large.pt?sv=2020-08-04&st=2023-03-01T07%3A51%3A05Z&se=2033-03-02T07%3A51%3A00Z&sr=c&sp=rl&sig=QJXmSJG9DbMKf48UDIU1MfzIro8HQOf3sqlNXiflY1I%3D) <br> [Google Drive](https://drive.google.com/file/d/12-cB34qCTvByWT-QtOcZaqwwO21FLSqU/view?usp=share_link) 
 
 ## Load Pre-Trained Models
 
@@ -36,10 +36,14 @@ model.eval()
 
 # extract the representation of last layer
 wav_input_16khz = torch.randn(1,10000)
+if cfg.normalize:
+    wav_input_16khz = torch.nn.functional.layer_norm(wav_input_16khz , wav_input_16khz.shape)
 rep = model.extract_features(wav_input_16khz)[0]
 
 # extract the representation of each layer
 wav_input_16khz = torch.randn(1,10000)
+if cfg.normalize:
+    wav_input_16khz = torch.nn.functional.layer_norm(wav_input_16khz , wav_input_16khz.shape)
 rep, layer_results = model.extract_features(wav_input_16khz, output_layer=model.cfg.encoder_layers, ret_layer_results=True)[0]
 layer_reps = [x.transpose(0, 1) for x, _ in layer_results]
 ```
