@@ -23,9 +23,9 @@ The following models will be also added to this repo ASAP:
 
 ## How to Use
 
-### From huggingface model hub
+### From Hugging Face model hub
 
-We provide the models in huggingface format, so you can use the model directly with huggingface API:
+We provide the models in Hugging Face format, so you can use the model directly with Hugging Face API:
 
 **XLM-Align**
 ```python
