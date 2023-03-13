@@ -93,13 +93,15 @@ Fundamental research to improve modeling generality and capability, as well as t
 
 
 ## News
-- January, 2023: [**VALL-E**](https://arxiv.org/abs/2301.02111)  a language modeling approach for text to speech synthesis (TTS), which achieves state-of-the-art zero-shot TTS performance. See https://aka.ms/valle for demos of our work
+- [Model Release] March, 2023: [**BEiT-3**](https://github.com/microsoft/unilm/tree/master/beit3) pretrained models and code.
+- March, 2023: [**Kosmos-1**](https://arxiv.org/abs/2302.14045) - a Multimodal Large Language Model (MLLM) that can perceive general modalities, learn in context (i.e., few-shot), and follow instructions (i.e., zero-shot).
+- January, 2023: [**VALL-E**](https://arxiv.org/abs/2301.02111) a language modeling approach for text to speech synthesis (TTS), which achieves state-of-the-art zero-shot TTS performance. See https://aka.ms/valle for demos of our work.
 - November, 2022: [**TorchScale 0.1.1**](https://github.com/microsoft/torchscale) was released!
 - November, 2022: [**TrOCR**](https://arxiv.org/abs/2109.10282) was accepted by AAAI 2023.
 - [Model Release] November, 2022: [**XDoc**](https://github.com/microsoft/unilm/tree/master/xdoc) **BASE** models for cross-format document understanding.
 - [Model Release] September, 2022: [**TrOCR**](https://github.com/microsoft/unilm/tree/master/trocr) **BASE** and **LARGE** models for Scene Text Recognition (STR).
-- [Model Release] September, 2022: [**BEiT v2**](https://github.com/microsoft/unilm/tree/master/beit2) code and pretrained models
-- August, 2022: [**BEiT-3**](https://arxiv.org/abs/2208.10442)- a general-purpose multimodal foundation model, which achieves state-of-the-art transfer performance on both vision and vision-language tasks
+- [Model Release] September, 2022: [**BEiT v2**](https://github.com/microsoft/unilm/tree/master/beit2) code and pretrained models.
+- August, 2022: [**BEiT-3**](https://arxiv.org/abs/2208.10442) - a general-purpose multimodal foundation model, which achieves state-of-the-art transfer performance on both vision and vision-language tasks
 - July, 2022: [**SimLM**](https://github.com/microsoft/unilm/tree/master/simlm) - Large-scale self-supervised pre-training for similarity matching
 - June, 2022: [**DiT**](https://arxiv.org/abs/2203.02378) and [**LayoutLMv3**](https://arxiv.org/abs/2204.08387) were accepted by ACM Multimedia 2022.
 - June, 2022: [**MetaLM**](https://github.com/microsoft/unilm/tree/master/metalm) - Language models are general-purpose interfaces to foudation models (language/multilingual, vision, speech, and multimodal)
