@@ -96,7 +96,7 @@ Fundamental research to improve modeling generality and capability, as well as t
 - [Model Release] March, 2023: [**BEiT-3**](https://github.com/microsoft/unilm/tree/master/beit3) pretrained models and code.
 - March, 2023: [**Kosmos-1**](https://arxiv.org/abs/2302.14045) - a Multimodal Large Language Model (MLLM) that can perceive general modalities, learn in context (i.e., few-shot), and follow instructions (i.e., zero-shot).
 - January, 2023: [**VALL-E**](https://arxiv.org/abs/2301.02111) a language modeling approach for text to speech synthesis (TTS), which achieves state-of-the-art zero-shot TTS performance. See https://aka.ms/valle for demos of our work.
-- [Model Release] January, 2023: [**E5**](https://github.com/microsoft/unilm/tree/master/e5) Text Embeddings by Weakly-Supervised Contrastive Pre-training.
+- [Model Release] January, 2023: [**E5**](https://github.com/microsoft/unilm/tree/master/e5) - Text Embeddings by Weakly-Supervised Contrastive Pre-training.
 - November, 2022: [**TorchScale 0.1.1**](https://github.com/microsoft/torchscale) was released!
 - November, 2022: [**TrOCR**](https://arxiv.org/abs/2109.10282) was accepted by AAAI 2023.
 - [Model Release] November, 2022: [**XDoc**](https://github.com/microsoft/unilm/tree/master/xdoc) **BASE** models for cross-format document understanding.
