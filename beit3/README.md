@@ -42,6 +42,10 @@ We provide BEiT-3 weights pretrained on monomodal and multimodal data. Our large
    - [`BEiT3-base-indomain`](https://conversationhub.blob.core.windows.net/beit-share-public/beit3/pretraining/beit3_base_indomain_patch16_224.pth): #layer=12; hidden=768; FFN factor=4x; #head=12; patch=16x16; #parameters: 276M
    - [`BEiT3-large-indomain`](https://conversationhub.blob.core.windows.net/beit-share-public/beit3/pretraining/beit3_large_indomain_patch16_224.pth): #layer=24; hidden=1024; FFN factor=4x; #head=16; patch=16x16; #parameters: 746M
 
+### Architecture
+
+We use [Magneto](https://arxiv.org/abs/2210.06423) with decoupled Multiway Transformer as the backbone architecture. The implementation is based on the [torchscale](https://github.com/microsoft/torchscale/blob/main/torchscale/model/BEiT3.py) package.
+
 
 ## Setup
 
