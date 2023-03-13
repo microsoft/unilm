@@ -1,8 +1,15 @@
 # [BEiT: BERT Pre-Training of Image Transformers](https://arxiv.org/abs/2106.08254)
 
-Official PyTorch implementation and pretrained models of BEiT. The code and pretrained models of **BEiT v2** can be found at [here](https://github.com/microsoft/unilm/tree/master/beit2).
+Official PyTorch implementation and pretrained models of BEiT. 
 
-- Sept 2022: release [the code and pretrained models of BEiT v2](https://github.com/microsoft/unilm/tree/master/beit2)
+The code and pretrained models of **BEiT v2** can be found at [here](https://github.com/microsoft/unilm/tree/master/beit2).
+
+The code and pretrained models of **BEiT-3** can be found at [here](https://github.com/microsoft/unilm/tree/master/beit3).
+
+- March, 2023: release [the code and pretrained models of **BEiT-3**](https://github.com/microsoft/unilm/tree/master/beit3)
+- March, 2023: [**BEiT-3**](https://arxiv.org/abs/2208.10442) was accepted by **CVPR 2023**.
+- Sept 2022: release [the code and pretrained models of **BEiT v2**](https://github.com/microsoft/unilm/tree/master/beit2)
+- Aug 2022: release preprint [Image as a Foreign Language: BEiT Pretraining for All Vision and Vision-Language Tasks](https://arxiv.org/abs/2208.10442)
 - Aug 2022: release preprint [BEiT v2: Masked Image Modeling with Vector-Quantized Visual Tokenizers](https://arxiv.org/abs/2208.06366)
 - June 2022: release preprint [VL-BEiT: Generative Vision-Language Pretraining](https://arxiv.org/abs/2206.01127)
 - March, 2022: add [linear probe examples](https://github.com/microsoft/unilm/blob/master/beit/get_started_for_image_classification.md#example-linear-probe-on-imagenet)
@@ -10,9 +17,8 @@ Official PyTorch implementation and pretrained models of BEiT. The code and pret
 - August 2021: [**BEiT**](https://huggingface.co/transformers/master/model_doc/beit.html) is on [HuggingFace](https://github.com/huggingface/transformers)
 - July 2021: BEiT-large achieves **[state-of-the-art results on ADE20K](https://paperswithcode.com/sota/semantic-segmentation-on-ade20k) (a big jump to 57.0 mIoU) for semantic segmentation**.
 - July 2021: BEiT-large achieves **state-of-the-art ImageNet top-1 accuracy (88.6%) under the setting without extra data other than ImageNet-22k**.
-- July 2021: release code and pretrained checkpoints (BEiT-base and BEiT-large)
-- June 2021: release preprint in [arXiv](https://arxiv.org/abs/2106.08254)
-
+- July 2021: release [the code and pretrained models of **BEiT**](https://github.com/microsoft/unilm/tree/master/beit)
+- June 2021: release preprint [BEiT: BERT Pre-Training of Image Transformers](https://arxiv.org/abs/2106.08254)
 
 ---
 
