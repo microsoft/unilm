@@ -22,7 +22,7 @@
     nlvr2/
 ```
 
-We then generate the index json files using the following command:
+We then generate the index json files using the following command. [beit3.spm](https://conversationhub.blob.core.windows.net/beit-share-public/beit3/sentencepiece/beit3.spm) is the sentencepiece model used for tokenizing texts.
 ```
 from datasets import NLVR2Dataset
 from transformers import XLMRobertaTokenizer

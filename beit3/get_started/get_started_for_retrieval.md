@@ -43,7 +43,7 @@ RetrievalDataset.make_coco_dataset_index(
   dataset_flickr30k.json
 ```
 
-We then generate the index json files using the following command:
+We then generate the index json files using the following command. [beit3.spm](https://conversationhub.blob.core.windows.net/beit-share-public/beit3/sentencepiece/beit3.spm) is the sentencepiece model used for tokenizing texts.
 ```
 from datasets import RetrievalDataset
 from transformers import XLMRobertaTokenizer
@@ -87,9 +87,9 @@ python -m torch.distributed.launch --nproc_per_node=16 run_beit3_finetuning.py \
 - `--batch_size`: batch size per GPU. Effective batch size = `number of GPUs` * `--batch_size` * `--update_freq`. So in the above example, the effective batch size is `192*16 = 3072`.
 - `--finetune`: weight path of your pretrained models; please download the pretrained model weights in [README.md](../README.md#pretrained-models)
 - `--task`: **coco_retrieval** for COCO retrieval, **flickr30k** for Flickr30k retrieval
-- `--lr`: 2e-4 for coco retrieval, 1e-4 for Flickr30k retrieval
-- `--epochs`: 15 for coco retrieval, 20 for Flickr30k retrieval
-- `--warmup_epochs`: 3 for coco retrieval, 5 for Flickr30k retrieval
+- `--lr`: 2e-4 for COCO retrieval, 1e-4 for Flickr30k retrieval
+- `--epochs`: 15 for COCO retrieval, 20 for Flickr30k retrieval
+- `--warmup_epochs`: 3 for COCO retrieval, 5 for Flickr30k retrieval
 - `--checkpoint_activations`: using gradient checkpointing for saving GPU memory
 
 
@@ -121,8 +121,8 @@ python -m torch.distributed.launch --nproc_per_node=16 --nnodes=2 --node_rank=$N
 - `--batch_size`: batch size per GPU. Effective batch size = `number of GPUs` * `--batch_size` * `--update_freq`. So in the above example, the effective batch size is `96*32 = 3072`.
 - `--finetune`: weight path of your pretrained models; please download the pretrained model weights in [README.md](../README.md#pretrained-models)
 - `--task`: **coco_retrieval** for COCO retrieval, **flickr30k** for Flickr30k retrieval
-- `--epochs`: 15 for coco retrieval, 20 for Flickr30k retrieval
-- `--warmup_epochs`: 3 for coco retrieval, 5 for Flickr30k retrieval
+- `--epochs`: 15 for COCO retrieval, 20 for Flickr30k retrieval
+- `--warmup_epochs`: 3 for COCO retrieval, 5 for Flickr30k retrieval
 - `--checkpoint_activations`: using gradient checkpointing for saving GPU memory
 
 
