@@ -91,8 +91,8 @@ Fundamental research to improve modeling generality and capability, as well as t
 
 > [**XLM-T**](https://github.com/microsoft/unilm/tree/master/xlmt): multilingual NMT w/ pretrained cross-lingual encoders
 
-## LLMOps
-### General technology for enabling AI capabilities w/ LLMs and MLLMs ([repo](https://github.com/microsoft/lmops))
+## Links
+### LLMOps - General technology for enabling AI capabilities w/ LLMs and MLLMs ([repo](https://github.com/microsoft/lmops))
 
 ## News
 - [Model Release] March, 2023: [**BEiT-3**](https://github.com/microsoft/unilm/tree/master/beit3) pretrained models and code.
