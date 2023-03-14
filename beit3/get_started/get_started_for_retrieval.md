@@ -128,7 +128,7 @@ python -m torch.distributed.launch --nproc_per_node=16 --nnodes=2 --node_rank=$N
 
 ## Example: Evaluate BEiT-3 Fine-tuned model on COCO Retrieval and Flickr30k Retrieval
 
-- Get the prediction file of our fine-tuned BEiT3-base model on retrieval tasks using a single GPU:
+- Get the results of our fine-tuned BEiT3-base model on retrieval tasks using a single GPU:
 ```bash       
 python -m torch.distributed.launch --nproc_per_node=1 run_beit3_finetuning.py \
         --model beit3_base_patch16_384 \
@@ -144,9 +144,9 @@ python -m torch.distributed.launch --nproc_per_node=1 run_beit3_finetuning.py \
 - `--task`: **coco_retrieval** for COCO retrieval, **flickr30k** for Flickr30k retrieval
 - `--finetune`: **beit3_base_patch16_384_coco_retrieval.pth** for COCO retrieval, **beit3_base_patch16_384_f30k_retrieval.pth** for Flickr30k retrieval
 
-- Get the prediction file of our fine-tuned BEiT3-large model on retrieval tasks using a single GPU:
+- Get the results of our fine-tuned BEiT3-large model on retrieval tasks using a single GPU:
 ```bash       
-python -m torch.distributed.launch --nproc_per_node=8 run_beit3_finetuning.py \
+python -m torch.distributed.launch --nproc_per_node=1 run_beit3_finetuning.py \
         --model beit3_large_patch16_384 \
         --input_size 384 \
         --task coco_retrieval \
