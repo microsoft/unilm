@@ -19,4 +19,4 @@ transformers
 deepspeed==0.4.0
 pycocotools
 pycocoevalcap
-git+https://github.com/microsoft/torchscale.git
+torchscale==0.2.0
