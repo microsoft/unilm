@@ -17,7 +17,7 @@ from mteb import MTEB
 from utils import logger, pool, move_to_cuda
 
 parser = argparse.ArgumentParser(description='evaluation for MTEB benchmark except its Retrieval category')
-parser.add_argument('--task-types', nargs='+', default=['sts'], help='task types to evaluate')
+parser.add_argument('--task-types', nargs='+', default=[], help='task types to evaluate')
 parser.add_argument('--output-dir', default='',
                     type=str, metavar='N', help='output directory')
 parser.add_argument('--model-name-or-path', default='tmp-outputs/',
@@ -25,6 +25,7 @@ parser.add_argument('--model-name-or-path', default='tmp-outputs/',
 parser.add_argument('--l2-normalize', action='store_true', help='whether to l2 normalize embeddings')
 parser.add_argument('--pool-type', default='avg', help='pool type')
 parser.add_argument('--prompt', default='query: ', help='prompt')
+parser.add_argument('--multilingual', action='store_true', help='whether to use multilingual model')
 
 args = parser.parse_args()
 logger.info('Args: {}'.format(json.dumps(args.__dict__, ensure_ascii=False, indent=4)))
@@ -101,10 +102,9 @@ def main():
     args.task_types = [t for t in args.task_types if t.strip()]
     evaluation = MTEB(
         task_types=args.task_types or None,
-        task_langs=['en'])
+        task_langs=['en'] if not args.multilingual else None)
     evaluation.run(model, eval_splits=["test"],
-                   output_folder=args.output_dir,
-                   overwrite_results=False)
+                   output_folder=args.output_dir)
 
 
 if __name__ == '__main__':

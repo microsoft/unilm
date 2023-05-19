@@ -3,7 +3,7 @@
 [Text Embeddings by Weakly-Supervised Contrastive Pre-training](https://arxiv.org/pdf/2212.03533.pdf).
 Liang Wang, Nan Yang, Xiaolong Huang, Binxing Jiao, Linjun Yang, Daxin Jiang, Rangan Majumder, Furu Wei, arXiv 2022
 
-## Pre-trained Models
+## English Pre-trained Models
 
 |                       | BEIR | # of layers | embedding dimension | Huggingface                                                                             |                              OneDrive link                               |
 |-----------------------|------|:-----------:|:-------------------:|-----------------------------------------------------------------------------------------|:------------------------------------------------------------------------:|
@@ -20,6 +20,12 @@ Liang Wang, Nan Yang, Xiaolong Huang, Binxing Jiao, Linjun Yang, Daxin Jiang, Ra
 | E5-large-unsupervised | 44.2 |     24      |        1024         | [intfloat/e5-large-unsupervised](https://huggingface.co/intfloat/e5-large-unsupervised) |     |
 
 The models with `-unsupervised` suffix only pre-trains on unlabeled datasets.
+
+## Multilingual Pre-trained Models
+
+|                      | BEIR | # of layers | embedding dimension | Huggingface                                                                           |
+|----------------------|------|:-----------:|:-------------------:|---------------------------------------------------------------------------------------|
+| multilingual-e5-base | 48.9 |     12      |         768         | [intfloat/multilingual-e5-base](https://huggingface.co/intfloat/multilingual-e5-base) |
 
 ## Install Python Package Requirements
 
@@ -48,6 +54,12 @@ Run the following command:
 
 ```shell
 bash scripts/eval_mteb.sh intfloat/e5-small
+```
+
+For multilingual models, simply add a `--multilingual` suffix:
+
+```shell
+bash scripts/eval_mteb.sh intfloat/multilingual-e5-base --multilingual
 ```
 
 ## Citation

@@ -20,7 +20,7 @@ mkdir -p "${OUTPUT_DIR}"
 
 python -u mteb_eval.py \
     --model-name-or-path "${MODEL_NAME_OR_PATH}" \
-    --task-types "STS" "Summarization" "PairClassification" "Classification" "Reranking" "Clustering" \
+    --task-types "STS" "Summarization" "PairClassification" "Classification" "Reranking" "Clustering" "BitextMining" \
     --pool-type avg \
     --prompt "query: " \
     --output-dir "${OUTPUT_DIR}" "$@"
