@@ -112,7 +112,7 @@ CUDA_VISIBLE_DEVICES=0 python inference.py \
 
 ## :chart_with_upwards_trend:	Experimental Results
 
-<img src="assets/readme_images/compare.jpg" width="90%">
+<img src="assets/readme_images/compare.jpg" width="75%">
 
 The performance of text-to-image on MARIO-Eval compared with existing methods. TextDiffuser performs
 the best regarding CLIPScore and OCR evaluation while achieving comparable performance on FID.
