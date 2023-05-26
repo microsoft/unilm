@@ -1,0 +1,12 @@
+datasets==2.11.0
+numpy==1.24.2
+opencv-python==4.1.2.30
+pillow==5.2.0
+tokenizers==0.13.3
+transformers==4.27.4
+xformers==0.0.16
+accelerate==0.18.0
+triton==2.0.0.post1
+termcolor==2.3.0
+tinydb
+flask
