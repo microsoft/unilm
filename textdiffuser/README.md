@@ -149,10 +149,6 @@ For help or issues using TextDiffuser, please email Jingye Chen (qwerty.chen@con
 
 For other communications related to TextDiffuser, please contact Lei Cui (lecu@microsoft.com) or Furu Wei (fuwei@microsoft.com).
 
-## :page_facing_up:	License
-The content of this project itself is licensed under the Attribution-NonCommercial-ShareAlike 4.0 International [(CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/).
-
-
 ## :herb: Citation
 If you find this code useful in your research, please consider citing:
 ```
