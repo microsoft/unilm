@@ -50,7 +50,9 @@ Fundamental research to improve modeling generality and capability, as well as t
 ### Vision
 > [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit)/[**BEiT-2**](https://github.com/microsoft/unilm/tree/master/beit2): generative self-supervised pre-training for vision / BERT Pre-Training of Image Transformers
 
-> [**DiT**](https://github.com/microsoft/unilm/tree/master/dit) (```NEW```): self-supervised pre-training for Document Image Transformers
+> [**DiT**](https://github.com/microsoft/unilm/tree/master/dit): self-supervised pre-training for Document Image Transformers
+
+> [**TextDiffuser**](https://github.com/microsoft/unilm/tree/master/textdiffuser) (```NEW```): Diffusion Models as Text Painters
 
 ### Speech
 > [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm): speech pre-training for full stack tasks
@@ -95,6 +97,7 @@ Fundamental research to improve modeling generality and capability, as well as t
 ### LLMOps - General technology for enabling AI capabilities w/ LLMs and MLLMs ([repo](https://github.com/microsoft/lmops))
 
 ## News
+- [Model Release] May, 2023: [**TextDiffuser**](https://github.com/microsoft/unilm/tree/master/textdiffuser) models and code.
 - [Model Release] March, 2023: [**BEiT-3**](https://github.com/microsoft/unilm/tree/master/beit3) pretrained models and code.
 - March, 2023: [**Kosmos-1**](https://arxiv.org/abs/2302.14045) - a Multimodal Large Language Model (MLLM) that can perceive general modalities, learn in context (i.e., few-shot), and follow instructions (i.e., zero-shot).
 - January, 2023: [**VALL-E**](https://arxiv.org/abs/2301.02111) a language modeling approach for text to speech synthesis (TTS), which achieves state-of-the-art zero-shot TTS performance. See https://aka.ms/valle for demos of our work.
