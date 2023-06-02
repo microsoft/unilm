@@ -1,9 +1,9 @@
 # TextDiffuser: Diffusion Models as Text Painters
 
 <a href='https://arxiv.org/pdf/2305.10855.pdf'><img src='https://img.shields.io/badge/Arxiv-2305.10855-red'>
-<a href='https://github.com/microsoft/unilm/tree/master/textdiffuser'><img src='https://img.shields.io/badge/Code-aka.ms/diffuser-yellow'>
+<a href='https://github.com/microsoft/unilm/tree/master/textdiffuser'><img src='https://img.shields.io/badge/Code-aka.ms/textdiffuser-yellow'>
 <a href='https://jingyechen.github.io/textdiffuser/'><img src='https://img.shields.io/badge/Project Page-link-green'>
-</a> [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-TextDiffuser-blue)]()
+</a> [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-TextDiffuser-blue)](https://huggingface.co/spaces/microsoft/TextDiffuser)
 
 
 TextDiffuser generates images with visually appealing text that is coherent with backgrounds. It is flexible and controllable to create high-quality text images using text prompts alone or together with text template images, and conduct text inpainting to reconstruct incomplete images with text.
@@ -20,6 +20,7 @@ TextDiffuser generates images with visually appealing text that is coherent with
 
 ## :stopwatch: News
 
+- __[2023.06.02]__: :raised_hands:	:raised_hands:	:raised_hands:	Demo is available in this [link](https://huggingface.co/spaces/microsoft/TextDiffuser).
 - __[2023.05.26]__: Upload the inference code and checkpoint.
 
 ## :hammer_and_wrench: Installation
@@ -112,7 +113,7 @@ CUDA_VISIBLE_DEVICES=0 python inference.py \
 
 ## :chart_with_upwards_trend:	Experimental Results
 
-<img src="assets/readme_images/compare.jpg" width="75%">
+<img src="assets/readme_images/compare.jpg" width="90%">
 
 The performance of text-to-image on MARIO-Eval compared with existing methods. TextDiffuser performs
 the best regarding CLIPScore and OCR evaluation while achieving comparable performance on FID.
@@ -121,6 +122,17 @@ the best regarding CLIPScore and OCR evaluation while achieving comparable perfo
 
 User studies for whole-image generation and part-image generation tasks. (a) For whole-image generation, our method clearly outperforms others in both aspects of text rendering quality and image-text matching. (b) For part-image generation, our method receives high scores from human evaluators in these two aspects.
 
+
+## :joystick:	Demo
+TextDiffuser has been deployed on [Hugging Face](https://huggingface.co/spaces/microsoft/TextDiffuser). If you have advanced GPUs, you may deploy the demo locally as follows:
+
+```python
+CUDA_VISIBLE_DEVICES=0 python gradio_app.py
+```
+
+Then you can enjoy the demo with local browser:  
+
+<img src="assets/readme_images/demo.jpg" width="90%">
 
 
 
@@ -148,6 +160,10 @@ Also, special thanks to the open-source diffusion project or available demo: [DA
 For help or issues using TextDiffuser, please email Jingye Chen (qwerty.chen@connect.ust.hk), Yupan Huang (huangyp28@mail2.sysu.edu.cn) or submit a GitHub issue.
 
 For other communications related to TextDiffuser, please contact Lei Cui (lecu@microsoft.com) or Furu Wei (fuwei@microsoft.com).
+
+## :page_facing_up:	License
+The content of this project itself is licensed under the Attribution-NonCommercial-ShareAlike 4.0 International [(CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+
 
 ## :herb: Citation
 If you find this code useful in your research, please consider citing:
