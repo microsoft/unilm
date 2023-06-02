@@ -25,6 +25,24 @@ for index, c in enumerate(alphabet):
     alphabet_dic[c] = index + 1 # the index 0 stands for non-character
     
 
+
+def transform_mask_pil(mask_root):
+    """
+    This function extracts the mask area and text area from the images.
+    
+    Args:
+        mask_root (str): The path of mask image.
+            * The white area is the unmasked area
+            * The gray area is the masked area
+            * The white area is the text area
+    """
+    img = np.array(mask_root)
+    img = cv2.resize(img, (512, 512), interpolation=cv2.INTER_NEAREST)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    ret, binary = cv2.threshold(gray, 250, 255, cv2.THRESH_BINARY) # pixel value is set to 0 or 255 according to the threshold
+    return 1 - (binary.astype(np.float32) / 255) 
+    
+
 def transform_mask(mask_root: str):
     """
     This function extracts the mask area and text area from the images.
@@ -149,6 +167,42 @@ def combine_image(args, sub_output_dir: str, pred_image_list: List, image_pil: I
     
     return blank.convert('RGB')
     
+    
+def combine_image_gradio(args, sub_output_dir: str, pred_image_list: List, image_pil: Image, character_mask_pil: Image, character_mask_highlight_pil: Image, caption_pil_list: List):
+    """
+    This function combines all the outputs and useful inputs together.
+    
+    Args:
+        args (argparse.ArgumentParser): The arguments.
+        pred_image_list (List): List of predicted images.
+        image_pil (Image): The original image.
+        character_mask_pil (Image): The character-level segmentation mask.
+        character_mask_highlight_pil (Image): The character-level segmentation mask highlighting character regions with green color.
+        caption_pil_list (List): List of captions.
+    """
+    
+    size = len(pred_image_list)
+    
+    if size == 1:
+        return pred_image_list[0]
+    elif size == 2:
+        blank = Image.new('RGB', (512*2, 512), (0,0,0))
+        blank.paste(pred_image_list[0],(0,0))
+        blank.paste(pred_image_list[1],(512,0))
+    elif size == 3:
+        blank = Image.new('RGB', (512*3, 512), (0,0,0))
+        blank.paste(pred_image_list[0],(0,0))
+        blank.paste(pred_image_list[1],(512,0))
+        blank.paste(pred_image_list[2],(1024,0))
+    elif size == 4:
+        blank = Image.new('RGB', (512*2, 512*2), (0,0,0))
+        blank.paste(pred_image_list[0],(0,0))
+        blank.paste(pred_image_list[1],(512,0))
+        blank.paste(pred_image_list[2],(0,512))
+        blank.paste(pred_image_list[3],(512,512))
+
+    
+    return blank
     
 def get_width(font_path, text):
     """
