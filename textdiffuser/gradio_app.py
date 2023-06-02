@@ -7,6 +7,7 @@
 # ------------------------------------------
 
 import os
+import re
 import zipfile
 
 if not os.path.exists('textdiffuser-ckpt'):
@@ -18,7 +19,6 @@ if not os.path.exists('images'):
     os.system('wget https://layoutlm.blob.core.windows.net/textdiffuser/images.zip')
     with zipfile.ZipFile('images.zip', 'r') as zip_ref:
         zip_ref.extractall('.')
-
 
 import cv2
 import random
@@ -57,7 +57,7 @@ from diffusers.utils.import_utils import is_xformers_available
 import transformers
 from transformers import CLIPTextModel, CLIPTokenizer
 
-from util import segmentation_mask_visualization, make_caption_pil, combine_image, combine_image_gradio, transform_mask, transform_mask_pil, filter_segmentation_mask, inpainting_merge_image
+from util import segmentation_mask_visualization, make_caption_pil, combine_image, transform_mask, transform_mask_pil, filter_segmentation_mask, inpainting_merge_image
 from model.layout_generator import get_layout_from_prompt
 from model.text_segmenter.unet import UNet
 
@@ -247,7 +247,7 @@ def parse_args():
     parser.add_argument(
         "--font_path", 
         type=str, 
-        default='assets/font/Arial.ttf', 
+        default='Arial.ttf', 
         help="The path of font for visualization."
     )
     parser.add_argument(
@@ -429,6 +429,11 @@ def to_tensor(image):
 def text_to_image(prompt,slider_step,slider_guidance,slider_batch):
 
     prompt = prompt.replace('"', "'")
+    prompt = re.sub(r"[^a-zA-Z0-9'\" ]+", "", prompt)
+
+    if slider_step>=100:
+        slider_step = 100
+        
     args.prompt = prompt 
     sample_num = slider_batch
     seed = random.randint(0, 10000000)
@@ -508,7 +513,7 @@ def text_to_image(prompt,slider_step,slider_guidance,slider_batch):
         image = Image.fromarray((image * 255).round().astype("uint8")).convert('RGB')
         pred_image_list.append(image)
         
-    blank_pil = combine_image_gradio(args, None, pred_image_list, image_pil, character_mask_pil, character_mask_highlight_pil, caption_pil)
+    blank_pil = combine_image(args, None, pred_image_list, image_pil, character_mask_pil, character_mask_highlight_pil, caption_pil)
     
     intermediate_result = Image.new('RGB', (512*3, 512))
     intermediate_result.paste(image_pil, (0, 0))
@@ -530,6 +535,9 @@ print(f'{colored("[√]", "green")} Text segmenter is successfully loaded.')
 
 def text_to_image_with_template(prompt,template_image,slider_step,slider_guidance,slider_batch, binary):
 
+    if slider_step>=100:
+        slider_step = 100
+        
     orig_template_image = template_image.resize((512,512)).convert('RGB')
     args.prompt = prompt 
     sample_num = slider_batch
@@ -616,7 +624,7 @@ def text_to_image_with_template(prompt,template_image,slider_step,slider_guidanc
         image = Image.fromarray((image * 255).round().astype("uint8")).convert('RGB')
         pred_image_list.append(image)
         
-    blank_pil = combine_image_gradio(args, None, pred_image_list, image_pil, character_mask_pil, character_mask_highlight_pil, caption_pil)
+    blank_pil = combine_image(args, None, pred_image_list, image_pil, character_mask_pil, character_mask_highlight_pil, caption_pil)
     
     intermediate_result = Image.new('RGB', (512*3, 512))
     intermediate_result.paste(orig_template_image, (0, 0))
@@ -628,6 +636,9 @@ def text_to_image_with_template(prompt,template_image,slider_step,slider_guidanc
 
 def text_inpainting(prompt,orig_image,mask_image,slider_step,slider_guidance,slider_batch):
 
+    if slider_step>=100:
+        slider_step = 100
+        
     args.prompt = prompt 
     sample_num = slider_batch
     # If passed along, set the training seed now.
@@ -723,7 +734,7 @@ def text_inpainting(prompt,orig_image,mask_image,slider_step,slider_guidance,sli
     character_mask_highlight_pil.save('character_mask_highlight_pil.png')
     
         
-    blank_pil = combine_image_gradio(args, None, pred_image_list, image_pil, character_mask_pil, character_mask_highlight_pil, caption_pil)
+    blank_pil = combine_image(args, None, pred_image_list, image_pil, character_mask_pil, character_mask_highlight_pil, caption_pil)
 
 
     background = orig_image.resize((512, 512))
@@ -760,7 +771,7 @@ with gr.Blocks() as demo:
         </h3> 
         <h2 style="text-align: left; font-weight: 450; font-size: 1rem; margin-top: 0.5rem; margin-bottom: 0.5rem">
         We propose <b>TextDiffuser</b>, a flexible and controllable framework to generate images with visually appealing text that is coherent with backgrounds. 
-        Main features include: (a) <b><font color="#A52A2A">Text-to-Image</font></b>: The user provides a prompt and encloses the keywords with single quotes (e.g., a text image of ‘hello’). The model first determines the layout of the keywords and then draws the image based on the layout and prompt. (b) <b><font color="#A52A2A">Text-to-Image-with-Templates</font></b>: The user provides a prompt and a template image containing text, which can be a printed, handwritten, or scene text image. These template images can be used to determine the layout of the characters. (c) <b><font color="#A52A2A">Text-Inpainting</font></b>: The user provides an image and specifies the region to be modified along with the desired text content. The model is able to modify the original text or add text to areas without text.
+        Main features include: (a) <b><font color="#A52A2A">Text-to-Image</font></b>: The user provides a prompt and encloses the keywords with single quotes (e.g., a text image of ‘hello’). The model first determines the layout of the keywords and then draws the image based on the layout and prompt. (b) <b><font color="#A52A2A">Text-to-Image with Templates</font></b>: The user provides a prompt and a template image containing text, which can be a printed, handwritten, or scene text image. These template images can be used to determine the layout of the characters. (c) <b><font color="#A52A2A">Text Inpainting</font></b>: The user provides an image and specifies the region to be modified along with the desired text content. The model is able to modify the original text or add text to areas without text.
         </h2>
         <img src="file/images/huggingface_blank.jpg" alt="textdiffuser">        
         </div>
@@ -769,8 +780,8 @@ with gr.Blocks() as demo:
     with gr.Tab("Text-to-Image"):
         with gr.Row():
             with gr.Column(scale=1):
-                prompt = gr.Textbox(label="Input your prompt here. Please enclose keywords with 【single quotes】, you may refer to the examples below.", placeholder="'Team' hat")
-                slider_step = gr.Slider(minimum=1, maximum=1000, value=20, label="Sampling step", info="The sampling step for TextDiffuser ranging from [1,1000].")
+                prompt = gr.Textbox(label="Input your prompt here. Please enclose keywords with 【single quotes】, you may refer to the examples below. The current version only supports input in English characters.", placeholder="Placeholder 'Team' hat")
+                slider_step = gr.Slider(minimum=1, maximum=50, value=20, step=1, label="Sampling step", info="The sampling step for TextDiffuser.")
                 slider_guidance = gr.Slider(minimum=1, maximum=9, value=7.5, step=0.5, label="Scale of classifier-free guidance", info="The scale of classifier-free guidance and is set to 7.5 in default.")
                 slider_batch = gr.Slider(minimum=1, maximum=4, value=4, step=1, label="Batch size", info="The number of images to be sampled.")
                 # slider_seed = gr.Slider(minimum=1, maximum=10000, label="Seed", randomize=True)
@@ -814,7 +825,7 @@ with gr.Blocks() as demo:
             with gr.Column(scale=1):
                 prompt = gr.Textbox(label='Input your prompt here.')
                 template_image = gr.Image(label='Template image', type="pil")
-                slider_step = gr.Slider(minimum=1, maximum=1000, value=20, label="Sampling step", info="The sampling step for TextDiffuser ranging from [1,1000].")
+                slider_step = gr.Slider(minimum=1, maximum=50, value=20, step=1, label="Sampling step", info="The sampling step for TextDiffuser.")
                 slider_guidance = gr.Slider(minimum=1, maximum=9, value=7.5, step=0.5, label="Scale of classifier-free guidance", info="The scale of classifier-free guidance and is set to 7.5 in default.")
                 slider_batch = gr.Slider(minimum=1, maximum=4, value=4, step=1, label="Batch size", info="The number of images to be sampled.")
                 # binary = gr.Radio(["park", "zoo", "road"], label="Location", info="Where did they go?")
@@ -863,7 +874,7 @@ with gr.Blocks() as demo:
                 with gr.Row():
                     orig_image = gr.Image(label='Original image', type="pil")
                     mask_image = gr.Image(label='Mask image', type="numpy")
-                slider_step = gr.Slider(minimum=1, maximum=1000, value=20, label="Sampling step", info="The sampling step for TextDiffuser ranging from [1,1000].")
+                slider_step = gr.Slider(minimum=1, maximum=50, value=20, step=1, label="Sampling step", info="The sampling step for TextDiffuser.")
                 slider_guidance = gr.Slider(minimum=1, maximum=9, value=7.5, step=0.5, label="Scale of classifier-free guidance", info="The scale of classifier-free guidance and is set to 7.5 in default.")
                 slider_batch = gr.Slider(minimum=1, maximum=4, value=4, step=1, label="Batch size", info="The number of images to be sampled.")
                 button = gr.Button("Generate")
