@@ -18,6 +18,8 @@ TextDiffuser generates images with visually appealing text that is coherent with
 
 * We construct **MARIO-Eval**, a comprehensive text rendering benchmark containing 10k prompts.
 
+* We **release the demo** at [link](https://huggingface.co/spaces/microsoft/TextDiffuser). Welcome to use and provide feedbacks :hugs:.
+
 ## :stopwatch: News
 
 - __[2023.06.02]__: :raised_hands:	:raised_hands:	:raised_hands:	Demo is available in this [link](https://huggingface.co/spaces/microsoft/TextDiffuser).
@@ -160,10 +162,6 @@ Also, special thanks to the open-source diffusion project or available demo: [DA
 For help or issues using TextDiffuser, please email Jingye Chen (qwerty.chen@connect.ust.hk), Yupan Huang (huangyp28@mail2.sysu.edu.cn) or submit a GitHub issue.
 
 For other communications related to TextDiffuser, please contact Lei Cui (lecu@microsoft.com) or Furu Wei (fuwei@microsoft.com).
-
-## :page_facing_up:	License
-The content of this project itself is licensed under the Attribution-NonCommercial-ShareAlike 4.0 International [(CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/).
-
 
 ## :herb: Citation
 If you find this code useful in your research, please consider citing:
