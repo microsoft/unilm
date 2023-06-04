@@ -57,7 +57,7 @@ from diffusers.utils.import_utils import is_xformers_available
 import transformers
 from transformers import CLIPTextModel, CLIPTokenizer
 
-from util import segmentation_mask_visualization, make_caption_pil, combine_image, transform_mask, transform_mask_pil, filter_segmentation_mask, inpainting_merge_image
+from util import segmentation_mask_visualization, make_caption_pil, combine_image, combine_image_gradio, transform_mask, transform_mask_pil, filter_segmentation_mask, inpainting_merge_image
 from model.layout_generator import get_layout_from_prompt
 from model.text_segmenter.unet import UNet
 
@@ -513,7 +513,7 @@ def text_to_image(prompt,slider_step,slider_guidance,slider_batch):
         image = Image.fromarray((image * 255).round().astype("uint8")).convert('RGB')
         pred_image_list.append(image)
         
-    blank_pil = combine_image(args, None, pred_image_list, image_pil, character_mask_pil, character_mask_highlight_pil, caption_pil)
+    blank_pil = combine_image_gradio(args, None, pred_image_list, image_pil, character_mask_pil, character_mask_highlight_pil, caption_pil)
     
     intermediate_result = Image.new('RGB', (512*3, 512))
     intermediate_result.paste(image_pil, (0, 0))
@@ -624,7 +624,7 @@ def text_to_image_with_template(prompt,template_image,slider_step,slider_guidanc
         image = Image.fromarray((image * 255).round().astype("uint8")).convert('RGB')
         pred_image_list.append(image)
         
-    blank_pil = combine_image(args, None, pred_image_list, image_pil, character_mask_pil, character_mask_highlight_pil, caption_pil)
+    blank_pil = combine_image_gradio(args, None, pred_image_list, image_pil, character_mask_pil, character_mask_highlight_pil, caption_pil)
     
     intermediate_result = Image.new('RGB', (512*3, 512))
     intermediate_result.paste(orig_template_image, (0, 0))
@@ -734,7 +734,7 @@ def text_inpainting(prompt,orig_image,mask_image,slider_step,slider_guidance,sli
     character_mask_highlight_pil.save('character_mask_highlight_pil.png')
     
         
-    blank_pil = combine_image(args, None, pred_image_list, image_pil, character_mask_pil, character_mask_highlight_pil, caption_pil)
+    blank_pil = combine_image_gradio(args, None, pred_image_list, image_pil, character_mask_pil, character_mask_highlight_pil, caption_pil)
 
 
     background = orig_image.resize((512, 512))
