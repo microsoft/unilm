@@ -63,12 +63,46 @@ The checkpoints are in this [link](https://layoutlm.blob.core.windows.net/textdi
 ```
 textdiffuser
 ├── textdiffuser-ckpt
-│   ├── diffusion_backbone/              # for diffusion backbone
+│   ├── diffusion_backbone/             # for diffusion backbone
 │   ├── character_aware_loss_unet.pth   # for character-aware loss
 │   ├── layout_transformer.pth          # for layout transformer
 │   └── text_segmenter.pth              # for character-level segmenter
 ├── README.md
 ```
+
+## :books: Dataset
+
+<img src="assets/readme_images/laion-ocr.jpg" width="80%">
+
+
+**LAION-OCR**'s meta information is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/laion-ocr.zip) (41.6GB), containing 9,194,613 samples. Please download it using ```wget``` and unzip it by running ```python data/laion-ocr-unzip.py```. The file structures of each folder should be as follows and ```data/laion-ocr-example``` is provided for reference. We also provide ```data/visualize_charseg.ipynb``` to visualize the character-level segmentation mask.
+
+```
+├── 28330/
+│   ├── 283305839/            
+│   │   ├── caption.txt       # caption of the image
+│   │   ├── charseg.npy       # character-level segmentation mask
+│   │   ├── info.json         # more meta information given by laion, such as original height and width
+├── ├── └── ocr.txt           # ocr detection and recognition results
+```
+
+The urls of each image is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/laion_ocr_image_url.zip) (794.6MB). The file structure is as follows:
+
+```
+├── laion_ocr_image_url/
+│   ├── laion-ocr-url.txt         # urls for downloading by img2dataset
+│   ├── laion-ocr-index-url.txt   # urls and indices for each image
+│   └── laion-ocr-test-index.txt  # all indices for test dataset
+```
+
+Please download img2dataset wiht ```pip install img2dataset```, and download the images using the following command:
+```
+img2dataset --url_list=/path/to/laion-ocr-url.txt --output_folder=laion_ocr --thread_count=64 --image_size=512
+```
+
+After downloading, please follow ```laion-ocr-index-url.txt``` to move each image to the corresponding folders. Images with indices in ```laion-ocr-test-index.txt``` are used for testing. Please note that some links may be <span style="color:red">**invalid**</span>
+ since the owners remove the images from their website.
+
 
 ## :firecracker: Inference
 
