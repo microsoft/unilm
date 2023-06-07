@@ -156,6 +156,9 @@ We sincerely thank the following projects: [Hugging Face Diffuser](https://githu
 
 Also, special thanks to the open-source diffusion project or available demo: [DALLE](https://openai.com/product/dall-e-2), [Stable Diffusion](https://github.com/CompVis/stable-diffusion), [Stable Diffusion XL](https://dreamstudio.ai/generate), [Midjourney](https://www.midjourney.com/home/?callbackUrl=%2Fapp%2F), [ControlNet](https://github.com/lllyasviel/ControlNet), [DeepFloyd](https://github.com/deep-floyd/IF).
 
+  
+## :exclamation: Disclaimer
+Please note that the code is intended for academic and research purposes only. Any use of the code for generating inappropriate content is **strictly prohibited** and is **NOT endorsed** by this paper. The responsibility for any misuse or inappropriate use of the model lies solely with the users who generated such content, and this paper shall not be held liable for any such use.
 
 ## :envelope: Contact
 
