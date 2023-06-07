@@ -3,7 +3,7 @@
 <a href='https://arxiv.org/pdf/2305.10855.pdf'><img src='https://img.shields.io/badge/Arxiv-2305.10855-red'>
 <a href='https://github.com/microsoft/unilm/tree/master/textdiffuser'><img src='https://img.shields.io/badge/Code-aka.ms/textdiffuser-yellow'>
 <a href='https://jingyechen.github.io/textdiffuser/'><img src='https://img.shields.io/badge/Project Page-link-green'>
-</a> [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-TextDiffuser-blue)](https://huggingface.co/spaces/microsoft/TextDiffuser)
+</a> [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-TextDiffuser-blue)](https://huggingface.co/spaces/JingyeChen22/TextDiffuser)
 
 
 TextDiffuser generates images with visually appealing text that is coherent with backgrounds. It is flexible and controllable to create high-quality text images using text prompts alone or together with text template images, and conduct text inpainting to reconstruct incomplete images with text.
@@ -18,7 +18,7 @@ TextDiffuser generates images with visually appealing text that is coherent with
 
 * We construct **MARIO-Eval**, a comprehensive text rendering benchmark containing 10k prompts.
 
-* We **release the demo** at [link](https://huggingface.co/spaces/microsoft/TextDiffuser). Welcome to use and provide feedbacks :hugs:.
+* We **release the demo** at [link](https://huggingface.co/spaces/JingyeChen22/TextDiffuser). Welcome to use and provide feedbacks :hugs:.
 
 ## :stopwatch: News
 
