@@ -126,7 +126,7 @@ User studies for whole-image generation and part-image generation tasks. (a) For
 
 
 ## :joystick:	Demo
-TextDiffuser has been deployed on [Hugging Face](https://huggingface.co/spaces/microsoft/TextDiffuser). If you have advanced GPUs, you may deploy the demo locally as follows:
+TextDiffuser has been deployed on [Hugging Face](https://huggingface.co/spaces/JingyeChen22/TextDiffuser). If you have advanced GPUs, you may deploy the demo locally as follows:
 
 ```python
 CUDA_VISIBLE_DEVICES=0 python gradio_app.py
