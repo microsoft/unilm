@@ -22,7 +22,7 @@ TextDiffuser generates images with visually appealing text that is coherent with
 
 ## :stopwatch: News
 
-- __[2023.06.02]__: :raised_hands:	:raised_hands:	:raised_hands:	Demo is available in this [link](https://huggingface.co/spaces/microsoft/TextDiffuser).
+- __[2023.06.02]__: :raised_hands:	:raised_hands:	:raised_hands:	Demo is available in this [link](https://huggingface.co/spaces/JingyeChen22/TextDiffuser).
 - __[2023.05.26]__: Upload the inference code and checkpoint.
 
 ## :hammer_and_wrench: Installation
