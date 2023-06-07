@@ -158,7 +158,7 @@ Also, special thanks to the open-source diffusion project or available demo: [DA
 
   
 ## :exclamation: Disclaimer
-Please note that the code is intended for academic and research purposes only. Any use of the code for generating inappropriate content is **strictly prohibited**. The responsibility for any misuse or inappropriate use of the code lies solely with the users who generated such content, and this code shall not be held liable for any such use.
+Please note that the code is intended for academic and research purposes **ONLY**. Any use of the code for generating inappropriate content is **strictly prohibited**. The responsibility for any misuse or inappropriate use of the code lies solely with the users who generated such content, and this code shall not be held liable for any such use.
 
 ## :envelope: Contact
 
