@@ -116,9 +116,15 @@ Please use ```accelerate config``` to configure your acceleration policy at firs
 27197_271978467
 ...
 ```
- 
-Please use ```./train.sh``` to run TextDiffuser. If you encounter an "out-of-memory" error, please consider reducing the batch size appropriately.
- 
+
+Then you can use the following to run TextDiffuser:
+
+```bash
+chmod 777 ./train.sh
+./train.sh
+```
+
+If you encounter an "out-of-memory" error, please consider reducing the batch size appropriately.
  
  
 ## :firecracker: Inference
