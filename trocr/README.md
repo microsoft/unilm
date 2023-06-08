@@ -57,6 +57,9 @@ pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cud
 | SROIE   | [SROIE_Task2_Original.tar.gz](https://layoutlm.blob.core.windows.net/trocr/dataset/SROIE_Task2_Original.tar.gz) |
 | STR Benchmarks   | [STR_BENCHMARKS.zip](https://layoutlm.blob.core.windows.net/trocr/dataset/STR_BENCHMARKS.zip) |
 
+**If any file on this page fails to download, please add the following string as a suffix to the URL.**
+
+**Suffix String:** ?sv=2022-11-02&ss=b&srt=o&sp=r&se=2023-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=IWdBT4g5TaS3Mkqib5g6IIAN2u8VSEl90SvRPfzpYNU%3D
 
 
 ### Fine-tuning on IAM
