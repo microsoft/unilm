@@ -59,7 +59,7 @@ Besides, a font file is needed for layout generation. Please put your font in ``
 
 ## :floppy_disk: Checkpoint
 
-The checkpoints are in this [link]([https://layoutlm.blob.core.windows.net/textdiffuser/textdiffuser-ckpt-new.zip](https://layoutlm.blob.core.windows.net/textdiffuser/textdiffuser-ckpt-new.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2023-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=IWdBT4g5TaS3Mkqib5g6IIAN2u8VSEl90SvRPfzpYNU%3D)) (3.2GB). Please download it and unzip it. The file structures should be as follows:
+The checkpoints are in this [link](https://layoutlm.blob.core.windows.net/textdiffuser/textdiffuser-ckpt-new.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2023-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=IWdBT4g5TaS3Mkqib5g6IIAN2u8VSEl90SvRPfzpYNU%3D) (3.2GB). Please download it and unzip it. The file structures should be as follows:
 
  
  
