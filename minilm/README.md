@@ -241,13 +241,35 @@ We also report the results following the data split as in [(Zhao et al., 2018)](
 If you find MiniLM useful in your research, please cite the following paper:
 
 ``` latex
-@misc{wang2020minilm,
-    title={MiniLM: Deep Self-Attention Distillation for Task-Agnostic Compression of Pre-Trained Transformers},
-    author={Wenhui Wang and Furu Wei and Li Dong and Hangbo Bao and Nan Yang and Ming Zhou},
-    year={2020},
-    eprint={2002.10957},
-    archivePrefix={arXiv},
-    primaryClass={cs.CL}
+@inproceedings{minilm,
+author = {Wang, Wenhui and Wei, Furu and Dong, Li and Bao, Hangbo and Yang, Nan and Zhou, Ming},
+title = {{MiniLM}: Deep Self-Attention Distillation for Task-Agnostic Compression of Pre-Trained Transformers},
+year = {2020},
+isbn = {9781713829546},
+publisher = {Curran Associates Inc.},
+address = {Red Hook, NY, USA},
+booktitle = {Proceedings of the 34th International Conference on Neural Information Processing Systems},
+articleno = {485},
+numpages = {13},
+location = {Vancouver, BC, Canada},
+series = {NIPS'20}
+}
+
+@inproceedings{minilmv2,
+    title = "{M}ini{LM}v2: Multi-Head Self-Attention Relation Distillation for Compressing Pretrained Transformers",
+    author = "Wang, Wenhui  and
+      Bao, Hangbo  and
+      Huang, Shaohan  and
+      Dong, Li  and
+      Wei, Furu",
+    booktitle = "Findings of the Association for Computational Linguistics: ACL-IJCNLP 2021",
+    month = aug,
+    year = "2021",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.findings-acl.188",
+    doi = "10.18653/v1/2021.findings-acl.188",
+    pages = "2140--2151",
 }
 ```
 
