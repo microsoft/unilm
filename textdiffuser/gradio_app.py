@@ -11,12 +11,12 @@ import re
 import zipfile
 
 if not os.path.exists('textdiffuser-ckpt'):
-    os.system('wget https://layoutlm.blob.core.windows.net/textdiffuser/textdiffuser-ckpt-new.zip')
+    os.system('wget https://huggingface.co/datasets/JingyeChen22/TextDiffuser/resolve/main/textdiffuser-ckpt-new.zip')
     with zipfile.ZipFile('textdiffuser-ckpt-new.zip', 'r') as zip_ref:
         zip_ref.extractall('.')
 
 if not os.path.exists('images'):
-    os.system('wget https://layoutlm.blob.core.windows.net/textdiffuser/images.zip')
+    os.system('wget https://huggingface.co/datasets/JingyeChen22/TextDiffuser/resolve/main/images.zip')
     with zipfile.ZipFile('images.zip', 'r') as zip_ref:
         zip_ref.extractall('.')
 
