@@ -22,6 +22,9 @@ Download checkpoints that are **self-supervised pretrained** on IIT-CDIP Test Co
 - DiT-base: [dit_base_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-base-224-p16-500k-62d53a.pth)
 - DiT-large: [dit_large_patch16_224](https://layoutlm.blob.core.windows.net/dit/dit-pts/dit-large-224-p16-500k-d7a2fb.pth)
 
+**If any file on this page fails to download, please add the following string as a suffix to the URL.**
+
+**Suffix String:** ?sv=2022-11-02&ss=b&srt=o&sp=r&se=2023-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=IWdBT4g5TaS3Mkqib5g6IIAN2u8VSEl90SvRPfzpYNU%3D
 
 ## Setup
 
