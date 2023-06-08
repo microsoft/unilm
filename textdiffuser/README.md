@@ -106,7 +106,21 @@ img2dataset --url_list=/path/to/laion-ocr-url.txt --output_folder=laion_ocr --th
 After downloading, please follow ```laion-ocr-index-url.txt``` to move each image to the corresponding folders. Images with indices in ```laion-ocr-test-index.txt``` are used for testing. Please note that some links may be <span style="color:red">**invalid**</span>
  since the owners remove the images from their website.
 
-
+## :steam_locomotive: Train
+ 
+Please use ```accelerate config``` to configure your acceleration policy at first, then modify output_dir, dataset_path, and train_dataset_index_file in ```train.sh```. The train_dataset_index_file should be a .txt file, and each line should indicate an index of a training sample.
+ 
+```txt
+06269_062690093
+27197_271975251
+27197_271978467
+...
+```
+ 
+Please use ```./train.sh``` to run TextDiffuser. If you encounter an "out-of-memory" error, please consider reducing the batch size appropriately.
+ 
+ 
+ 
 ## :firecracker: Inference
 
 TextDiffuser can be applied on: text-to-image, text-to-image-with-template, and text-inpainting.
