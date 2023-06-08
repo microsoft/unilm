@@ -1,0 +1,21 @@
+accelerate launch train.py \
+    --train_batch_size=24 \
+    --gradient_accumulation_steps=4 \
+    --gradient_checkpointing \
+    --mixed_precision="fp16" \
+    --num_train_epochs=2 \
+    --learning_rate=1e-5 \
+    --max_grad_norm=1 \
+    --lr_scheduler="constant" \
+    --lr_warmup_steps=0 \
+    --output_dir="experiment_name" \
+    --enable_xformers_memory_efficient_attention \
+    --dataloader_num_workers=4 \
+    --character_aware_loss_lambda=0.01 \
+    --resume_from_checkpoint="latest" \
+    --drop_caption \
+    --mask_all_ratio=0.5 \
+    --segmentation_mask_aug \
+    --dataset_path=/home/path/to/laion-ocr-unzip \
+    --train_dataset_index_file=/path/to/index_file.txt \
+    --vis_num=8
