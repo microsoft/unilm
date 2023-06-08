@@ -22,6 +22,7 @@ TextDiffuser generates images with visually appealing text that is coherent with
 
 ## :stopwatch: News
 
+- __[2023.06.07]__: LAION-OCR is released.
 - __[2023.06.02]__: :raised_hands:	:raised_hands:	:raised_hands:	Demo is available in this [link](https://huggingface.co/spaces/JingyeChen22/TextDiffuser).
 - __[2023.05.26]__: Upload the inference code and checkpoint.
 
@@ -58,8 +59,10 @@ Besides, a font file is needed for layout generation. Please put your font in ``
 
 ## :floppy_disk: Checkpoint
 
-The checkpoints are in this [link](https://layoutlm.blob.core.windows.net/textdiffuser/textdiffuser-ckpt.zip) (9.0GB). Please download it using ```wget``` and unzip it. The file structures should be as follows:
+The checkpoints are in this [link]([https://layoutlm.blob.core.windows.net/textdiffuser/textdiffuser-ckpt-new.zip](https://layoutlm.blob.core.windows.net/textdiffuser/textdiffuser-ckpt-new.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2023-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=IWdBT4g5TaS3Mkqib5g6IIAN2u8VSEl90SvRPfzpYNU%3D)) (3.2GB). Please download it and unzip it. The file structures should be as follows:
 
+ 
+ 
 ```
 textdiffuser
 ├── textdiffuser-ckpt
@@ -75,7 +78,7 @@ textdiffuser
 <img src="assets/readme_images/laion-ocr.jpg" width="80%">
 
 
-**LAION-OCR**'s meta information is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/laion-ocr.zip) (41.6GB), containing 9,194,613 samples. Please download it using ```wget``` and unzip it by running ```python data/laion-ocr-unzip.py```. The file structures of each folder should be as follows and ```data/laion-ocr-example``` is provided for reference. We also provide ```data/visualize_charseg.ipynb``` to visualize the character-level segmentation mask.
+**LAION-OCR**'s meta information is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/laion-ocr.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2023-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=IWdBT4g5TaS3Mkqib5g6IIAN2u8VSEl90SvRPfzpYNU%3D) (41.6GB), containing 9,194,613 samples. Please download it and unzip it by running ```python data/laion-ocr-unzip.py```. The file structures of each folder should be as follows and ```data/laion-ocr-example``` is provided for reference. We also provide ```data/visualize_charseg.ipynb``` to visualize the character-level segmentation mask.
 
 ```
 ├── 28330/
@@ -86,7 +89,7 @@ textdiffuser
 ├── ├── └── ocr.txt           # ocr detection and recognition results
 ```
 
-The urls of each image is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/laion_ocr_image_url.zip) (794.6MB). The file structure is as follows:
+The urls of each image is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/laion_ocr_image_url.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2023-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=IWdBT4g5TaS3Mkqib5g6IIAN2u8VSEl90SvRPfzpYNU%3D) (794.6MB). The file structure is as follows:
 
 ```
 ├── laion_ocr_image_url/
