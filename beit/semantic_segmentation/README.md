@@ -32,7 +32,7 @@ For example, using a BEiT-base backbone with UperNet:
 bash tools/dist_train.sh \
     configs/beit/upernet/upernet_beit_base_12_640_slide_160k_ade20k_pt2ft.py 8 \
     --work-dir /path/to/save --seed 0  --deterministic \
-    --options model.pretrained=https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_224_pt22k_ft22k.pth
+    --options model.pretrained=https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_224_pt22k_ft22k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D
 ```
 
 More config files can be found at [`configs/beit/upernet`](configs/beit/upernet).
@@ -48,7 +48,7 @@ tools/dist_test.sh  <CONFIG_PATH> <CHECKPOINT_PATH> <NUM_GPUS> --eval mIoU
 For example, evaluate a BEiT-base backbone with UperNet:
 ```bash
 bash tools/dist_test.sh configs/beit/upernet/upernet_beit_base_12_640_slide_160k_ade20k_pt2ft.py \ 
-    https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_640_pt22k_ft22ktoade20k.pth  4 --eval mIoU
+    https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_640_pt22k_ft22ktoade20k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D  4 --eval mIoU
 ```
 
 Expected results:
@@ -63,7 +63,7 @@ Expected results:
 Multi-scale + flip (`\*_ms.py`)
 ```
 bash tools/dist_test.sh configs/beit/upernet/upernet_beit_base_12_640_slide_160k_ade20k_ms.py \
-    https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_640_pt22k_ft22ktoade20k.pth  4 --eval mIoU
+    https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_640_pt22k_ft22ktoade20k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D  4 --eval mIoU
 ```
 
 Expected results:

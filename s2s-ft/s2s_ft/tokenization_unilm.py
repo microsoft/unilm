@@ -39,14 +39,14 @@ VOCAB_FILES_NAMES = {'vocab_file': 'vocab.txt'}
 PRETRAINED_VOCAB_FILES_MAP = {
     'vocab_file':
     {
-        'unilm-large-cased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm-large-cased-vocab.txt",
-        'unilm-base-cased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm-base-cased-vocab.txt",
-        'unilm1-large-cased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1-large-cased-vocab.txt",
-        'unilm1-base-cased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1-base-cased-vocab.txt",
-        'unilm1.2-base-uncased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1.2-base-uncased-vocab.txt", 
-        'unilm2-base-uncased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm2-base-uncased-vocab.txt", 
-        'unilm2-large-uncased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm2-large-uncased-vocab.txt", 
-        'unilm2-large-cased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm2-large-cased-vocab.txt", 
+        'unilm-large-cased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm-large-cased-vocab.txt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D",
+        'unilm-base-cased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm-base-cased-vocab.txt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D",
+        'unilm1-large-cased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1-large-cased-vocab.txt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D",
+        'unilm1-base-cased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1-base-cased-vocab.txt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D",
+        'unilm1.2-base-uncased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1.2-base-uncased-vocab.txt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D", 
+        'unilm2-base-uncased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm2-base-uncased-vocab.txt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D", 
+        'unilm2-large-uncased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm2-large-uncased-vocab.txt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D", 
+        'unilm2-large-cased': "https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm2-large-cased-vocab.txt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D", 
     }
 }
 

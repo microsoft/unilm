@@ -28,7 +28,7 @@ We recommend you to use the checkpoints that are **self-supervised pretrained an
 ```bash
 OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=8 run_class_finetuning.py \
     --model beit_large_patch16_224 --data_path /path/to/imagenet \
-    --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_large_patch16_224_pt22k_ft22k.pth \
+    --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_large_patch16_224_pt22k_ft22k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D \
     --output_dir /path/to/save_result --batch_size 32 --lr 2e-5 --update_freq 2 \
     --warmup_epochs 5 --epochs 30 --layer_decay 0.9 --drop_path 0.4 \
     --weight_decay 1e-8 --enable_deepspeed
@@ -44,7 +44,7 @@ For BEiT-base, we set `--layer_decay 0.85 --drop_path 0.1` and keep other argume
 ```bash
 OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=8 run_class_finetuning.py \
     --model beit_base_patch16_224 --data_path /path/to/imagenet \
-    --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_224_pt22k_ft22k.pth \
+    --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_224_pt22k_ft22k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D \
     --output_dir /path/to/save_result --batch_size 64 --lr 2e-5 --update_freq 1 \
     --warmup_epochs 5 --epochs 30 --layer_decay 0.85 --drop_path 0.1 \
     --weight_decay 1e-8 --enable_deepspeed
@@ -56,14 +56,14 @@ For the BEiT models that are fully self-supervised pretrained on ImageNet-22k (w
 # BEiT-large
 OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=8 run_class_finetuning.py \
     --model beit_large_patch16_224 --data_path /path/to/imagenet \
-    --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_large_patch16_224_pt22k.pth \
+    --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_large_patch16_224_pt22k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D \
     --output_dir /path/to/save_result --batch_size 64 --lr 1e-3 --update_freq 2 \
     --warmup_epochs 5 --epochs 50 --layer_decay 0.75 --drop_path 0.2 \
     --weight_decay 0.05 --mixup 0.8 --cutmix 1.0 --enable_deepspeed
 # BEiT-base
 OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=8 run_class_finetuning.py \
     --model beit_base_patch16_224 --data_path /path/to/imagenet \
-    --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_224_pt22k.pth \
+    --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_224_pt22k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D \
     --output_dir /path/to/save_result --batch_size 128 --lr 4e-3 --update_freq 1 \
     --warmup_epochs 20 --epochs 100 --layer_decay 0.65 --drop_path 0.1 \
     --weight_decay 0.05 --mixup 0.8 --cutmix 1.0 --enable_deepspeed
@@ -76,7 +76,7 @@ OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=8 run_clas
 ```bash
 python run_class_finetuning.py \
     --eval --model beit_large_patch16_224 --data_path /path/to/imagenet \
-    --resume https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_large_patch16_224_pt22k_ft22kto1k.pth 
+    --resume https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_large_patch16_224_pt22k_ft22kto1k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D 
 ```
 Expected results:
 ```
@@ -87,7 +87,7 @@ Expected results:
 ```bash
 python run_class_finetuning.py \
     --eval --model beit_base_patch16_384 --input_size 384 --data_path /path/to/imagenet \
-    --resume https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_384_pt22k_ft22kto1k.pth 
+    --resume https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_384_pt22k_ft22kto1k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D 
 ```
 Expected results:
 ```
@@ -98,7 +98,7 @@ Expected results:
 ```bash
 python run_class_finetuning.py \
     --eval --model beit_large_patch16_384 --input_size 384 --data_path /path/to/imagenet \
-    --resume https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_large_patch16_384_pt22k_ft22kto1k.pth 
+    --resume https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_large_patch16_384_pt22k_ft22kto1k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D 
 ```
 Expected results:
 ```
@@ -109,7 +109,7 @@ Expected results:
 ```bash
 python run_class_finetuning.py \
     --eval --model beit_large_patch16_512 --input_size 512 --data_path /path/to/imagenet \
-    --resume https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_large_patch16_512_pt22k_ft22kto1k.pth 
+    --resume https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_large_patch16_512_pt22k_ft22kto1k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D 
 ```
 Expected results:
 ```
@@ -122,7 +122,7 @@ To train supervised linear classifier on frozen weights on a single node with 8 
 ```
 python -m torch.distributed.launch --nproc_per_node=8 run_linear_eval.py \
     --model beit_base_patch16_224 \
-    --pretrained_weights https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_224_pt22k.pth \
+    --pretrained_weights https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_224_pt22k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D \
     --data_path /path/to/imagenet \
     --lr 4e-3 \
     --output_dir /path/to/save

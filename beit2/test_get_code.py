@@ -53,7 +53,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser('Get code for VQ-KD')
     parser.add_argument('--model', default='vqkd_encoder_base_decoder_1x768x12_clip', type=str, help="model")
     parser.add_argument('--pretrained_weights', 
-                        default='https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/vqkd_encoder_base_decoder_1x768x12_clip-d93179da.pth', 
+                        default='https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/vqkd_encoder_base_decoder_1x768x12_clip-d93179da.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D', 
                         type=str, help="Path to pretrained weights to evaluate.")
     parser.add_argument('--img_path', default='demo/ILSVRC2012_val_00031649.JPEG', type=str, help="image path.")
     args = parser.parse_args()

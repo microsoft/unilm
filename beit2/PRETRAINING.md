@@ -24,7 +24,7 @@ python -m torch.distributed.launch --nproc_per_node=16 run_beitv2_pretraining.py
         --second_interpolation bicubic \
         --min_crop_scale 0.2 \
         --tokenizer_model vqkd_encoder_base_decoder_3x768x12_clip \
-        --tokenizer_weight https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/vqkd_encoder_base_decoder_3x768x12_clip-d5036aa7.pth \
+        --tokenizer_weight https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/vqkd_encoder_base_decoder_3x768x12_clip-d5036aa7.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D \
         --batch_size 128 \
         --lr 1.5e-3 \
         --warmup_epochs 10 \
@@ -64,7 +64,7 @@ python -m torch.distributed.launch --nnodes 4 --node_rank {0, 1, 2, 3} --nproc_p
         --second_interpolation bicubic \
         --min_crop_scale 0.2 \
         --tokenizer_model vqkd_encoder_base_decoder_3x768x12_clip \
-        --tokenizer_weight https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/vqkd_encoder_base_decoder_3x768x12_clip-d5036aa7.pth \
+        --tokenizer_weight https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/vqkd_encoder_base_decoder_3x768x12_clip-d5036aa7.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D \
         --batch_size 32 \
         --lr 1.5e-3 \
         --warmup_epochs 10 \
@@ -91,7 +91,7 @@ We provide some pretrained models here.
 
 | model name | pretraining epochs | weight |
 |------------|:------------------:|:------:|
-| beit_base_patch16_224_8k_vocab_cls_pt | 300 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_300e.pth) |
-| beit_base_patch16_224_8k_vocab_cls_pt | 1600 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k.pth) |
-| beit_large_patch16_224_8k_vocab_cls_pt | 300 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_300e.pth) |
-| beit_large_patch16_224_8k_vocab_cls_pt | 1600 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k.pth) |
+| beit_base_patch16_224_8k_vocab_cls_pt | 300 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_300e.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) |
+| beit_base_patch16_224_8k_vocab_cls_pt | 1600 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) |
+| beit_large_patch16_224_8k_vocab_cls_pt | 300 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_300e.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) |
+| beit_large_patch16_224_8k_vocab_cls_pt | 1600 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) |

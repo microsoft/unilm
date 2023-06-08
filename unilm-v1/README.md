@@ -50,8 +50,8 @@ pip install --user --editable .
 We release both base-size and large-size **cased** UniLM models pre-trained with **Wikipedia and BookCorpus** corpora. The models are trained by using the same model configuration and WordPiece vocabulary as BERT. The model parameters can be loaded as in the fine-tuning code.
 
 The links to the pre-trained models:
-- [unilm1-large-cased](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1-large-cased.bin): 24-layer, 1024-hidden, 16-heads, 340M parameters
-- [unilm1-base-cased](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1-base-cased.bin): 12-layer, 768-hidden, 12-heads, 110M parameters
+- [unilm1-large-cased](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1-large-cased.bin?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D): 24-layer, 1024-hidden, 16-heads, 340M parameters
+- [unilm1-base-cased](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1-base-cased.bin?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D): 12-layer, 768-hidden, 12-heads, 110M parameters
 
 ## Fine-tuning
 We provide instructions on how to fine-tune UniLM as a sequence-to-sequence model to support various downstream natural language generation tasks as follows. It is recommended to use 2 or 4 v100-32G GPU cards to fine-tune the model. Gradient accumulation (`--gradient_accumulation_steps`) can be enabled if there is an OOM error.

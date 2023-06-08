@@ -14,9 +14,9 @@ Official PyTorch implementation and pre-trained models of VLMo.
 
 We provide three VLMo weights pre-trained on COCO, VG, SBU and GCC. The models were pre-trained with 224x224 resolution.
 
-- [`VLMo-base`](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_224.pt): #layer=12; hidden=768; FFN factor=4x; #head=12; patch=16x16; #VL_FFN=2 (#parameters: 175M)
-- [`VLMo-base_plus`](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_224.pt): #layer=24; hidden=544; FFN factor=4x; #head=16; patch=16x16; #VL_FFN=3 (#parameters: 167M)
-- [`VLMo-large`](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_224.pt): #layer=24; hidden=1024; FFN factor=4x; #head=16; patch=16x16; #VL_FFN=3 (#parameters: 562M)
+- [`VLMo-base`](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_224.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D): #layer=12; hidden=768; FFN factor=4x; #head=12; patch=16x16; #VL_FFN=2 (#parameters: 175M)
+- [`VLMo-base_plus`](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_224.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D): #layer=24; hidden=544; FFN factor=4x; #head=16; patch=16x16; #VL_FFN=3 (#parameters: 167M)
+- [`VLMo-large`](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_224.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D): #layer=24; hidden=1024; FFN factor=4x; #head=16; patch=16x16; #VL_FFN=3 (#parameters: 562M)
 
 ## Setup
 
@@ -47,15 +47,15 @@ Download the pre-trained model weight from [BEiT repo](https://github.com/micros
 ### Step 2: Language Pre-Training (VLMo-Base)
 
 ```bash
-# download from https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_224_pt22k_ft22kto1k.pth
+# download from https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_224_pt22k_ft22kto1k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D
 export INIT_CKPT=/path/to/save/beit_base_checkpoint
 
 python run.py with data_root=<ARROW_ROOT> num_gpus=<NUM_GPUS> num_nodes=<NUM_NODES> task_textmlm_base whole_word_masking=True step200k per_gpu_batchsize=<BS_FITS_YOUR_GPU> load_path=$INIT_CKPT log_dir=<YOUR_OUTPUT_PATH>
 ```
 Or you can download our pre-trained ckpts for this stage:
-- [`VLMo-base-stage2`](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_224_stage2.pt)
-- [`VLMo-base_plus-stage2`](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_224_stage2.pt)
-- [`VLMo-large-stage2`](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_224_stage2.pt)
+- [`VLMo-base-stage2`](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_224_stage2.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)
+- [`VLMo-base_plus-stage2`](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_224_stage2.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)
+- [`VLMo-large-stage2`](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_224_stage2.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)
 
 ### Step 3: Vision-Language Pre-Training (VLMo-Base)
 
@@ -84,30 +84,30 @@ You can found "<CONFIG_NAME>" for each task as follows:
 ### VQAv2
 | <CONFIG_NAME> | initialized checkpoint | finetuned weight | test-dev |
 |---------------|:----------------------:|:----------------:|:-----------:|
-|task_finetune_vqa_base_image480|[VLMo-base](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_224.pt)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_480_vqa.pt)|76.6|
-|task_finetune_vqa_base_plus_image480|[VLMo-base_plus](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_224.pt)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_480_vqa.pt)|78.5|
-|task_finetune_vqa_large_image480|[VLMo-large](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_224.pt)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_480_vqa.pt)|79.9|
+|task_finetune_vqa_base_image480|[VLMo-base](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_224.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_480_vqa.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|76.6|
+|task_finetune_vqa_base_plus_image480|[VLMo-base_plus](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_224.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_480_vqa.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|78.5|
+|task_finetune_vqa_large_image480|[VLMo-large](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_224.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_480_vqa.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|79.9|
 
 ### NLVR2
 | <CONFIG_NAME> | initialized checkpoint | finetuned weight | test-P |
 |---------------|:----------------------:|:----------------:|:-----------:|
-|task_finetune_nlvr2_base_image384|[VLMo-base](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_224.pt)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_384_nlvr2.pt)|83.3|
-|task_finetune_nlvr2_base_plus_image384|[VLMo-base_plus](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_224.pt)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_384_nlvr2.pt)|85.1|
-|task_finetune_nlvr2_large_image384|[VLMo-large](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_224.pt)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_384_nlvr2.pt)|86.9|
+|task_finetune_nlvr2_base_image384|[VLMo-base](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_224.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_384_nlvr2.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|83.3|
+|task_finetune_nlvr2_base_plus_image384|[VLMo-base_plus](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_224.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_384_nlvr2.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|85.1|
+|task_finetune_nlvr2_large_image384|[VLMo-large](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_224.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_384_nlvr2.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|86.9|
 
 ### COCO
 | <CONFIG_NAME> | initialized checkpoint | finetuned weight | TR@1 | IR@1 |
 |---------------|:----------------------:|:----------------:|:-----------:|:---:|
-|task_finetune_irtr_coco_base_image384|[VLMo-base](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_224.pt)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_384_coco.pt)|74.8|57.2|
-|task_finetune_irtr_coco_base_plus_image384|[VLMo-base_plus](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_224.pt)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_384_coco.pt)|76.3|58.6|
-|task_finetune_irtr_coco_large_image384|[VLMo-large](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_224.pt)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_384_coco.pt)|78.2|60.6|
+|task_finetune_irtr_coco_base_image384|[VLMo-base](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_224.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_384_coco.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|74.8|57.2|
+|task_finetune_irtr_coco_base_plus_image384|[VLMo-base_plus](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_224.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_384_coco.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|76.3|58.6|
+|task_finetune_irtr_coco_large_image384|[VLMo-large](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_224.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_384_coco.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|78.2|60.6|
 
 ### F30K
 | <CONFIG_NAME> | initialized checkpoint | finetuned weight | TR@1 | IR@1 |
 |---------------|:----------------------:|:----------------:|:-----------:|:---:|
-|task_finetune_irtr_f30k_base_image384|[VLMo-base_coco_finetuned](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_384_coco.pt)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_384_f30k.pt)|92.3|79.3|
-|task_finetune_irtr_f30k_base_plus_image384|[VLMo-base_plus](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_224.pt)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_384_f30k.pt)|93.2|81.8|
-|task_finetune_irtr_f30k_large_image384|[VLMo-large_coco_finetuned](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_384_coco.pt)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_384_f30k.pt)|95.3|84.5|
+|task_finetune_irtr_f30k_base_image384|[VLMo-base_coco_finetuned](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_384_coco.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_patch16_384_f30k.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|92.3|79.3|
+|task_finetune_irtr_f30k_base_plus_image384|[VLMo-base_plus](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_224.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_base_plus_patch16_384_f30k.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|93.2|81.8|
+|task_finetune_irtr_f30k_large_image384|[VLMo-large_coco_finetuned](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_384_coco.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|[weight](https://conversationhub.blob.core.windows.net/beit-share-public/vlmo/vlmo_large_patch16_384_f30k.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)|95.3|84.5|
 
 ## Evaluation
 

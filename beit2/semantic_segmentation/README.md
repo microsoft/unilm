@@ -32,7 +32,7 @@ Using a BEiT-base backbone with UperNet:
 bash tools/dist_train.sh \
     configs/beit/upernet/upernet_beit_base_12_512_slide_160k_21ktoade20k.py 8 \
     --work-dir /path/to/save --seed 0  --deterministic \
-    --options model.pretrained=https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_ft21k.pth
+    --options model.pretrained=https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_ft21k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D
 ```
 
 Using a BEiT-large backbone with UperNet:
@@ -40,7 +40,7 @@ Using a BEiT-large backbone with UperNet:
 bash tools/dist_train.sh \
     configs/beit/upernet/upernet_beit_large_24_512_slide_160k_21ktoade20k.py 8 \
     --work-dir /path/to/save --seed 0  --deterministic \
-    --options model.pretrained=https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft21k.pth
+    --options model.pretrained=https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft21k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D
 ```
 
 ## Evaluation
@@ -53,7 +53,7 @@ tools/dist_test.sh  <CONFIG_PATH> <CHECKPOINT_PATH> <NUM_GPUS> --eval mIoU
 For example, evaluate a BEiT-large backbone with UperNet:
 ```bash
 bash tools/dist_test.sh configs/beit/upernet/upernet_beit_large_24_512_slide_160k_21ktoade20k.py \
-    https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft21ktoade20k.pth  4 --eval mIoU 
+    https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft21ktoade20k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D  4 --eval mIoU 
 ```
 
 Expected results:

@@ -25,14 +25,14 @@ cd ${code_dir} ; pip install --editable .
 ## Pre-trained Models
 
 We recommend to use the uncased model:
-- [unilm1.2-base-uncased](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1.2-base-uncased.bin): 12-layer, 768-hidden, 12-heads, 110M parameters
-- [unilm2-base-uncased](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm2-base-uncased.bin): 12-layer, 768-hidden, 12-heads, 110M parameters
+- [unilm1.2-base-uncased](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1.2-base-uncased.bin?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D): 12-layer, 768-hidden, 12-heads, 110M parameters
+- [unilm2-base-uncased](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm2-base-uncased.bin?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D): 12-layer, 768-hidden, 12-heads, 110M parameters
 
 If you would like to use a cased model:
-- [unilm1-base-cased](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1-base-cased.bin): 12-layer, 768-hidden, 12-heads, 110M parameters
-- [unilm1-large-cased](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1-large-cased.bin): 24-layer, 1024-hidden, 16-heads, 340M parameters
-- [unilm2-large-uncased](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm2-large-uncased.bin): 24-layer, 1024-hidden, 16-heads, 340M parameters
-- [unilm2-large-cased](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm2-large-cased.bin): 24-layer, 1024-hidden, 16-heads, 340M parameters
+- [unilm1-base-cased](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1-base-cased.bin?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D): 12-layer, 768-hidden, 12-heads, 110M parameters
+- [unilm1-large-cased](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm1-large-cased.bin?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D): 24-layer, 1024-hidden, 16-heads, 340M parameters
+- [unilm2-large-uncased](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm2-large-uncased.bin?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D): 24-layer, 1024-hidden, 16-heads, 340M parameters
+- [unilm2-large-cased](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/unilm2-large-cased.bin?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D): 24-layer, 1024-hidden, 16-heads, 340M parameters
 
 If you prefer [small pretrained models](https://github.com/microsoft/unilm/tree/master/minilm) for faster inference speed:
 - [minilm-l12-h384-uncased](https://1drv.ms/u/s!AjHn0yEmKG8qixAYyu2Fvq5ulnU7?e=DFApTA): 12-layer, 384-hidden, 12-heads, 33M parameters
@@ -64,7 +64,7 @@ The code automatically detects the input format. If the json line contains `list
 
 ### Fine-tuning
 
-Pre-processed json dataset links: [text format](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/xsum.json.zip), or [tokenized format](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/xsum.uncased_tokenized.zip).
+Pre-processed json dataset links: [text format](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/xsum.json.zip?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D), or [tokenized format](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/xsum.uncased_tokenized.zip?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D).
 
 ```bash
 # path of training data
@@ -110,7 +110,7 @@ python decode_seq2seq.py \
 
 ### Evaluation
 
-The golden answer text files can be downloaded at [here](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/xsum.eval.zip).
+The golden answer text files can be downloaded at [here](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/xsum.eval.zip?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D).
 
 ```bash
 SPLIT=validation
@@ -124,7 +124,7 @@ python evaluations/eval_for_xsum.py --pred ${MODEL_PATH}.${SPLIT} --gold ${GOLD_
 
 ### Fine-tuning
 
-Pre-processed json dataset links: [text format](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/xsum.json.zip), or [tokenized format](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/xsum.uncased_tokenized.zip).
+Pre-processed json dataset links: [text format](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/xsum.json.zip?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D), or [tokenized format](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/xsum.uncased_tokenized.zip?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D).
 
 ```bash
 # path of training data
@@ -170,7 +170,7 @@ python decode_seq2seq.py \
 
 ### Evaluation
 
-The golden answer text files can be downloaded at [here](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/xsum.eval.zip).
+The golden answer text files can be downloaded at [here](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/xsum.eval.zip?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D).
 
 ```bash
 SPLIT=validation
@@ -182,7 +182,7 @@ python evaluations/eval_for_xsum.py --pred ${MODEL_PATH}.${SPLIT} --gold ${GOLD_
 
 ## Example: CNN / Daily Mail with unilm1-base-cased
 
-Pre-processed json dataset links: [tokenized format](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/cnndm.cased_tokenized.zip).
+Pre-processed json dataset links: [tokenized format](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/cnndm.cased_tokenized.zip?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D).
 
 ### Fine-tuning
 
@@ -205,7 +205,7 @@ python -m torch.distributed.launch --nproc_per_node=4 run_seq2seq.py \
 ```
 
 - The fine-tuning batch size = `number of gpus` * `per_gpu_train_batch_size` * `gradient_accumulation_steps`. So in the above example, the batch size is `4*8*2 = 64`. The three arguments need to be adjusted together in order to remain the total batch size unchanged.
-- A fine-tuned checkpoint is provided at [here](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/cnndm.unilm1-base-cased.bin).
+- A fine-tuned checkpoint is provided at [here](https://conversationhub.blob.core.windows.net/beit-share-public/ckpt/cnndm.unilm1-base-cased.bin?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D).
 
 
 ### Decoding
@@ -231,7 +231,7 @@ python decode_seq2seq.py \
 
 ### Evaluation
 
-The golden answer text files can be downloaded at [here](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/cnndm.eval.zip).
+The golden answer text files can be downloaded at [here](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/cnndm.eval.zip?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D).
 
 ```bash
 SPLIT=dev
@@ -245,7 +245,7 @@ python evaluations/eval_for_cnndm.py --pred ${MODEL_PATH}.${SPLIT} --gold ${GOLD
 
 ## Example: CNN / Daily Mail with unilm1.2-base-uncased
 
-Pre-processed json dataset links: [tokenized format](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/cnndm.uncased_tokenized.zip).
+Pre-processed json dataset links: [tokenized format](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/cnndm.uncased_tokenized.zip?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D).
 
 ### Fine-tuning
 
@@ -291,7 +291,7 @@ python decode_seq2seq.py \
 
 ### Evaluation
 
-The golden answer text files can be downloaded at [here](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/cnndm.eval.zip).
+The golden answer text files can be downloaded at [here](https://conversationhub.blob.core.windows.net/beit-share-public/s2s-ft-data/cnndm.eval.zip?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D).
 
 ```bash
 SPLIT=dev

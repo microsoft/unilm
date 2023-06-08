@@ -6,12 +6,12 @@ We provide some finetuned models here.
 
 | model name | pre-training epochs on ImageNet-1k | intermeidate fine-tuning epochs on ImageNet-21k | fine-tuning epochs on ImageNet-1k | weight | top-1 accuracy (%) |
 |------------|:------------------:|:------:|:------:| :------:| :------:|
-| beit_base_patch16_224 | 300 | 0 | 100 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_300e_ft1k.pth) | 85.0 |
-| beit_base_patch16_224 | 1600 |0 | 100 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_ft1k.pth) | 85.5 |
-| beit_base_patch16_224 | 1600 | 90 | 30 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_ft21kto1k.pth) | 86.5 |
-| beit_large_patch16_224 | 300 | 0 | 50 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_300e_ft1k.pth) | 86.6 |
-| beit_large_patch16_224 | 1600 |0 | 50 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft1k.pth) | 87.3 |
-| beit_large_patch16_224 | 1600 | 90 | 20 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft21kto1k.pth) | 88.4 |
+| beit_base_patch16_224 | 300 | 0 | 100 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_300e_ft1k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) | 85.0 |
+| beit_base_patch16_224 | 1600 |0 | 100 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_ft1k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) | 85.5 |
+| beit_base_patch16_224 | 1600 | 90 | 30 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_ft21kto1k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) | 86.5 |
+| beit_large_patch16_224 | 300 | 0 | 50 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_300e_ft1k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) | 86.6 |
+| beit_large_patch16_224 | 1600 |0 | 50 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft1k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) | 87.3 |
+| beit_large_patch16_224 | 1600 | 90 | 20 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft21kto1k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) | 88.4 |
 
 
 ## Example: Fine-tuning BEiT v2 on ImageNet-1k (Image Classification)
@@ -28,7 +28,7 @@ python -m torch.distributed.launch --nproc_per_node=8 run_class_finetuning.py \
         --log_dir /path/to/save/your_model \
         --model beit_base_patch16_224 \
         --weight_decay 0.05 \
-        --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_ft21k.pth \
+        --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_ft21k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D \
         --batch_size 128 \
         --lr 5e-5 \
         --update_freq 1 \
@@ -66,7 +66,7 @@ python -m torch.distributed.launch --nproc_per_node=8 run_class_finetuning.py \
         --log_dir /path/to/save/your_model \
         --model beit_large_patch16_224 \
         --weight_decay 0.05 \
-        --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft21k.pth \
+        --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft21k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D \
         --batch_size 64 \
         --lr 7e-5 \
         --update_freq 2 \
@@ -101,7 +101,7 @@ python -m torch.distributed.launch --nproc_per_node=1 run_class_finetuning.py \
         --nb_classes 1000 \
         --data_set image_folder \
         --model beit_base_patch16_224 \
-        --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_ft21kto1k.pth \
+        --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_ft21kto1k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D \
         --batch_size 128 \
         --imagenet_default_mean_and_std \
         --dist_eval \
@@ -121,7 +121,7 @@ python -m torch.distributed.launch --nproc_per_node=1 run_class_finetuning.py \
         --nb_classes 1000 \
         --data_set image_folder \
         --model beit_large_patch16_224 \
-        --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft21kto1k.pth \
+        --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft21kto1k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D \
         --batch_size 128 \
         --imagenet_default_mean_and_std \
         --dist_eval \
@@ -146,7 +146,7 @@ python -m torch.distributed.launch --nproc_per_node=1 run_class_finetuning.py \
         --nb_classes 200 \
         --data_set image_folder \
         --model beit_large_patch16_224 \
-        --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft1k.pth \
+        --finetune https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft1k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D \
         --batch_size 128 \
         --imagenet_default_mean_and_std \
         --dist_eval \
@@ -197,5 +197,5 @@ python -m torch.distributed.launch --nnodes 2 --node_rank {0, 1} --nproc_per_nod
 We provide some intermediate fine-tuned models here.
 | model name | pre-training epochs on ImageNet-1k | intermediate fine-tuning epochs on ImageNet-21k | weight |
 |------------|:------------------:|:------:|:------:|
-| beit_base_patch16_224 | 1600 | 90 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_ft21k.pth) |
-| beit_large_patch16_224 | 1600 | 90 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft21k.pth) |
+| beit_base_patch16_224 | 1600 | 90 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_base_patch16_224_pt1k_ft21k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) |
+| beit_large_patch16_224 | 1600 | 90 | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/beitv2_large_patch16_224_pt1k_ft21k.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) |

@@ -45,6 +45,6 @@ We provide some trained vq-kd tokenizers here.
 
 | model name | encoder layers | decoder layers | teacher model | codebook usage | weight |
 |------------|:--------------:|:--------------:|:-------------:|:--------------:|:-------:|
-| vqkd_encoder_base_decoder_1x768x12_clip | 12 | 1 | CLIP ViT-B/16 | 100% | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/vqkd_encoder_base_decoder_1x768x12_clip-d93179da.pth) |
-| vqkd_encoder_base_decoder_3x768x12_clip | 12 | 3 | CLIP ViT-B/16 | 97% | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/vqkd_encoder_base_decoder_3x768x12_clip-d5036aa7.pth) |
-| vqkd_encoder_base_decoder_1x768x12_dino | 12 | 1 | DINO ViT-B/16 | 100% | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/vqkd_encoder_base_decoder_1x768x12_dino-663c55d7.pth) |
+| vqkd_encoder_base_decoder_1x768x12_clip | 12 | 1 | CLIP ViT-B/16 | 100% | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/vqkd_encoder_base_decoder_1x768x12_clip-d93179da.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) |
+| vqkd_encoder_base_decoder_3x768x12_clip | 12 | 3 | CLIP ViT-B/16 | 97% | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/vqkd_encoder_base_decoder_3x768x12_clip-d5036aa7.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) |
+| vqkd_encoder_base_decoder_1x768x12_dino | 12 | 1 | DINO ViT-B/16 | 100% | [link](https://conversationhub.blob.core.windows.net/beit-share-public/beitv2/vqkd_encoder_base_decoder_1x768x12_dino-663c55d7.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) |
