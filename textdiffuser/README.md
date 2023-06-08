@@ -60,7 +60,7 @@ Besides, a font file is needed for layout generation. Please put your font in ``
 
 ## :floppy_disk: Checkpoint
 
-The checkpoints are in this [link](https://layoutlm.blob.core.windows.net/textdiffuser/textdiffuser-ckpt-new.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2023-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=IWdBT4g5TaS3Mkqib5g6IIAN2u8VSEl90SvRPfzpYNU%3D) (3.2GB). Please download it and unzip it. The file structures should be as follows:
+The checkpoints are in this [link](https://layoutlm.blob.core.windows.net/textdiffuser/textdiffuser-ckpt-new.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2023-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=IWdBT4g5TaS3Mkqib5g6IIAN2u8VSEl90SvRPfzpYNU%3D) or [HFLink](https://huggingface.co/datasets/JingyeChen22/TextDiffuser/resolve/main/textdiffuser-ckpt-new.zip) (3.2GB). Please download it and unzip it. The file structures should be as follows:
 
  
  
@@ -79,7 +79,7 @@ textdiffuser
 <img src="assets/readme_images/laion-ocr.jpg" width="80%">
 
 
-**LAION-OCR**'s meta information is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/laion-ocr.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2023-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=IWdBT4g5TaS3Mkqib5g6IIAN2u8VSEl90SvRPfzpYNU%3D) (41.6GB), containing 9,194,613 samples. Please download it and unzip it by running ```python data/laion-ocr-unzip.py```. The file structures of each folder should be as follows and ```data/laion-ocr-example``` is provided for reference. We also provide ```data/visualize_charseg.ipynb``` to visualize the character-level segmentation mask.
+**LAION-OCR**'s meta information is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/laion-ocr.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2023-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=IWdBT4g5TaS3Mkqib5g6IIAN2u8VSEl90SvRPfzpYNU%3D) or [onedrive](https://mail2sysueducn-my.sharepoint.com/personal/huangyp28_mail2_sysu_edu_cn/_layouts/15/onedrive.aspx?ct=1686245253173&or=Teams%2DHL&ga=1&LOF=1&id=%2Fpersonal%2Fhuangyp28%5Fmail2%5Fsysu%5Fedu%5Fcn%2FDocuments%2Frelease%2Ftextdiffuser%2Fdata) (41.6GB), containing 9,194,613 samples. Please download it and unzip it by running ```python data/laion-ocr-unzip.py```. The file structures of each folder should be as follows and ```data/laion-ocr-example``` is provided for reference. We also provide ```data/visualize_charseg.ipynb``` to visualize the character-level segmentation mask.
 
 ```
 ├── 28330/
@@ -90,7 +90,7 @@ textdiffuser
 ├── ├── └── ocr.txt           # ocr detection and recognition results
 ```
 
-The urls of each image is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/laion_ocr_image_url.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2023-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=IWdBT4g5TaS3Mkqib5g6IIAN2u8VSEl90SvRPfzpYNU%3D) (794.6MB). The file structure is as follows:
+The urls of each image is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/laion_ocr_image_url.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2023-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=IWdBT4g5TaS3Mkqib5g6IIAN2u8VSEl90SvRPfzpYNU%3D) or [onedrive](https://mail2sysueducn-my.sharepoint.com/personal/huangyp28_mail2_sysu_edu_cn/_layouts/15/onedrive.aspx?ct=1686245253173&or=Teams%2DHL&ga=1&LOF=1&id=%2Fpersonal%2Fhuangyp28%5Fmail2%5Fsysu%5Fedu%5Fcn%2FDocuments%2Frelease%2Ftextdiffuser%2Fdata) (794.6MB). The file structure is as follows:
 
 ```
 ├── laion_ocr_image_url/
