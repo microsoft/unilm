@@ -5,7 +5,7 @@ tqdm
 regex != 2019.12.17
 sacremoses
 tensorboardX
-transformers == 2.10.0
+transformers == 4.30.0
 scipy  
 seqeval 
 sklearn 
