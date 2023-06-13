@@ -23,7 +23,7 @@ TextDiffuser generates images with visually appealing text that is coherent with
 ## :stopwatch: News
 
 - __[2023.06.08]__: Training script is released.
-- __[2023.06.07]__: LAION-OCR is released.
+- __[2023.06.07]__: MARIO-LAION is released.
 - __[2023.06.02]__: :raised_hands:	:raised_hands:	:raised_hands:	Demo is available in this [link](https://huggingface.co/spaces/JingyeChen22/TextDiffuser).
 - __[2023.05.26]__: Upload the inference code and checkpoint.
 
@@ -79,7 +79,7 @@ textdiffuser
 <img src="assets/readme_images/laion-ocr.jpg" width="80%">
 
 
-**LAION-OCR**'s meta information is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/laion-ocr.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2033-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=a9VXrihTzbWyVfaIDlIT1Z0FoR1073VB0RLQUMuudD4%3D) or [onedrive](https://mail2sysueducn-my.sharepoint.com/personal/huangyp28_mail2_sysu_edu_cn/_layouts/15/onedrive.aspx?ct=1686245253173&or=Teams%2DHL&ga=1&LOF=1&id=%2Fpersonal%2Fhuangyp28%5Fmail2%5Fsysu%5Fedu%5Fcn%2FDocuments%2Frelease%2Ftextdiffuser%2Fdata) (41.6GB), containing 9,194,613 samples. Please download it and unzip it by running ```python data/laion-ocr-unzip.py```. The file structures of each folder should be as follows and ```data/laion-ocr-example``` is provided for reference. We also provide ```data/visualize_charseg.ipynb``` to visualize the character-level segmentation mask.
+**MARIO-LAION**'s meta information is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/laion-ocr.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2033-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=a9VXrihTzbWyVfaIDlIT1Z0FoR1073VB0RLQUMuudD4%3D) or [onedrive](https://mail2sysueducn-my.sharepoint.com/personal/huangyp28_mail2_sysu_edu_cn/_layouts/15/onedrive.aspx?ct=1686245253173&or=Teams%2DHL&ga=1&LOF=1&id=%2Fpersonal%2Fhuangyp28%5Fmail2%5Fsysu%5Fedu%5Fcn%2FDocuments%2Frelease%2Ftextdiffuser%2Fdata) (41.6GB), containing 9,194,613 samples. Please download it and unzip it by running ```python data/maion-laion-unzip.py```. The file structures of each folder should be as follows and ```data/maion-laion-example``` is provided for reference. We also provide ```data/visualize_charseg.ipynb``` to visualize the character-level segmentation mask.
 
 ```
 ├── 28330/
@@ -90,21 +90,21 @@ textdiffuser
 ├── ├── └── ocr.txt           # ocr detection and recognition results
 ```
 
-The urls of each image is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/laion_ocr_image_url.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2033-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=a9VXrihTzbWyVfaIDlIT1Z0FoR1073VB0RLQUMuudD4%3D) or [onedrive](https://mail2sysueducn-my.sharepoint.com/personal/huangyp28_mail2_sysu_edu_cn/_layouts/15/onedrive.aspx?ct=1686245253173&or=Teams%2DHL&ga=1&LOF=1&id=%2Fpersonal%2Fhuangyp28%5Fmail2%5Fsysu%5Fedu%5Fcn%2FDocuments%2Frelease%2Ftextdiffuser%2Fdata) (794.6MB). The file structure is as follows:
+The urls of each image is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/mario_laion_image_url.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2033-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=a9VXrihTzbWyVfaIDlIT1Z0FoR1073VB0RLQUMuudD4%3D) or [onedrive](https://mail2sysueducn-my.sharepoint.com/personal/huangyp28_mail2_sysu_edu_cn/_layouts/15/onedrive.aspx?ct=1686245253173&or=Teams%2DHL&ga=1&LOF=1&id=%2Fpersonal%2Fhuangyp28%5Fmail2%5Fsysu%5Fedu%5Fcn%2FDocuments%2Frelease%2Ftextdiffuser%2Fdata) (794.6MB). The file structure is as follows:
 
 ```
-├── laion_ocr_image_url/
-│   ├── laion-ocr-url.txt         # urls for downloading by img2dataset
-│   ├── laion-ocr-index-url.txt   # urls and indices for each image
-│   └── laion-ocr-test-index.txt  # all indices for test dataset
+├── maion_laion_image_url/
+│   ├── mario-laion-url.txt         # urls for downloading by img2dataset
+│   ├── mario-laion-index-url.txt   # urls and indices for each image
+│   └── mario-laion-test-index.txt  # all indices for test dataset
 ```
 
 Please download img2dataset wiht ```pip install img2dataset```, and download the images using the following command:
 ```
-img2dataset --url_list=/path/to/laion-ocr-url.txt --output_folder=laion_ocr --thread_count=64 --image_size=512
+img2dataset --url_list=/path/to/mario-laion-url.txt --output_folder=laion_ocr --thread_count=64 --image_size=512
 ```
 
-After downloading, please follow ```laion-ocr-index-url.txt``` to move each image to the corresponding folders. Images with indices in ```laion-ocr-test-index.txt``` are used for testing. Please note that some links may be <span style="color:red">**invalid**</span>
+After downloading, please follow ```mario-laion-index-url.txt``` to move each image to the corresponding folders. Images with indices in ```mario-laion-test-index.txt``` are used for testing. Please note that some links may be <span style="color:red">**invalid**</span>
  since the owners remove the images from their website.
 
 ## :steam_locomotive: Train
