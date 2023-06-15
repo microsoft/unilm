@@ -22,6 +22,7 @@ TextDiffuser generates images with visually appealing text that is coherent with
 
 ## :stopwatch: News
 
+- __[2023.06.15]__: :raised_hands:	:raised_hands:	:raised_hands: The Demo of TextDiffuser pre-trained with SD v2.1 is released in this [link](https://huggingface.co/spaces/JingyeChen22/TextDiffuser).
 - __[2023.06.08]__: Training script is released.
 - __[2023.06.07]__: MARIO-LAION is released.
 - __[2023.06.02]__: :raised_hands:	:raised_hands:	:raised_hands:	Demo is available in this [link](https://huggingface.co/spaces/JingyeChen22/TextDiffuser).
