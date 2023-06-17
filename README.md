@@ -47,6 +47,8 @@ Fundamental research to improve modeling generality and capability, as well as t
 
 > [**E5**](https://github.com/microsoft/unilm/tree/master/e5) (```NEW```): text embeddings
 
+> [**MiniLLM**](https://arxiv.org/abs/2306.08543) (```NEW```): Knowledge Distillation of Large Language Models
+
 ### Vision
 > [**BEiT**](https://github.com/microsoft/unilm/tree/master/beit)/[**BEiT-2**](https://github.com/microsoft/unilm/tree/master/beit2): generative self-supervised pre-training for vision / BERT Pre-Training of Image Transformers
 
