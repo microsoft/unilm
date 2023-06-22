@@ -1,0 +1,6 @@
+diffusers==0.16.0
+torch==2.0.1
+pycocoevalcap
+pytorch_fid
+sentencepiece
+-e git+https://github.com/openai/CLIP.git@main#egg=clip
