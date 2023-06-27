@@ -7,11 +7,17 @@
 
 ## Contents
 
-- [Pretrained Models](#checkpoints)
-- [Setup](#setup)
-- [Launch Demo Locally](#demo)
-- [GRIT: Large-Scale Training Corpus of Grounded Image-Text Pairs](#grit-large-scale-training-corpus-of-grounded-image-text-pairs)
-- [Evaluation](#evaluation)
+- [Kosmos-2: Grounding Multimodal Large Language Models to the World](#kosmos-2-grounding-multimodal-large-language-models-to-the-world)
+  - [Contents](#contents)
+  - [Checkpoints](#checkpoints)
+  - [Setup](#setup)
+  - [Demo](#demo)
+  - [GRIT: Large-Scale Training Corpus of Grounded Image-Text Pairs](#grit-large-scale-training-corpus-of-grounded-image-text-pairs)
+  - [Evaluation](#evaluation)
+  - [Citation](#citation)
+  - [Acknowledgement](#acknowledgement)
+  - [License](#license)
+    - [Contact Information](#contact-information)
 
 ## Checkpoints
 
@@ -21,7 +27,7 @@ To be uploaded.
 
 1. Download recommended docker image and launch it:
 ```bash
-alias=`whoami | cut -d'.' -f2`; docker run -it --rm --runtime=nvidia --ipc=host --privileged -v /home/${alias}:/home/${alias} pytorch/pytorch:1.13.1-cuda11.6-cudnn8-devel bash
+alias=`whoami | cut -d'.' -f2`; docker run -it --rm --runtime=nvidia --ipc=host --privileged -v /home/${alias}:/home/${alias} nvcr.io/nvidia/pytorch:22.10-py3 bash
 ```
 2. Clone the repo:
 ```bash
@@ -38,7 +44,7 @@ bash vl_setup_xl.sh
 We host a public demo at [link](https://aka.ms/kosmos-2-demo). If you would like to host a local Gradio demo, run the following command after [setup](#setup):
 ```bash
 # install gradio
-pip install httpcore==0.15.0 gradio==3.9.0
+pip install gradio
 
 bash run_gradio.sh
 ``` 

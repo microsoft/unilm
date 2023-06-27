@@ -1,0 +1,45 @@
+python -m torch.distributed.launch --nproc_per_node=16 --nnodes=8  \
+        --node_rank=$OMPI_COMM_WORLD_RANK --master_addr="$MASTER_IP" --master_port=$MASTER_PORT train.py /mnt/unilm/shaohanh/data/tnlg_config/    \
+        --task vl_gpt_pretraining  \
+        --activation-fn gelu \
+        --share-decoder-input-output-embed \
+        --save-interval-updates 5000 \
+        --no-epoch-checkpoints \
+        --memory-efficient-fp16 \
+        --fp16-init-scale 4 \
+        --arch lm_base \
+        --sample-break-mode none \
+        --tokens-per-sample 2048 \
+        --optimizer adam --adam-betas "(0.9, 0.98)" \
+        --adam-eps 1e-08 \
+        --clip-norm 0.0 \
+        --lr 6e-4 \
+        --lr-scheduler polynomial_decay \
+        --warmup-updates 750 \
+        --dropout 0.1 \
+        --attention-dropout 0.1 \
+        --weight-decay 0.01 \
+        --batch-size 1 \
+        --update-freq 2 \
+        --log-format simple      --log-interval 50     --disable-validation      \
+        --required-batch-size-multiple 1 \
+        --total-num-update 300000 \
+        --max-update 300000 \
+        --seed 1 \
+        --ddp-backend=legacy_ddp \
+        --batch-read-ahead 100 \
+        --rel-pos-buckets 32 \
+        --max-rel-pos 128 \
+        --dict-path /mnt/unilm/shumma/data/16g/dict.txt     \
+        --spm-model /mnt/unilm/shumma/data/16g/sentencepiece.bpe.model \
+        --save-dir /mnt/unilm/shaohanh/exp/unigpt_exp/torchscale_base_laion_gpt \
+        --tensorboard-logdir /mnt/unilm/shaohanh/exp/unigpt_exp/torchscale_base_laion_gpt/tb-logs      \
+        --laion-data-dir /mnt/conversationhub/shaohanh/bvt/data/laion_dataloader_config/ \
+        --laion-batch-size 8 \
+        --checkpoint-activations \
+        --subln \
+        --criterion vl_cross_entropy \
+        --decoder-embed-dim 768 \
+        --decoder-ffn-embed-dim 3072 \
+        --decoder-layers 12 \
+        --decoder-attention-heads 12 
