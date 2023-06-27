@@ -1,0 +1,33 @@
+cff-version: 1.1.0
+message: If you use this software, please cite it as below.
+authors:
+  - family-names: Ilharco
+    given-names: Gabriel
+  - family-names: Wortsman
+    given-names: Mitchell
+  - family-names: Wightman
+    given-names: Ross
+  - family-names: Gordon
+    given-names: Cade   
+  - family-names: Carlini
+    given-names: Nicholas
+  - family-names: Taori
+    given-names: Rohan
+  - family-names: Dave
+    given-names: Achal
+  - family-names: Shankar
+    given-names: Vaishaal
+  - family-names: Namkoong
+    given-names: Hongseok
+  - family-names: Miller
+    given-names: John
+  - family-names: Hajishirzi
+    given-names: Hannaneh
+  - family-names: Farhadi
+    given-names: Ali
+  - family-names: Schmidt
+    given-names: Ludwig
+title: OpenCLIP
+version: v0.1
+doi: 10.5281/zenodo.5143773
+date-released: 2021-07-28

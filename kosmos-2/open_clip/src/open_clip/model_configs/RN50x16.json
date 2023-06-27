@@ -1,0 +1,21 @@
+{
+    "embed_dim": 768,
+    "vision_cfg": {
+        "image_size": 384,
+        "layers": [
+            6,
+            8,
+            18,
+            8
+        ],
+        "width": 96,
+        "patch_size": null
+    },
+    "text_cfg": {
+        "context_length": 77,
+        "vocab_size": 49408,
+        "width": 768,
+        "heads": 12,
+        "layers": 12
+    }
+}
