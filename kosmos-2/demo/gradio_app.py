@@ -468,51 +468,62 @@ def main(cfg: FairseqConfig):
         # return vis_image, str(clean_response_str), str(response_str)
         return vis_image, mark_texts(response_str)
     
-    # gradio interface layout
-    image_input = gr.inputs.Image(type="pil", label="Test Image")  
-    text_input = gr.inputs.Radio(["Brief", "Detailed"], label="Description Type", default="Brief")
-    do_sample = gr.inputs.Checkbox(label="Enable Sampling (Please enable it before adjusting sampling parameters below)", default=False)  
-    sampling_topp = gr.inputs.Slider(minimum=0.1, maximum=1, step=0.01, default=0.9, label="Sampling: Top-P") 
-    sampling_temperature = gr.inputs.Slider(minimum=0.1, maximum=1, step=0.01, default=0.75, label="Sampling: Temperature") 
+    term_of_use = """
+    ### Terms of use  
+    By using this model, users are required to agree to the following terms:  
+    The model is intended for academic and research purposes. 
+    The utilization of the model to create unsuitable material is strictly forbidden and not endorsed by this work. 
+    The accountability for any improper or unacceptable application of the model rests exclusively with the individuals who generated such content. 
     
-    image_output = gr.outputs.Image(type="pil")
-    text_output1 = gr.HighlightedText(
-        label="Generated Description", 
-        combine_adjacent=False,
-        show_legend=True,
-        ).style(color_map={"box": "red"})
-    
-    # build a example lists  
-    example_data = [  
-        ["demo/images/two_dogs.jpg", "Detailed", False, 0.9, 0.7],
-        ["demo/images/snowman.png", "Brief", False, 0.9, 0.7],
-        ["demo/images/man_ball.png", "Detailed", False, 0.9, 0.7],
-        ["demo/images/six_planes.png", "Brief", False, 0.9, 0.7],
-        ["demo/images/quadrocopter.jpg", "Brief", False, 0.9, 0.7],  
-        ["demo/images/carnaby_street.jpg", "Brief", False, 0.9, 0.7],  
-        # ["demo/images/man_iron.jpg", "Detailed", True, 0.9, 0.7],
-        # ["demo/images/corgi.jpg", "Detailed", True, 0.9, 0.7],
-        # ["demo/images/people_raft.jpg", "Detailed", True, 0.9, 0.7],
-        # ["demo/images/man_flame.jpg", "Detailed", True, 0.9, 0.7],
-    ]
-    
-    # term_of_use = """
-    # # Terms of use  
-    # By using this service, users are required to agree to the following terms:  
-    # The model is intended for academic and research purposes. The utilization of the model to create unsuitable material is strictly forbidden and not endorsed by this work. The accountability for any improper or unacceptable application of the model rests exclusively with the individuals who generated such content. We also put [Microsoft AI Principles](https://www.microsoft.com/ai/responsible-ai) into practice when developing the models. Please click the "Flag" button if you get any inappropriate answer! 
-    # """
-    
-    iface = gr.Interface(
-        fn=generate_predictions,
-        inputs=[image_input, text_input, do_sample, sampling_topp, sampling_temperature],  
-        outputs=[image_output, text_output1],  
-        title="Kosmos-2: Grounding Multimodal Large Language Models to the World",
-        examples=example_data,
-        # article=gr.Markdown(term_of_use),
-        cache_examples=False,
-        allow_flagging='manual',
-    )
-    iface.launch(share=True, enable_queue=True)
+    ### License
+    This project is licensed under the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct).
+    """
+
+    with gr.Blocks(title="Kosmos-2", theme=gr.themes.Base()).queue() as demo:
+        gr.Markdown(("""
+            # Kosmos-2: Grounding Multimodal Large Language Models to the World
+            [[Paper]](https://arxiv.org/abs/2306.14824) [[Code]](https://github.com/microsoft/unilm/blob/master/kosmos-2)
+            """))
+        with gr.Row():
+            with gr.Column():
+                image_input = gr.Image(type="pil", label="Test Image")  
+                text_input = gr.Radio(["Brief", "Detailed"], label="Description Type", value="Brief")
+                do_sample = gr.Checkbox(label="Enable Sampling", info="(Please enable it before adjusting sampling parameters below)", value=False)
+                with gr.Accordion("Sampling parameters", open=False) as sampling_parameters:
+                    sampling_topp = gr.Slider(minimum=0.1, maximum=1, step=0.01, value=0.9, label="Sampling: Top-P") 
+                    sampling_temperature = gr.Slider(minimum=0.1, maximum=1, step=0.01, value=0.7, label="Sampling: Temperature") 
+
+                run_button = gr.Button(label="Run", visible=True) 
+                
+            with gr.Column():
+                image_output = gr.Image(type="pil")
+                text_output1 = gr.HighlightedText(
+                                    label="Generated Description", 
+                                    combine_adjacent=False,
+                                    show_legend=True,
+                                ).style(color_map={"box": "red"})
+                
+        with gr.Row():
+            with gr.Column():
+                gr.Examples(examples=[  
+                            ["demo/images/two_dogs.jpg", "Detailed", False],
+                            ["demo/images/snowman.png", "Brief", False],
+                            ["demo/images/man_ball.png", "Detailed", False],
+                        ], inputs=[image_input, text_input, do_sample])
+            with gr.Column():
+                gr.Examples(examples=[  
+                            ["demo/images/six_planes.png", "Brief", False],
+                            ["demo/images/quadrocopter.jpg", "Brief", False],  
+                            ["demo/images/carnaby_street.jpg", "Brief", False],  
+                        ], inputs=[image_input, text_input, do_sample])
+        gr.Markdown(term_of_use)
+        
+        run_button.click(fn=generate_predictions, 
+                         inputs=[image_input, text_input, do_sample, sampling_topp, sampling_temperature],  
+                         outputs=[image_output, text_output1],  
+                         show_progress=True, queue=True)
+
+    demo.launch(share=True)
 
 # process the generated description for highlighting
 def remove_special_fields(text):  
@@ -596,5 +607,5 @@ def cli_main():
     distributed_utils.call_main(convert_namespace_to_omegaconf(args), main)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":    
     cli_main()
