@@ -96,7 +96,8 @@ Fundamental research to develop new architectures for foundation models and A(G)
 > [**XLM-T**](https://github.com/microsoft/unilm/tree/master/xlmt): multilingual NMT w/ pretrained cross-lingual encoders
 
 ## Links
-### LLMOps - General technology for enabling AI capabilities w/ LLMs and MLLMs ([repo](https://github.com/microsoft/lmops))
+### LLMOps ([repo](https://github.com/microsoft/lmops))
+General technology for enabling AI capabilities w/ LLMs and MLLMs.
 
 ## News
 - [Model Release] May, 2023: [**TextDiffuser**](https://github.com/microsoft/unilm/tree/master/textdiffuser) models and code.
