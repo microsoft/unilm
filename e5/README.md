@@ -23,9 +23,11 @@ The models with `-unsupervised` suffix only pre-trains on unlabeled datasets.
 
 ## Multilingual Pre-trained Models
 
-|                      | BEIR | # of layers | embedding dimension | Huggingface                                                                           |
-|----------------------|------|:-----------:|:-------------------:|---------------------------------------------------------------------------------------|
-| multilingual-e5-base | 48.9 |     12      |         768         | [intfloat/multilingual-e5-base](https://huggingface.co/intfloat/multilingual-e5-base) |
+|                       | BEIR | # of layers | embedding dimension | Huggingface                                                                             |
+|-----------------------|------|:-----------:|:-------------------:|-----------------------------------------------------------------------------------------|
+| multilingual-e5-small | 46.6 |     12      |         384         | [intfloat/multilingual-e5-small](https://huggingface.co/intfloat/multilingual-e5-small) |
+| multilingual-e5-base  | 48.9 |     12      |         768         | [intfloat/multilingual-e5-base](https://huggingface.co/intfloat/multilingual-e5-base)   |
+| multilingual-e5-large | 51.4 |     24      |        1024         | [intfloat/multilingual-e5-large](https://huggingface.co/intfloat/multilingual-e5-large) |
 
 ## Install Python Package Requirements
 
