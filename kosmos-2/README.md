@@ -1,4 +1,5 @@
 # Kosmos-2: Grounding Multimodal Large Language Models to the World
+[[paper]](https://arxiv.org/abs/2306.14824) [[online demo]](https://aka.ms/kosmos-2-demo)
 
 - June 2023: 🔥 We release the **Kosmos-2: Grounding Multimodal Large Language Models to the World** paper. Checkout the [paper](https://arxiv.org/abs/2306.14824) and [online demo](https://aka.ms/kosmos-2-demo).
 - Feb 2023: [Kosmos-1 (Language Is Not All You Need: Aligning Perception with Language Models)](https://arxiv.org/abs/2302.14045)
@@ -57,7 +58,42 @@ We introduce GRIT, a large-scale dataset of **Gr**ounded **I**mage-**T**ext pair
 We construct a pipeline to extract and link text spans (i.e., noun phrases, and referring expressions) in the caption to their corresponding image regions.
 More details can be found in the paper.
 
-We will update the download link within this week.
+We provide the [COYO-700M](https://huggingface.co/datasets/kakaobrain/coyo-700m) split of GRIT in [here](https://conversationhub.blob.core.windows.net/beit-share-public/kosmos-2/data/grit_coyo.jsonl?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D). 
+The split contains about 20M image-caption pairs. We would like upload it to Hugging Face after preparation.
+One data instance is:
+
+```python
+{
+  'key': '000373938', 
+  'clip_similarity_vitb32': 0.353271484375, 
+  'clip_similarity_vitl14': 0.2958984375, 
+  'id': 1795296605919, 
+  'url': "https://www.thestrapsaver.com/wp-content/uploads/customerservice-1.jpg", 
+  'caption': 'a wire hanger with a paper cover that reads we heart our customers', 
+  'width': 1024, 
+  'height': 693, 
+  'noun_chunks': [[19, 32, 0.019644069503434333, 0.31054004033406574, 0.9622142865754519, 0.9603442351023356, 0.79298526], [0, 13, 0.019422357885505368, 0.027634161214033764, 0.9593302408854166, 0.969467560450236, 0.67520964]], 
+  'ref_exps': [[19, 66, 0.019644069503434333, 0.31054004033406574, 0.9622142865754519, 0.9603442351023356, 0.79298526], [0, 66, 0.019422357885505368, 0.027634161214033764, 0.9593302408854166, 0.969467560450236, 0.67520964]]
+}
+
+```
+- `key`: The file name in COYO-700M.
+- `clip_similarity_vitb32`: The cosine similarity between text and image(ViT-B/32) embeddings by [OpenAI CLIP](https://github.com/openai/CLIP), provided by COYO-700M.
+- `clip_similarity_vitl14`: The cosine similarity between text and image(ViT-L/14) embeddings by [OpenAI CLIP](https://github.com/openai/CLIP), provided by COYO-700M.
+- `id`: Unique 64-bit integer ID in COYO-700M.
+- `url`: The image URL.
+- `caption`: The corresponding caption.
+- `width`: The width of the image.
+- `height`: The height of the image.
+- `noun_chunks`: The noun chunks (extracted by [spaCy](https://spacy.io/)) that have associated bounding boxes (predicted by [GLIP](https://github.com/microsoft/GLIP)). The items in the children list respectively represent 'Start of the noun chunk in caption', 'End of the noun chunk in caption', 'normalized x_min', 'normalized y_min', 'normalized x_max', 'normalized y_max', 'confidence score'.
+- `ref_exps`: The corresponding referring expressions. If a noun chunk has no expansion, we just copy it. 
+
+Run the following commands to visualize it:
+```bash
+wget -O /tmp/grit_coyo.jsonl "https://conversationhub.blob.core.windows.net/beit-share-public/kosmos-2/data/grit_coyo.jsonl?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D"
+
+python data/visualize_grit.py
+```
 
 ## Evaluation
 
