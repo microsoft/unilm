@@ -56,11 +56,13 @@ bash run_gradio.sh
 
 We introduce GRIT, a large-scale dataset of **Gr**ounded **I**mage-**T**ext pairs, which is created based on image-text pairs from a subset of COYO-700M and LAION-2B.
 We construct a pipeline to extract and link text spans (i.e., noun phrases, and referring expressions) in the caption to their corresponding image regions.
-More details can be found in the paper.
+More details can be found in the [paper](https://arxiv.org/abs/2306.14824).
 
-We provide the [COYO-700M](https://huggingface.co/datasets/kakaobrain/coyo-700m) split of GRIT in [here](https://conversationhub.blob.core.windows.net/beit-share-public/kosmos-2/data/grit_coyo.jsonl?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D). 
-The split contains about 20M image-caption pairs. We would like upload it to Hugging Face after preparation.
-One data instance is:
+
+### Download Data
+- [GrIT-20M](https://conversationhub.blob.core.windows.net/beit-share-public/kosmos-2/data/grit_coyo.jsonl?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D): The split contains about 20M grounded image-caption pairs processed from COYO-700M.
+
+The format of data instance is:
 
 ```python
 {
