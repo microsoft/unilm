@@ -1,5 +1,5 @@
 # Kosmos-2: Grounding Multimodal Large Language Models to the World
-[[paper]](https://arxiv.org/abs/2306.14824) [[online demo]](https://aka.ms/kosmos-2-demo)
+[[paper]](https://arxiv.org/abs/2306.14824) [[online demo]](https://aka.ms/kosmos-2-demo) [[dataset]](https://huggingface.co/datasets/zzliang/GRIT)
 
 - June 2023: 🔥 We release the **Kosmos-2: Grounding Multimodal Large Language Models to the World** paper. Checkout the [paper](https://arxiv.org/abs/2306.14824) and [online demo](https://aka.ms/kosmos-2-demo).
 - Feb 2023: [Kosmos-1 (Language Is Not All You Need: Aligning Perception with Language Models)](https://arxiv.org/abs/2302.14045)
@@ -14,6 +14,7 @@
   - [Setup](#setup)
   - [Demo](#demo)
   - [GRIT: Large-Scale Training Corpus of Grounded Image-Text Pairs](#grit-large-scale-training-corpus-of-grounded-image-text-pairs)
+    - [Download Data](#download-data)
   - [Evaluation](#evaluation)
   - [Citation](#citation)
   - [Acknowledgement](#acknowledgement)
@@ -60,7 +61,7 @@ More details can be found in the [paper](https://arxiv.org/abs/2306.14824).
 
 
 ### Download Data
-- [GrIT-20M](https://conversationhub.blob.core.windows.net/beit-share-public/kosmos-2/data/grit_coyo.jsonl?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D): The split contains about 20M grounded image-caption pairs processed from COYO-700M.
+- [GrIT-20M](https://conversationhub.blob.core.windows.net/beit-share-public/kosmos-2/data/grit_coyo.jsonl?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D): The split contains about 20M grounded image-caption pairs processed from COYO-700M. We also release it on [huggingface](https://huggingface.co/datasets/zzliang/GRIT).
 
 The format of data instance is:
 
@@ -96,6 +97,8 @@ wget -O /tmp/grit_coyo.jsonl "https://conversationhub.blob.core.windows.net/beit
 
 python data/visualize_grit.py
 ```
+
+We recommend using [img2dataset](https://github.com/rom1504/img2dataset) to download images, as detailed [here](https://huggingface.co/datasets/zzliang/GRIT#download-image).
 
 ## Evaluation
 
