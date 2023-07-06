@@ -50,7 +50,7 @@ Meanwhile, please install torch and torchvision that matches the version of syst
 
 Install Hugging Face Diffuser and replace some files:
 ```
-git clone https://github.com/huggingface/diffusers
+git clone https://github.com/JingyeChen/diffusers
 cp ./assets/files/scheduling_ddpm.py ./diffusers/src/diffusers/schedulers/scheduling_ddpm.py
 cp ./assets/files/unet_2d_condition.py ./diffusers/src/diffusers/models/unet_2d_condition.py
 cp ./assets/files/modeling_utils.py ./diffusers/src/diffusers/models/modeling_utils.py
@@ -104,7 +104,7 @@ The urls of each image is at this [link](https://layoutlm.blob.core.windows.net/
 
 Please download img2dataset wiht ```pip install img2dataset```, and download the images using the following command:
 ```
-img2dataset --url_list=/path/to/mario-laion-url.txt --output_folder=laion_ocr --thread_count=64 --image_size=512
+img2dataset --url_list=url.txt --output_folder=laion_ocr --thread_count=64  --resize_mode=no
 ```
 
 After downloading, please follow ```mario-laion-index-url.txt``` to move each image to the corresponding folders. Images with indices in ```mario-laion-test-index.txt``` are used for testing. Please note that some links may be <span style="color:red">**invalid**</span>
