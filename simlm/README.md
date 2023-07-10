@@ -1,7 +1,8 @@
 # SimLM: Pre-training for Similarity Matching
 
+- May 2023: our paper is accepted to ACL 2023
 - January 2023: release code
-- July 2022: release preprint [SimLM: Pre-training with Representation Bottleneck for Dense Passage Retrieval](https://arxiv.org/abs/2207.02578)
+- July 2022: release preprint [SimLM: Pre-training with Representation Bottleneck for Dense Passage Retrieval](https://aclanthology.org/2023.acl-long.125.pdf)
 
 SimLM is a retrieval-oriented pre-training architecture,
 which aims to compress input information into a representation bottleneck 
@@ -224,12 +225,23 @@ If you find our paper or code helpful,
 please consider citing as follows:
 
 ```bibtex
-@article{Wang2022SimLMPW,
-  title={SimLM: Pre-training with Representation Bottleneck for Dense Passage Retrieval},
-  author={Liang Wang and Nan Yang and Xiaolong Huang and Binxing Jiao and Linjun Yang and Daxin Jiang and Rangan Majumder and Furu Wei},
-  journal={ArXiv},
-  year={2022},
-  volume={abs/2207.02578}
+@inproceedings{wang-etal-2023-simlm,
+    title = "{S}im{LM}: Pre-training with Representation Bottleneck for Dense Passage Retrieval",
+    author = "Wang, Liang  and
+      Yang, Nan  and
+      Huang, Xiaolong  and
+      Jiao, Binxing  and
+      Yang, Linjun  and
+      Jiang, Daxin  and
+      Majumder, Rangan  and
+      Wei, Furu",
+    booktitle = "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = jul,
+    year = "2023",
+    address = "Toronto, Canada",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.acl-long.125",
+    pages = "2244--2258",
 }
 ```
 
