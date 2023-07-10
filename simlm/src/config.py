@@ -210,3 +210,5 @@ class Arguments(TrainingArguments):
 
         if self.output_dir:
             os.makedirs(self.output_dir, exist_ok=True)
+
+        self.label_names = ['labels']
