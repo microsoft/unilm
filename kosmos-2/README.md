@@ -16,6 +16,11 @@
   - [GRIT: Large-Scale Training Corpus of Grounded Image-Text Pairs](#grit-large-scale-training-corpus-of-grounded-image-text-pairs)
     - [Download Data](#download-data)
   - [Evaluation](#evaluation)
+    - [1. Phrase grounding](#1-phrase-grounding)
+    - [2. Referring expression comprehension](#2-referring-expression-comprehension)
+    - [3. Referring expression generation](#3-referring-expression-generation)
+    - [4. Image captioning](#4-image-captioning)
+    - [5. Visual question answering](#5-visual-question-answering)
   - [Citation](#citation)
   - [Acknowledgement](#acknowledgement)
   - [License](#license)
@@ -52,6 +57,7 @@ pip install gradio
 
 bash run_gradio.sh
 ``` 
+If you encounter a `pydantic` error, refer to [comment](https://github.com/microsoft/unilm/issues/1185#issuecomment-1629305294) for a solution.
 
 ## GRIT: Large-Scale Training Corpus of Grounded Image-Text Pairs
 
@@ -102,7 +108,57 @@ We recommend using [img2dataset](https://github.com/rom1504/img2dataset) to down
 
 ## Evaluation
 
-To be updated.
+### 1. Phrase grounding 
+We evaluate phrase grounding task on [Flickr30k Entities](https://github.com/BryanPlummer/flickr30k_entities) under zero-shot setting:
+| Model | Recall@1 on val split | Recall@1 on test split | 
+| ----- | --------------------- | ---------------------- |
+| Kosmos-2 | 77.8 | 78.7 |
+
+More results and evaluation code can be found in [evaluation/flickr/README.md](evaluation/flickr/README.md)
+
+### 2. Referring expression comprehension
+We evaluate referring expression comprehension task on RefCOCO, RefCOCO+ and RefCOCOg under zero-shot setting. We report accuracy metric here.
+
+| Model | RefCOCO val | RefCOCO testA| RefCOCO testB | RefCOCO+ val | RefCOCO+ testA| RefCOCO+ testB | RefCOCOg val | RefCOCOg test|
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Kosmos-2 | 52.32 | 57.42 | 47.26 | 45.48 | 50.73 | 42.24 | 60.57 | 61.65 |
+
+More results and evaluation code can be found in [evaluation/refcoco/README.md](evaluation/refcoco/README.md)
+
+### 3. Referring expression generation
+We evaluate referring expression generation task on RefCOCOg under zero-shot and few-shot settings. We report Meteor and CIDEr metrics here.
+
+| Model | Setting | Meteor | CIDEr |
+| --- | --- | --- | --- |
+| Kosmos-2 | zero-shot | 12.2 | 60.3 |
+| Kosmos-2 | few-shot (k=2) | 13.8 | 62.2 |
+| Kosmos-2 | few-shot (k=4) | 14.1 | 62.2 |
+
+We will release the evaluation code in [here](evaluation/).
+
+### 4. Image captioning
+<!-- We evaluate image captioning task on Flickr30K Karpathy split test set under zero-shot setting. We report CIDEr metric here.
+
+| Model | CIDEr on Flickr30K | 
+| --- | --- |
+| Flamingo-3B | 60.6 |
+| Flamingo-9B | 61.5 | 
+| Kosmos-1 | 67.1 |
+| Kosmos-2 |  |  -->
+
+We will release the evaluation code in [here](evaluation/).
+
+### 5. Visual question answering
+<!-- We evaluate visual question answering task on the test-dev set of VQAv2 under zero-shot setting. We report VQA scores obtained from VQAv2 evaluation server.
+
+| Model | Accuracy on VQAv2 | 
+| --- | --- |
+| Flamingo-3B | 49.2 |
+| Flamingo-9B | 51.8 | 
+| Kosmos-1 | 51.0 |
+| Kosmos-2 |  |  -->
+
+We will release the evaluation code in [here](evaluation/). 
 
 ## Citation
 
