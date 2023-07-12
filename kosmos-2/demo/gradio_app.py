@@ -326,7 +326,8 @@ def main(cfg: FairseqConfig):
     start_id = 0
     
     def generate_predictions(image_input, text_input, do_sample, sampling_topp, sampling_temperature):
-        
+        global global_image_path
+        global global_image_tensor
         if do_sample:
             cfg.generation.sampling = True
             cfg.generation.sampling_topp = sampling_topp
