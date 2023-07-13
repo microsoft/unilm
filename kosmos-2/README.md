@@ -1,7 +1,9 @@
 # Kosmos-2: Grounding Multimodal Large Language Models to the World
-[[paper]](https://arxiv.org/abs/2306.14824) [[online demo]](https://aka.ms/kosmos-2-demo) [[dataset]](https://huggingface.co/datasets/zzliang/GRIT)
+[[paper]](https://arxiv.org/abs/2306.14824) [[dataset]](https://huggingface.co/datasets/zzliang/GRIT)
+<!-- [[online demo]](https://aka.ms/kosmos-2-demo) -->
 
-- June 2023: 🔥 We release the **Kosmos-2: Grounding Multimodal Large Language Models to the World** paper. Checkout the [paper](https://arxiv.org/abs/2306.14824) and [online demo](https://aka.ms/kosmos-2-demo).
+<!--  and [online demo](https://aka.ms/kosmos-2-demo) -->
+- June 2023: 🔥 We release the **Kosmos-2: Grounding Multimodal Large Language Models to the World** paper. Checkout the [paper](https://arxiv.org/abs/2306.14824).
 - Feb 2023: [Kosmos-1 (Language Is Not All You Need: Aligning Perception with Language Models)](https://arxiv.org/abs/2302.14045)
 - June 2022: [MetaLM (Language Models are General-Purpose Interfaces)](https://arxiv.org/abs/2206.06336)
 
@@ -50,7 +52,8 @@ bash vl_setup_xl.sh
 
 ## Demo
 
-We host a public demo at [link](https://aka.ms/kosmos-2-demo). If you would like to host a local Gradio demo, run the following command after [setup](#setup):
+<!-- We host a public demo at [link](https://aka.ms/kosmos-2-demo). -->
+If you would like to host a local Gradio demo, run the following command after [setup](#setup):
 ```bash
 # install gradio
 pip install gradio
