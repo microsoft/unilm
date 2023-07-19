@@ -103,3 +103,4 @@ venv.bak/
 # mypy
 .mypy_cache/
 speechlm/dataset/LibriSpeech/fast_phone2unit/dict.PHN.txt
+speechlm/dataset/LibriSpeech/fast_phone2unit/dict.phn.txt
