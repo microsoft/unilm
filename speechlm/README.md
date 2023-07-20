@@ -195,7 +195,7 @@ Here we provided the processed phonemes of 960h speech here: [`train_960.tsv`](h
 This tokenizer is used to phonemize the unpaired text data to (phonemes, letters) paired data, following a `words -> phonemes -> upsampled phones` pipeline.
 
 The following script will download LibriSpeech LM corpus and produce the required data: `train_text.phn-ltr.phn.{idx,bin}` and `train_text.phn-ltr.ltr.{idx,bin}`. 
-> Before runing it, make sure you have our provided [`dcit.phn.txt`](dataset/LibriLM/phone_unit/bin-idx/dcit.phn.txt) and [`dcit.ltr.txt`](dataset/LibriLM/phone_unit/bin-idx/dcit.ltr.txt) in the output dir `dataset/LibriLM/phone_unit/bin-idx/`.
+> Before running it, make sure you have our provided [`dcit.phn.txt`](dataset/LibriLM/phone_unit/bin-idx/dcit.phn.txt) and [`dcit.ltr.txt`](dataset/LibriLM/phone_unit/bin-idx/dcit.ltr.txt) in the output dir `dataset/LibriLM/phone_unit/bin-idx/`.
 ```bash
 # data will be in dataset/LibriLM/phone_unit/
 bash speechlm/data_process/prepare_phn2ltr_librilm.sh
