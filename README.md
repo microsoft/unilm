@@ -16,7 +16,9 @@ Fundamental research to develop new architectures for foundation models and A(G)
 
 > Efficiency & Transferability - [**X-MoE**](https://github.com/microsoft/unilm/tree/master/xmoe): scalable & finetunable sparse Mixture-of-Experts (MoE)
 
-### Revolutionizing Transformers for (M)LLMs and A(G)I
+### Revolutionizing Transformers for (M)LLMs and AI
+
+> [**RetNet**](https://arxiv.org/abs/2307.08621): Retentive Network: A Successor to Transformer for Large Language Models
 
 > [**LongNet**](https://arxiv.org/abs/2307.02486): Scaling Transformers to 1,000,000,000 Tokens
 
