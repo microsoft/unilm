@@ -4,6 +4,7 @@
 <a href='https://github.com/microsoft/unilm/tree/master/textdiffuser'><img src='https://img.shields.io/badge/Code-aka.ms/textdiffuser-yellow'>
 <a href='https://jingyechen.github.io/textdiffuser/'><img src='https://img.shields.io/badge/Project Page-link-green'>
 </a> [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-TextDiffuser-blue)](https://huggingface.co/spaces/JingyeChen22/TextDiffuser)
+<a href='https://colab.research.google.com/drive/115Qw0l5dhjlTtrbywMWRwhz9IxKE4_Dg?usp=sharing'><img src='https://img.shields.io/badge/GoogleColab-link-purple'>
 
 
 TextDiffuser generates images with visually appealing text that is coherent with backgrounds. It is flexible and controllable to create high-quality text images using text prompts alone or together with text template images, and conduct text inpainting to reconstruct incomplete images with text.
@@ -14,7 +15,7 @@ TextDiffuser generates images with visually appealing text that is coherent with
 
 * We propose **TextDiffuser**, which is a two-stage diffusion-based framework for text rendering. It generates accurate and coherent text images from text prompts or additionally with template images, as well as conducting text inpainting to reconstruct incomplete images.
 
-* We release **MARIO-10M**, containing large-scale image-text pairs with OCR annotations, including text recognition, detection, and character-level segmentation masks. (To be released)
+* We release **MARIO-10M**, containing large-scale image-text pairs with OCR annotations, including text recognition, detection, and character-level segmentation masks.
 
 * We construct **MARIO-Eval**, a comprehensive text rendering benchmark containing 10k prompts.
 
@@ -23,7 +24,7 @@ TextDiffuser generates images with visually appealing text that is coherent with
 ## :stopwatch: News
 
 - __[2023.06.22]__: Evaluation script is released.
-- __[2023.06.15]__: :raised_hands:	:raised_hands:	:raised_hands: The Demo of TextDiffuser pre-trained with SD v2.1 is released in this [link](https://huggingface.co/spaces/JingyeChen22/TextDiffuser).
+- __[2023.06.15]__: :raised_hands:	:raised_hands:	:raised_hands: The Demo of TextDiffuser pre-trained with SD v2.1 is released in this [link](https://huggingface.co/spaces/JingyeChen22/TextDiffuser). Meanwhile, GoogleColab is available in this [link](https://colab.research.google.com/drive/115Qw0l5dhjlTtrbywMWRwhz9IxKE4_Dg?usp=sharing).
 - __[2023.06.08]__: Training script is released.
 - __[2023.06.07]__: MARIO-LAION is released.
 - __[2023.06.02]__: :raised_hands:	:raised_hands:	:raised_hands:	Demo is available in this [link](https://huggingface.co/spaces/JingyeChen22/TextDiffuser).
@@ -82,7 +83,7 @@ textdiffuser
 <img src="assets/readme_images/laion-ocr.jpg" width="80%">
 
 
-**MARIO-LAION**'s meta information is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/laion-ocr.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2033-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=a9VXrihTzbWyVfaIDlIT1Z0FoR1073VB0RLQUMuudD4%3D) or [onedrive](https://mail2sysueducn-my.sharepoint.com/personal/huangyp28_mail2_sysu_edu_cn/_layouts/15/onedrive.aspx?ct=1686245253173&or=Teams%2DHL&ga=1&LOF=1&id=%2Fpersonal%2Fhuangyp28%5Fmail2%5Fsysu%5Fedu%5Fcn%2FDocuments%2Frelease%2Ftextdiffuser%2Fdata) (41.6GB), containing 9,194,613 samples. Please download it and unzip it by running ```python data/maion-laion-unzip.py```. The file structures of each folder should be as follows and ```data/maion-laion-example``` is provided for reference. We also provide ```data/visualize_charseg.ipynb``` to visualize the character-level segmentation mask.
+**MARIO-LAION**'s meta information is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/laion-ocr-new.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2033-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=a9VXrihTzbWyVfaIDlIT1Z0FoR1073VB0RLQUMuudD4%3D) or [onedrive](https://mail2sysueducn-my.sharepoint.com/personal/huangyp28_mail2_sysu_edu_cn/_layouts/15/onedrive.aspx?ct=1686245253173&or=Teams%2DHL&ga=1&LOF=1&id=%2Fpersonal%2Fhuangyp28%5Fmail2%5Fsysu%5Fedu%5Fcn%2FDocuments%2Frelease%2Ftextdiffuser%2Fdata) (40GB), containing 9,194,613 samples. Please download it and unzip it by running ```python data/maion-laion-unzip.py```. The file structures of each folder should be as follows and ```data/maion-laion-example``` is provided for reference. We also provide ```data/visualize_charseg.ipynb``` to visualize the character-level segmentation mask.
 
 ```
 ├── 28330/
@@ -107,7 +108,7 @@ Please download img2dataset wiht ```pip install img2dataset```, and download the
 img2dataset --url_list=url.txt --output_folder=laion_ocr --thread_count=64  --resize_mode=no
 ```
 
-After downloading, please follow ```mario-laion-index-url.txt``` to move each image to the corresponding folders. Images with indices in ```mario-laion-test-index.txt``` are used for testing. Please note that some links may be <span style="color:red">**invalid**</span>
+After downloading, you need to resize each image to ```512x512```. Please follow ```mario-laion-index-url.txt``` to move each image to the corresponding folders. Images with indices in ```mario-laion-test-index.txt``` are used for testing. Please note that some links may be <span style="color:red">**invalid**</span>
  since the owners remove the images from their website.
 
 ## :steam_locomotive: Train

@@ -1,7 +1,9 @@
 # Kosmos-2: Grounding Multimodal Large Language Models to the World
-[[paper]](https://arxiv.org/abs/2306.14824) [[online demo]](https://aka.ms/kosmos-2-demo) [[dataset]](https://huggingface.co/datasets/zzliang/GRIT)
+[[paper]](https://arxiv.org/abs/2306.14824) [[dataset]](https://huggingface.co/datasets/zzliang/GRIT)
+<!-- [[online demo]](https://aka.ms/kosmos-2-demo) -->
 
-- June 2023: 🔥 We release the **Kosmos-2: Grounding Multimodal Large Language Models to the World** paper. Checkout the [paper](https://arxiv.org/abs/2306.14824) and [online demo](https://aka.ms/kosmos-2-demo).
+<!--  and [online demo](https://aka.ms/kosmos-2-demo) -->
+- June 2023: 🔥 We release the **Kosmos-2: Grounding Multimodal Large Language Models to the World** paper. Checkout the [paper](https://arxiv.org/abs/2306.14824).
 - Feb 2023: [Kosmos-1 (Language Is Not All You Need: Aligning Perception with Language Models)](https://arxiv.org/abs/2302.14045)
 - June 2022: [MetaLM (Language Models are General-Purpose Interfaces)](https://arxiv.org/abs/2206.06336)
 
@@ -47,14 +49,13 @@ cd unilm/kosmos-2
 ```bash
 bash vl_setup_xl.sh
 ``` 
+(Refer to [comment](https://github.com/microsoft/unilm/issues/1204#issuecomment-1639812388) for detailed package info)
 
 ## Demo
 
-We host a public demo at [link](https://aka.ms/kosmos-2-demo). If you would like to host a local Gradio demo, run the following command after [setup](#setup):
+<!-- We host a public demo at [link](https://aka.ms/kosmos-2-demo). -->
+If you would like to host a local Gradio demo, run the following command after [setup](#setup):
 ```bash
-# install gradio
-pip install gradio
-
 bash run_gradio.sh
 ``` 
 If you encounter a `pydantic` error, refer to [comment](https://github.com/microsoft/unilm/issues/1185#issuecomment-1629305294) for a solution.
@@ -114,7 +115,7 @@ We evaluate phrase grounding task on [Flickr30k Entities](https://github.com/Bry
 | ----- | --------------------- | ---------------------- |
 | Kosmos-2 | 77.8 | 78.7 |
 
-More results and evaluation code can be found in [evaluation/flickr/README.md](evaluation/flickr/README.md)
+More results and evaluation code can be found in [evaluation/flickr/README.md](evaluation/flickr_entities/README.md)
 
 ### 2. Referring expression comprehension
 We evaluate referring expression comprehension task on RefCOCO, RefCOCO+ and RefCOCOg under zero-shot setting. We report accuracy metric here.
@@ -137,26 +138,26 @@ We evaluate referring expression generation task on RefCOCOg under zero-shot and
 We will release the evaluation code in [here](evaluation/).
 
 ### 4. Image captioning
-<!-- We evaluate image captioning task on Flickr30K Karpathy split test set under zero-shot setting. We report CIDEr metric here.
+We evaluate image captioning task on Flickr30K Karpathy split test set under zero-shot setting. We report CIDEr metric here.
 
 | Model | CIDEr on Flickr30K | 
 | --- | --- |
 | Flamingo-3B | 60.6 |
 | Flamingo-9B | 61.5 | 
 | Kosmos-1 | 67.1 |
-| Kosmos-2 |  |  -->
+| Kosmos-2 | 80.5 | 
 
 We will release the evaluation code in [here](evaluation/).
 
 ### 5. Visual question answering
-<!-- We evaluate visual question answering task on the test-dev set of VQAv2 under zero-shot setting. We report VQA scores obtained from VQAv2 evaluation server.
+We evaluate visual question answering task on the test-dev set of VQAv2 under zero-shot setting. We report VQA scores obtained from VQAv2 evaluation server.
 
 | Model | Accuracy on VQAv2 | 
 | --- | --- |
 | Flamingo-3B | 49.2 |
 | Flamingo-9B | 51.8 | 
 | Kosmos-1 | 51.0 |
-| Kosmos-2 |  |  -->
+| Kosmos-2 | 51.1 | 
 
 We will release the evaluation code in [here](evaluation/). 
 
