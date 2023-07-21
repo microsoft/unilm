@@ -35,6 +35,7 @@ from fairseq.models.transformer_lm import (
 )
 from unilm.models.connector import build_connector
 from unilm.models.gpt import GPTmodel, GPTModelConfig
+from unilm.models.gpt_eval import GPTEvalmodel
 
 from torchscale.architecture.config import EncoderConfig
 from torchscale.model.BEiT3 import BEiT3
@@ -194,7 +195,10 @@ class UniGPTmodel(BaseFairseqModel):
     def build_model(cls, args, task):
         if hasattr(task, "all_dict"):
             task.dictionary = task.all_dict
-        gpt_model = GPTmodel.build_model(args, task)
+        if task.__class__.__name__ == 'GenerationObjTask':
+            gpt_model = GPTEvalmodel.build_model(args, task)
+        else:
+            gpt_model = GPTmodel.build_model(args, task)
         logger.info("gpt args is".format(args))
 
         text_model, text_connector = cls.load_text_model(args, task)
