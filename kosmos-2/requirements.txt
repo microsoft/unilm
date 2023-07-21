@@ -1,0 +1,9 @@
+numpy==1.23.0
+scipy==1.8.0
+sentencepiece==0.1.99
+protobuf==3.20.3
+torch==1.13.0
+gradio==3.37.0
+torchvision==0.14.0
+opencv-python-headless==4.8.0.74
+tensorboardX==1.8
