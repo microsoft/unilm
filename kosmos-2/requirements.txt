@@ -1,5 +1,5 @@
 numpy==1.23.0
-scipy==1.8.0
+scipy==1.10.0
 sentencepiece==0.1.99
 protobuf==3.20.3
 torch==1.13.0
