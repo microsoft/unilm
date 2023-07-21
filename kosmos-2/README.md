@@ -23,6 +23,9 @@
     - [3. Referring expression generation](#3-referring-expression-generation)
     - [4. Image captioning](#4-image-captioning)
     - [5. Visual question answering](#5-visual-question-answering)
+  - [Training](#training)
+    - [1. Preparing data](#preparing-dataset)
+    - [2. Training script](#train-script)
   - [Citation](#citation)
   - [Acknowledgement](#acknowledgement)
   - [License](#license)
@@ -159,6 +162,18 @@ We evaluate visual question answering task on the test-dev set of VQAv2 under ze
 | Kosmos-2 | 51.1 | 
 
 We will release the evaluation code in [here](evaluation/). 
+
+## Training
+
+### Preparing dataset
+To be updated.
+
+### Train script
+After preparing the data, run the following command to train the model.
+```bash
+bash train.sh
+```
+More training/instruction-tuning tasks will be updated.
 
 ## Citation
 

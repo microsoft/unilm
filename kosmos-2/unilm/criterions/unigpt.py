@@ -8,7 +8,7 @@ from fairseq import metrics, modules, utils
 from fairseq.criterions import FairseqCriterion, register_criterion
 from fairseq.dataclass import FairseqDataclass
 
-LOSS_NAMES = ["gpt", "image_wild", "image_laion"]
+LOSS_NAMES = ["gpt", "image_interleaved", "image_laion", "image_tune", "gpt_tune"]
 
 @dataclass
 class UniGPTLossConfig(FairseqDataclass):
@@ -115,4 +115,4 @@ class UniGPTLoss(FairseqCriterion):
         across workers prior to calling `reduce_metrics`. Setting this
         to True will improves distributed training speed.
         """
-        return True
+        return False
