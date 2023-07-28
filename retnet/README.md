@@ -1,7 +1,7 @@
 # Retentive Network: The Successor to Transformer for Large Language Models
 
 - Code release: [https://github.com/microsoft/torchscale](https://github.com/microsoft/torchscale/commit/bf65397b26469ac9c24d83a9b779b285c1ec640b)
-- July 2023: release preprint [Retentive Network: A Successor to Transformer for Large Language Models](#)
+- July 2023: release preprint [Retentive Network: A Successor to Transformer for Large Language Models](https://arxiv.org/abs/2307.08621)
 
 <p>
   <a href="https://github.com/microsoft/torchscale/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg" /></a>
