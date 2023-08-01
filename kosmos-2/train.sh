@@ -37,7 +37,7 @@ CUDA_LAUNCH_BLOCKING=1 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch
         --visual-pretrained /path/to/openai_clip/ViT-L-14-sd.pt   \
         --interleaved-data-dir /path/to/interleaved data \
         --interleaved-batch-size 1 \
-        --laion-data-dir /path/to/laion \
+        --laion-data-dir /path/to/laion_config \
         --laion-batch-size 6 \
         --phrase-mode 'expression' \
         --quantized-size 32 \
