@@ -54,6 +54,8 @@ bash vl_setup_xl.sh
 ``` 
 (Refer to [comment](https://github.com/microsoft/unilm/issues/1204#issuecomment-1639812388) for detailed package info)
 
+Alternatively, you can refer to [this guide](docs/install.md) to set up a conda environment.
+
 ## Demo
 
 <!-- We host a public demo at [link](https://aka.ms/kosmos-2-demo). -->
@@ -76,7 +78,6 @@ The format of data instance is:
 
 ```python
 {
-  'key': '000373938', 
   'clip_similarity_vitb32': 0.353271484375, 
   'clip_similarity_vitl14': 0.2958984375, 
   'id': 1795296605919, 
@@ -89,7 +90,6 @@ The format of data instance is:
 }
 
 ```
-- `key`: The file name in COYO-700M.
 - `clip_similarity_vitb32`: The cosine similarity between text and image(ViT-B/32) embeddings by [OpenAI CLIP](https://github.com/openai/CLIP), provided by COYO-700M.
 - `clip_similarity_vitl14`: The cosine similarity between text and image(ViT-L/14) embeddings by [OpenAI CLIP](https://github.com/openai/CLIP), provided by COYO-700M.
 - `id`: Unique 64-bit integer ID in COYO-700M.
@@ -166,6 +166,16 @@ We will release the evaluation code in [here](evaluation/).
 ## Training
 
 ### Preparing dataset
+
+#### GrIT
+After downloading the data from [huggingface](https://huggingface.co/datasets/zzliang/GRIT) using img2dataset, you will obtain some tar files. After decompressing them, you can get the images and corresponding JSON files. Then, modify the file path in [prepare_grit.py](data/prepare_grit.py) and run this file to get the corresponding tsv files. If a tsv file is too large, you can split it into multiple ones yourself.
+
+After processing all the tar files into tsv files, run [generate_config.py](data/generate_config.py) to get a config file, which stores the paths of the tsv files. In [train.sh](train.sh), change the `--laion-data-dir` to the config directory path.
+
+#### Interleaved data
+Interleaved image-text data also needs to be processed in this way. To be updated.
+
+#### Text data
 To be updated.
 
 ### Train script
