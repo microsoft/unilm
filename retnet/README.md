@@ -38,6 +38,12 @@ It takes only several lines of code to create a RetNet model:
 >>> print(retnet)
 ```
 
+## Changelog
+
+- Aug 4, 2023: fix a bug of the chunkwise recurrent representation ([commit](https://github.com/microsoft/torchscale/commit/0b1f113985a0339bc322b0c7df91be0f745cb311))
+- Aug 4, 2023: improve the numerical precision of the recurrent representation as suggested by https://github.com/microsoft/torchscale/issues/47 ([commit](https://github.com/microsoft/torchscale/commit/7f0bf80a7e41e6fe2d3bf1fda570fbbf8ecc13a4))
+- Aug 2, 2023: update eps of LN to 1e-6 ([commit](https://github.com/microsoft/torchscale/commit/2c29de0fb3e5e559181f0fb4854330c5b35961cd))
+
 ## Citations
 
 If you find this repository useful, please consider citing our work:
