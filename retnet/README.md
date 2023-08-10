@@ -37,3 +37,17 @@ It takes only several lines of code to create a RetNet model:
 
 >>> print(retnet)
 ```
+
+## Citations
+
+If you find this repository useful, please consider citing our work:
+
+```
+@article{retnet,
+  author={Yutao Sun and Li Dong and Shaohan Huang and Shuming Ma and Yuqing Xia and Jilong Xue and Jianyong Wang and Furu Wei},
+  title     = {Retentive Network: A Successor to {Transformer} for Large Language Models},
+  journal   = {ArXiv},
+  volume    = {abs/2307.08621},
+  year      = {2023}
+}
+```
