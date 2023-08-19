@@ -21,7 +21,6 @@ import argparse
 import glob
 import logging
 import os
-os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
 import random
 import shutil
 import numpy as np
@@ -49,13 +48,10 @@ from transformers import (
     get_linear_schedule_with_warmup,
 )
 
-import torch
 import torch.cuda.amp as amp
 
 from layoutlm import FunsdDataset, LayoutlmConfig, LayoutlmForTokenClassification
 
-os.environ['CUDA_LAUNCH_BLOCKING']='1'
-os.environ['TORCH_USE_CUDA_DSA']='1'
 
 logger = logging.getLogger(__name__)
 
