@@ -1,4 +1,4 @@
-# TextDiffuser: Diffusion Models as Text Painters
+# TextDiffuser: Diffusion Models as Text Painters (NeurIPS 2023)
 
 <a href='https://arxiv.org/pdf/2305.10855.pdf'><img src='https://img.shields.io/badge/Arxiv-2305.10855-red'>
 <a href='https://github.com/microsoft/unilm/tree/master/textdiffuser'><img src='https://img.shields.io/badge/Code-aka.ms/textdiffuser-yellow'>
@@ -23,6 +23,7 @@ TextDiffuser generates images with visually appealing text that is coherent with
 
 ## :stopwatch: News
 
+- __[2023.09.22]__: :tada:	TextDiffuser is accepted to NeurIPS 2023.
 - __[2023.06.22]__: Evaluation script is released.
 - __[2023.06.15]__: :raised_hands:	:raised_hands:	:raised_hands: The Demo of TextDiffuser pre-trained with SD v2.1 is released in this [link](https://huggingface.co/spaces/JingyeChen22/TextDiffuser). Meanwhile, GoogleColab is available in this [link](https://colab.research.google.com/drive/115Qw0l5dhjlTtrbywMWRwhz9IxKE4_Dg?usp=sharing).
 - __[2023.06.08]__: Training script is released.
