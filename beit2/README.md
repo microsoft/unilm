@@ -97,6 +97,24 @@ We provide the VQ-KD tokenizer trained on **ImageNet-1k**.
 
 See [TOKENIZER.md](TOKENIZER.md) for more details.
 
+## Code for Analysis of Self-Attention Map
+
+Pre-trained [BEiT_base_patch16_224](https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_224_pt1k_800ep.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) on ImageNet-1k with 800 epochs, config: ``--disable_rel_pos_bias --abs_pos_emb --layer_scale_init_value 0``
+
+```bash
+python visualize_attention.py \
+  --model beit_base_patch16_224_8k_vocab \
+  --disable_rel_pos_bias \
+  --abs_pos_emb \
+  --layer_scale_init_value 0 \
+  --input_size 480 \
+  --pretrained_weights /folder/to/download/beit_base_patch16_224_pt1k_800ep.pth \
+  --image_path ../visualization/input2.png \
+  --selected_row 11 \
+  --selected_col 13
+```
+
+`--selected_row 11` and `--selected_col` for choosing the image patch as query
 
 ## Citation
 
