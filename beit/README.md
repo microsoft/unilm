@@ -185,7 +185,11 @@ OMP_NUM_THREADS=1 python -m torch.distributed.launch --nproc_per_node=16 run_cla
     --weight_decay 0.05 --enable_deepspeed --layer_scale_init_value 0.1 --clip_grad 3.0
 ```
 
-## Citation
+## Code for Analysis of Self-Attention Map
+
+Pre-trained [BEiT_base_patch16_224](https://conversationhub.blob.core.windows.net/beit-share-public/beit/beit_base_patch16_224_pt1k_800ep.pth?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) on ImageNet-1k with 800 epochs, config: ``--disable_rel_pos_bias --abs_pos_emb --layer_scale_init_value 0``
+
+Code grouped in [BEiTv2 Repo](https://github.com/microsoft/unilm/tree/master/beit2#Code-for-Analysis-of-Self-Attention-Map)
 
 If you find this repository useful, please consider citing our work:
 ```
