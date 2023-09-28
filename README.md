@@ -26,6 +26,8 @@ Fundamental research to develop new architectures for foundation models and AI, 
 
 ### LLM / MLLM (Multimodal LLM)
 
+> [**Kosmos-2.5**](https://github.com/microsoft/unilm/tree/master/kosmos-2.5): **A Multimodal Literate Model**
+
 > [**Kosmos-2**](https://github.com/microsoft/unilm/tree/master/kosmos-2): **Grounding Multimodal Large Language Models to the World**
 
 > [**Kosmos-1**](https://arxiv.org/abs/2302.14045): **A Multimodal Large Language Model (MLLM)**
