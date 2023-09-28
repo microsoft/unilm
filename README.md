@@ -108,6 +108,7 @@ Fundamental research to develop new architectures for foundation models and AI, 
 General technology for enabling AI capabilities w/ LLMs and MLLMs.
 
 ## News
+- Sep, 2023: [**Kosmos-2.5**](https://arxiv.org/abs/2309.11419) - a multimodal literate model for machine reading of text-intensive images.
 - [Model Release] May, 2023: [**TextDiffuser**](https://github.com/microsoft/unilm/tree/master/textdiffuser) models and code.
 - [Model Release] March, 2023: [**BEiT-3**](https://github.com/microsoft/unilm/tree/master/beit3) pretrained models and code.
 - March, 2023: [**Kosmos-1**](https://arxiv.org/abs/2302.14045) - a Multimodal Large Language Model (MLLM) that can perceive general modalities, learn in context (i.e., few-shot), and follow instructions (i.e., zero-shot).
