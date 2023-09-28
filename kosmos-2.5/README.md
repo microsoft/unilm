@@ -1,1 +1,1 @@
-https://arxiv.org/abs/2309.11419
+- Sep 2023: [Kosmos-2.5: A Multimodal Literate Model](https://arxiv.org/abs/2309.11419)
