@@ -20,6 +20,7 @@ from timm.data import create_transform
 import utils
 from glossary import normalize_word
 from randaug import RandomAugment
+import numpy as np
 
 
 class BaseDataset(torch.utils.data.Dataset):
@@ -222,6 +223,92 @@ def _make_nocaps_dataset_index(
     index_file = os.path.join(data_path, "nocaps.%s.jsonl" % split)
     _write_data_into_jsonl(items, index_file)
 
+def _make_retrieval_cosmos_dataset_index(
+        data_path, 
+        tokenizer, 
+        split=("train", "val", "test"),  
+):
+    cosmos_split_json_file = os.path.join(data_path, "annotations", f"{split}_data.json")
+    items = []
+    image_counter = set()
+    print("read %s" % cosmos_split_json_file)
+    with open(cosmos_split_json_file, mode="r", encoding="utf-8") as reader:
+        data = [json.loads(line) for line in reader]
+        # if split == 'train':
+        #     data = data[159754:]
+        # if split == 'val':
+        #     data = data[:10000]
+        for item in data:
+            image_path = item["img_local_path"]
+            if split in ("train", "val"):
+                # for article in item["articles"]:
+                article = item["articles"][0]
+                tokens = tokenizer.tokenize(article["caption"])
+                token_ids = tokenizer.convert_tokens_to_ids(tokens)
+                items.append({
+                        "image_path": image_path,
+                        "text_segment": token_ids,
+                        "image_id": int(image_path.split("/")[-1].split(".")[0]),
+                        # "context_label": 0,
+                        # "bert_base_score": np.nan
+                })
+            elif split == "test":
+                tokens = tokenizer.tokenize(item["caption1"])
+                token_ids = tokenizer.convert_tokens_to_ids(tokens)
+                items.append({
+                        "image_path": image_path,
+                        "text_segment": token_ids,
+                        "image_id": int(image_path.split("/")[-1].split(".")[0]),
+                        "context_label": item["context_label"],
+                        "bert_base_score": float(item["bert_base_score"])
+                })
+                tokens = tokenizer.tokenize(item["caption2"])
+                token_ids = tokenizer.convert_tokens_to_ids(tokens)
+                items.append({
+                        "image_path": image_path,
+                        "text_segment": token_ids,
+                        "image_id": int(image_path.split("/")[-1].split(".")[0]),
+                        "context_label": item["context_label"],
+                        "bert_base_score": float(item["bert_base_score"])
+                })
+            if image_path not in image_counter:
+                image_counter.add(image_path)
+    print(f"Find {len(image_counter)} images and {len(items)} image-text pairs for cosmos dataset {split} split !" )
+    index_file = os.path.join(data_path, f"{split}_retrieval.jsonl")
+    _write_data_into_jsonl(items, index_file)
+    pass
+
+def _make_reasoning_cosmos_dataset_index(
+        data_path, 
+        tokenizer, 
+        split=("train", "val", "test"),  
+):
+    cosmos_split_json_file = os.path.join(data_path, "annotations", f"{split}_split_test.json")
+    items = []
+    image_counter = set()
+    print("read %s" % cosmos_split_json_file)
+    with open(cosmos_split_json_file, mode="r", encoding="utf-8") as reader:
+        data = [json.loads(line) for line in reader]
+        for item in data:
+            image_path = item["img_local_path"]
+            text1_tokens = tokenizer.tokenize(item["caption1"])
+            text1_token_ids = tokenizer.convert_tokens_to_ids(text1_tokens)
+            text2_tokens = tokenizer.tokenize(item["caption2"])
+            text2_token_ids = tokenizer.convert_tokens_to_ids(text2_tokens)
+            items.append({
+                    "image_path": image_path,
+                    "text_segment": text1_token_ids,
+                    "text2_segment": text2_token_ids,
+                    "context_label": item["context_label"],
+                    # "bert_base_score": float(item["bert_base_score"])
+            })
+            
+            if image_path not in image_counter:
+                image_counter.add(image_path)
+    print(f"Find {len(image_counter)} images and {len(items)} image-text pairs for cosmos dataset {split} split !" )
+    index_file = os.path.join(data_path, f"{split}_reasoning.jsonl")
+    _write_data_into_jsonl(items, index_file)
+    pass
 
 class NLVR2Dataset(BaseDataset):
     @staticmethod
@@ -698,6 +785,63 @@ class CaptioningDataset(BaseDataset):
         _make_nocaps_dataset_index(data_path, split="test")
 
 
+class COSMOSRetrievalDataset(BaseDataset):
+    @staticmethod
+    def get_index_files(split, task=None):
+        if split == "train":
+            return (f"{split}_retrieval.jsonl", )
+        elif split == "val":
+            return (f"{split}_retrieval.jsonl", )
+        elif split == "test":
+            return (f"{split}_retrieval.jsonl", )
+        else:
+            raise RuntimeError("split %s is not found!" % split)
+
+    def __getitem__(self, index: int):
+        data = super().__getitem__(index)
+        data["image_id"] = self.items[index]["image_id"]
+        # data["context_label"] = self.items[index]["context_label"]
+        # data["bert_base_score"] = self.items[index]["bert_base_score"]
+        return data
+
+
+    @staticmethod
+    def make_retrieval_cosmos_dataset_index(data_path, tokenizer):
+        _make_retrieval_cosmos_dataset_index(data_path, tokenizer, split="train")
+        _make_retrieval_cosmos_dataset_index(data_path, tokenizer, split="val")
+        _make_retrieval_cosmos_dataset_index(data_path, tokenizer, split="test")
+
+
+class COSMOSReasoningDataset(BaseDataset):
+    @staticmethod
+    def get_index_files(split, task=None):
+        if split == "train":
+            return (f"{split}_reasoning.jsonl", )
+        elif split == "val":
+            return (f"{split}_reasoning.jsonl", )
+        elif split == "test":
+            return (f"{split}_reasoning.jsonl", )
+        else:
+            raise RuntimeError("split %s is not found!" % split)
+
+    def __getitem__(self, index: int):
+        data = super().__getitem__(index)
+        item = self.items[index]
+        text2_segment = item["text2_segment"]
+        language2_tokens, padding2_mask, _ = self._get_text_segment(text2_segment)
+        data["language2_tokens"] = language2_tokens
+        data["padding2_mask"] = padding2_mask
+        data["context_label"] = self.items[index]["context_label"]
+        return data
+
+
+    @staticmethod
+    def make_reasoning_cosmos_dataset_index(data_path, tokenizer):
+        _make_reasoning_cosmos_dataset_index(data_path, tokenizer, split="train")
+        _make_reasoning_cosmos_dataset_index(data_path, tokenizer, split="val")
+        _make_reasoning_cosmos_dataset_index(data_path, tokenizer, split="test")
+
+
 task2dataset = {
     "nlvr2": NLVR2Dataset, 
     "vqav2": VQAv2Dataset, 
@@ -706,6 +850,8 @@ task2dataset = {
     "coco_captioning": CaptioningDataset,
     "nocaps": CaptioningDataset,
     "imagenet": ImageNetDataset,
+    "cosmos_retrieval": COSMOSRetrievalDataset,
+    "cosmos_context": COSMOSReasoningDataset
 }
 
 

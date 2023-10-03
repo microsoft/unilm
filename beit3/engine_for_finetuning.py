@@ -193,7 +193,7 @@ class RetrievalHandler(TaskHandler):
         print('* Eval result = %s' % json.dumps(eval_result))
         return eval_result, "average_score"
 
-
+        
 class VQAHandler(TaskHandler):
     def __init__(self) -> None:
         super().__init__()
@@ -436,17 +436,193 @@ class CaptioningHandler(TaskHandler):
         return self.predictions, "prediction"
 
 
+# class COSMOSRetrievalHandler(TaskHandler):
+#     def __init__(self) -> None:
+#         super().__init__()
+#         self.image_feats = []
+#         self.text_feats = []
+#         self.image_ids = []
+#         self.context_labels = []
+#         self.bert_base_scores = []
+#         self.metric_logger = None
+
+#     def train_batch(self, model, image, language_tokens, padding_mask, image_id, context_label, bert_base_score):
+#         loss, vision_cls, language_cls = model(
+#             image=image, text_description=language_tokens, padding_mask=padding_mask)
+#         return {
+#             "loss": loss, 
+#         }
+
+#     def before_eval(self, metric_logger, **kwargs):
+#         self.image_feats.clear()
+#         self.text_feats.clear()
+#         self.image_ids.clear()
+#         self.context_labels.clear()
+#         self.bert_base_scores.clear()
+#         self.metric_logger = metric_logger
+
+#     def eval_batch(self, model, image, language_tokens, padding_mask, image_id, context_label, bert_base_score):
+#         vision_cls, _ = model(image=image, only_infer=True)
+#         _, language_cls = model(
+#             text_description=language_tokens, padding_mask=padding_mask, only_infer=True)
+        
+#         self.image_feats.append(vision_cls.clone())
+#         self.text_feats.append(language_cls.clone())
+#         self.image_ids.append(image_id.clone())
+#         self.context_labels.append(context_label.clone())
+#         self.bert_base_scores.append(bert_base_score.clone())
+    
+#     def after_eval(self, **kwargs):
+#         image_feats = {}
+#         context_labels = {}
+#         bert_base_scores = {}
+#         for feats, ids, labels, bert_scores in zip(self.image_feats, self.image_ids, self.context_labels, self.bert_base_scores):
+#             # print("feats: {}, ids: {}".format(feats, ids))
+#             for i, _idx in enumerate(ids):
+#                 idx = _idx.item()
+#                 if idx not in image_feats:
+#                     image_feats[idx] = feats[i]
+#                 if idx not in context_labels:
+#                     context_labels[idx] = labels[i]
+#                 if idx not in bert_base_scores:
+#                     bert_base_scores[idx] = bert_scores[i]
+        
+#         tiids = torch.cat(self.image_ids, dim=0)
+#         iids = []
+#         labels = []
+#         bert_scores = []
+#         sorted_tensors = []
+#         for key in sorted(image_feats.keys()):
+#             sorted_tensors.append(image_feats[key].view(1, -1))
+#             iids.append(key)
+#             labels.append(context_labels[key])
+#             bert_scores.append(bert_base_scores[key])
+#         # print('sorted_tensors: ', sorted_tensors)
+#         image_cls_feats = torch.cat(sorted_tensors, dim=0)
+#         text_cls_feats = torch.cat(self.text_feats, dim=0)
+#         print('image_cls_feats: ', image_cls_feats.size())
+#         print('text_cls_feats: ', text_cls_feats.size())
+#         scores = image_cls_feats @ text_cls_feats.t()
+#         # scores = []
+#         # for image_cls_feat in image_cls_feats:
+#         #     # print(F.cosine_similarity(image_cls_feat, text_cls_feats))
+#         #     scores.append(F.cosine_similarity(image_cls_feat, text_cls_feats).detach().cpu().numpy())
+#         # scores = torch.FloatTensor(scores).to(image_cls_feats.device)
+#         print("scores: {}".format(scores.size()))
+#         # print('scores: ', scores)
+#         iids = torch.LongTensor(iids).to(scores.device)
+#         labels = torch.LongTensor(labels).to(scores.device)
+#         bert_scores = torch.FloatTensor(bert_scores).to(scores.device)
+#         print("iids: {}".format(iids.size()))
+#         # print(iids)
+#         print("tiids: {}".format(tiids.size()))
+#         # print(tiids)
+#         print("labels: {}".format(labels.size()))
+#         # print(labels)
+#         print("bert_scores: {}".format(bert_scores.size()))
+#         # print(bert_scores)
+
+#         score_pairs = []
+#         for iidx, iid in enumerate(iids):
+#             score_pairs.append([scores[iidx, tidx].item() for tidx, tiid in enumerate(tiids) if tiid.item() == iid.item()])
+#         score_pairs = torch.FloatTensor(score_pairs).to(scores.device)
+#         print("score_pairs: {}".format(score_pairs.size()))
+#         # print(score_pairs)
+        
+#         _THRESHOLD = 0.5
+#         diff_ratios = []
+#         logits = []
+#         # for idx, score_pair in enumerate(score_pairs.detach().cpu().numpy()):
+#         for score_pair in score_pairs:
+#             diff_ratios.append(torch.abs(score_pair[0] - score_pair[1])/torch.abs(torch.min(score_pair)))
+#             # if (score_pair[0] >= _THRESHOLD) & (score_pair[1] >= _THRESHOLD):
+#             #   if (bert_scores[idx]) >= _THRESHOLD:
+#             #       logits.append(0)
+#             #   else:
+#             #       logits.append(1)
+#             # elif ((score_pair[0] >= _THRESHOLD) & (score_pair[1] < _THRESHOLD)) | ((score_pair[0] < _THRESHOLD) & (score_pair[1] >= _THRESHOLD)):
+#             #   logits.append(1)
+#             # else:
+#             #   logits.append(0)
+#         for idx, diff_ratio in enumerate(diff_ratios):
+#             if (diff_ratio < _THRESHOLD):
+#               if bert_scores[idx] >= _THRESHOLD:
+#                   logits.append(0)
+#               else:
+#                   logits.append(1)
+#             else:
+#               logits.append(1)
+#         # logits = [1 if ratio >= _THRESHOLD else 0 for ratio in diff_ratio]
+#         logits = torch.LongTensor(logits).to(scores.device)
+#         print("logits: {}".format(logits.size()))
+#         print("sum labels: ", torch.sum(labels))
+#         print("sum logits: ", torch.sum(logits))
+#         print("sum logits == labels = 1: ", torch.sum(torch.mul(labels, logits)))
+#         # eval_result_save_dict = {}
+#         # eval_result_save_dict['score_pairs'] = score_pairs.cpu().detach().numpy().tolist()
+#         # eval_result_save_dict['logits'] = logits.cpu().detach().numpy().tolist()
+#         # eval_result_save_dict['labels'] = labels.cpu().detach().numpy().tolist()
+#         # eval_result_save_dict['bert_scores'] = bert_scores.cpu().detach().numpy().tolist()
+#         # print('eval_result_save_dict: ', eval_result_save_dict.items())
+#         # with open("/content/drive/MyDrive/Master/Thesis/COSMOS/eval/zeroshot_eval_result_dict.json", "w") as outfile:
+#         #     outfile.write(json.dumps(eval_result_save_dict))
+
+#         acc = (torch.sum(torch.eq(labels, logits))/labels.size()[0]).item()
+#         print('Accuracy: ', acc)
+#         eval_result = { 
+#             "accuracy": 100.0 * acc, 
+#         }
+
+#         print('* Eval result = %s' % json.dumps(eval_result))
+#         return eval_result, "accuracy"
+
+class COSMOSHandler(TaskHandler):
+    def __init__(self) -> None:
+        super().__init__()
+        self.criterion = torch.nn.CrossEntropyLoss()
+
+    def train_batch(self, model, image, language_tokens, language2_tokens, padding_mask, padding2_mask, context_label):
+        logits = model(
+            image=image, 
+            text_1=language_tokens, 
+            text_2=language2_tokens, 
+            padding1_mask=padding_mask,
+            padding2_mask=padding2_mask)
+        acc = (logits.max(-1)[-1] == context_label).float().mean()
+        return {
+            "loss": self.criterion(input=logits, target=context_label), 
+            "acc": acc, 
+        }
+
+    def eval_batch(self, model, image, language_tokens, language2_tokens, padding_mask, padding2_mask, context_label):
+        logits = model(
+            image=image, 
+            text_1=language_tokens, 
+            text_2=language2_tokens, 
+            padding1_mask=padding_mask,
+            padding2_mask=padding2_mask)
+        batch_size = image.shape[0]
+        acc = (logits.max(-1)[-1] == context_label).float().sum(0) * 100.0 / batch_size
+        self.metric_logger.meters['acc'].update(acc.item(), n=batch_size)
+    
+    def after_eval(self, **kwargs):
+        print('* Acc {acc.global_avg:.3f}'.format(acc=self.metric_logger.acc))
+        return {k: meter.global_avg for k, meter in self.metric_logger.meters.items()}, "acc"
+
+
 def get_handler(args):
     if args.task == "nlvr2":
         return NLVR2Handler()
     elif args.task == "vqav2":
         return VQAHandler()
-    elif args.task in ("flickr30k", "coco_retrieval"):
+    elif args.task in ("flickr30k", "coco_retrieval", "cosmos_retrieval"):
         return RetrievalHandler()
     elif args.task in ("coco_captioning", "nocaps"):
         return CaptioningHandler(args)
     elif args.task in ("imagenet"):
         return ImageNetHandler(args)
+    elif args.task in ("cosmos_context"):
+        return COSMOSHandler()
     else:
         raise NotImplementedError("Sorry, %s is not support." % args.task)
 

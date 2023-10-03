@@ -21,7 +21,7 @@ import torch
 import torch.distributed as dist
 import torch.nn as nn
 import torch.nn.functional as F
-from torch._six import inf
+# from torch._six import inf
 from torchmetrics import Metric
 from tensorboardX import SummaryWriter
 
@@ -571,7 +571,7 @@ def load_model_and_may_interpolate(ckpt_path, model, model_key, model_prefix):
                     extra_tokens = pos_embed_checkpoint[:, :num_extra_tokens]
                     # only the position tokens are interpolated
                     pos_tokens = pos_embed_checkpoint[:, num_extra_tokens:]
-                pos_tokens = pos_tokens.reshape(-1, orig_size, orig_size, embedding_size).permute(0, 3, 1, 2)
+                pos_tokens = pos_tokens.reshape(-1, orig_size, orig_size, embedding_size).double().permute(0, 3, 1, 2)
                 pos_tokens = torch.nn.functional.interpolate(
                     pos_tokens, size=(new_size, new_size), mode='bicubic', align_corners=False)
                 pos_tokens = pos_tokens.permute(0, 2, 3, 1).flatten(1, 2)
@@ -634,6 +634,8 @@ def merge_batch_tensors_by_dict_key(batch):
     for tensor_key in batch[0]:
         if isinstance(batch[0][tensor_key], torch.Tensor):
             batch_tensors[tensor_key] = torch.stack([d[tensor_key] for d in batch])
+        elif isinstance(batch[0][tensor_key], float):
+            batch_tensors[tensor_key] = torch.tensor([d[tensor_key] for d in batch], dtype=torch.float)
         else:
             batch_tensors[tensor_key] = torch.tensor([d[tensor_key] for d in batch], dtype=torch.long)
     return batch_tensors

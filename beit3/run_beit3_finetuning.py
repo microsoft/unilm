@@ -36,7 +36,7 @@ def get_args():
     parser.add_argument('--model', default='beit_base_patch16_224', type=str, metavar='MODEL',
                         help='Name of model to train')
     parser.add_argument('--task', type=str, required=True, 
-                        choices=['nlvr2', 'vqav2', 'flickr30k', 'coco_retrieval', 'coco_captioning', 'nocaps', 'imagenet'], 
+                        choices=['nlvr2', 'vqav2', 'flickr30k', 'coco_retrieval', 'coco_captioning', 'nocaps', 'imagenet', 'cosmos_retrieval', 'cosmos_context'], 
                         help='Name of task to fine-tuning')
 
     parser.add_argument('--input_size', default=224, type=int,
@@ -244,12 +244,14 @@ def main(args, ds_init):
     data_loader_train, data_loader_val = create_downstream_dataset(args)
 
     if not args.model.endswith(args.task):
-        if args.task in ("flickr30k", "coco_retrieval"):
+        if args.task in ("flickr30k", "coco_retrieval", "cosmos_retrieval"):
             model_config = "%s_retrieval" % args.model
         elif args.task in ("coco_captioning", "nocaps"):
             model_config = "%s_captioning" % args.model
         elif args.task in ("imagenet"):
             model_config = "%s_imageclassification" % args.model
+        elif args.task in ("cosmos_context"):
+            model_config = "%s_context" % args.model
         else:
             model_config = "%s_%s" % (args.model, args.task)
     else:
@@ -359,6 +361,10 @@ def main(args, ds_init):
         if args.task in ["nlvr2", "flickr30k", "coco_retrieval", "imagenet"]:
             ext_test_stats, task_key = evaluate(data_loader_test, model, device, task_handler)
             print(f"Accuracy of the network on the {len(data_loader_test.dataset)} test images: {ext_test_stats[task_key]:.3f}%")
+            exit(0)
+        elif args.task in ["cosmos_retrieval", "cosmos_context"]:
+            ext_test_stats, task_key = evaluate(data_loader_test, model, device, task_handler)
+            print(f"Accuracy of the network on the {int(len(data_loader_test.dataset)/2)} test triplets (image, caption1, caption2): {ext_test_stats[task_key]:.3f}%")
             exit(0)
         elif args.task == "vqav2":
             result, _ = evaluate(data_loader_test, model, device, task_handler)

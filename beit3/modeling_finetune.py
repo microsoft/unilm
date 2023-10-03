@@ -273,6 +273,62 @@ class BEiT3ForRetrieval(BEiT3Wrapper):
                 vision_cls, language_cls, self.logit_scale.exp())
             return loss, vision_cls, language_cls
 
+class BEiT3ForCOSMOS(BEiT3Wrapper):
+    def __init__(
+            self, 
+            args, 
+            num_classes, 
+            norm_layer=nn.LayerNorm, 
+            **kwargs
+    ):
+        super(BEiT3ForCOSMOS, self).__init__(args=args)
+        embed_dim = args.encoder_embed_dim
+        self.head = TwoLayerMLP(
+            in_features=embed_dim * 4, 
+            hidden_features=embed_dim * 2,
+            out_features=num_classes, 
+            norm_layer=norm_layer, 
+        )
+        init_scale = 0.001
+        self.head.apply(self._init_weights)
+        if isinstance(self.head.dense1, nn.Linear):
+            self.head.dense1.weight.data.mul_(init_scale)
+            self.head.dense1.bias.data.mul_(init_scale)
+
+        if isinstance(self.head.dense2, nn.Linear):
+            self.head.dense2.weight.data.mul_(init_scale)
+            self.head.dense2.bias.data.mul_(init_scale)
+
+    def forward(self, image, text_1, text_2, padding1_mask, padding2_mask, **kwargs):
+        # print('image.size(): ', image.size())
+        # print('text_1.size(): ', text_1.size())
+        # print('text_2.size(): ', text_2.size())
+        bsz, _ = text_1.size()
+        
+        vision_input = torch.cat((image, image), dim=0)
+        language_input = torch.cat((text_1, text_2), dim=0)
+        padding_mask = torch.cat((padding1_mask, padding2_mask), dim=0)
+
+        outputs = self.beit3(
+            textual_tokens=language_input, 
+            visual_tokens=vision_input, 
+            text_padding_position=padding_mask, 
+        )
+        x = outputs["encoder_out"]
+        multiway_split_position = outputs["multiway_split_position"]
+
+        vision_cls = x[:, 0, :]
+        language_cls = x[:, multiway_split_position, :]
+        # print('vision_cls.size(): ', vision_cls.size())
+        # print('language_cls.size(): ', language_cls.size())
+        cls_rep = torch.cat((vision_cls, language_cls), dim=-1)
+        # print('cls_rep.size(): ', cls_rep.size())
+        a, b = torch.split(cls_rep, split_size_or_sections=[bsz, bsz], dim=0)
+        # print('a.size(): ', a.size())
+        # print('b.size(): ', b.size())
+        cls_rep = torch.cat((a, b), dim=-1)
+        # print('cls_rep.size(): ', cls_rep.size())
+        return self.head(cls_rep)
 
 @register_model
 def beit3_base_patch16_224_imageclassification(pretrained=False, **kwargs):
@@ -383,4 +439,10 @@ def beit3_base_patch16_384_retrieval(pretrained=False, **kwargs):
 def beit3_large_patch16_384_retrieval(pretrained=False, **kwargs):
     args = _get_large_config(img_size=384, **kwargs)
     model = BEiT3ForRetrieval(args, **kwargs)
+    return model
+
+@register_model
+def beit3_base_patch16_224_context(pretrained=False, **kwargs):
+    args = _get_base_config(**kwargs)
+    model = BEiT3ForCOSMOS(args, num_classes=2, **kwargs)
     return model
