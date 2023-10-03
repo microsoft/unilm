@@ -1,0 +1,25 @@
+name: Build and Deploy Documentation
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-deploy-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Build Documentation
+        run: |
+          pip install pdoc3
+          pdoc -o docs --template-dir docs --html infinibatch
+      - name: Deploy Documentation
+        uses: JamesIves/github-pages-deploy-action@4.0.0
+        with:
+          branch: gh-pages
+          folder: docs/infinibatch

@@ -1,0 +1,17 @@
+{
+    "embed_dim": 1024,
+    "vision_cfg": {
+        "timm_model_name": "resnetaa50d",
+        "timm_model_pretrained": false,
+        "timm_pool": "abs_attn",
+        "timm_proj": "",
+        "image_size": 224
+    },
+    "text_cfg": {
+        "context_length": 77,
+        "vocab_size": 49408,
+        "width": 512,
+        "heads": 8,
+        "layers": 12
+    }
+}
