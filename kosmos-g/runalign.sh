@@ -1,0 +1,60 @@
+python -m torch.distributed.launch --nproc_per_node=8 --nnodes=8 \
+  --node_rank=$RANK --master_addr=$MASTER_ADDR --master_port=$MASTER_PORT train.py None \
+  --task kosmosg \
+  --tokens-per-sample 2048 \
+  --criterion kosmosg \
+  --arch kosmosg_xl \
+  --required-batch-size-multiple 1 \
+  --optimizer adam \
+  --adam-betas '(0.9,0.98)' \
+  --adam-eps 1e-6 \
+  --clip-norm 2.0 \
+  --lr-scheduler polynomial_decay \
+  --weight-decay 0.01 \
+  --lr 1e-3 \
+  --warmup-updates 375 \
+  --total-num-update 300000 \
+  --max-update 300000 \
+  --max-sentences 2 \
+  --update-freq 1 \
+  --log-format simple \
+  --log-interval 50 \
+  --disable-validation \
+  --save-interval-updates 2000 \
+  --no-epoch-checkpoints \
+  --memory-efficient-fp16 \
+  --fp16-init-scale 4 \
+  --fp16-scale-window 256 \
+  --min-loss-scale 0.0001 \
+  --seed 0 \
+  --dict-path data/dict.txt \
+  --spm-model data/sentencepiece.bpe.model \
+  --save-dir /path/to/save-dir \
+  --tensorboard-logdir /path/to/tensorboard-logdir \
+  --ddp-backend=no_c10d \
+  --distributed-no-spawn \
+  --batch-read-ahead 32 \
+  --reset-dataloader \
+  --train-json-split-name train-nogithub-noarvix-nopubmed-mtnlg \
+  --image-encoder clip \
+  --visual-model-name ViT-L-14 \
+  --visual-output-dim 1024 \
+  --visual-pretrained /path/to/openai_clip/ViT-L-14-sd.pt \
+  --laion-data-dir /path/to/laion-data-dir \
+  --laion-batch-size 56 \
+  --instructpix2pix-data-dir /path/to/instructpix2pix/ \
+  --instructpix2pix-batch-size 16 \
+  --openimage-data-dir /path/to/openimage/ \
+  --openimage-batch-size 16 \
+  --latent-query-num 64 \
+  --connector xconnector \
+  --no-freeze-layer resblocks.23,ln_post \
+  --subln \
+  --flash-attention \
+  --sope-rel-pos \
+  --data-weights 1,0,0 \
+  --pretrained-model-name-or-path runwayml/stable-diffusion-v1-5 \
+  --pretrained-ckpt-path /path/to/kosmos-1-ckpt \
+  --checkpoint-activations \
+  --random-drop-caption-prob 0.5 \
+  --align
