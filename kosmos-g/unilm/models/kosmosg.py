@@ -173,7 +173,6 @@ class KosmosGmodel(BaseFairseqModel):
         """
         text_model: bidirectional text model, such as roberta, bert, electra
         img_model: image model, such as ViT, CLIP, BEIT
-        aud_model: audio model, such as HuBERT, wavLM
         """
         super().__init__()
         self.args = args
@@ -218,7 +217,6 @@ class KosmosGmodel(BaseFairseqModel):
 
         text_model, text_connector = cls.load_text_model(args, task)
         img_model, img_connector = cls.load_image_model(args, task)
-        aud_model, aud_connector = cls.load_audio_model(args, task)
 
         if args.checkpoint_activations:
             img_model.set_grad_checkpointing(True)
@@ -226,7 +224,6 @@ class KosmosGmodel(BaseFairseqModel):
         model = cls(args, gpt_model, diffusion_unet, vae, aligner=aligner,
                     text_model=text_model, text_connector=text_connector,
                     img_model=img_model, img_connector=img_connector,
-                    aud_model=aud_model, aud_connector=aud_connector,
                     bos=task.dictionary.bos_index, eos=task.dictionary.eos_index)
 
         if args.pretrained_ckpt_path != "":
@@ -580,20 +577,6 @@ class KosmosGmodel(BaseFairseqModel):
             model = encoder
             connector = build_connector(args, args.visual_output_dim, args.decoder_embed_dim)
             return model, connector
-
-    @classmethod
-    def load_audio_model(cls, args, task):
-        if args.audio_encoder == "none":
-            return None, None
-        if args.audio_encoder == "wavlm":
-            from unilm.models.speech.WavLM import WavLM, WavLMConfig
-            checkpoint = torch.load(args.speech_model_path)
-            cfg = WavLMConfig(checkpoint['cfg'])
-            model = WavLM(cfg)
-            model.load_state_dict(checkpoint['model'])
-            connector = build_connector(args, args.audio_output_dim, args.decoder_embed_dim)
-            return model, connector
-        return None, None
 
 
 class ClassificationHead(nn.Module):
