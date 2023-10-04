@@ -193,13 +193,12 @@ Code grouped in [BEiTv2 Repo](https://github.com/microsoft/unilm/tree/master/bei
 
 If you find this repository useful, please consider citing our work:
 ```
-@article{beit,
-      title={{BEiT}: {BERT} Pre-Training of Image Transformers}, 
-      author={Hangbo Bao and Li Dong and Furu Wei},
-      year={2021},
-      eprint={2106.08254},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@inproceedings{beit,
+title={{BEiT}: {BERT} Pre-Training of Image Transformers},
+author={Hangbo Bao and Li Dong and Songhao Piao and Furu Wei},
+booktitle={International Conference on Learning Representations},
+year={2022},
+url={https://openreview.net/forum?id=p-BhZSz59o4}
 }
 ```
 
