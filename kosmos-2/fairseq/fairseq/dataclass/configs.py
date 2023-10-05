@@ -665,6 +665,12 @@ class CheckpointConfig(FairseqDataclass):
             "help": "continues from this checkpoint, unless a checkpoint indicated in 'restore_file' option is present"
         },
     )
+    init_from_file: Optional[str] = field(
+        default=None,
+        metadata={
+            "help": "init from a pretrained model; used for contine training here, just load model weights"
+        },
+    )
     finetune_from_model: Optional[str] = field(
         default=None,
         metadata={

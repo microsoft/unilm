@@ -169,6 +169,69 @@ def main(cfg: FairseqConfig) -> None:
         )
     )
 
+    # Load the init checkpoint 
+    if cfg.checkpoint.init_from_file is not None and os.path.isfile(cfg.checkpoint.init_from_file):
+        logger.info(f"load {cfg.checkpoint.init_from_file} for initialization")
+        checkpoint_model = torch.load(cfg.checkpoint.init_from_file, map_location='cpu')['model']
+        # pdb.set_trace()
+        model_state_dict = model.state_dict()
+        for k in model_state_dict.keys():
+            if k in checkpoint_model:
+                if model_state_dict[k].shape != checkpoint_model[k].shape:
+                    # ['gpt_model.decoder.embed_tokens.weight', 'gpt_model.decoder.output_projection.weight']
+                    if k in ['gpt_model.decoder.embed_tokens.weight', 'gpt_model.decoder.output_projection.weight']:
+                        logger.info(f"Extending the {k} in checkpoint to fit the model weight")
+                        temp_tensor = model_state_dict[k].clone()
+                        temp_tensor[:checkpoint_model[k].shape[0], :] = checkpoint_model[k]
+                        checkpoint_model[k] = temp_tensor
+                    elif k in ['img_connector.latent_query']:
+                        model_shape = model_state_dict[k].shape
+                        checkpoint_shape = checkpoint_model[k].shape
+                        if model_shape > checkpoint_shape:
+                            logger.info(f"Extending the {k} in checkpoint to fit the model weight: {checkpoint_shape} -> {model_shape}")
+                            temp_tensor = model_state_dict[k].clone()
+                            temp_tensor[:checkpoint_shape[0], :] = checkpoint_model[k]
+                            checkpoint_model[k] = temp_tensor
+                        else:
+                            logger.info(f"Reducing the {k} in checkpoint to fit the model weight: {checkpoint_shape} -> {model_shape}")
+                            checkpoint_model[k] = checkpoint_model[k][:model_shape[0]]
+                    else:
+                        # import pdb; pdb.set_trace()
+                        _ = checkpoint_model.pop(k)
+            # init the sub-model for moe 
+            elif 'img_model' in k and k.split('.')[1].isdigit():
+                remove_module_k = '.'.join(['img_model',]+k.split('.')[2:])
+                if remove_module_k in checkpoint_model:
+                    if model_state_dict[k].shape == checkpoint_model[remove_module_k].shape:
+                        checkpoint_model[k] = checkpoint_model[remove_module_k]
+                        del checkpoint_model[remove_module_k]
+            # img_connector.latent_query
+            elif 'img_connector' in k and k.split('.')[1].isdigit():
+                remove_module_k = '.'.join(['img_connector',]+k.split('.')[2:])
+                if remove_module_k in checkpoint_model:
+                    if model_state_dict[k].shape == checkpoint_model[remove_module_k].shape:
+                        checkpoint_model[k] = checkpoint_model[remove_module_k]
+                        del checkpoint_model[remove_module_k]
+                    elif remove_module_k == 'img_connector.latent_query':
+                        # import pdb; pdb.set_trace()
+                        model_shape = model_state_dict[k].shape[0]
+                        checkpoint_shape = checkpoint_model[remove_module_k].shape[0]
+                        if model_shape > checkpoint_shape:
+                            logger.info(f"Extending the {remove_module_k} in checkpoint to fit the model weight")
+                            temp_tensor = model_state_dict[k].clone()
+                            temp_tensor[:checkpoint_shape, :] = checkpoint_model[remove_module_k]
+                            checkpoint_model[k] = temp_tensor
+                            del checkpoint_model[remove_module_k]
+                        else:
+                            logger.info(f"Reducing the {remove_module_k} in checkpoint to fit the model weight")
+                            checkpoint_model[k] = checkpoint_model[remove_module_k][:model_shape]
+                            del checkpoint_model[remove_module_k]
+                            
+                    
+        missing_keys, unexpected_keys = model.load_state_dict(checkpoint_model, strict=False)
+        logger.info(f"missing keys: {missing_keys}")
+        logger.info(f"unexpected keys: {unexpected_keys}")
+        
     # Load the latest checkpoint if one is available and restore the
     # corresponding train iterator
     extra_state, epoch_itr = checkpoint_utils.load_checkpoint(
