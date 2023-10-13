@@ -3,7 +3,16 @@
 
 ## Checkpoints
 
-Comming Soon. You will be able to find the checkpoints for stage1, stage2, and the final model here.
+Download checkpoints for stage1, stage2, and the final model.
+
+```shell
+mkdir kosmosg_checkpoints
+cd kosmosg_checkpoints
+wget -O ViT-L-14-sd.pt "https://conversationhub.blob.core.windows.net/beit-share-public/kosmosg/ViT-L-14-sd.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D"
+wget -O checkpoint_stage1.pt "https://conversationhub.blob.core.windows.net/beit-share-public/kosmosg/checkpoint_stage1.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D"
+wget -O checkpoint_stage2.pt "https://conversationhub.blob.core.windows.net/beit-share-public/kosmosg/checkpoint_stage2.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D"
+wget -O checkpoint_final.pt "https://conversationhub.blob.core.windows.net/beit-share-public/kosmosg/checkpoint_final.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D"
+```
 
 ## Setup
 
