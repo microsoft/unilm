@@ -21,7 +21,7 @@ def create_demo_normal(generation_fn):
                 with gr.Accordion("Advanced options", open=False):
                     num_inference_steps = gr.Slider(label="num_inference_steps", minimum=10, maximum=100, value=20,
                                                     step=5)
-                    text_guidance_scale = gr.Slider(1, 15, value=7.5, step=0.5, label="Text Guidance Scale")
+                    text_guidance_scale = gr.Slider(1, 15, value=6, step=0.5, label="Text Guidance Scale")
                     negative_prompt = gr.Textbox(label="Negative Prompt", max_lines=1,
                                                  value="")
                     num_images_per_prompt = gr.Slider(1, MAX_IMAGES_PER_PROMPT, value=DEFAULT_IMAGES_PER_PROMPT, step=1,

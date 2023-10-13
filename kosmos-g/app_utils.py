@@ -1,7 +1,8 @@
+import random
+
+import gradio as gr
 import numpy as np
 import torch
-import random
-import gradio as gr
 
 controlnet_example = [
     ['appimg/doctor.jpg', '<i>', 'appimg/bengio.jpg', None],
@@ -37,42 +38,6 @@ CONTROLNET_MODEL_IDS = {
     'ip2p': 'lllyasviel/control_v11e_sd15_ip2p',
     'inpaint': 'lllyasviel/control_v11e_sd15_inpaint',
 }
-
-canvas_html = "<div id='canvas-root' style='max-width:400px; margin: 0 auto'></div>"
-load_js = """
-async () => {
-const url = "https://huggingface.co/datasets/radames/gradio-components/raw/main/sketch-canvas.js"
-fetch(url)
-  .then(res => res.text())
-  .then(text => {
-    const script = document.createElement('script');
-    script.type = "module"
-    script.src = URL.createObjectURL(new Blob([text], { type: 'application/javascript' }));
-    document.head.appendChild(script);
-  });
-}
-"""
-
-get_js_colors = """
-async (canvasData) => {
-  const canvasEl = document.getElementById("canvas-root");
-  return [canvasEl._data, canvasData]
-}
-"""
-
-set_canvas_size = """
-async (aspect) => {
-  if(aspect ==='square'){
-    _updateCanvas(512,512)
-  }
-  if(aspect ==='horizontal'){
-    _updateCanvas(768,512)
-  }
-  if(aspect ==='vertical'){
-    _updateCanvas(512,768)
-  }
-}
-"""
 
 
 def randomize_seed_fn(seed, randomize_seed):

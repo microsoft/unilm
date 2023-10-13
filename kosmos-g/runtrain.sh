@@ -39,7 +39,7 @@ python -m torch.distributed.launch --nproc_per_node=8 --nnodes=8 \
   --image-encoder clip \
   --visual-model-name ViT-L-14 \
   --visual-output-dim 1024 \
-  --visual-pretrained /path/to/openai_clip/ViT-L-14-sd.pt \
+  --visual-pretrained /path/to/ViT-L-14-sd.pt \
   --laion-data-dir /path/to/laion-data-dir \
   --laion-batch-size 16 \
   --instructpix2pix-data-dir /path/to/instructpix2pix/ \
@@ -54,6 +54,6 @@ python -m torch.distributed.launch --nproc_per_node=8 --nnodes=8 \
   --sope-rel-pos \
   --data-weights 1,2,2 \
   --pretrained-model-name-or-path runwayml/stable-diffusion-v1-5 \
-  --pretrained-ckpt-path /path/to/aligned-ckpt \
+  --pretrained-ckpt-path /path/to/checkpoint_stage2.pt \
   --checkpoint-activations \
   --random-drop-caption-prob 0.5

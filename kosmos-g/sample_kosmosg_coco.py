@@ -72,7 +72,7 @@ def collate_fn(batch):
 
 
 def main(cfg):
-    cfg.model.pretrained_ckpt_path = "/path/to/trained-ckpt"
+    cfg.model.pretrained_ckpt_path = "/path/to/checkpoint_final.pt"
     args = OmegaConf.create()
     args.data_dir = "/path/to/coco"
     args.batch_size = 16

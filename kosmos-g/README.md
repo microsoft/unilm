@@ -1,23 +1,27 @@
 # Kosmos-G: Generating Images in Context with Multimodal Large Language Models
+[Paper](https://arxiv.org/abs/2310.02992) | [Project Page](https://xichenpan.github.io/kosmosg/)
 
 ## Checkpoints
 
-Comming Soon.
+Comming Soon. You will be able to find the checkpoints for stage1, stage2, and the final model here.
 
 ## Setup
 
-1. Download the recommended docker image and launch it:
+### Using Docker Image [Recommended]
 ```bash
-alias=`whoami | cut -d'.' -f2`; docker run --runtime=nvidia --gpus all --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 --name kosmosg --privileged=true -p 8600:22 -it -v /mnt:/mnt ${alias}.azurecr.io/xformers/a6000:v1 /bin/bash
+docker run --runtime=nvidia --gpus all --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 --name kosmosg --privileged=true -it -v /mnt:/mnt/ nvcr.io/nvidia/pytorch:22.10-py3 /bin/bash
+apt-get install -y libsm6 libxext6 libxrender-dev
+git clone https://github.com/microsoft/unilm.git
+cd unilm/kosmos-g
+bash vl_setup.sh
 ```
-2. Clone the repo:
+
+### Using Base Environment
+Make sure you have Pytorch 1.13.0 installed.
 ```bash
 git clone https://github.com/microsoft/unilm.git
 cd unilm/kosmos-g
-```
-3. Install the packages:
-```bash
-bash vl_setup_xl.sh
+bash vl_setup.sh
 ```
 
 ## Demo
@@ -72,7 +76,7 @@ git clone https://github.com/google/dreambooth.git
 
 We keep only one image for each entity as described in our paper.
 ```
-bash scripts/remove_dreambench_multiimg.sh /path/to/dataset
+bash scripts/remove_dreambench_multiimg.sh /path/to/dreambench/dreambooth/dataset
 ```
 
 Specify the cfg in `sample_kosmosg_dreambench.py` and run the script to evaluate:

@@ -16,14 +16,13 @@ from unilm.data.basic_loader import MixLoader
 from unilm.data.vl.instructpix2pix_loader import InstructPix2PixLoader
 from unilm.data.vl.laion2b_loader import Laion2BLoader
 from unilm.data.vl.openimage_loader import OpenImageLoader
-from unilm.data.vl.vl_loader import WdsLoaderConfig
 from unilm.tasks.gpt_base import GPTPretrainingConfig, GPTTask
 
 logger = logging.getLogger(__name__)
 
 
 @dataclass
-class KosmosGConfig(GPTPretrainingConfig, WdsLoaderConfig):
+class KosmosGConfig(GPTPretrainingConfig):
     max_image_num: int = field(default=5, metadata={"help": ""})
     image_token_length: int = field(default=64, metadata={"help": ""})
     laion_data_dir: str = field(default="", metadata={"help": ""})
