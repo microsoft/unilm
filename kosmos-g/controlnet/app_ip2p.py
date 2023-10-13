@@ -19,7 +19,7 @@ def create_demo_ip2p(generation_fn):
                 randomize_seed = gr.Checkbox(label='Randomize seed', value=False)
                 run_button = gr.Button(label="Run")
                 with gr.Accordion("Advanced options", open=False):
-                    num_inference_steps = gr.Slider(label="num_inference_steps", minimum=10, maximum=100, value=20,
+                    num_inference_steps = gr.Slider(label="num_inference_steps", minimum=10, maximum=100, value=50,
                                                     step=5)
                     text_guidance_scale = gr.Slider(1, 15, value=6, step=0.5, label="Text Guidance Scale")
                     negative_prompt = gr.Textbox(label="Negative Prompt", max_lines=1,
