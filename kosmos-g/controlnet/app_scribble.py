@@ -16,12 +16,12 @@ def create_demo_scribble(generation_fn):
                 num_input_images.change(variable_images, num_input_images, input_images)
 
                 seed = gr.Slider(label="Seed", minimum=MIN_SEED, maximum=MAX_SEED, step=1, value=0)
-                randomize_seed = gr.Checkbox(label='Randomize seed', value=False)
+                randomize_seed = gr.Checkbox(label='Randomize seed', value=True)
                 run_button = gr.Button(label="Run")
                 with gr.Accordion("Advanced options", open=False):
-                    num_inference_steps = gr.Slider(label="num_inference_steps", minimum=10, maximum=100, value=20,
+                    num_inference_steps = gr.Slider(label="num_inference_steps", minimum=10, maximum=100, value=50,
                                                     step=5)
-                    text_guidance_scale = gr.Slider(1, 15, value=7.5, step=0.5, label="Text Guidance Scale")
+                    text_guidance_scale = gr.Slider(1, 15, value=6, step=0.5, label="Text Guidance Scale")
                     negative_prompt = gr.Textbox(label="Negative Prompt", max_lines=1,
                                                  value="")
                     num_images_per_prompt = gr.Slider(1, MAX_IMAGES_PER_PROMPT, value=DEFAULT_IMAGES_PER_PROMPT, step=1,

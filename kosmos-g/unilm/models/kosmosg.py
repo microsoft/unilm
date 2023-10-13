@@ -227,7 +227,7 @@ class KosmosGmodel(BaseFairseqModel):
                     bos=task.dictionary.bos_index, eos=task.dictionary.eos_index)
 
         if args.pretrained_ckpt_path != "":
-            state = checkpoint_utils.load_checkpoint_to_cpu(args.pretrained_ckpt_path)
+            state = checkpoint_utils.load_checkpoint_to_cpu_(args.pretrained_ckpt_path)
             msg = model.load_state_dict(state["model"], strict=False, args=args)
             logger.info(msg)
 

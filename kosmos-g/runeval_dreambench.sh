@@ -1,4 +1,4 @@
-nohup accelerate launch --multi_gpu sample_kosmos_dreambench.py None \
+accelerate launch --multi_gpu sample_kosmos_dreambench.py None \
   --task kosmosg \
   --criterion kosmosg \
   --arch kosmosg_xl \
@@ -12,4 +12,4 @@ nohup accelerate launch --multi_gpu sample_kosmos_dreambench.py None \
   --sope-rel-pos \
   --checkpoint-activations \
   --flash-attention \
-  --pretrained-ckpt-path /path/to/trained-ckpt > log.log &
+  --pretrained-ckpt-path /path/to/checkpoint_final.pt

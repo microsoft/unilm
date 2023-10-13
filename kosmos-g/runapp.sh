@@ -1,4 +1,4 @@
-nohup python -m torch.distributed.launch --nproc_per_node=1 --nnodes=1 \
+python -m torch.distributed.launch --nproc_per_node=1 --nnodes=1 \
   app.py None \
   --task kosmosg \
   --criterion kosmosg \
@@ -13,4 +13,4 @@ nohup python -m torch.distributed.launch --nproc_per_node=1 --nnodes=1 \
   --sope-rel-pos \
   --checkpoint-activations \
   --flash-attention \
-  --pretrained-ckpt-path /path/to/trained-ckpt > log.log &
+  --pretrained-ckpt-path /path/to/checkpoint_final.pt

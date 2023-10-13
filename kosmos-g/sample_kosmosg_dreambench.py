@@ -97,9 +97,9 @@ def dreambench_collate_fn(batch):
 
 
 def main(cfg):
-    cfg.model.pretrained_ckpt_path = "/path/to/trained-ckpt"
+    cfg.model.pretrained_ckpt_path = "/path/to/checkpoint_final.pt"
     args = OmegaConf.create()
-    args.data_dir = "/path/to/dreambench"
+    args.data_dir = "/path/to/dreambench/dreambooth/dataset"
     args.batch_size = 5
     args.num_workers = 4
     args.scheduler = "dpms"  # ['ddim', 'pndm', 'dpms']

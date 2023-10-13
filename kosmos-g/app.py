@@ -55,17 +55,16 @@ def main(cfg):
                                                      visible=True if i < DEFAULT_INPUT_IMAGES else False)
                                             for i in range(MAX_INPUT_IMAGES)]
                             num_input_images.change(variable_images, num_input_images, input_images)
+                            text_guidance_scale = gr.Slider(1, 15, value=6, step=0.5, label="Text Guidance Scale")
 
                             seed = gr.Slider(label="Seed", minimum=MIN_SEED, maximum=MAX_SEED, step=1, value=0)
-                            randomize_seed = gr.Checkbox(label='Randomize seed', value=False)
+                            randomize_seed = gr.Checkbox(label='Randomize seed', value=True)
                             run_button = gr.Button(label="Run")
                             with gr.Accordion("Advanced options", open=False):
                                 lora_scale = gr.Slider(0, 1, value=0, step=0.05, label="LoRA Scale")
                                 num_inference_steps = gr.Slider(label="num_inference_steps", minimum=10, maximum=100,
-                                                                value=20, step=5)
-                                text_guidance_scale = gr.Slider(1, 15, value=7.5, step=0.5, label="Text Guidance Scale")
-                                negative_prompt = gr.Textbox(label="Negative Prompt", max_lines=1,
-                                                             value="")
+                                                                value=50, step=5)
+                                negative_prompt = gr.Textbox(label="Negative Prompt", max_lines=1, value="")
                                 num_images_per_prompt = gr.Slider(1, MAX_IMAGES_PER_PROMPT,
                                                                   value=4, step=1, label="Number of Images")
                         with gr.Column(scale=2):
@@ -90,16 +89,18 @@ def main(cfg):
                     gr.Examples(
                         examples=[
                             ['<i>', 'appimg/dog.jpg', None],
-                            ['<i> in Minecraft', 'appimg/dog.jpg', None],
-                            ['<i> in Batman suit', 'appimg/dog.jpg', None],
                             ['<i> swimming underwater', 'appimg/dog.jpg', None],
-                            ['<i> on <i>', 'appimg/dog.jpg', 'appimg/beach.jpg'],
+                            ['<i> in Batman suit', 'appimg/dog.jpg', None],
+                            ['<i> as an oil painting by Vincent van Gogh', 'appimg/dog.jpg', None],
+                            ['<i> in Minecraft', 'appimg/dog.jpg', None],
+                            ['<i> in the suit of <i>', 'appimg/dog2.jpg', 'appimg/ironman.jpg'],
+                            ['<i> in Unity3D', 'appimg/car.jpg', None],
                             ['<i>', 'appimg/bengio.jpg', None],
                             ['<i> as an oil painting in the style of <i>', 'appimg/bengio.jpg', 'appimg/vangogh.jpg'],
-                            ['<i> swimming in the pool', 'appimg/bengio.jpg', None],
                             ['<i> wearing <i>', 'appimg/bengio.jpg', 'appimg/sunglasses.jpg'],
                             ['<i> in <i>\'s jacket', 'appimg/bengio.jpg', 'appimg/huang.jpg'],
-                            ['<i> plays <i>', 'appimg/astronaut.jpg', 'appimg/guitar.jpg']
+                            ['<i> taking a selfie at <i>', 'appimg/bengio.jpg', 'appimg/ijen.jpg'],
+                            ['<i> in the style of <i>', 'appimg/bengio.jpg', 'appimg/uname.jpg'],
                         ],
                         inputs=[prompt, input_images[0], input_images[1]],
                         cache_examples=False,
