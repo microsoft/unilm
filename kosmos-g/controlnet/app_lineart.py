@@ -16,7 +16,7 @@ def create_demo_lineart(generation_fn):
                 num_input_images.change(variable_images, num_input_images, input_images)
 
                 seed = gr.Slider(label="Seed", minimum=MIN_SEED, maximum=MAX_SEED, step=1, value=0)
-                randomize_seed = gr.Checkbox(label='Randomize seed', value=False)
+                randomize_seed = gr.Checkbox(label='Randomize seed', value=True)
                 run_button = gr.Button(label="Run")
                 with gr.Accordion("Advanced options", open=False):
                     num_inference_steps = gr.Slider(label="num_inference_steps", minimum=10, maximum=100, value=50,

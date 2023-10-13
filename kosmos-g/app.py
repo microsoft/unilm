@@ -58,14 +58,13 @@ def main(cfg):
                             text_guidance_scale = gr.Slider(1, 15, value=6, step=0.5, label="Text Guidance Scale")
 
                             seed = gr.Slider(label="Seed", minimum=MIN_SEED, maximum=MAX_SEED, step=1, value=0)
-                            randomize_seed = gr.Checkbox(label='Randomize seed', value=False)
+                            randomize_seed = gr.Checkbox(label='Randomize seed', value=True)
                             run_button = gr.Button(label="Run")
                             with gr.Accordion("Advanced options", open=False):
                                 lora_scale = gr.Slider(0, 1, value=0, step=0.05, label="LoRA Scale")
                                 num_inference_steps = gr.Slider(label="num_inference_steps", minimum=10, maximum=100,
                                                                 value=50, step=5)
-                                negative_prompt = gr.Textbox(label="Negative Prompt", max_lines=1,
-                                                             value="")
+                                negative_prompt = gr.Textbox(label="Negative Prompt", max_lines=1, value="")
                                 num_images_per_prompt = gr.Slider(1, MAX_IMAGES_PER_PROMPT,
                                                                   value=4, step=1, label="Number of Images")
                         with gr.Column(scale=2):
