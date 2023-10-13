@@ -63,7 +63,7 @@ def main(cfg):
                             with gr.Accordion("Advanced options", open=False):
                                 lora_scale = gr.Slider(0, 1, value=0, step=0.05, label="LoRA Scale")
                                 num_inference_steps = gr.Slider(label="num_inference_steps", minimum=10, maximum=100,
-                                                                value=20, step=5)
+                                                                value=50, step=5)
                                 negative_prompt = gr.Textbox(label="Negative Prompt", max_lines=1,
                                                              value="")
                                 num_images_per_prompt = gr.Slider(1, MAX_IMAGES_PER_PROMPT,
