@@ -17,6 +17,15 @@ wget -O checkpoint_final.pt "https://conversationhub.blob.core.windows.net/beit-
 ## Setup
 
 ### Using Docker Image [Recommended]
+
+You can use our built Docker Image
+
+```bash
+docker run --runtime=nvidia --gpus all --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 --name kosmosg --privileged=true -it -v /mnt:/mnt/ xichenpan/kosmosg:v1 /bin/bash
+```
+
+You can also start with NVIDIA Official Docker Image, and install all dependencies manually.
+
 ```bash
 docker run --runtime=nvidia --gpus all --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 --name kosmosg --privileged=true -it -v /mnt:/mnt/ nvcr.io/nvidia/pytorch:22.10-py3 /bin/bash
 apt-get install -y libsm6 libxext6 libxrender-dev
