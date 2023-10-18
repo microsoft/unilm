@@ -9,4 +9,4 @@ transformers == 2.10.0
 scipy  
 seqeval 
 sklearn 
-urllib3==1.26.5
+urllib3==1.26.18
