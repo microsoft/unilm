@@ -18,6 +18,8 @@ Fundamental research to develop new architectures for foundation models and AI, 
 
 ### Revolutionizing Transformers for (M)LLMs and AI
 
+> [**BitNet**](https://arxiv.org/abs/2310.11453): 1-bit Transformers for Large Language Models
+
 > [**RetNet**](https://arxiv.org/abs/2307.08621): Retentive Network: A Successor to Transformer for Large Language Models
 
 > [**LongNet**](https://arxiv.org/abs/2307.02486): Scaling Transformers to 1,000,000,000 Tokens
