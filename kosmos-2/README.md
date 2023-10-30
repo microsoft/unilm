@@ -2,7 +2,7 @@
 [[paper]](https://arxiv.org/abs/2306.14824) [[dataset]](https://huggingface.co/datasets/zzliang/GRIT)
 [[online demo hosted by HuggingFace]](https://huggingface.co/spaces/ydshieh/Kosmos-2)
 
-- Aug 2023: We acknowledge [ydshieh](https://huggingface.co/ydshieh) at HuggingFace for [the online demo](https://huggingface.co/spaces/ydshieh/Kosmos-2) and [the HuggingFace's transformers implementation](https://huggingface.co/ydshieh/kosmos-2-patch14-224).
+- Aug 2023: We acknowledge [ydshieh](https://huggingface.co/ydshieh) at HuggingFace for [the online demo](https://huggingface.co/spaces/ydshieh/Kosmos-2) and [the HuggingFace's transformers implementation](https://huggingface.co/microsoft/kosmos-2-patch14-224).
 - June 2023: 🔥 We release the **Kosmos-2: Grounding Multimodal Large Language Models to the World** paper. Checkout the [paper](https://arxiv.org/abs/2306.14824).
 - Feb 2023: [Kosmos-1 (Language Is Not All You Need: Aligning Perception with Language Models)](https://arxiv.org/abs/2302.14045)
 - June 2022: [MetaLM (Language Models are General-Purpose Interfaces)](https://arxiv.org/abs/2206.06336)
@@ -33,7 +33,7 @@
 
 ## Checkpoints
 
-The model can be loaded with [the HuggingFace's transformers library](https://huggingface.co/ydshieh/kosmos-2-patch14-224).
+The model can be loaded with [the HuggingFace's transformers library](https://huggingface.co/microsoft/kosmos-2-patch14-224).
 
 The checkpoint can be downloaded from [here](https://conversationhub.blob.core.windows.net/beit-share-public/kosmos-2/kosmos-2.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D):
 ```bash
@@ -221,7 +221,7 @@ If you find this repository useful, please consider citing our work:
 
 ## Acknowledgement
 
-This repository is built using [torchscale](https://github.com/microsoft/torchscale), [fairseq](https://github.com/facebookresearch/fairseq), [openclip](https://github.com/mlfoundations/open_clip). We also would like to acknowledge the examples provided by [WHOOPS!](https://whoops-benchmark.github.io). We acknowledge [ydshieh](https://huggingface.co/ydshieh) at HuggingFace for [the online demo](https://huggingface.co/spaces/ydshieh/Kosmos-2) and [the HuggingFace's transformers implementation](https://huggingface.co/ydshieh/kosmos-2-patch14-224).
+This repository is built using [torchscale](https://github.com/microsoft/torchscale), [fairseq](https://github.com/facebookresearch/fairseq), [openclip](https://github.com/mlfoundations/open_clip). We also would like to acknowledge the examples provided by [WHOOPS!](https://whoops-benchmark.github.io). We acknowledge [ydshieh](https://huggingface.co/ydshieh) at HuggingFace for [the online demo](https://huggingface.co/spaces/ydshieh/Kosmos-2) and [the HuggingFace's transformers implementation](https://huggingface.co/microsoft/kosmos-2-patch14-224).
 
 
 ## License
