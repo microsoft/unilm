@@ -22,6 +22,12 @@ You can use our built Docker Image
 
 ```bash
 docker run --runtime=nvidia --gpus all --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 --name kosmosg --privileged=true -it -v /mnt:/mnt/ xichenpan/kosmosg:v1 /bin/bash
+git clone https://github.com/microsoft/unilm.git
+cd unilm/kosmos-g
+pip install torchscale/
+pip install open_clip/
+pip install fairseq/
+pip install infinibatch/
 ```
 
 You can also start with NVIDIA Official Docker Image, and install all dependencies manually.
@@ -35,7 +41,7 @@ bash vl_setup.sh
 ```
 
 ### Using Base Environment
-Make sure you have Pytorch 1.13.0 installed.
+Make sure you have Pytorch 1.13.0 and nvcc 11.x installed.
 ```bash
 git clone https://github.com/microsoft/unilm.git
 cd unilm/kosmos-g
