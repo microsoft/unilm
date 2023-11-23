@@ -40,9 +40,14 @@ It takes only several lines of code to create a RetNet model:
 
 ## Changelog
 
+- Nov 2023: fix retention normalization in the [commit](https://github.com/microsoft/torchscale/commit/fdd8838a756c7c435d7f8a1e4303e150dfac7442)
+- Oct 2023: improve stability as follows
+  - The RMSNorm is used in the [commit](https://github.com/microsoft/torchscale/commit/5c89ffbeea3ba458a865a569f947bf82cca50090), so that the effects of LN_eps can be eliminated
+  - The LN eps was modified from 1e-6 to 1e-5 as in the [commit](https://github.com/microsoft/torchscale/commit/d1fefe9c22bad07535f56c4c461b94588dd8cc84)
+  - For the RetNet implementation, the initialization principle proposed in DeepNet has been integrated. So the arguments `--subln or --deepnorm` should not be added.
+  - Removing layer bias also improves training stability
 - Aug 4, 2023: fix a bug of the chunkwise recurrent representation ([commit](https://github.com/microsoft/torchscale/commit/0b1f113985a0339bc322b0c7df91be0f745cb311))
 - Aug 4, 2023: improve the numerical precision of the recurrent representation as suggested by https://github.com/microsoft/torchscale/issues/47 ([commit](https://github.com/microsoft/torchscale/commit/7f0bf80a7e41e6fe2d3bf1fda570fbbf8ecc13a4))
-- Aug 2, 2023: update eps of LN to 1e-6 ([commit](https://github.com/microsoft/torchscale/commit/2c29de0fb3e5e559181f0fb4854330c5b35961cd))
 
 ## Citations
 
