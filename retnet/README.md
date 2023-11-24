@@ -40,6 +40,7 @@ It takes only several lines of code to create a RetNet model:
 
 ## Changelog
 
+- Nov 2023: improve stability via [better initialization](https://github.com/microsoft/torchscale/commit/ff7c1f286503a4aa84ee90dbd68ee4d5af465d12)
 - Nov 2023: fix retention normalization in the [commit](https://github.com/microsoft/torchscale/commit/fdd8838a756c7c435d7f8a1e4303e150dfac7442)
 - Oct 2023: improve stability as follows
   - The RMSNorm is used in the [commit](https://github.com/microsoft/torchscale/commit/5c89ffbeea3ba458a865a569f947bf82cca50090), so that the effects of LN_eps can be eliminated
