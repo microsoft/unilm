@@ -64,7 +64,7 @@ Fundamental research to develop new architectures for foundation models and AI, 
 
 > [**DiT**](https://github.com/microsoft/unilm/tree/master/dit): self-supervised pre-training for Document Image Transformers
 
-> [**TextDiffuser**](https://github.com/microsoft/unilm/tree/master/textdiffuser)/[**TextDiffuser-2**](https://github.com/microsoft/unilm/tree/master/textdiffuser-2)(```NEW```): Diffusion Models as Text Painters
+> [**TextDiffuser**](https://github.com/microsoft/unilm/tree/master/textdiffuser)/[**TextDiffuser-2**](https://github.com/microsoft/unilm/tree/master/textdiffuser-2) (```NEW```): Diffusion Models as Text Painters
 
 ### Speech
 > [**WavLM**](https://github.com/microsoft/unilm/tree/master/wavlm): speech pre-training for full stack tasks
