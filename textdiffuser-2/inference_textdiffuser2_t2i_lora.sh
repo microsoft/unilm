@@ -1,0 +1,16 @@
+accelerate launch inference_textdiffuser2_t2i_lora.py \
+  --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
+  --gradient_accumulation_steps=4 \
+  --gradient_checkpointing \
+  --mixed_precision="fp16" \
+  --output_dir="inference_results" \
+  --enable_xformers_memory_efficient_attention \
+  --resume_from_checkpoint="JingyeChen22/textdiffuser2-lora-ft" \
+  --granularity=128 \
+  --coord_mode="ltrb" \
+  --cfg=7.5 \
+  --sample_steps=50 \
+  --seed=43555 \
+  --m1_model_path="/home/jingyechen/FastChat/1204_final" \
+  --input_format='prompt' \
+  --input_prompt='a stamp of u.s.a'

@@ -1,0 +1,15 @@
+accelerate launch inference_textdiffuser2_t2i_full.py \
+  --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
+  --mixed_precision="fp16" \
+  --output_dir="inference_results" \
+  --enable_xformers_memory_efficient_attention \
+  --resume_from_checkpoint="JingyeChen22/textdiffuser2-full-ft" \
+  --granularity=128 \
+  --max_length=77 \
+  --coord_mode="ltrb" \
+  --cfg=7.5 \
+  --sample_steps=20 \
+  --seed=43555 \
+  --m1_model_path="JingyeChen22/textdiffuser2_layout_planner" \
+  --input_format='prompt' \
+  --input_prompt='a hotdog with mustard and other toppings on it'
