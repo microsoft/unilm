@@ -199,7 +199,7 @@ accelerate launch inference_textdiffuser2_t2i_lora.py \
   --cfg=7.5 \
   --sample_steps=50 \
   --seed=43555 \
-  --m1_model_path="/home/jingyechen/FastChat/1204_final" \
+  --m1_model_path="JingyeChen22/textdiffuser2_layout_planner" \
   --input_format='prompt' \
   --input_prompt='a stamp of u.s.a'
 ```
@@ -213,7 +213,7 @@ TextDiffuser-2 has been deployed on [Hugging Face](https://huggingface.co/spaces
 
 ## :love_letter: Acknowledgement
 
-We sincerely thank [AK](https://huggingface.co/akhaliq) and [hysts](https://huggingface.co/hysts) for helping setting up the demo. We also feel thankful for the available code/api/demo of [SDXL](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0), [PixArt](https://pixart-alpha.github.io/), [Ideogram](https://ideogram.ai/), [DALLE-3](https://openai.com/dall-e-3), and[GlyghControl](https://huggingface.co/spaces/AIGText/GlyphControl).
+We sincerely thank [AK](https://huggingface.co/akhaliq) and [hysts](https://huggingface.co/hysts) for helping set up the demo. We also feel thankful for the available code/api/demo of [SDXL](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0), [PixArt](https://pixart-alpha.github.io/), [Ideogram](https://ideogram.ai/), [DALLE-3](https://openai.com/dall-e-3), and [GlyghControl](https://huggingface.co/spaces/AIGText/GlyphControl).
 
   
 ## :exclamation: Disclaimer
