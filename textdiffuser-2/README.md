@@ -2,9 +2,10 @@
 
 <a href='https://arxiv.org/abs/2311.16465'><img src='https://img.shields.io/badge/Arxiv-2311.16465-red'></a>
 <a href='https://github.com/microsoft/unilm/tree/master/textdiffuser-2'><img src='https://img.shields.io/badge/Code-aka.ms/textdiffuser2-yellow'></a>
+<a href='https://jingyechen.github.io/textdiffuser2/'><img src='https://img.shields.io/badge/Homepage-link-green'></a>
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-TextDiffuser2-blue)](https://huggingface.co/spaces/JingyeChen22/TextDiffuser-2)
 <a href='https://discord.gg/HVEcfcwdHv'><img src='https://img.shields.io/badge/Discord-Invitation-purple'></a>
-
+ 
 <img src="assets/readme_images/teaser.jpg" width="100%">
 
 TextDiffuser-2 exhibits enhanced capability powered by language models. In addition to generating text with remarkable accuracy, TextDiffuser-2 provides plausible text layouts and demonstrates a diverse range of text styles.
