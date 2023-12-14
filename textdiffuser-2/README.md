@@ -214,7 +214,7 @@ TextDiffuser-2 has been deployed on [Hugging Face](https://huggingface.co/spaces
 
 ## :love_letter: Acknowledgement
 
-We sincerely thank [AK](https://huggingface.co/akhaliq) and [hysts](https://huggingface.co/hysts) for helping set up the demo. We also feel thankful for the available code/api/demo of [SDXL](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0), [PixArt](https://pixart-alpha.github.io/), [Ideogram](https://ideogram.ai/), [DALLE-3](https://openai.com/dall-e-3), and [GlyghControl](https://huggingface.co/spaces/AIGText/GlyphControl).
+We sincerely thank [AK](https://huggingface.co/akhaliq) and [hysts](https://huggingface.co/hysts) for helping set up the demo. We also feel thankful for the available code/api/demo of [SDXL](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0), [PixArt](https://pixart-alpha.github.io/), [Ideogram](https://ideogram.ai/), [DALLE-3](https://openai.com/dall-e-3), and [GlyphControl](https://huggingface.co/spaces/AIGText/GlyphControl).
 
   
 ## :exclamation: Disclaimer
