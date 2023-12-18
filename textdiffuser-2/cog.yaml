@@ -1,0 +1,16 @@
+# Configuration for Cog ⚙️
+# Reference: https://github.com/replicate/cog/blob/main/docs/yaml.md
+
+build:
+  gpu: true
+  python_version: "3.11"
+  python_packages:
+    - torch==2.0.1
+    - torchvision==0.15.2
+    - diffusers==0.24.0
+    - accelerate==0.22.0
+    - datasets==2.11.0
+    - transformers==4.28.1
+    - fschat==0.2.26
+    - sentencepiece==0.1.99
+predict: "predict.py:Predictor"
