@@ -207,7 +207,7 @@ accelerate launch inference_textdiffuser2_t2i_lora.py \
 ```
 
 ## :joystick:	Demo
-TextDiffuser-2 has been deployed on [Hugging Face](https://huggingface.co/spaces/JingyeChen22/TextDiffuser-2). Welcome to play with it!
+TextDiffuser-2 has been deployed on [Hugging Face](https://huggingface.co/spaces/JingyeChen22/TextDiffuser-2). Welcome to play with it! You can also run ```python gradio_demo.py``` to use the demo locally.
 
 <img src="assets/readme_images/demo.jpg" width="100%">
 
