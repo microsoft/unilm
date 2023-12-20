@@ -4,6 +4,6 @@
 datasets==1.6.2
 torch==1.7.1+cu101
 torchvision==0.8.2+cu101
-transformers==4.5.1
+transformers==4.36.0
 detectron2==0.3
 seqeval==1.2.2
