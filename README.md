@@ -16,7 +16,7 @@ Fundamental research to develop new architectures for foundation models and AI, 
 
 > Efficiency & Transferability - [**X-MoE**](https://github.com/microsoft/unilm/tree/master/xmoe): scalable & finetunable sparse Mixture-of-Experts (MoE)
 
-### Revolutionizing Transformers for (M)LLMs and AI
+### The Revolution of Model Architecture
 
 > [**BitNet**](https://arxiv.org/abs/2310.11453): 1-bit Transformers for Large Language Models
 
@@ -26,7 +26,7 @@ Fundamental research to develop new architectures for foundation models and AI, 
 
 # Foundation Models
 
-### LLM / MLLM (Multimodal LLM)
+### The Evolution of (M)LLM (Multimodal LLM)
 
 > [**Kosmos-2.5**](https://github.com/microsoft/unilm/tree/master/kosmos-2.5): **A Multimodal Literate Model**
 
