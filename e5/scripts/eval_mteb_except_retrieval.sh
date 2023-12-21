@@ -16,13 +16,9 @@ if [ -z "$OUTPUT_DIR" ]; then
   OUTPUT_DIR="tmp-outputs/"
 fi
 
-mkdir -p "${OUTPUT_DIR}"
-
-python -u mteb_eval.py \
+python -u mteb_except_retrieval_eval.py \
     --model-name-or-path "${MODEL_NAME_OR_PATH}" \
     --task-types "STS" "Summarization" "PairClassification" "Classification" "Reranking" "Clustering" "BitextMining" \
-    --pool-type avg \
-    --prompt "query: " \
     --output-dir "${OUTPUT_DIR}" "$@"
 
 echo "done"

@@ -3,4 +3,4 @@ transformers>=4.15.0
 datasets>=2.2.0
 tqdm
 beir
-mteb
+mteb==1.0.2

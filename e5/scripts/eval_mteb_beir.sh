@@ -16,11 +16,8 @@ if [ -z "$OUTPUT_DIR" ]; then
   OUTPUT_DIR="tmp-outputs/"
 fi
 
-mkdir -p "${OUTPUT_DIR}"
-
 python -u mteb_beir_eval.py \
     --model-name-or-path "${MODEL_NAME_OR_PATH}" \
-    --pool-type avg \
     --output-dir "${OUTPUT_DIR}" "$@"
 
 echo "done"
