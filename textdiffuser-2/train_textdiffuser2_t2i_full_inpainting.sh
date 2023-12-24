@@ -1,0 +1,17 @@
+accelerate launch train_textdiffuser2_full_inpainting.py \
+    --train_batch_size=16 \
+    --gradient_accumulation_steps=4 \
+    --gradient_checkpointing \
+    --mixed_precision="fp16" \
+    --num_train_epochs=6 \
+    --learning_rate=1e-5 \
+    --max_grad_norm=1 \
+    --lr_scheduler="constant" \
+    --lr_warmup_steps=0 \
+    --output_dir="inpainting_experiment_name" \
+    --enable_xformers_memory_efficient_attention \
+    --dataloader_num_workers=8 \
+    --resume_from_checkpoint="latest" \
+    --dataset_path=/path/to/laion-ocr-select \
+    --train_dataset_index_file=/path/to/train_dataset_index.txt \
+    --vis_num=16
