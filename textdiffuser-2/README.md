@@ -28,6 +28,8 @@ TextDiffuser-2 exhibits enhanced capability powered by language models. In addit
 
 ## :stopwatch: News
 
+- __[2023.12.26]__: Code, model, and demo for the text inpainting task are all released. Welcome to play with it at [link](https://huggingface.co/spaces/JingyeChen22/TextDiffuser-2-Text-Inpainting).
+
 - __[2023.12.12]__: The training and inference code for text-to-image is released. We provide the code for full-parameter training and lora training.
 
 - __[2023.12.10]__: The demo is released at [link](https://huggingface.co/spaces/JingyeChen22/TextDiffuser-2).
