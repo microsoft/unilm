@@ -55,7 +55,7 @@ pip install -r requirements.txt
 
 Meanwhile, please install **torch**, **torchvision**, **xformers** that matches the version of system and cuda version (refer to this [link](https://download.pytorch.org/whl/torch_stable.html)). Please also install [flash-attention](https://github.com/Dao-AILab/flash-attention) if you want to train the layout planner using [FastChat](https://github.com/lm-sys/FastChat). We provide the list of packages used in the experiments at [link](./assets/reference_requirements.txt) for your reference.
 
-For training the **text inpainting task**, please install the diffusers package using the command ```https://github.com/JingyeChen/diffusers_td2.git```. Note that the U-Net architecture has been modified for receiving more input features.
+For training the **text inpainting task**, please install the diffusers package using the command ```pip install https://github.com/JingyeChen/diffusers_td2.git```. Note that the U-Net architecture has been modified for receiving more input features.
 
 <small> If you encounterd an error of *RuntimeError: expected scalar type float Float bu found Half* trigged by *diffusers/models/attention_processor.py*, please use [attention_processor.py](./assets/attention_processor.py) to replace the corresponding file in the installed diffusers library. </small>
 
