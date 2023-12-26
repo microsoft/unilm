@@ -1,4 +1,4 @@
-accelerate launch train_textdiffuser2_full_inpainting.py \
+accelerate launch train_textdiffuser2_inpainting_full.py \
     --train_batch_size=16 \
     --gradient_accumulation_steps=4 \
     --gradient_checkpointing \
