@@ -49,7 +49,7 @@ def pool(last_hidden_states: Tensor,
 
     if pool_type == "avg":
         emb = last_hidden.sum(dim=1) / attention_mask.sum(dim=1)[..., None]
-    elif pool_type == "weightedavg": # position-weighted mean pooling (https://arxiv.org/abs/2202.08904)
+    elif pool_type == "weightedavg": # position-weighted mean pooling from SGPT (https://arxiv.org/abs/2202.08904)
         attention_mask *= attention_mask.cumsum(dim=1) # [0,1,1,1,0,0] -> [0,1,2,3,0,0]        
         s = torch.sum(last_hidden * attention_mask.unsqueeze(-1).float(), dim=1)
         d = attention_mask.sum(dim=1, keepdim=True).float()
