@@ -6,15 +6,12 @@ import json
 import numpy as np
 import argparse
 
-from functools import partial
-from torch.utils.data import DataLoader
-from datasets import Dataset
-from transformers import AutoModel, AutoTokenizer, DataCollatorWithPadding
+from transformers import AutoModel, AutoTokenizer
 from transformers.modeling_outputs import BaseModelOutput
 from typing import List
 from mteb import MTEB
 
-from utils import logger, pool, move_to_cuda, get_detailed_instruct, get_task_def_by_task_name_and_type, input_transform_func
+from utils import logger, pool, move_to_cuda, get_detailed_instruct, get_task_def_by_task_name_and_type, create_batch_dict
 from model_config import MODEL_NAME_TO_POOL_TYPE, MODEL_NAME_TO_PREFIX_TYPE
 
 parser = argparse.ArgumentParser(description='evaluation for MTEB benchmark except its Retrieval category')
@@ -34,7 +31,7 @@ args.pool_type = MODEL_NAME_TO_POOL_TYPE.get(base_name, args.pool_type)
 args.prefix_type = MODEL_NAME_TO_PREFIX_TYPE.get(base_name, args.prefix_type)
 
 logger.info('Args: {}'.format(json.dumps(args.__dict__, ensure_ascii=False, indent=4)))
-assert args.pool_type in ['cls', 'avg', 'last'], 'pool_type should be cls / avg / last'
+assert args.pool_type in ['cls', 'avg', 'last', 'weightedavg'], 'pool_type should be cls / avg / last'
 assert args.prefix_type in ['query_or_passage', 'instruction'], 'prefix_type should be query_or_passage / instruction'
 os.makedirs(args.output_dir, exist_ok=True)
 
@@ -65,22 +62,14 @@ class DenseEncoder(torch.nn.Module):
             `List[np.ndarray]` or `List[tensor]`: List of embeddings for the given sentences
         """
 
-        sentences = [self.prompt + s for s in sentences]
-        dataset: Dataset = Dataset.from_dict({'input_texts': sentences})
-        dataset.set_transform(partial(input_transform_func, self.tokenizer, always_add_eos=(args.pool_type == 'last')))
-
-        data_collator = DataCollatorWithPadding(self.tokenizer, pad_to_multiple_of=8)
-        data_loader = DataLoader(
-            dataset,
-            batch_size=64 * self.gpu_count,
-            shuffle=False,
-            drop_last=False,
-            num_workers=2,
-            collate_fn=data_collator,
-            pin_memory=True)
+        input_texts: List[str] = [self.prompt + s for s in sentences]
 
         encoded_embeds = []
-        for batch_dict in tqdm.tqdm(data_loader, desc='encoding', mininterval=10, disable=len(sentences) < 128):
+        batch_size = 64 * self.gpu_count
+        for start_idx in tqdm.tqdm(range(0, len(input_texts), batch_size), desc='encoding', mininterval=10):
+            batch_input_texts: List[str] = input_texts[start_idx: start_idx + batch_size]
+
+            batch_dict = create_batch_dict(self.tokenizer, batch_input_texts, always_add_eos=(args.pool_type == 'last'))
             batch_dict = move_to_cuda(batch_dict)
 
             with torch.cuda.amp.autocast():
@@ -110,11 +99,6 @@ def main():
         if args.dry_run and task_name not in ['Banking77Classification', 'ImdbClassification', 'STS12']:
             continue
 
-        eval_splits = task_cls.description.get("eval_splits", [])
-        if "test" not in eval_splits:
-            logger.warning("Test split not found for task: {}, type: {}, eval_splits: {}".format(task_name, task_type, eval_splits))
-        eval_splits = ["test" if "test" in eval_splits else eval_splits[0]]
-
         if args.prefix_type == 'query_or_passage':
             prompt: str = 'query: '
         else:
@@ -133,6 +117,7 @@ def main():
 
         sub_eval = MTEB(tasks=[task_name], task_langs=['en'] if not args.multilingual else None)
         logger.info('Running evaluation for task: {}, type: {}'.format(task_name, task_type))
+        eval_splits = ["test"] if "test" in task_cls.description["eval_splits"] else task_cls.description["eval_splits"]
         sub_eval.run(
             model, eval_splits=eval_splits,
             output_folder=args.output_dir

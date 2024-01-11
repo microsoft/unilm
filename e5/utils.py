@@ -49,8 +49,8 @@ def pool(last_hidden_states: Tensor,
 
     if pool_type == "avg":
         emb = last_hidden.sum(dim=1) / attention_mask.sum(dim=1)[..., None]
-    elif pool_type == "weightedavg": # position-weighted mean pooling from SGPT (https://arxiv.org/abs/2202.08904)
-        attention_mask *= attention_mask.cumsum(dim=1) # [0,1,1,1,0,0] -> [0,1,2,3,0,0]        
+    elif pool_type == "weightedavg":  # position-weighted mean pooling from SGPT (https://arxiv.org/abs/2202.08904)
+        attention_mask *= attention_mask.cumsum(dim=1)  # [0,1,1,1,0,0] -> [0,1,2,3,0,0]
         s = torch.sum(last_hidden * attention_mask.unsqueeze(-1).float(), dim=1)
         d = attention_mask.sum(dim=1, keepdim=True).float()
         emb = s / d
@@ -70,19 +70,20 @@ def pool(last_hidden_states: Tensor,
     return emb
 
 
-def input_transform_func(tokenizer: PreTrainedTokenizerFast, examples: Dict[str, List], always_add_eos: bool) -> BatchEncoding:
-    max_length = 512
+def create_batch_dict(tokenizer: PreTrainedTokenizerFast, input_texts: List[str], always_add_eos: bool, max_length: int = 512) -> BatchEncoding:
     if not always_add_eos:
         return tokenizer(
-            examples['input_texts'],
+            input_texts,
             max_length=max_length,
             padding=True,
+            pad_to_multiple_of=8,
             return_token_type_ids=False,
-            truncation=True
+            truncation=True,
+            return_tensors='pt'
         )
     else:
         batch_dict = tokenizer(
-            examples['input_texts'],
+            input_texts,
             max_length=max_length - 1,
             return_token_type_ids=False,
             return_attention_mask=False,
@@ -92,7 +93,14 @@ def input_transform_func(tokenizer: PreTrainedTokenizerFast, examples: Dict[str,
 
         # append eos_token_id to every input_ids
         batch_dict['input_ids'] = [input_ids + [tokenizer.eos_token_id] for input_ids in batch_dict['input_ids']]
-        return batch_dict
+
+        return tokenizer.pad(
+            batch_dict,
+            padding=True,
+            pad_to_multiple_of=8,
+            return_attention_mask=True,
+            return_tensors="pt",
+        )
 
 
 def get_task_def_by_task_name_and_type(task_name: str, task_type: str) -> str:

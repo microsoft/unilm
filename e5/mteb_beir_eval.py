@@ -6,15 +6,12 @@ import torch
 import argparse
 import torch.nn.functional as F
 
-from datasets import Dataset
 from typing import List, Dict
-from functools import partial
-from transformers import AutoModel, AutoTokenizer, DataCollatorWithPadding
+from transformers import AutoModel, AutoTokenizer
 from transformers.modeling_outputs import BaseModelOutput
-from torch.utils.data import DataLoader
 from mteb import MTEB, AbsTaskRetrieval, DRESModel
 
-from utils import pool, logger, move_to_cuda, get_detailed_instruct, get_task_def_by_task_name_and_type, input_transform_func
+from utils import pool, logger, move_to_cuda, get_detailed_instruct, get_task_def_by_task_name_and_type, create_batch_dict
 from model_config import MODEL_NAME_TO_POOL_TYPE, MODEL_NAME_TO_PREFIX_TYPE
 
 parser = argparse.ArgumentParser(description='evaluation for BEIR benchmark')
@@ -22,7 +19,7 @@ parser.add_argument('--model-name-or-path', default='intfloat/e5-small-v2',
                     type=str, metavar='N', help='which model to use')
 parser.add_argument('--output-dir', default='tmp-outputs/',
                     type=str, metavar='N', help='output directory')
-parser.add_argument('--doc-as-query', action='store_true', help='use query prefix for passages')
+parser.add_argument('--doc-as-query', action='store_true', help='use query prefix for passages, only used for Quora as it is a symmetric task')
 parser.add_argument('--pool-type', default='avg', help='pool type')
 parser.add_argument('--prefix-type', default='query_or_passage', help='prefix type')
 parser.add_argument('--dry-run', action='store_true', help='whether to run the script in dry run mode')
@@ -34,7 +31,7 @@ args.pool_type = MODEL_NAME_TO_POOL_TYPE.get(base_name, args.pool_type)
 args.prefix_type = MODEL_NAME_TO_PREFIX_TYPE.get(base_name, args.prefix_type)
 
 logger.info('Args: {}'.format(json.dumps(args.__dict__, ensure_ascii=False, indent=4)))
-assert args.pool_type in ['cls', 'avg', 'last'], 'pool_type should be cls / avg / last'
+assert args.pool_type in ['cls', 'avg', 'last', 'weightedavg'], 'pool_type should be cls / avg / last'
 assert args.prefix_type in ['query_or_passage', 'instruction'], 'prefix_type should be query_or_passage / instruction'
 os.makedirs(args.output_dir, exist_ok=True)
 
@@ -73,21 +70,12 @@ class RetrievalModel(DRESModel):
 
     @torch.no_grad()
     def _do_encode(self, input_texts: List[str]) -> np.ndarray:
-        dataset: Dataset = Dataset.from_dict({'input_texts': input_texts})
-        dataset.set_transform(partial(input_transform_func, self.tokenizer, always_add_eos=(args.pool_type == 'last')))
-
-        data_collator = DataCollatorWithPadding(self.tokenizer, pad_to_multiple_of=8)
-        data_loader = DataLoader(
-            dataset,
-            batch_size=64 * self.gpu_count,
-            shuffle=False,
-            drop_last=False,
-            num_workers=2,
-            collate_fn=data_collator,
-            pin_memory=True)
-
         encoded_embeds = []
-        for batch_dict in tqdm.tqdm(data_loader, desc='encoding', mininterval=10):
+        batch_size = 64 * self.gpu_count
+        for start_idx in tqdm.tqdm(range(0, len(input_texts), batch_size), desc='encoding', mininterval=10):
+            batch_input_texts: List[str] = input_texts[start_idx: start_idx + batch_size]
+
+            batch_dict = create_batch_dict(self.tokenizer, batch_input_texts, always_add_eos=(args.pool_type == 'last'))
             batch_dict = move_to_cuda(batch_dict)
 
             with torch.cuda.amp.autocast():

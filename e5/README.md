@@ -1,5 +1,8 @@
 # E5 Text Embeddings
 
+[Improving Text Embeddings with Large Language Models](https://arxiv.org/pdf/2401.00368.pdf).
+Liang Wang, Nan Yang, Xiaolong Huang, Linjun Yang, Rangan Majumder, Furu Wei, arXiv 2024
+
 [Text Embeddings by Weakly-Supervised Contrastive Pre-training](https://arxiv.org/pdf/2212.03533.pdf).
 Liang Wang, Nan Yang, Xiaolong Huang, Binxing Jiao, Linjun Yang, Daxin Jiang, Rangan Majumder, Furu Wei, arXiv 2022
 
@@ -56,7 +59,7 @@ By default,
 the evaluation script will use all the available GPUs.
 
 Caution: it could take quite a long time (~10 hours) due to corpus encoding.
-For `e5-mistral-7b-instruct`, it could take even longer (several days).
+For `intfloat/e5-mistral-7b-instruct`, it could take even longer (several days).
 
 ## Evaluate on the [MTEB Benchmark](https://arxiv.org/abs/2210.07316)
 
@@ -72,6 +75,10 @@ For multilingual models, simply add a `--multilingual` suffix:
 bash scripts/eval_mteb_except_retrieval.sh intfloat/multilingual-e5-base --multilingual
 ```
 
+## Other Resources
+
+The data for our proposed synthetic task _personalized passkey retrieval_ is available at [https://huggingface.co/datasets/intfloat/personalized_passkey_retrieval](https://huggingface.co/datasets/intfloat/personalized_passkey_retrieval).
+
 ## Troubleshooting
 
 If you encounter OOM error, please try to reduce the batch size.
@@ -81,6 +88,13 @@ If you encounter OOM error, please try to reduce the batch size.
 If you find our paper or models helpful, please consider cite as follows:
 
 ```
+@article{wang2023improving,
+  title={Improving Text Embeddings with Large Language Models},
+  author={Wang, Liang and Yang, Nan and Huang, Xiaolong and Yang, Linjun and Majumder, Rangan and Wei, Furu},
+  journal={arXiv preprint arXiv:2401.00368},
+  year={2023}
+}
+
 @article{wang2022text,
   title={Text Embeddings by Weakly-Supervised Contrastive Pre-training},
   author={Wang, Liang and Yang, Nan and Huang, Xiaolong and Jiao, Binxing and Yang, Linjun and Jiang, Daxin and Majumder, Rangan and Wei, Furu},
