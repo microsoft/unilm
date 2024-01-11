@@ -127,6 +127,13 @@ def get_task_def_by_task_name_and_type(task_name: str, task_type: str) -> str:
             'MTOPIntentClassification': 'Classify the intent of the given utterance in task-oriented conversation',
             'ToxicConversationsClassification': 'Classify the given comments as either toxic or not toxic',
             'TweetSentimentExtractionClassification': 'Classify the sentiment of a given tweet as either positive, negative, or neutral',
+            # C-MTEB eval instructions
+            'TNews': 'Classify the fine-grained category of the given news title',
+            'IFlyTek': 'Given an App description text, find the appropriate fine-grained category',
+            'MultilingualSentiment': 'Classify sentiment of the customer review into positive, neutral, or negative',
+            'JDReview': 'Classify the customer review for iPhone on e-commerce platform into positive or negative',
+            'OnlineShopping': 'Classify the customer review for online shopping into positive or negative',
+            'Waimai': 'Classify the customer review from a food takeaway platform into positive or negative',
         }
         return task_name_to_instruct[task_name]
 
@@ -143,6 +150,11 @@ def get_task_def_by_task_name_and_type(task_name: str, task_type: str) -> str:
             'StackExchangeClustering': 'Identify the topic or theme of StackExchange posts based on the titles',
             'StackExchangeClusteringP2P': 'Identify the topic or theme of StackExchange posts based on the given paragraphs',
             'TwentyNewsgroupsClustering': 'Identify the topic or theme of the given news articles',
+            # C-MTEB eval instructions
+            'CLSClusteringS2S': 'Identify the main category of scholar papers based on the titles',
+            'CLSClusteringP2P': 'Identify the main category of scholar papers based on the titles and abstracts',
+            'ThuNewsClusteringS2S': 'Identify the topic or theme of the given news articles based on the titles',
+            'ThuNewsClusteringP2P': 'Identify the topic or theme of the given news articles based on the titles and contents',
         }
         return task_name_to_instruct[task_name]
 
@@ -155,6 +167,13 @@ def get_task_def_by_task_name_and_type(task_name: str, task_type: str) -> str:
             'SprintDuplicateQuestions': 'Retrieve duplicate questions from Sprint forum',
             'TwitterSemEval2015': 'Retrieve tweets that are semantically similar to the given tweet',
             'TwitterURLCorpus': 'Retrieve tweets that are semantically similar to the given tweet',
+            # C-MTEB eval instructions
+            'T2Reranking': 'Given a Chinese search query, retrieve web passages that answer the question',
+            'MMarcoReranking': 'Given a Chinese search query, retrieve web passages that answer the question',
+            'CMedQAv1': 'Given a Chinese community medical question, retrieve replies that best answer the question',
+            'CMedQAv2': 'Given a Chinese community medical question, retrieve replies that best answer the question',
+            'Ocnli': 'Retrieve semantically similar text.',
+            'Cmnli': 'Retrieve semantically similar text.',
         }
         return task_name_to_instruct[task_name]
 
@@ -177,6 +196,15 @@ def get_task_def_by_task_name_and_type(task_name: str, task_type: str) -> str:
             'SciFact': 'Given a scientific claim, retrieve documents that support or refute the claim',
             'Touche2020': 'Given a question, retrieve detailed and persuasive arguments that answer the question',
             'TRECCOVID': 'Given a query on COVID-19, retrieve documents that answer the query',
+            # C-MTEB eval instructions
+            'T2Retrieval': 'Given a Chinese search query, retrieve web passages that answer the question',
+            'MMarcoRetrieval': 'Given a web search query, retrieve relevant passages that answer the query',
+            'DuRetrieval': 'Given a Chinese search query, retrieve web passages that answer the question',
+            'CovidRetrieval': 'Given a question on COVID-19, retrieve news articles that answer the question',
+            'CmedqaRetrieval': 'Given a Chinese community medical question, retrieve replies that best answer the question',
+            'EcomRetrieval': 'Given a user query from an e-commerce website, retrieve description sentences of relevant products',
+            'MedicalRetrieval': 'Given a medical question, retrieve user replies that best answer the question',
+            'VideoRetrieval': 'Given a video search query, retrieve the titles of relevant videos',
         }
 
         # add lower case keys to match some beir names
