@@ -110,7 +110,7 @@ Fundamental research to develop new architectures for foundation models and AI, 
 General technology for enabling AI capabilities w/ LLMs and MLLMs.
 
 ## News
-- December, 2023: [**LongNet**](torchscale/model/LongNet.py) and [**LongViT**](examples/longvit/README.md) released
+- December, 2023: [**LongNet**](https://github.com/microsoft/unilm/tree/master/longnet) and [**LongViT**](https://github.com/microsoft/unilm/tree/master/longvit) released
 - [Model Release] Dec, 2023: [**TextDiffuser-2**](https://github.com/microsoft/unilm/tree/master/textdiffuser-2) models, code and [demo](https://huggingface.co/spaces/JingyeChen22/TextDiffuser-2). 
 - Sep, 2023: [**Kosmos-2.5**](https://arxiv.org/abs/2309.11419) - a multimodal literate model for machine reading of text-intensive images.
 - [Model Release] May, 2023: [**TextDiffuser**](https://github.com/microsoft/unilm/tree/master/textdiffuser) models and code.
