@@ -105,7 +105,7 @@ sentencepiece==0.1.99
 shortuuid==1.0.11
 six==1.16.0
 sniffio==1.3.0
-starlette==0.27.0
+starlette==0.36.2
 svgwrite==1.4.3
 sympy==1.12
 termcolor==2.4.0
