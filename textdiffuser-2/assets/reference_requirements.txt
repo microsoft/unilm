@@ -17,7 +17,7 @@ diffusers==0.24.0
 dill==0.3.6
 einops==0.7.0
 exceptiongroup==1.2.0
-fastapi==0.104.1
+fastapi==0.109.1
 ffmpy==0.3.1
 filelock==3.13.1
 flash-attn==2.1.2.post3
