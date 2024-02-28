@@ -1,5 +1,5 @@
 torch>=1.7
-transformers==4.15.0
+transformers==4.36.0
 datasets==2.0.0
 pytrec_eval
 deepspeed==0.6.0
