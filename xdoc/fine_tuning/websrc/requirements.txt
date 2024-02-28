@@ -1,5 +1,5 @@
 torch
-transformers==4.5.1
+transformers==4.36.0
 torchvision==0.2.1
 tensorboard
 pillow==5.2.0
