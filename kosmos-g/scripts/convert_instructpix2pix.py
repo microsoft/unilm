@@ -17,7 +17,7 @@ from tqdm import tqdm
 
 
 def save_tsv(args, i, sub_seeds_list):
-    with open(os.path.join(args.output_dir, f'{str(i).zfill(4)}.tsv'), 'w') as f:
+    with open(os.path.join(args.output_dir, 'data', f'{str(i).zfill(4)}.tsv'), 'w') as f:
         for name, seeds in tqdm(sub_seeds_list, desc=f'processing {i}th tsv file', leave=False):
             # load prompt
             prompt = json.load(open(os.path.join(args.data_dir, name, 'prompt.json')))
@@ -50,6 +50,13 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    if not os.path.exists(args.output_dir):
+        os.makedirs(args.output_dir)
+    if not os.path.exists(os.path.join(args.output_dir, 'data')):
+        os.makedirs(os.path.join(args.output_dir, 'data'))
+    if not os.path.exists(os.path.join(args.output_dir, 'json')):
+        os.makedirs(os.path.join(args.output_dir, 'json'))
+
     # load seeds
     seeds_list = json.load(open(os.path.join(args.data_dir, 'seeds.json')))
 
@@ -69,5 +76,23 @@ if __name__ == '__main__':
 
     for p in processes:
         p.join()
+
+    json_content = [
+        {
+            "source": [],
+            "source_lang": "instructpix2pix",
+            "weight": 1.0,
+            "name": "instructpix2pix",
+        }
+    ]
+
+    # find all tsv files in the output directory, save name to json file
+    for file in os.listdir(os.path.join(args.output_dir, 'data')):
+        if file.endswith('.tsv'):
+            json_content[0]['source'].append(file)
+
+    # save json file
+    with open(os.path.join(args.output_dir, 'json', 'train.json'), 'w', encoding='utf-8') as f:
+        json.dump(json_content, f, indent=4)
 
     print('done.')

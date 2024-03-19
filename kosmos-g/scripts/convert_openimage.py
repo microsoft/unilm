@@ -1,5 +1,6 @@
 import base64
 import io
+import json
 import multiprocessing
 import os
 import random
@@ -93,7 +94,7 @@ def save_tsv(args, shard_id, shard, device):
             # close previous file if any
             if cnt > 0:
                 f.close()
-            f = open(os.path.join(args.output_dir, f"cnt_{args.machine_id}_{shard_id}_{cnt // 1000}.tsv"), "w",
+            f = open(os.path.join(args.output_dir, "data", f"cnt_{args.machine_id}_{shard_id}_{cnt // 1000}.tsv"), "w",
                      encoding='utf-8')
         cnt += 1
 
@@ -294,6 +295,13 @@ def main():
 
     os.environ['TOKENIZERS_PARALLELISM'] = 'false'
 
+    if not os.path.exists(args.output_dir):
+        os.makedirs(args.output_dir)
+    if not os.path.exists(os.path.join(args.output_dir, 'data')):
+        os.makedirs(os.path.join(args.output_dir, 'data'))
+    if not os.path.exists(os.path.join(args.output_dir, 'json')):
+        os.makedirs(os.path.join(args.output_dir, 'json'))
+
     with open(args.data_dir, 'r', encoding='utf8') as f:
         url_data = f.read().strip().split('\n')
 
@@ -336,6 +344,24 @@ def main():
 
     for p in processes:
         p.join()
+
+    json_content = [
+        {
+            "source": [],
+            "source_lang": "openimage",
+            "weight": 1.0,
+            "name": "openimage",
+        }
+    ]
+
+    # find all tsv files in the output directory, save name to json file
+    for file in os.listdir(os.path.join(args.output_dir, 'data')):
+        if file.endswith('.tsv'):
+            json_content[0]['source'].append(file)
+
+    # save json file
+    with open(os.path.join(args.output_dir, 'json', 'train.json'), 'w', encoding='utf-8') as f:
+        json.dump(json_content, f, indent=4)
 
     print('Done!')
 
