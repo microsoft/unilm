@@ -1,5 +1,5 @@
 datasets==1.15.1
-transformers==4.12.5
+transformers==4.36.0
 seqeval==1.2.2
 deepspeed==0.5.7
 tensorboard==2.7.0
