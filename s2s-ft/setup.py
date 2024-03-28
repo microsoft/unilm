@@ -30,7 +30,7 @@ setup(
                       'sentencepiece',
                       'sacremoses',
                       'tensorboardX',
-                      'transformers == 2.10.0'],
+                      'transformers == 4.36.0'],
     extras_require=extras,
     python_requires='>=3.5.0',
     classifiers=[
