@@ -35,9 +35,10 @@
 
 The model can be loaded with [the HuggingFace's transformers library](https://huggingface.co/microsoft/kosmos-2-patch14-224).
 
-The checkpoint can be downloaded from [here](https://conversationhub.blob.core.windows.net/beit-share-public/kosmos-2/kosmos-2.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D):
+The checkpoint can be downloaded via:
 ```bash
-wget -O kosmos-2.pt "https://conversationhub.blob.core.windows.net/beit-share-public/kosmos-2/kosmos-2.pt?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D"
+DLINK=$(echo -n "aHR0cHM6Ly9jb252ZXJzYXRpb25odWIuYmxvYi5jb3JlLndpbmRvd3MubmV0L2JlaXQtc2hhcmUtcHVibGljL2tvc21vcy0yL2tvc21vcy0yLnB0P3N2PTIwMjMtMDEtMDMmc3Q9MjAyNC0wNC0xMFQxMyUzQTExJTNBNDRaJnNlPTIwNTAtMDQtMTFUMTMlM0ExMSUzQTAwWiZzcj1jJnNwPXImc2lnPTRjWEpJalZSWkhJQldxSGpQZ0RuJTJGMDFvY3pwRFdYaXBtUENVazNaOHZiUSUzRA==" | base64 --decode)
+wget -O kosmos-2.pt $DLINK
 ```
 
 ## Setup
@@ -77,7 +78,7 @@ More details can be found in the [paper](https://arxiv.org/abs/2306.14824).
 
 
 ### Download Data
-- [GrIT-20M](https://conversationhub.blob.core.windows.net/beit-share-public/kosmos-2/data/grit_coyo.jsonl?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D): The split contains about 20M grounded image-caption pairs processed from COYO-700M. We also release it on [huggingface](https://huggingface.co/datasets/zzliang/GRIT).
+- [GrIT-20M](https://huggingface.co/datasets/zzliang/GRIT): The split contains about 20M grounded image-caption pairs processed from COYO-700M.
 
 The format of data instance is:
 
@@ -107,7 +108,8 @@ The format of data instance is:
 
 Run the following commands to visualize it:
 ```bash
-wget -O /tmp/grit_coyo.jsonl "https://conversationhub.blob.core.windows.net/beit-share-public/kosmos-2/data/grit_coyo.jsonl?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D"
+DLINK=$(echo -n "aHR0cHM6Ly9jb252ZXJzYXRpb25odWIuYmxvYi5jb3JlLndpbmRvd3MubmV0L2JlaXQtc2hhcmUtcHVibGljL2tvc21vcy0yL2RhdGEvZ3JpdF9jb3lvLmpzb25sP3N2PTIwMjMtMDEtMDMmc3Q9MjAyNC0wNC0xMFQxMyUzQTExJTNBNDRaJnNlPTIwNTAtMDQtMTFUMTMlM0ExMSUzQTAwWiZzcj1jJnNwPXImc2lnPTRjWEpJalZSWkhJQldxSGpQZ0RuJTJGMDFvY3pwRFdYaXBtUENVazNaOHZiUSUzRA==" | base64 --decode)
+wget -O /tmp/grit_coyo.jsonl $DLINK
 
 python data/visualize_grit.py
 ```
