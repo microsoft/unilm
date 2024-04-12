@@ -31,9 +31,8 @@ You can run the following command to convert the data format from [MDETR pre-pro
 python cook_data.py /path/to/mdetr_annotations /path/to/flickr-images
 ```
 
-Alternatively, you also can download the pre-processed files: [val split](https://conversationhub.blob.core.windows.net/beit-share-public/kosmos-2/eval/final_flickr_separateGT_val.json.inline.locout?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D
-) and [test split](https://conversationhub.blob.core.windows.net/beit-share-public/kosmos-2/eval/final_flickr_separateGT_test.json.inline.locout?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D
-). Remember to replace the image path in our provided files with the specific image path on your machine.
+Alternatively, you also can download the pre-processed files: [val split](https://github.com/pengzhiliang/file/releases/download/k2_eval_files/final_flickr_separateGT_val.json.inline.locout
+) and [test split](https://github.com/pengzhiliang/file/releases/download/k2_eval_files/final_flickr_separateGT_test.json.inline.locout). Remember to replace the image path in our provided files with the specific image path on your machine.
 
 ## Evaluation
 
@@ -51,7 +50,7 @@ bash evaluation/grd-zeroshot-flickr.sh 0 32 /path/to/kosmos-2.pt /path/to/final_
 where `final_flickr_separateGT_val.json` can be found after downloading and uncompressing the [MDETR annotations](https://zenodo.org/record/4729015/files/mdetr_annotations.tar.gz?download=1), `final_flickr_separateGT_test.json.inline.locout` can be downloaded or generated in [here](#2-convert-data-format), and `/path/to/flickr30k_entities` is the path where you cloned the official [Flickr30k annotations](https://github.com/BryanPlummer/flickr30k_entities).
 
 
-Alternatively, download our provided evaluation results ([val_split_ouput](https://conversationhub.blob.core.windows.net/beit-share-public/kosmos-2/eval/kosmos2_inst.pt.flickr.val.inline.locout?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D) and [test_split_ouput](https://conversationhub.blob.core.windows.net/beit-share-public/kosmos-2/eval/kosmos2_inst.pt.flickr.test.inline.locout?sv=2021-10-04&st=2023-06-08T11%3A16%3A02Z&se=2033-06-09T11%3A16%3A00Z&sr=c&sp=r&sig=N4pfCVmSeq4L4tS8QbrFVsX6f6q844eft8xSuXdxU48%3D)) and then evaluate:
+Alternatively, download our provided evaluation results ([val_split_ouput](https://github.com/pengzhiliang/file/releases/download/k2_eval_files/kosmos2_inst.pt.flickr.val.inline.locout) and [test_split_ouput](https://github.com/pengzhiliang/file/releases/download/k2_eval_files/kosmos2_inst.pt.flickr.test.inline.locout)) and then evaluate:
 ```python
 python evaluation/flickr/flickr_entities_evaluate.py /path/to/eval_result --annotation_file /path/to/final_flickr_separateGT_val.json --flickr_entities_path /path/to/flickr30k_entities
 ```
