@@ -70,37 +70,16 @@ def pool(last_hidden_states: Tensor,
     return emb
 
 
-def create_batch_dict(tokenizer: PreTrainedTokenizerFast, input_texts: List[str], always_add_eos: bool, max_length: int = 512) -> BatchEncoding:
-    if not always_add_eos:
-        return tokenizer(
-            input_texts,
-            max_length=max_length,
-            padding=True,
-            pad_to_multiple_of=8,
-            return_token_type_ids=False,
-            truncation=True,
-            return_tensors='pt'
-        )
-    else:
-        batch_dict = tokenizer(
-            input_texts,
-            max_length=max_length - 1,
-            return_token_type_ids=False,
-            return_attention_mask=False,
-            padding=False,
-            truncation=True
-        )
-
-        # append eos_token_id to every input_ids
-        batch_dict['input_ids'] = [input_ids + [tokenizer.eos_token_id] for input_ids in batch_dict['input_ids']]
-
-        return tokenizer.pad(
-            batch_dict,
-            padding=True,
-            pad_to_multiple_of=8,
-            return_attention_mask=True,
-            return_tensors="pt",
-        )
+def create_batch_dict(tokenizer: PreTrainedTokenizerFast, input_texts: List[str], max_length: int = 512) -> BatchEncoding:
+    return tokenizer(
+        input_texts,
+        max_length=max_length,
+        padding=True,
+        pad_to_multiple_of=8,
+        return_token_type_ids=False,
+        truncation=True,
+        return_tensors='pt'
+    )
 
 
 def get_task_def_by_task_name_and_type(task_name: str, task_type: str) -> str:

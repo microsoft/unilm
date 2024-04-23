@@ -69,7 +69,7 @@ class DenseEncoder(torch.nn.Module):
         for start_idx in tqdm.tqdm(range(0, len(input_texts), batch_size), desc='encoding', mininterval=10):
             batch_input_texts: List[str] = input_texts[start_idx: start_idx + batch_size]
 
-            batch_dict = create_batch_dict(self.tokenizer, batch_input_texts, always_add_eos=(args.pool_type == 'last'))
+            batch_dict = create_batch_dict(self.tokenizer, batch_input_texts)
             batch_dict = move_to_cuda(batch_dict)
 
             with torch.cuda.amp.autocast():
