@@ -65,7 +65,7 @@ Besides, a font file is needed for layout generation. Please put your font in ``
 
 ## :floppy_disk: Checkpoint
 
-The checkpoints are in this [link](https://layoutlm.blob.core.windows.net/textdiffuser/textdiffuser-ckpt-new.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2033-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=a9VXrihTzbWyVfaIDlIT1Z0FoR1073VB0RLQUMuudD4%3D) or [HFLink](https://huggingface.co/datasets/JingyeChen22/TextDiffuser/resolve/main/textdiffuser-ckpt-new.zip) (3.2GB). Please download it and unzip it. The file structures should be as follows:
+The checkpoints are in [HFLink](https://huggingface.co/datasets/JingyeChen22/TextDiffuser/resolve/main/textdiffuser-ckpt-new.zip) (3.2GB). Please download it and unzip it. The file structures should be as follows:
 
  
  
@@ -84,7 +84,7 @@ textdiffuser
 <img src="assets/readme_images/laion-ocr.jpg" width="80%">
 
 
-**MARIO-LAION**'s meta information is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/laion-ocr-new.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2033-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=a9VXrihTzbWyVfaIDlIT1Z0FoR1073VB0RLQUMuudD4%3D) or [onedrive](https://mail2sysueducn-my.sharepoint.com/personal/huangyp28_mail2_sysu_edu_cn/_layouts/15/onedrive.aspx?ct=1686245253173&or=Teams%2DHL&ga=1&LOF=1&id=%2Fpersonal%2Fhuangyp28%5Fmail2%5Fsysu%5Fedu%5Fcn%2FDocuments%2Frelease%2Ftextdiffuser%2Fdata) (40GB), containing 9,194,613 samples. Please download it and unzip it by running ```python data/maion-laion-unzip.py```. The file structures of each folder should be as follows and ```data/maion-laion-example``` is provided for reference. We also provide ```data/visualize_charseg.ipynb``` to visualize the character-level segmentation mask.
+**MARIO-LAION**'s meta information is at [onedrive](https://mail2sysueducn-my.sharepoint.com/:u:/g/personal/huangyp28_mail2_sysu_edu_cn/EUszmBb91XJKo_ByYg-GVhwBWV8GWOd-JkC2ubhoCDlniw) (40GB), containing 9,194,613 samples. Please download it and unzip it by running ```python data/maion-laion-unzip.py```. The file structures of each folder should be as follows and ```data/maion-laion-example``` is provided for reference. We also provide ```data/visualize_charseg.ipynb``` to visualize the character-level segmentation mask.
 
 ```
 ├── 28330/
@@ -95,7 +95,7 @@ textdiffuser
 ├── ├── └── ocr.txt           # ocr detection and recognition results
 ```
 
-The urls of each image is at this [link](https://layoutlm.blob.core.windows.net/textdiffuser/mario_laion_image_url.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2033-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=a9VXrihTzbWyVfaIDlIT1Z0FoR1073VB0RLQUMuudD4%3D) or [onedrive](https://mail2sysueducn-my.sharepoint.com/personal/huangyp28_mail2_sysu_edu_cn/_layouts/15/onedrive.aspx?ct=1686245253173&or=Teams%2DHL&ga=1&LOF=1&id=%2Fpersonal%2Fhuangyp28%5Fmail2%5Fsysu%5Fedu%5Fcn%2FDocuments%2Frelease%2Ftextdiffuser%2Fdata) (794.6MB). The file structure is as follows:
+The urls of each image is at [onedrive](https://mail2sysueducn-my.sharepoint.com/:u:/g/personal/huangyp28_mail2_sysu_edu_cn/ES2iZFJQp0VJkrJ1vVkYNQsB8h5V8iAwZ4Kn7usaBppA0g) (794.6MB). The file structure is as follows:
 
 ```
 ├── maion_laion_image_url/
@@ -197,7 +197,7 @@ CUDA_VISIBLE_DEVICES=0 python inference.py \
 
 ## :chart_with_upwards_trend:	Evaluation
 
-For evaluation, please download [MARIOEval](https://layoutlm.blob.core.windows.net/textdiffuser/MARIOEval.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2033-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=a9VXrihTzbWyVfaIDlIT1Z0FoR1073VB0RLQUMuudD4%3D) and the generation results of each methods are at [link](https://layoutlm.blob.core.windows.net/textdiffuser/marioeval_generation.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2033-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=a9VXrihTzbWyVfaIDlIT1Z0FoR1073VB0RLQUMuudD4%3D) for reference.
+For evaluation, please download [MARIOEval](https://mail2sysueducn-my.sharepoint.com/:f:/g/personal/huangyp28_mail2_sysu_edu_cn/EugAuPVvOUdIjSL9Ffsnpi4BQduj6xYJG4iPnVXlz6ncPA?e=nRUQh7) and the generation results of each methods are at [link](https://mail2sysueducn-my.sharepoint.com/:f:/g/personal/huangyp28_mail2_sysu_edu_cn/Ejg1kQn6xGRJsmTJHfNIpjYBUgSFXCXmoexy_C2jwBoHig?e=xJnZXt) for reference.
 . MARIOEval contains 5,414 prompts for evaluation, including the following subsets:
 
 | Subset | #Sample | Subset | #Sample |
