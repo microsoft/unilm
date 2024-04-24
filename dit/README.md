@@ -8,7 +8,7 @@ DiT (Document Image Transformer) is a self-supervised pre-trained Document Image
 
 ## What's New
 - Demos on HuggingFace: [Document Layout Analysis](https://huggingface.co/spaces/nielsr/dit-document-layout-analysis), [Document Image Classification](https://huggingface.co/spaces/microsoft/document-image-transformer)
-- March 2022: release pre-trained [checkpoints]((https://mail2sysueducn-my.sharepoint.com/:f:/g/personal/huangyp28_mail2_sysu_edu_cn/Eh7si2lpRqZLsmHASlnsw00BewkWLtqtQ3YGw5b0oi4YzQ?e=qKdZ4A)) and fine-tuning [checkpoints](https://mail2sysueducn-my.sharepoint.com/:f:/g/personal/huangyp28_mail2_sysu_edu_cn/EsK1oCJRNnZBi_VfswfD2j8BKCMad94BDmJWlX5rKx_L0Q?e=NVDb1k) & codes (DiT-base and DiT-large)
+- March 2022: release pre-trained [checkpoints](https://mail2sysueducn-my.sharepoint.com/:f:/g/personal/huangyp28_mail2_sysu_edu_cn/Eh7si2lpRqZLsmHASlnsw00BewkWLtqtQ3YGw5b0oi4YzQ?e=qKdZ4A) and fine-tuning [checkpoints](https://mail2sysueducn-my.sharepoint.com/:f:/g/personal/huangyp28_mail2_sysu_edu_cn/EsK1oCJRNnZBi_VfswfD2j8BKCMad94BDmJWlX5rKx_L0Q?e=NVDb1k) & codes (DiT-base and DiT-large)
 - March 2022: release preprint in [arXiv](https://arxiv.org/abs/2203.02378)
 
 ## [Pretrained models](https://mail2sysueducn-my.sharepoint.com/:f:/g/personal/huangyp28_mail2_sysu_edu_cn/Eh7si2lpRqZLsmHASlnsw00BewkWLtqtQ3YGw5b0oi4YzQ?e=qKdZ4A)
