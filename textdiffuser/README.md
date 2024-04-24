@@ -13,7 +13,7 @@ TextDiffuser generates images with visually appealing text that is coherent with
 
 ## :star2:	Highlights
 
-* We propose **TextDiffuser**, which is a two-stage diffusion-based framework for text rendering. It generates accurate and coherent text images from text prompts or additionally with template images, as well as conducting text inpainting to reconstruct incomplete images.
+* We propose **TextDiffuser**, which is a two-stage diffusion-based framework for text rendering. It generates accurate and coherent text images from text prompts or additionally with template images, as well as conducting text inpainting to reconstruct incomplete images. Relevant resources (e.g., models, dataset, results) are available [here](https://mail2sysueducn-my.sharepoint.com/:f:/g/personal/huangyp28_mail2_sysu_edu_cn/EsFkQTRlOU5GjlD7QFZZmIwBeOa4BZdwd_YNpoLIWL8ffA).
 
 * We release **MARIO-10M**, containing large-scale image-text pairs with OCR annotations, including text recognition, detection, and character-level segmentation masks.
 
