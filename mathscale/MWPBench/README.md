@@ -56,7 +56,6 @@ We would like to thank the following projects for their contributions to our fuz
 Their work has been invaluable to our project.
 
 ## Citation
-Please cite the paper if you refer to our model, code, data or paper from MathScale.
 
 ```
 @article{tang2024mathscale,
