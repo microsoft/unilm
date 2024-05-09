@@ -1,0 +1,12 @@
+torch>=2.2.0
+triton>=2.2.0
+numpy==1.23.0
+fairscale
+tiktoken
+sentencepiece
+ninja
+boto3
+iopath
+git+https://github.com/sunyt32/fairseq.git@moe3#egg=fairseq 
+git+https://github.com/shumingma/infinibatch.git#egg=infinibatch
+git+https://github.com/microsoft/torchscale.git#egg=torchscale
