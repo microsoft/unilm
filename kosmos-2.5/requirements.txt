@@ -1,0 +1,15 @@
+tiktoken
+tqdm
+omegaconf
+boto3
+iopath
+numpy==1.22
+fairscale==0.4
+scipy==1.10
+git+https://github.com/facebookresearch/xformers.git@04de99bb28aa6de8d48fab3cdbbc9e3874c994b8
+flash-attn --no-build-isolation
+triton
+git+https://github.com/Dod-o/kosmos2.5_tools.git@fairseq
+git+https://github.com/Dod-o/kosmos2.5_tools.git@infinibatch
+git+https://github.com/Dod-o/kosmos2.5_tools.git@torchscale
+git+https://github.com/Dod-o/kosmos2.5_tools.git@transformers
