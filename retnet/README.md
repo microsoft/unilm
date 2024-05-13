@@ -1,5 +1,6 @@
 # Retentive Network: The Successor to Transformer for Large Language Models
 
+- May 2024: Gated RetNet (i.e., RetNet-3) as part of YOCO / [You Only Cache Once: Decoder-Decoder Architectures for Language Models](https://arxiv.org/abs/2405.05254)
 - Code release: [https://github.com/microsoft/torchscale](https://github.com/microsoft/torchscale)
 - July 2023: release preprint [Retentive Network: A Successor to Transformer for Large Language Models](https://arxiv.org/abs/2307.08621)
 
