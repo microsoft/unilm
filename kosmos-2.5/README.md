@@ -53,7 +53,8 @@ For images with extreme aspect ratios, we recommend resizing images to a more ty
   ``` bash
   python inference.py \
     --do_ocr \                      // --do_md for image2md task
-    --image path/to/image \ 
+    --image path/to/image \
+    --ckpt path/to/checkpoint \
     --use_preprocess \
     --hw_ratio_adj_upper_span "[1.5, 5]" \
     --hw_ratio_adj_lower_span "[0.5, 1.0]" 
