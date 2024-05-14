@@ -83,7 +83,7 @@ If you find this repository useful, please consider citing our work:
 
 
 ## License
-The content of this project itself is licensed under the [Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+The content of this project itself is licensed under the [MIT](./LICENSE)
 
 [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct)
 
