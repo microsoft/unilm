@@ -22,10 +22,8 @@ pip install -e .
 ~~~
 
 ## Run
-1. Download the [pre-processed data](https://layoutlm.blob.core.windows.net/readingbank/dataset/ReadingBank.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2033-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=a9VXrihTzbWyVfaIDlIT1Z0FoR1073VB0RLQUMuudD4%3D
-). For more details of the dataset, please refer to [ReadingBank](https://aka.ms/readingbank).
-2. (Optional) Download our [pre-trained model](https://layoutlm.blob.core.windows.net/readingbank/model/layoutreader-base-readingbank.zip?sv=2022-11-02&ss=b&srt=o&sp=r&se=2033-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=a9VXrihTzbWyVfaIDlIT1Z0FoR1073VB0RLQUMuudD4%3D
-) and evaluate it refer to step 4.
+1. Download thepre-processed data ([`ReadingBank.zip`](https://mail2sysueducn-my.sharepoint.com/:u:/g/personal/huangyp28_mail2_sysu_edu_cn/Efh3ZWjsA-xFrH2FSjyhSVoBMak6ypmbABWmJEmPwtKhhw?e=tbthMD)). For more details of the dataset, please refer to [ReadingBank](https://aka.ms/readingbank).
+2. (Optional) Download our pre-trained model ([`layoutreader-base-readingbank.zip`](https://mail2sysueducn-my.sharepoint.com/:u:/g/personal/huangyp28_mail2_sysu_edu_cn/ET9XynvgSZFLhPy7p30zbtoBs-T_Yxj6gl_k-b2-N53ChQ?e=gKafBy)) and evaluate it refer to step 4.
 3. Training
     ~~~
     export CUDA_VISIBLE_DEVICE=0,1,2,3
@@ -79,7 +77,7 @@ pip install -e .
     ~~~
 
 ## Results
-Our released [pre-trained model](https://layoutlm.blob.core.windows.net/readingbank/dataset/layoutreader-base-readingbank.zip) achieves 98.2% Average Page-level BLEU score. Detailed results are reported as follow:
+Our released [pre-trained model](https://mail2sysueducn-my.sharepoint.com/:u:/g/personal/huangyp28_mail2_sysu_edu_cn/ET9XynvgSZFLhPy7p30zbtoBs-T_Yxj6gl_k-b2-N53ChQ?e=gKafBy) achieves 98.2% Average Page-level BLEU score. Detailed results are reported as follow:
 
 * Evaluation results of the LayoutReader on the reading order detection task, where the source-side of training/testing data is in the left-to-right and top-to-bottom order
 
