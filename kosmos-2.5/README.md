@@ -66,7 +66,6 @@ For images with extreme aspect ratios, we recommend resizing images to a more ty
   
 
 ## NOTE:
-- This is a research project and is limited for **research purposes only**.
 - Since this is a generative model, there is a risk of **hallucination** during the generation process, and it **CAN NOT** guarantee the accuracy of all OCR/Markdown results in the images.
 
 ## Citation
