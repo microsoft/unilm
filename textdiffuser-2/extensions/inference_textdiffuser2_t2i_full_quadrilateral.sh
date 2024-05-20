@@ -1,0 +1,14 @@
+accelerate launch inference_textdiffuser2_t2i_full_quadrilateral.py \
+  --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
+  --mixed_precision="fp16" \
+  --output_dir="inference_results" \
+  --enable_xformers_memory_efficient_attention \
+  --resume_from_checkpoint="put your ckpt here" \
+  --granularity=128 \
+  --max_length=77 \
+  --coord_mode="ltrb" \
+  --cfg=7.5 \
+  --sample_steps=20 \
+  --seed=43555 \
+  --input_format='prompt_layout_txt_file' \
+  --input_file='angle_template_file.txt'

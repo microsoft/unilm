@@ -1,0 +1,2 @@
+hat with the word money
+MONEY 30,40,80,70,90,60,30,60
