@@ -84,7 +84,7 @@ textdiffuser
 <img src="assets/readme_images/laion-ocr.jpg" width="80%">
 
 
-**MARIO-LAION**'s meta information is at [onedrive](https://mail2sysueducn-my.sharepoint.com/:u:/g/personal/huangyp28_mail2_sysu_edu_cn/EUszmBb91XJKo_ByYg-GVhwBWV8GWOd-JkC2ubhoCDlniw) (40GB), containing 9,194,613 samples. Please download it and unzip it by running ```python data/maion-laion-unzip.py```. The file structures of each folder should be as follows and ```data/maion-laion-example``` is provided for reference. We also provide ```data/visualize_charseg.ipynb``` to visualize the character-level segmentation mask.
+**MARIO-LAION**'s meta information is at [googledrive](https://drive.google.com/file/d/1gzaW8i07Fn7-zWiP2ZwtkH_E0-2qPgJx/view?usp=sharing) (40GB), containing 9,194,613 samples. Please download it and unzip it by running ```python data/maion-laion-unzip.py```. The file structures of each folder should be as follows and ```data/maion-laion-example``` is provided for reference. We also provide ```data/visualize_charseg.ipynb``` to visualize the character-level segmentation mask.
 
 ```
 ├── 28330/
@@ -95,7 +95,7 @@ textdiffuser
 ├── ├── └── ocr.txt           # ocr detection and recognition results
 ```
 
-The urls of each image is at [onedrive](https://mail2sysueducn-my.sharepoint.com/:u:/g/personal/huangyp28_mail2_sysu_edu_cn/ES2iZFJQp0VJkrJ1vVkYNQsB8h5V8iAwZ4Kn7usaBppA0g) (794.6MB). The file structure is as follows:
+The urls of each image is at [googledrive](https://drive.google.com/file/d/1ndG-EwM66rH9CfdFVE_XbwFxTFEEAPZ7/view?usp=sharing) (794.6MB). The file structure is as follows:
 
 ```
 ├── maion_laion_image_url/
