@@ -13,11 +13,11 @@ TextDiffuser generates images with visually appealing text that is coherent with
 
 ## :star2:	Highlights
 
-* We propose **TextDiffuser**, which is a two-stage diffusion-based framework for text rendering. It generates accurate and coherent text images from text prompts or additionally with template images, as well as conducting text inpainting to reconstruct incomplete images. Relevant resources (e.g., models, dataset, results) are available [here](https://mail2sysueducn-my.sharepoint.com/:f:/g/personal/huangyp28_mail2_sysu_edu_cn/EsFkQTRlOU5GjlD7QFZZmIwBeOa4BZdwd_YNpoLIWL8ffA).
+* We propose **TextDiffuser**, which is a two-stage diffusion-based framework for text rendering. It generates accurate and coherent text images from text prompts or additionally with template images, as well as conducting text inpainting to reconstruct incomplete images.
 
 * We release **MARIO-10M**, containing large-scale image-text pairs with OCR annotations, including text recognition, detection, and character-level segmentation masks.
 
-* We construct **MARIO-Eval**, a comprehensive text rendering benchmark containing 10k prompts.
+* We construct **MARIO-Eval**, a comprehensive text rendering benchmark containing 10k prompts at [link](https://drive.google.com/file/d/1_tnWtOqC6S4_D4z8bqcBQ9xKPlsoPB0B/view?usp=sharing).
 
 * We **release the demo** at [link](https://huggingface.co/spaces/JingyeChen22/TextDiffuser). Welcome to use and provide feedbacks :hugs:.
 
@@ -197,7 +197,7 @@ CUDA_VISIBLE_DEVICES=0 python inference.py \
 
 ## :chart_with_upwards_trend:	Evaluation
 
-For evaluation, please download [MARIOEval](https://mail2sysueducn-my.sharepoint.com/:f:/g/personal/huangyp28_mail2_sysu_edu_cn/EugAuPVvOUdIjSL9Ffsnpi4BQduj6xYJG4iPnVXlz6ncPA?e=nRUQh7) and the generation results of each methods are at [link](https://mail2sysueducn-my.sharepoint.com/:f:/g/personal/huangyp28_mail2_sysu_edu_cn/Ejg1kQn6xGRJsmTJHfNIpjYBUgSFXCXmoexy_C2jwBoHig?e=xJnZXt) for reference.
+For evaluation, please download [MARIOEval](https://drive.google.com/file/d/1_tnWtOqC6S4_D4z8bqcBQ9xKPlsoPB0B/view?usp=sharing) and the generation results of each methods are at [link](https://drive.google.com/file/d/1d6SWg--MXhPDkGuy5tRmTsPkcpP2NDEo/view?usp=sharing) for reference.
 . MARIOEval contains 5,414 prompts for evaluation, including the following subsets:
 
 | Subset | #Sample | Subset | #Sample |
