@@ -69,6 +69,7 @@ If you would like to host a local Gradio demo, run the following command after [
 ```bash
 bash run_gradio.sh
 ``` 
+If you encounter a `pydantic` error, refer to [comment](https://github.com/microsoft/unilm/issues/1185#issuecomment-1629305294) for a solution.
 
 ## GRIT: Large-Scale Training Corpus of Grounded Image-Text Pairs
 
