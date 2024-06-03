@@ -37,6 +37,7 @@ wget https://huggingface.co/microsoft/kosmos-2.5/resolve/main/ckpt.pt?download=t
 The code uses [Flash Attention2](https://github.com/Dao-AILab/flash-attention), so it only runs on Ampere, Ada, or Hopper GPUs (e.g., A100, RTX 3090, RTX 4090, H100).
 ``` bash
 git clone https://github.com/microsoft/unilm.git
+cd unilm
 cd kosmos-2.5
 pip install -r requirements.txt
 ```
