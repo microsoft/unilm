@@ -76,26 +76,31 @@ class REDecoder(nn.Module):
         for b in range(batch_size):
             if len(entities[b]["start"]) <= 2:
                 entities[b] = {"end": [1, 1], "label": [0, 0], "start": [0, 0]}
-            all_possible_relations = set(
-                [
-                    (i, j)
-                    for i in range(len(entities[b]["label"]))
-                    for j in range(len(entities[b]["label"]))
-                    if entities[b]["label"][i] == 1 and entities[b]["label"][j] == 2
-                ]
-            )
-            if len(all_possible_relations) == 0:
-                all_possible_relations = set([(0, 1)])
+            all_possible_relations = {
+                (i, j)
+                for i in range(len(entities[b]["label"]))
+                for j in range(len(entities[b]["label"]))
+                if entities[b]["label"][i] == 1 and entities[b]["label"][j] == 2
+            }
+
+            if not all_possible_relations:
+                all_possible_relations = {(0, 1)}
             positive_relations = set(list(zip(relations[b]["head"], relations[b]["tail"])))
             negative_relations = all_possible_relations - positive_relations
-            positive_relations = set([i for i in positive_relations if i in all_possible_relations])
+            positive_relations = {
+                i for i in positive_relations if i in all_possible_relations
+            }
+
             reordered_relations = list(positive_relations) + list(negative_relations)
-            relation_per_doc = {"head": [], "tail": [], "label": []}
-            relation_per_doc["head"] = [i[0] for i in reordered_relations]
-            relation_per_doc["tail"] = [i[1] for i in reordered_relations]
-            relation_per_doc["label"] = [1] * len(positive_relations) + [0] * (
-                len(reordered_relations) - len(positive_relations)
-            )
+            relation_per_doc = {
+                'head': [i[0] for i in reordered_relations],
+                'tail': [i[1] for i in reordered_relations],
+                'label': (
+                    [1] * len(positive_relations)
+                    + [0] * (len(reordered_relations) - len(positive_relations))
+                ),
+            }
+
             assert len(relation_per_doc["head"]) != 0
             new_relations.append(relation_per_doc)
         return new_relations, entities
@@ -105,8 +110,7 @@ class REDecoder(nn.Module):
         for i, pred_label in enumerate(logits.argmax(-1)):
             if pred_label != 1:
                 continue
-            rel = {}
-            rel["head_id"] = relations["head"][i]
+            rel = {'head_id': relations["head"][i]}
             rel["head"] = (entities["start"][rel["head_id"]], entities["end"][rel["head_id"]])
             rel["head_type"] = entities["label"][rel["head_id"]]
 
