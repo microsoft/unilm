@@ -1,4 +1,4 @@
-# TextDiffuser-2: Unleashing the Power of Language Models for Text Rendering
+# TextDiffuser-2: Unleashing the Power of Language Models for Text Rendering (ECCV 2024)
 
 <a href='https://arxiv.org/abs/2311.16465'><img src='https://img.shields.io/badge/Arxiv-2311.16465-red'></a>
 <a href='https://github.com/microsoft/unilm/tree/master/textdiffuser-2'><img src='https://img.shields.io/badge/Code-aka.ms/textdiffuser2-yellow'></a>
@@ -27,6 +27,8 @@ TextDiffuser-2 exhibits enhanced capability powered by language models. In addit
 
 
 ## :stopwatch: News
+
+- __[2024.07.01]__: TextDiffuser-2 is accepted to ECCV 2024.
 
 - __[2024.05.19]__: We release the angle/quadrilateral extensions of TextDiffuser-2. Download the checkpoint at [angle](https://drive.google.com/file/d/1zyZT_-iaZQkTO4R2oOT8VQC5WAWIiF5A/view?usp=sharing) or [quadrilateral](https://drive.google.com/file/d/16KcCetsncTfWtM7qQuTSf7Y08RBTDOcV/view?usp=sharing).
 
