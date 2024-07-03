@@ -1,6 +1,6 @@
 tiktoken
 tqdm
-omegaconf
+omegaconf<=2.1.0
 boto3
 iopath
 numpy==1.22
