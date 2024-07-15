@@ -14,7 +14,7 @@ Kosmos-2.5 is a multimodal literate model for machine reading of text-intensive 
 ## Checkpoints
 The [checkpoint](https://huggingface.co/microsoft/kosmos-2.5/resolve/main/ckpt.pt?download=true) can be downloaded via:
 ```bash
-wget https://huggingface.co/microsoft/kosmos-2.5/resolve/main/ckpt.pt?download=true
+wget -O ckpt.pt https://huggingface.co/microsoft/kosmos-2.5/resolve/main/ckpt.pt?download=true
 ```
 
 ## Results
@@ -37,7 +37,7 @@ wget https://huggingface.co/microsoft/kosmos-2.5/resolve/main/ckpt.pt?download=t
 The code uses [Flash Attention2](https://github.com/Dao-AILab/flash-attention), so it only runs on Ampere, Ada, or Hopper GPUs (e.g., A100, RTX 3090, RTX 4090, H100).
 ``` bash
 git clone https://github.com/microsoft/unilm.git
-cd kosmos-2.5
+cd unilm/kosmos-2.5
 pip install -r requirements.txt
 ```
 
