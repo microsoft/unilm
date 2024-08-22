@@ -8,7 +8,9 @@ Kosmos-2.5 is a multimodal literate model for machine reading of text-intensive 
 <sub>More model outputs can be found in the "[CASES.md](./CASES.md)"</sub>
 
 ## News
-- May 2024: 🔥We've open-sourced the checkpoint and inference code of Kosmos-2.5, This checkpoint has been trained for more steps than the one reported in the paper.  
+- Aug 2024: 🔥We have released **Kosmos-2.5-CHAT**, a model capable of handling Visual Question Answering (VQA) tasks. The checkpoint will be made available soon. For more details, please refer to the [paper](https://arxiv.org/abs/2309.11419).
+- Aug 2024: 🔥Kosmos-2.5 will soon be integrated into Hugging Face. Until the official integration, you can use this temporary [repo](https://github.com/tic-top/transformers.git). Please refer to this [link](https://huggingface.co/microsoft/kosmos-2.5) for more information.
+- May 2024: We've open-sourced the checkpoint and inference code of Kosmos-2.5, This checkpoint has been trained for more steps than the one reported in the paper.  
 - Sep 2023: We release the **Kosmos-2.5: A Multimodal Literate Model** paper. Checkout the [paper](https://arxiv.org/abs/2309.11419).
 
 ## Checkpoints
@@ -19,19 +21,29 @@ wget -O ckpt.pt https://huggingface.co/microsoft/kosmos-2.5/resolve/main/ckpt.pt
 
 ## Results
 ### Text Recognition
-|         | precision | recall |    f1    |
-|---------|:---------:|:------:|:--------:|
-| FUNSD   | 83.88     | 82.66  |  83.26   |
-| SROIE   | 91.72     | 92.57  |  92.14   |
-| CORD    | 83.64     | 87.83  |  85.69   |
+| Datasets    |  F1  |  IOU | NED  |
+|-------------|:----:|:----:|:----:|
+| Handwritten | 71.6 | 94.1 | 90.6 |
+| Design      | 61.7 | 80.2 | 79.6 |
+| Receipt     | 89.4 | 80.1 | 83.3 |
+| General     | 97.6 | 89.8 | 93.9 |
+| Academic    | 98.8 | 93.3 | 99.1 |
+| Web Image   | 57.0 | 72.1 | 69.6 |
 
 ### Image to Markdown
-|                   | NED       | NTED   |
-|-------------------|:---------:|:------:|
-| General Documents | 91.59     | 82.08  |
-| README            | 95.09     | 91.18  |
-| Tables            | 85.14     | 90.64  |
+| Datasets      | NED  | NTED |
+|---------------|:----:|:----:|
+| Docx          | 91.6 | 82.1 |
+| README        | 95.1 | 91.2 |
+| Arxiv         | 90.8 | 86.4 |
+| Tables        | 85.1 | 90.1 |
+| Math Equation | 88.1 | 95.2 |
+| CROHME Math   | 98.5 | 99.7 |
 
+### Document Reading
+| Datasets        | DocVQA | InfoVQA | DeepForm | KLC | WTQ | TabFact | ChartQA | TextVQA | VisualMRC |
+|-----------------|:------:|:-------:|:--------:|:---:|:---:|:-------:|:-------:|:-------:|:---------:|
+| Kosmos-2.5-CHAT |  81.1  |  41.3   |   65.8   |35.1 |32.4 | 49.9    | 62.3    | 40.7    | 156.0     | 
 
 ## Installation
 The code uses [Flash Attention2](https://github.com/Dao-AILab/flash-attention), so it only runs on Ampere, Ada, or Hopper GPUs (e.g., A100, RTX 3090, RTX 4090, H100).
