@@ -18,7 +18,7 @@ class SlidingWindowAttention(nn.Module):
         self.args = args
         self.embed_dim = args.dim
         self.num_heads = args.n_self_heads // args.model_parallel_size
-        self.window_size = args.sliding_window - 1 # compatible with flash attention
+        self.window_size = args.sliding_window
         
         self.head_dim = args.dim // args.n_self_heads
 
@@ -60,8 +60,7 @@ class SlidingWindowAttention(nn.Module):
             else:
                 incremental_state["prev_key"][:bsz, start_pos : start_pos + tgt_len] = k
                 incremental_state["prev_value"][:bsz, start_pos : start_pos + tgt_len] = v
-
-        attn = flash_attn_func(q, k, v, causal=True, window_size=(self.window_size - 1, 0)) 
+        attn = flash_attn_func(q, key, value, causal=True, window_size=(self.window_size - 1, 0)) 
         attn = attn.reshape(bsz, tgt_len, self.head_dim * self.num_heads)
 
         attn = self.out_proj(attn)
