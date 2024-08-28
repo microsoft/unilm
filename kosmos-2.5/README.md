@@ -8,7 +8,7 @@ Kosmos-2.5 is a multimodal literate model for machine reading of text-intensive 
 <sub>More model outputs can be found in the "[CASES.md](./CASES.md)"</sub>
 
 ## News
-- Aug 2024: 🔥We have released **Kosmos-2.5-CHAT**, a model capable of handling Visual Question Answering (VQA) tasks. The checkpoint will be made available soon. For more details, please refer to the [paper](https://arxiv.org/abs/2309.11419).
+- Aug 2024: 🔥We have released **Kosmos-2.5-CHAT**, a model capable of handling Visual Question Answering (VQA) tasks. For more details, please refer to the [model card](https://huggingface.co/microsoft/kosmos-2.5-chat) and [paper](https://arxiv.org/abs/2309.11419).
 - Aug 2024: 🔥Kosmos-2.5 will soon be integrated into Hugging Face. Until the official integration, you can use this temporary [repo](https://github.com/tic-top/transformers.git). Please refer to this [link](https://huggingface.co/microsoft/kosmos-2.5) for more information.
 - May 2024: We've open-sourced the checkpoint and inference code of Kosmos-2.5, This checkpoint has been trained for more steps than the one reported in the paper.  
 - Sep 2023: We release the **Kosmos-2.5: A Multimodal Literate Model** paper. Checkout the [paper](https://arxiv.org/abs/2309.11419).
