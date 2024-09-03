@@ -114,7 +114,7 @@ tokenizers==0.13.3
 toolz==0.12.0
 torch @ https://download.pytorch.org/whl/cu117/torch-2.0.1%2Bcu117-cp38-cp38-linux_x86_64.whl#sha256=bec39e6fe7232f399c6a5cda5785517fec759fc0852e0c31d71a39f7bf6b23b3
 torchvision==0.15.2
-tqdm==4.66.1
+tqdm==4.66.3
 transformers==4.28.1
 triton==2.0.0
 typing_extensions==4.8.0
