@@ -22,7 +22,7 @@ pip install -e .
 ~~~
 
 ## Run
-1. Download thepre-processed data ([`ReadingBank.zip`](https://mail2sysueducn-my.sharepoint.com/:u:/g/personal/huangyp28_mail2_sysu_edu_cn/Efh3ZWjsA-xFrH2FSjyhSVoBMak6ypmbABWmJEmPwtKhhw?e=tbthMD)). For more details of the dataset, please refer to [ReadingBank](https://aka.ms/readingbank).
+1. Download the pre-processed data ([`ReadingBank.zip`](https://mail2sysueducn-my.sharepoint.com/:u:/g/personal/huangyp28_mail2_sysu_edu_cn/Efh3ZWjsA-xFrH2FSjyhSVoBMak6ypmbABWmJEmPwtKhhw?e=tbthMD)). For more details of the dataset, please refer to [ReadingBank](https://aka.ms/readingbank).
 2. (Optional) Download our pre-trained model ([`layoutreader-base-readingbank.zip`](https://mail2sysueducn-my.sharepoint.com/:u:/g/personal/huangyp28_mail2_sysu_edu_cn/ET9XynvgSZFLhPy7p30zbtoBs-T_Yxj6gl_k-b2-N53ChQ?e=gKafBy)) and evaluate it refer to step 4.
 3. Training
     ~~~
