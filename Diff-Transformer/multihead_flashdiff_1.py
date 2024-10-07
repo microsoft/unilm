@@ -38,7 +38,7 @@ def lambda_init_fn(depth):
 class MultiheadFlashDiff1(nn.Module):
     """
     (Recommended)
-    DiffAttn implemented with FlashAttention, for packages that support different qkv dimensions
+    DiffAttn implemented with FlashAttention, for packages that support different qk/v dimensions
     e.g., our customized-flash-attention (https://github.com/xiayuqing0622/customized-flash-attention) and xformers (https://github.com/facebookresearch/xformers)
     """
     def __init__(
