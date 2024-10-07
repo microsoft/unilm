@@ -39,7 +39,7 @@ class MultiheadFlashDiff1(nn.Module):
     """
     (Recommended)
     DiffAttn implemented with FlashAttention, for packages that support different qkv dimensions
-    e.g., our customized-flash-attention (https://github.com/xiayuqing0622/customized-flash-attention)
+    e.g., our customized-flash-attention (https://github.com/xiayuqing0622/customized-flash-attention) and xformers (https://github.com/facebookresearch/xformers)
     """
     def __init__(
         self,
