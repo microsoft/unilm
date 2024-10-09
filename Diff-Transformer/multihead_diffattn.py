@@ -3,11 +3,6 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
-from fairseq.model_parallel.megatron.mpu import (
-    ColumnParallelLinear,
-    RowParallelLinear,
-)
-
 from .kernel.rotary import apply_rotary_emb
 from flash_attn import flash_attn_func
 try:
@@ -54,11 +49,10 @@ class MultiheadDiffAttn(nn.Module):
         self.head_dim = embed_dim // num_heads // 2
         self.scaling = self.head_dim ** -0.5
         
-        # same as default nn.Linear() when args.model_parallel_size == 1
-        self.q_proj = ColumnParallelLinear(embed_dim, embed_dim, bias=False, gather_output=False, init_method=init_method)
-        self.k_proj = ColumnParallelLinear(embed_dim, embed_dim // self.n_rep, bias=False, gather_output=False, init_method=init_method)
-        self.v_proj = ColumnParallelLinear(embed_dim, embed_dim // self.n_rep, bias=False, gather_output=False, init_method=init_method)
-        self.out_proj = RowParallelLinear(embed_dim, embed_dim, bias=False, input_is_parallel=True, init_method=init_method)
+        self.q_proj = nn.Linear(embed_dim, embed_dim, bias=False)
+        self.k_proj = nn.Linear(embed_dim, embed_dim // self.n_rep, bias=False)
+        self.v_proj = nn.Linear(embed_dim, embed_dim // self.n_rep, bias=False)
+        self.out_proj = nn.Linear(embed_dim, embed_dim, bias=False)
 
         self.lambda_init = lambda_init_fn(depth)
         self.lambda_q1 = nn.Parameter(torch.zeros(self.head_dim, dtype=torch.float32).normal_(mean=0,std=0.1))
