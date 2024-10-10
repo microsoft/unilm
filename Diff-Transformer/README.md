@@ -12,3 +12,8 @@
 `multihead_flashdiff_2.py` contains multi-head differential attention implemented with FlashAttention, for packages that **do not** support different qk/v dimensions (e.g., [flash-attention](https://github.com/Dao-AILab/flash-attention)).
 
 Also refer to [PR](https://github.com/microsoft/unilm/pull/1633) for another implementation.
+
+## Core Code
+<div align="center">
+  <img src="./imgs/code_highlight.png" width=100%/>
+</div>
