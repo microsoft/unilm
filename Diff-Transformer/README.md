@@ -15,5 +15,5 @@ Also refer to [PR](https://github.com/microsoft/unilm/pull/1633) for another imp
 
 ## Core Code
 <div align="center">
-  <img src="./imgs/code_highlight.png" width=90%/>
+  <img src="./imgs/code_highlight.png" width=100%/>
 </div>
