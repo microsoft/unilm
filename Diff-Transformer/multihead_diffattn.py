@@ -52,7 +52,7 @@ class MultiheadDiffAttn(nn.Module):
         self.q_proj = nn.Linear(embed_dim, embed_dim, bias=False)
         self.k_proj = nn.Linear(embed_dim, embed_dim // self.n_rep, bias=False)
         self.v_proj = nn.Linear(embed_dim, embed_dim // self.n_rep, bias=False)
-        self.out_proj = nn.Linear(embed_dim, embed_dim, bias=False)
+        self.out_proj = nn.Linear(self.num_heads * 2 * self.head_dim, embed_dim, bias=False)
 
         self.lambda_init = lambda_init_fn(depth)
         self.lambda_q1 = nn.Parameter(torch.zeros(self.head_dim, dtype=torch.float32).normal_(mean=0,std=0.1))
