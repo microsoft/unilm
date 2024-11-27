@@ -12,9 +12,6 @@ except ModuleNotFoundError:
     from .rms_norm import RMSNorm
 
 
-def init_method(tensor, **kwargs):
-    nn.init.kaiming_uniform_(tensor, a=math.sqrt(5))
-
 def repeat_kv(x: torch.Tensor, n_rep: int) -> torch.Tensor:
     """torch.repeat_interleave(x, dim=1, repeats=n_rep)"""
     bs, n_kv_heads, slen, head_dim = x.shape
@@ -46,9 +43,13 @@ class MultiheadFlashDiff1(nn.Module):
         super().__init__()
         self.args = args
         self.embed_dim = embed_dim
-        # num_heads set to half of Transformer's #heads
-        self.num_heads = num_heads // args.model_parallel_size
-        self.num_kv_heads = args.decoder_kv_attention_heads // args.model_parallel_size if args.decoder_kv_attention_heads is not None else num_heads // args.model_parallel_size
+        
+        # arg num_heads set to half of Transformer's num_heads
+        self.num_heads = num_heads
+        
+        # arg decoder_kv_attention_heads set to half of Transformer's num_kv_heads if use GQA
+        # set to same as num_heads if use normal MHA
+        self.num_kv_heads = args.decoder_kv_attention_heads if args.decoder_kv_attention_heads is not None else num_heads
         self.n_rep = self.num_heads // self.num_kv_heads
         
         self.head_dim = embed_dim // num_heads // 2
