@@ -109,7 +109,11 @@ Fundamental research to develop new architectures for foundation models and AI, 
 ### LLMOps ([repo](https://github.com/microsoft/lmops))
 General technology for enabling AI capabilities w/ LLMs and MLLMs.
 
+### RedStone ([repo](https://github.com/microsoft/redstone))
+Curating General, Code, Math, and QA Data for Large Language Models.
+
 ## News
+- December, 2024: [**RedStone**](https://github.com/microsoft/redstone)
 - December, 2023: [**LongNet**](https://github.com/microsoft/unilm/tree/master/longnet) and [**LongViT**](https://github.com/microsoft/unilm/tree/master/longvit) released
 - [Model Release] Dec, 2023: [**TextDiffuser-2**](https://github.com/microsoft/unilm/tree/master/textdiffuser-2) models, code and [demo](https://huggingface.co/spaces/JingyeChen22/TextDiffuser-2). 
 - Sep, 2023: [**Kosmos-2.5**](https://arxiv.org/abs/2309.11419) - a multimodal literate model for machine reading of text-intensive images.
