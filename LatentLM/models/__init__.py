@@ -1,6 +1,5 @@
 from .DiT import DiT_models, DiT
 from .Transformer import Transformer_models, Transformer
-from .YOCO import YOCO_models, YOCO
 from .EMA import EMAModel
 
-All_models = {**DiT_models, **Transformer_models, **YOCO_models}
+All_models = {**DiT_models, **Transformer_models}
