@@ -21,7 +21,7 @@ import diffusers
 from diffusers.training_utils import compute_snr
 from diffusers.optimization import get_scheduler
 
-from models import All_models, DiT, Transformer, YOCO, EMAModel
+from models import All_models, DiT, Transformer, EMAModel
 from timm.models import create_model
 from utils import center_crop_arr, safe_blob_write, load_vae
 from schedule.ddpm import DDPMScheduler
@@ -263,10 +263,11 @@ def main(args):
         resume_step = global_step * args.gradient_accumulation_steps % len(train_dataloader)
 
     # Train!
-    snr = compute_snr(noise_scheduler, torch.arange(args.ddpm_num_steps, device=accelerator.device))
-    sample_weight = (
-        torch.stack([snr, 5 * torch.ones(args.ddpm_num_steps, device=accelerator.device)], dim=1).min(dim=1)[0] / snr
-    )
+    # snr = compute_snr(noise_scheduler, torch.arange(args.ddpm_num_steps, device=accelerator.device))
+    # sample_weight = (
+    #     torch.stack([snr, 5 * torch.ones(args.ddpm_num_steps, device=accelerator.device)], dim=1).min(dim=1)[0] / snr
+    # )
+    sample_weight = torch.ones(args.ddpm_num_steps, device=accelerator.device)
     for epoch in range(first_epoch, args.num_epochs):
         model.train()
         for step, (clean_images, label) in enumerate(train_dataloader):
@@ -292,7 +293,7 @@ def main(args):
 
             with accelerator.accumulate(model):
                 bsz, latent_size, h, w = clean_images.shape
-                if isinstance(model.module, Transformer) or isinstance(model.module, YOCO):
+                if isinstance(model.module, Transformer):
                     noise = torch.randn((bsz * args.ddpm_batch_mul * h * w, latent_size), device=clean_images.device, dtype=clean_images.dtype)
                     timesteps = torch.multinomial(sample_weight, bsz * args.ddpm_batch_mul * h * w, replacement=True)
                     clean_images_repeated = clean_images.repeat_interleave(args.ddpm_batch_mul, dim=0).permute(0, 2, 3, 1).reshape(-1, clean_images.shape[1])
@@ -313,7 +314,6 @@ def main(args):
                     loss = F.mse_loss(model_output.float(), noise.float())
                 elif args.prediction_type == "v_prediction":
                     loss = F.mse_loss(model_output.float(), velocity.float())
-                    # loss -= F.cosine_similarity(model_output.float(), velocity.float(), dim=-1).mean()
                 else:
                     raise NotImplementedError()
                 accelerator.backward(loss)
