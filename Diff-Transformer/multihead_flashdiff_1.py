@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from torch import nn
 
 from .kernel.rotary import apply_rotary_emb
-from flash_attn import flash_attn_func
+from flex_head_fa import flash_attn_func
 try:
     from apex.normalization import FusedRMSNorm as RMSNorm 
 except ModuleNotFoundError:
@@ -31,7 +31,7 @@ class MultiheadFlashDiff1(nn.Module):
     """
     (Recommended)
     DiffAttn implemented with FlashAttention, for packages that support different qk/v dimensions
-    e.g., our customized-flash-attention (https://aka.ms/flash-diff) and xformers (https://github.com/facebookresearch/xformers)
+    e.g., our customized flex_head_fa (https://aka.ms/flash-diff) and xformers (https://github.com/facebookresearch/xformers)
     """
     def __init__(
         self,
