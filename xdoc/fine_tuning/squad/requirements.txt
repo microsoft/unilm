@@ -1,6 +1,7 @@
 sklearn
 transformers==4.23.1
-datasets==2.6.1
+datasets
+evaluate
 numpy==1.21.6
 torch
 IPython
