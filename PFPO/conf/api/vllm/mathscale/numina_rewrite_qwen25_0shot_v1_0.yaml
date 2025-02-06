@@ -1,0 +1,110 @@
+defaults:
+  - hydra: default
+  - _self_
+
+hydra:
+  searchpath:
+    - file://conf/
+
+data_path_prefix: /mnt/fangkai_blob/share/
+model_path_prefix: /mnt/fangkai_blob/share/models # ../pretrained-models/
+output_path_prefix: /mnt/fangkai_blob/reward_modeling/
+
+global_split_id: 0
+train_file:
+dev_file:
+test_file: ${data_path_prefix}/dataset/NuminaMath/numina-olympiads-dynamic-cot-4o-box-45675.parse_and_sympy_eval.rm_tags.correct.v1.0.jsonl
+
+port: 6000
+model:
+
+sampling_params:
+  _target_: vllm.SamplingParams
+  n: 1
+  temperature: 0.0
+  max_tokens: 16384
+  stop: [ "<eos>", "\n\n\n\n", "### Instruction", "<｜end▁of▁sentence｜>", "</s>", "<pad>", "<|endoftext|>", "<|im_end|>" ]
+  top_p: 1.0
+
+tem: ${sampling_params.temperature}
+n: ${sampling_params.n}
+top_p: ${sampling_params.top_p}
+split_size: 8
+split_id: 0
+max_num_seqs: 64
+max_model_len: 16384
+global_batch_size: 128
+
+suffix: ${split_id}-of-${split_size}
+output_file: ${output_dir}/${eval_sub_path}/numina/numina-olympiads-dynamic-cot-4o-box-45675.parse_and_sympy_eval.rm_tags.correct.rewrite.v1.0.${suffix}.json
+flush_file: ${output_file}l
+
+apply_chat_template: True
+add_generation_prompt: True
+prompt:
+  _target_: data.input_utils.read_text
+  file_path: prompts/numina/dynamic_cot/rewrite_0shot_v1.0.txt
+
+read_tensor:
+  _target_: data.combine_dataset.ResponseAlignDataset
+  read_fn:
+    _target_: data.input_utils.jsonl_read_fn
+  template:
+    _target_: data.input_utils.compose_template
+    units:
+      prompt: ${prompt}
+    composition: "{prompt}"
+  instruction:
+  index_field: "idx"
+  replacement:
+    "{solution}": "cleaned_response"
+  split_size: ${split_size}
+  split_id: ${split_id}
+  service_based: False
+  max_data_num: -1
+  flush_file: ${flush_file}
+
+
+save_best: False
+step:
+exp_name:
+exp_notes:
+#output_dir: ${model_path_prefix}/mathstral-7B-v0.1/
+output_dir: ${model_path_prefix}/Qwen2.5-72B-Instruct
+eval_sub_path: ""
+
+# Dataloader
+num_workers: 8
+prefetch_factor: 2
+
+dp_size:
+tp_size: 1
+pp_size: 1
+
+
+post_process:
+  _target_: post_processors.openai_api_callback.SaveOnlyCallBack
+  answer_clean:
+  output_file: ${output_file}
+  resume: True
+  index_field: "idx"
+  label_field: "label"
+  saved_keys: [ 'source', 'problem', 'solution', 'completion', 'label', 'pred', 'res', 'cleaned_response', 'idx' ]
+
+# Training hyper-parameters
+per_gpu_train_batch_size: 1
+per_gpu_eval_batch_size: 1
+
+ddp_eval: False
+no_cuda: False
+seed: 42
+local_rank: -1
+
+# Temporary variables
+fp16: True
+fp16_bfloat16: True
+n_gpu: 1
+device:
+train_batch_size:
+eval_batch_size:
+world_size:

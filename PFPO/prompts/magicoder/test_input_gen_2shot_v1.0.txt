@@ -1,0 +1,98 @@
+You are an expert programmer. Your task is to write some test cases to the programming problems to help verify the expected program solutions. You only need to give me the inputs in the required format. Now, let me introduce the details to you:
+
+## Program Format
+
+There will be two kinds of programming problems. One of problem is based on function calling, which shows a segment of starter code to illustrate the function head, defining the name of the arguments to be accepted. In this case, you should return me the inputs as described by the function, wrapped by Python list to be used as `func(*[inputs])`. 
+
+The other kind of problem only asks you to write a function to solve some program, but does not provide any function head or docstring to you. In this case, please first define a proper function head by yourself, and then write the test case inputs following this definition like that in the previous case.
+
+## Response Format
+
+You should return me the test case inputs in `json_object` format. You need to generate **10** groups of test case inputs, and each key field is named as `test_case_i`, where `i` is the index of the test case. The value of each key is the test case inputs in the required format。 
+
+## Examples for Function Calling with and without Function Definition.
+
+### Function Calling with Function Head
+
+#### Programming Problem
+
+Given a single positive integer x, we will write an expression of the form x (op1) x (op2) x (op3) x ... where each operator op1, op2, etc. is either addition, subtraction, multiplication, or division (+, -, *, or /).  For example, with x = 3, we might write 3 * 3 / 3 + 3 - 3 which is a value of 3.
+When writing such an expression, we adhere to the following conventions:
+
+The division operator (/) returns rational numbers.
+There are no parentheses placed anywhere.
+We use the usual order of operations: multiplication and division happens before addition and subtraction.
+It's not allowed to use the unary negation operator (-).  For example, "x - x" is a valid expression as it only uses subtraction, but "-x + x" is not because it uses negation.
+
+We would like to write an expression with the least number of operators such that the expression equals the given target.  Return the least number of operators used.
+
+
+Example 1:
+Input: x = 3, target = 19
+Output: 5
+Explanation: 3 * 3 + 3 * 3 + 3 / 3.  The expression contains 5 operations.
+
+Example 2:
+
+Input: x = 5, target = 501
+Output: 8
+Explanation: 5 * 5 * 5 * 5 - 5 * 5 * 5 + 5 / 5.  The expression contains 8 operations.
+
+
+Example 3:
+Input: x = 100, target = 100000000
+Output: 3
+Explanation: 100 * 100 * 100 * 100.  The expression contains 3 operations.
+
+
+Note:
+
+2 <= x <= 100
+1 <= target <= 2 * 10^8
+
+class Solution:
+    def leastOpsExpressTarget(self, x: int, target: int) -> int:
+
+#### Response
+
+{
+    "test_case_0": [3, 19],
+    "test_case_1": [3, 32],
+    "test_case_2": [6, 100],
+    ...
+}
+
+### Function Calling without Function Head
+
+#### Programming Problem
+
+Please amend the subsequent Python script so that it includes a 'while' loop rather than the existing 'for' loop, which iterates through the items of an integer list.
+
+The script currently has a bug where it attempts to print an object that is outside the bounds of the list. Fix this error and modify the script to use 'while' instead of 'for' loop. Ensure your script correctly handles empty lists. 
+
+```python
+  # Establish an integer list
+  arr = [1, 2, 3, 4]
+
+  # Determine the length of the list
+  n = len(arr)
+
+  # Traverse the list and output each individual element
+  for i in range(n+1):
+      print(arr[i])
+```
+
+#### Response
+
+
+
+
+## Get Started
+
+Note that in the above examples, I omit some test case inputs. You should return **10** groups of inputs to me in `json_object` format.
+
+#### Programming Problem
+
+[[Question]]
+
+#### Response

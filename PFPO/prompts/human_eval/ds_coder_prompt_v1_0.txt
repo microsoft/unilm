@@ -1,0 +1,4 @@
+Please continue to complete the function. You are not allowed to modify the given code and do the completion only. Please return all completed function in a codeblock. Here is the given code to do completion:
+```python
+{prompt}
+```

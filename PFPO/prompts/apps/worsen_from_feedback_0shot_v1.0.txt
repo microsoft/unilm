@@ -1,0 +1,33 @@
+I will first show you an example task, as well as one of its incorrect python solution program. I have also asked an experienced programmer to write a feedback to illustrate the potential flaw of the provided program, followed by the corrected program.
+
+After that, I will show you a new task, as well as a new solution program. Please carefully understand the previous feedback about the previous correct-incorrect program pair, and introduce similar flaw into the program for the new task to make it a definitely wrong solution program. Please return me your idea about how to introduce the flaw into the new program, and the obtained degraded program, through json object format, which are stored in the `thought` and `incorrect_program` key fields, respectively.
+
+Now let's get started. I will provide you all mentioned information below:
+
+### Example Task
+
+{example_question}
+
+### Incorrect Program for the Example Task
+
+{example_code}
+
+### Feedback from One Experienced Programmer
+
+{feedback}
+
+### Corrected Program for the Example Task from the Experienced Programmer
+
+{corrected_program}
+
+### New Task
+
+{question}
+
+### Program for the New Task
+
+{code}
+
+### Response Format
+
+Return my requested information in **json object**, which contains two field: `thought` and `incorrect_program`. The `thought` field illustrates your idea about how to introduce the shown flaw into the new program, and the `incorrect_program` contains your modified program with some introduced flaw. Please always generated the content for the `thought` field **first** to ensure the reliability.

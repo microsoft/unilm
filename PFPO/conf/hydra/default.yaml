@@ -1,0 +1,4 @@
+job:
+  chdir: False
+run:
+  dir: logs/${hydra.job.config_name}/${now:%Y-%m-%d_%H-%M-%S}
