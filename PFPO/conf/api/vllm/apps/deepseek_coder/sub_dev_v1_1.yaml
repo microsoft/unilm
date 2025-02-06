@@ -1,0 +1,113 @@
+defaults:
+  - hydra: default
+  - _self_
+
+hydra:
+  searchpath:
+    - file://conf/
+
+data_path_prefix: ""
+model_path_prefix: /mnt/fangkai_blob/share/models
+output_path_prefix: /mnt/fangkai_blob/reward_modeling/
+
+train_file: "codeparrot/apps"
+dev_file: ${train_file}
+test_file: ${train_file}
+
+port: 6000
+model: ds-coder-v1.5-chat
+
+sampling_params:
+  _target_: vllm.SamplingParams
+  n: 1
+  temperature: 0.0
+  stop: [ "</s>", "\n\n\n\n", "Context:\n", "Thought 42:", "<|end_of_text|>", "<|eot_id|>, <|EOT|>" ]
+  max_tokens: 4096
+
+tem: ${sampling_params.temperature}
+n: ${sampling_params.n}
+split_size: 8
+split_id: 0
+max_num_seqs: 64
+
+
+suffix: ${split_id}-of-${split_size}
+output_file: ${output_dir}/apps/${eval_sub_path}/sub_dev.0shot.tem${tem}.n${n}.${suffix}.v1.1.json  # v1.1 for <tag> <BEGIN> <ENG> extraction
+flush_file: ${output_file}l
+
+apply_chat_template: False
+add_generation_prompt: True
+
+chat_prefix: "<｜begin▁of▁sentence｜>You are an AI programming assistant, utilizing the Deepseek Coder model, developed by Deepseek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer\n### Instruction:\n"
+chat_connect: "\n### Response:\n"
+chat_suffix: "\n<|EOT|>"
+prompt: "{question}\n\nPlease write a program to solve the above problem under the given time constraints and memory limits."
+
+
+# Data loading
+read_tensor:
+  _target_: data.combine_dataset.ResponseAlignDataset
+  read_fn:
+    _target_: data.apps.APPsReader
+    split: train
+    train_sub_split: val
+  template: ${chat_prefix}${prompt}${chat_connect}
+  instruction:
+  index_field: "problem_id"
+  service_based: False
+  split_size: ${split_size}
+  split_id: ${split_id}
+  service_processor:
+    _target_: data.vllm.VLLMRequestGenerator
+#    api_url: http://0.0.0.0:${port}/v1/chat/completions
+    api_url: http://0.0.0.0:${port}/v1/completions
+    max_tokens: 4096
+#    system_prompt: "You are a helpful assistant to help solve the complex reasoning problem."
+    model: ${model}
+    stop: ${sampling_params.stop}
+    temperature: ${sampling_params.temperature}
+    n: ${sampling_params.n}
+  max_data_num: -1
+
+exp_name: deepseek-coder-v1.5-ins.7b.apps.code_gen.dpo.V100.w8.v1.1
+save_best: False
+eval_sub_path:
+output_dir: ${output_path_prefix}experiments/${exp_name}/
+
+# Dataloader
+num_workers: 32
+prefetch_factor: 2
+
+dp_size:
+tp_size: 1
+pp_size: 1
+
+post_process:
+  _target_: post_processors.code.code.CodeExtractor
+  output_file: ${output_file}
+  answer_clean:
+    _target_: post_processors.code.clean.get
+    name: standard
+  index_field: problem_id
+  test_case_field: "input_output"
+  evaluator:
+    _target_: post_processors.code.code.APPsEvaluator
+  saved_keys: [ "difficulty" ]
+
+# Training hyper-parameters
+per_gpu_train_batch_size: 1
+per_gpu_eval_batch_size: 1
+
+ddp_eval: False
+no_cuda: False
+seed: 42
+local_rank: -1
+
+# Temporary variables
+fp16: True
+fp16_bfloat16: True
+n_gpu: 1
+device:
+train_batch_size:
+eval_batch_size:
+world_size:

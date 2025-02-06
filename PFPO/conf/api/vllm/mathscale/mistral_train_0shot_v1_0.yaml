@@ -1,0 +1,117 @@
+defaults:
+  - hydra: default
+  - _self_
+
+hydra:
+  searchpath:
+    - file://conf/
+
+data_path_prefix: /mnt/fangkai_blob/share/
+model_path_prefix: /mnt/fangkai_blob/share/models # ../pretrained-models/
+output_path_prefix: /mnt/fangkai_blob/reward_modeling/
+
+train_file:
+dev_file:
+test_file: ${data_path_prefix}/dataset/mathscale/train.v60.300k.1-of-30.json
+
+port: 6000
+model:
+
+sampling_params:
+  _target_: vllm.SamplingParams
+  n: 5
+  temperature: 1.0
+  max_tokens: 4096
+  stop: [ "<eos>", "\n\n\n\n", "### Instruction", "<｜end▁of▁sentence｜>", "</s>", "<pad>" ]
+  top_p: 0.9
+
+tem: ${sampling_params.temperature}
+n: ${sampling_params.n}
+top_p: ${sampling_params.top_p}
+split_size: 8
+split_id: 0
+max_num_seqs: 32
+
+suffix: ${split_id}-of-${split_size}
+output_file: ${output_dir}/${eval_sub_path}/mathscale/train.v60.300k.1-of-30.v1.0.0shot.n${n}.tem${tem}.p${top_p}.${suffix}.json
+flush_file: ${output_file}l
+
+apply_chat_template: False
+add_generation_prompt: True
+
+read_tensor:
+  _target_: data.combine_dataset.ResponseAlignDataset
+  aligner:
+    _target_: data.input_aligner.concat_aligner
+    aligners:
+      - _target_: data.math.number_answer_extractor
+        separator: "he answer is"
+        completion_field: completion
+#        kv_mapping:
+#          instruction: question
+      - _target_: data.input_aligner.add_id_aligner
+        id_field: id
+  template: "{prompt}"
+  instruction:
+  split_size: ${split_size}
+  split_id: ${split_id}
+  service_based: False
+  service_processor:
+    _target_: data.vllm.VLLMRequestGenerator
+    api_url: http://0.0.0.0:${port}/v1/completions
+    max_tokens: ${sampling_params.max_tokens}
+    model: ${model}
+    stop: ${sampling_params.stop}
+    n: ${n}
+    temperature: ${tem}
+    top_p: ${top_p}
+  index_field: id
+
+
+save_best: False
+step:
+exp_name:
+exp_notes:
+output_dir: ${model_path_prefix}/mathscale-mistral/
+eval_sub_path: ""
+
+# Dataloader
+num_workers: 8
+prefetch_factor: 2
+
+dp_size:
+tp_size: 1
+pp_size: 1
+
+
+post_process:
+  _target_: post_processors.openai_api_callback.OpenAIMATHCallBack
+#  _target_: post_processors.openai_api_callback.DeepSeekMathCallBack
+  output_file: ${output_file}
+  answer_clean:
+    _target_: data.math.gsk8k_answer_cleaner
+    separator: "he answer is"
+#  eval_fn: math
+#  answer_clean: math
+  resume: False
+  index_field: "id"
+  label_field: "label"
+  saved_keys: [ "prompt", "completion" ]
+
+# Training hyper-parameters
+per_gpu_train_batch_size: 1
+per_gpu_eval_batch_size: 1
+
+ddp_eval: False
+no_cuda: False
+seed: 42
+local_rank: -1
+
+# Temporary variables
+fp16: True
+fp16_bfloat16: True
+n_gpu: 1
+device:
+train_batch_size:
+eval_batch_size:
+world_size:

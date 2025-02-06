@@ -1,0 +1,49 @@
+train_micro_batch_size_per_gpu:
+gradient_accumulation_steps:
+scheduler:
+  type: WarmupCosineLR  # requires deepspeed >= 0.12.3
+  params:
+    total_num_steps:
+#    warmup_max_lr: ${learning_rate}
+    warmup_num_steps:
+    warmup_type: linear
+optimizer:
+  type: AdamW
+  params:
+    lr: 1e-4
+    betas: [ 0.9, 0.999 ]
+    eps: 1e-6
+    weight_decay: 0.0
+bf16:
+  enabled: True
+zero_optimization:
+  stage: 1
+  offload_optimizer:
+    device: cpu
+    pin_memory: True
+#  offload_param:
+#    device: cpu
+#    pin_memory: True
+  #  activation_checkpointing:
+  #    partition_activations: True
+  #    cpu_checkpointing: True
+  #    contiguous_memory_optimization: False
+  #    number_checkpoints: False
+  #    synchronize_checkpoint_boundary: False
+  #    profile: False
+  #  zero_quantized_nontrainable_weights: False  # If `enable_mixed_precision_lora` is True, this should be True
+  stage3_param_persistence_threshold: 1e5  # (1e4,1e6)
+  stage3_max_live_parameters: 1e8  # (3e7, 1e9)
+  stage3_prefetch_bucket_size: 1e8  # (3e7, 5e8)
+  memory_efficient_linear: False
+steps_per_print: 25
+gradient_clipping: 1.0
+prescale_gradients: False
+#wall_clock_breakdown: False
+#hybrid_engine:
+#  enabled: True
+#  max_out_tokens: max_out_tokens
+#  inference_tp_size: inference_tp_size
+#  release_inference_cache: release_inference_cache
+#  pin_parameters: pin_parameters
+#  tp_gather_partition_size: tp_gather_partition_size

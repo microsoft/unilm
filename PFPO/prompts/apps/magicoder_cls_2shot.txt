@@ -1,0 +1,122 @@
+### Instruction
+I will show you a question about programming, as well as a solution given to it. Please help me decide if it is able to be validated by designing some test cases in python assertion style. If yes, please also return me a well defined python function head, containing the function name and input arguments.
+
+Some cases problems that is difficult to be evaluated by test cases may include but not limited to the following:
+- The problem description does not provide explicit input/output information.
+- The expected solution does not take any input or give any output, for example, the solution merely prints some information to the console.
+- The solution asked is not in Python.
+- The problem relies on heavy external dependencies, such as a specific library or a specific environment.
+
+### Response Format
+Always return me in `json_object` format, which at least contains a single field - `able_to_validate`, indicating whether the solution is able to be validated by test cases. If `able_to_validate` is `true`, please also include another field - `function_head`, which is a string representing the function head of the test case function.
+
+### Examples
+
+#### Question
+
+Please amend the subsequent Python script so that it includes a 'while' loop rather than the existing 'for' loop, which iterates through the items of an integer list.
+
+#### Solution
+
+The script currently has a bug where it attempts to print an object that is outside the bounds of the list. Fix this error and modify the script to use 'while' instead of 'for' loop. Ensure your script correctly handles empty lists.
+
+```python
+  # Establish an integer list
+  arr = [1, 2, 3, 4]
+
+  # Determine the length of the list
+  n = len(arr)
+
+  # Traverse the list and output each individual element
+  for i in range(n+1):
+      print(arr[i])
+``` ```python
+# Establish an integer list
+arr = [1, 2, 3, 4]
+
+# Determine the length of the list
+n = len(arr)
+
+# Initialize index at 0
+i = 0
+
+# Traverse the list and output each individual element
+while i < n:
+    print(arr[i])
+    i += 1
+```
+In the given code, it tries to access `arr[n]` which is out of bounds as python list indexing starts from 0 and ends at n-1 for a list of length n.
+Also, I used `while` loop as per your request. By initializing `i=0` before the loop and `i += 1` within the loop, we can iterate over the list. This iteration continues until `i` is less than `n`, the length of the list. The `while` loop will not proceed if the list is empty so it correctly handles empty lists.
+
+#### Response
+
+{
+    "able_to_validate": false,
+}
+
+#### Question
+
+You are tasked with implementing a parser for a simple programming language. The language has four types of tokens: "daddress", "dcommand", "doaddress", and "dosymbol". The parser should take a list of tokens as input and return a parsed representation of the input.
+
+You are provided with a code snippet that contains the definitions of four functions: `daddress`, `dcommand`, `doaddress`, and `dosymbol`. Each function takes a single argument `t` representing a token and returns a tuple containing the type of the token and its value.
+
+Your task is to implement the parser function that takes a list of tokens and uses the provided functions to parse and return the parsed representation of the input.
+
+Implement the following function:
+
+```python
+def parse_tokens(tokens):
+    parsed_tokens = []
+    for token in tokens:
+        if token[0] == 'daddress':
+            parsed_tokens.append(daddress(token))
+        elif token[0] == 'dcommand':
+            parsed_tokens.append(dcommand(token))
+        elif token[0] == 'doaddress':
+            parsed_tokens.append(doaddress(token))
+        elif token[0] == 'dosymbol':
+            parsed_tokens.append(dosymbol(token))
+    return parsed_tokens
+```
+
+For example, if the input list of tokens is `[('daddress', '123'), ('dcommand', 'print'), ('dosymbol', 'x')]`, the output of `parse_tokens` should be `[('daddress', '123'), ('dcommand', 'print'), ('dosymbol', 'x')]`.
+
+#### Solution
+
+```python
+def parse_tokens(tokens):
+    parsed_tokens = []
+    for token in tokens:
+        if token[0] == 'daddress':
+            parsed_tokens.append(daddress(token))
+        elif token[0] == 'dcommand':
+            parsed_tokens.append(dcommand(token))
+        elif token[0] == 'doaddress':
+            parsed_tokens.append(doaddress(token))
+        elif token[0] == 'dosymbol':
+            parsed_tokens.append(dosymbol(token))
+    return parsed_tokens
+```
+
+The `parse_tokens` function iterates through the input list of tokens and uses the provided functions `daddress`, `dcommand`, `doaddress`, and `dosymbol` to parse each token. The parsed representation of the input is then returned as a list of tuples containing the type and value of each token.
+
+#### Response
+
+{
+    "able_to_validate": true,
+    "function_head": "def parse_tokens(tokens)"
+}
+
+-----
+
+Now let's get started.
+
+#### Question
+
+[[Question]]
+
+#### Solution
+
+[[Solution]]
+
+#### Response

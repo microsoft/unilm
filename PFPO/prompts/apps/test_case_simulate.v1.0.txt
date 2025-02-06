@@ -1,0 +1,242 @@
+You are an expert programmer. I will show you a programming problem and one group of input cases. Please carefully comprehend the process described in the problem, and derive the expected outputs the above test case inputs. You should follow the steps below:
+(1) Simulate the algorithm/process described in the problem with the given inputs **step-by-step**, and record the step-level intermediate results.
+(2) Derive the correct outcome.
+
+Your response should strictly follow the format below:
+
+[BEGIN]
+*The expected outputs*
+[END]
+
+Here is one example:
+----------------------
+## PROBLEM STATEMENT
+
+Polycarp has $n$ different binary words. A word called binary if it contains only characters '0' and '1'. For example, these words are binary: "0001", "11", "0" and "0011100".
+
+Polycarp wants to offer his set of $n$ binary words to play a game "words". In this game, players name words and each next word (starting from the second) must start with the last character of the previous word. The first word can be any. For example, these sequence of words can be named during the game: "0101", "1", "10", "00", "00001".
+
+Word reversal is the operation of reversing the order of the characters. For example, the word "0111" after the reversal becomes "1110", the word "11010" after the reversal becomes "01011".
+
+Probably, Polycarp has such a set of words that there is no way to put them in the order correspondent to the game rules. In this situation, he wants to reverse some words from his set so that:  the final set of $n$ words still contains different words (i.e. all words are unique);  there is a way to put all words of the final set of words in the order so that the final sequence of $n$ words is consistent with the game rules.
+
+Polycarp wants to reverse minimal number of words. Please, help him.
+
+
+-----Input-----
+
+The first line of the input contains one integer $t$ ($1 \le t \le 10^4$) — the number of test cases in the input. Then $t$ test cases follow.
+
+The first line of a test case contains one integer $n$ ($1 \le n \le 2\cdot10^5$) — the number of words in the Polycarp's set. Next $n$ lines contain these words. All of $n$ words aren't empty and contains only characters '0' and '1'. The sum of word lengths doesn't exceed $4\cdot10^6$. All words are different.
+
+Guaranteed, that the sum of $n$ for all test cases in the input doesn't exceed $2\cdot10^5$. Also, guaranteed that the sum of word lengths for all test cases in the input doesn't exceed $4\cdot10^6$.
+
+
+-----Output-----
+
+Print answer for all of $t$ test cases in the order they appear.
+
+If there is no answer for the test case, print -1. Otherwise, the first line of the output should contain $k$ ($0 \le k \le n$) — the minimal number of words in the set which should be reversed. The second line of the output should contain $k$ distinct integers — the indexes of the words in the set which should be reversed. Words are numerated from $1$ to $n$ in the order they appear. If $k=0$ you can skip this line (or you can print an empty line). If there are many answers you can print any of them.
+
+
+-----Example-----
+Input
+4
+4
+0001
+1000
+0011
+0111
+3
+010
+101
+0
+2
+00000
+00001
+4
+01
+001
+0001
+00001
+
+Output
+1
+3
+-1
+0
+
+2
+1 2
+
+## TEST INPUTS
+
+```
+4
+4
+0001
+1000
+0011
+0111
+3
+010
+101
+0
+2
+00000
+00001
+4
+01
+001
+0001
+00001
+
+```
+## SIMULATE
+
+Let's go through the process step-by-step for each test case provided, and derive the expected outputs. There are 4 test cases provided, and we will go through each of them to derive the expected outputs.
+
+### Test Case 1:
+```
+4
+0001
+1000
+0011
+0111
+```
+#### Analysis:
+- Words are: "0001", "1000", "0011", "0111"
+- Try to connect the words in the sequence:
+  - We start with "0001" (ends with '1')
+  - Next word must start with '1': "1000" (ends with '0')
+  - Next word must start with '0': "0011" (ends with '1')
+  - Next word must start with '1': We have only "0111" left, but it starts with '0'.
+    - So we can reverse "0111" to "1110" and try again.
+    - The forth word must start with "1": "1110" (ends with '0')
+
+  So we have reversed the word "0111" to "1110" to make the sequence possible.
+
+#### Intermediate Result:
+- We have reversed the word "0111" to "1110".
+
+#### Output:
+```
+1
+3
+```
+
+### Test Case 2:
+```
+3
+010
+101
+0
+```
+#### Analysis:
+- Words are: "010", "101", "0"
+- Try to connect the words in the sequence:
+  - We start with "010" (ends with '0')
+  - Next word must start with '0': "0" (single '0')
+  - Next word must start with '0': None available.
+
+  Here, we can't chain the words in the given order.
+
+  - Try reversing "101": "101" -> "101" (no difference in reversing)
+
+No possible way to chain these words to meet the game's rules with any configuration.
+
+#### Intermediate Result:
+- No solution possible.
+
+#### Output:
+```
+-1
+```
+
+### Test Case 3:
+```
+2
+00000
+00001
+```
+#### Analysis:
+- Words are: "00000", "00001"
+- Try to connect the words in the sequence:
+  - We start with "00000" (ends with '0')
+  - Next word must start with '0': "00001" (ends with '1')
+
+  The words can be chained as they are, so no need to reverse any words.
+
+#### Intermediate Result:
+- No reversals needed.
+
+#### Output:
+```
+0
+
+```
+
+### Test Case 4:
+```
+4
+01
+001
+0001
+00001
+```
+#### Analysis:
+- Words are: "01", "001", "0001", "00001"
+- Try to connect the words in the sequence:
+  - We start with "01" (ends with '1')
+  - Next word must start with '1': None available.
+
+  Consider reversing:
+  - Reverse "01" -> "10"
+  - Reverse "001" -> "100"
+  - Try to chain again with reversed words:
+
+  - Use "10" (ends with '0')
+  - Use "0001" (ends with '1')
+  - Use "100" (ends with '0')
+  - It is possible to chain the words in the given order by reversing "01" and "001". So in total we have reversed 2 words.
+  - Now try starting with a different combination and reverse:
+
+    Attempt 1:
+    - "001" (ends with '1')
+    - "01" reversed, "10" (ends with '0')
+    - "0001"  (ends with '1')
+    - None
+
+#### Intermediate Result:
+- Words need to reverse = {"01", "001"}
+
+#### Output:
+```
+2
+1 2
+```
+
+### Final Expected Outputs for the given input:
+[BEGIN]
+1
+3
+-1
+0
+
+2
+1 2
+[END]
+---------------------
+
+
+Now, let's get started with the following problem:
+
+## PROBLEM STATEMENT
+
+<<PROBLEM>>
+
+## TEST INPUTS
+
+<<TEST INPUTS>>
+
+## SIMULATE

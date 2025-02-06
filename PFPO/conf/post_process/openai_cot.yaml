@@ -1,0 +1,7 @@
+_target_: post_processors.openai_api_callback.OpenAICallBack
+output_file: ${output_file}
+answer_clean:
+  _target_: post_processors.openai_api_callback.SeparatorClean
+  separator: "The answer is"
+  separate_idx: 1
+  regrex: "A|B|C|D"

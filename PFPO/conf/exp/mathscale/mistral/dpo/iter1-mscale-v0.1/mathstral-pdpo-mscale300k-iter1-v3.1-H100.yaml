@@ -1,0 +1,264 @@
+defaults:
+  - hydra: default
+  - deepspeed@ds_cfg: train_hybrid_engine_zero1_optim_offload_cosine
+  - _self_  # see here for more details: https://hydra.cc/docs/tutorials/basic/your_first_app/defaults/#composition-order-of-primary-config
+
+hydra:
+  searchpath:
+    - file://conf/
+
+
+data_path_prefix: /mnt/fangkai_blob/share
+model_path_prefix: /mnt/fangkai_blob/share/models/
+output_path_prefix: /mnt/fangkai_blob/reward_modeling/
+
+
+sft_model_dir: ${output_path_prefix}/experiments/mathstral.mathscale4o.process-dpo.iter0.V100.tp8dp48.v2.2.fix.s42/checkpoint-600
+train_file: ${data_path_prefix}/dataset/mathscale4o/mscale_300k_boxed.json
+dev_file:
+test_file:
+
+torch_dtype:
+  _target_: general_util.training_utils.return_torch_dtype
+  dtype: bfloat16
+
+tokenizer_init:
+  _target_: general_util.tokenization_utils.init_tokenizer
+  tokenizer_path: ${model_name_or_path}
+  padding_side: left
+  pad_token: "</s>"
+
+device_map:
+  _target_: models.utils.return_single_device_map
+
+model:
+  _target_: models.mistral.MistralForCausalLMDPO.from_pretrained_with_ref_model
+  beta: 0.5
+  sft_loss: True
+  sft_loss_weight: 1.0
+  gradient_checkpointing: True
+  attn_implementation: "flash_attention_2"
+#  attn_implementation: "eager"
+#  attn_implementation: "sdpa"
+  torch_dtype: ${torch_dtype}
+  pad_token_id: 2
+  device_map: ${device_map}
+  ref_model:
+    _target_: models.mistral.MistralForCausalLM.from_pretrained
+    pretrained_model_name_or_path: ${model_name_or_path}
+    torch_dtype: ${torch_dtype}
+    attn_implementation: "flash_attention_2"
+#    attn_implementation: "eager"
+#    attn_implementation: "sdpa"
+    device_map: ${device_map}
+    pad_token_id: 2
+
+
+read_tensor_pdpo:
+  _target_: data.combine_dataset.MultiMappingDataset
+  aligner:
+    _target_: data.input_aligner.concat_aligner
+    aligners:
+      - _target_: data.input_aligner.field_extract_aligner
+        input_index_field: id
+        extract_index_field: idx
+        extract_fields: [ value, prefix ]
+        extra_file: ${sft_model_dir}/mathscale4o/mscale-v0.1-300k/mscale.v0.1.300k.v1.0.n10.tem1.0.p1.0.upper0.7.r0.3.sample10.filter_same.process_rm.sc-p0.5.azure.json
+      - _target_: data.input_aligner.value2pair_mapping_aligner
+        field: prefix
+        pos_field: pos_prefix
+        neg_field: neg_prefix
+        value_field: value
+        value_mapping_func:
+          _target_: data.input_aligner.return_threshold_mapping
+          value_threshold: 1
+      - _target_: data.input_aligner.dpo_random_choice_aligner
+        anchor_field: pos_prefix
+        paired_field: neg_prefix
+#        pos_field: pos_prefix
+#        neg_field: neg_prefix
+#        sort_accord_to_len: True
+#        top_k: 5
+#        num_workers: 32
+  template:
+    _target_: data.input_utils.recompose_template
+    units:
+      chat_prefix: "{question}\n\nPlease put your final answer within {instruction}."
+#      pos: "{pos}"
+#      neg: "{neg}"
+      pos: "{pos_prefix}"
+      neg: "{neg_prefix}"
+      chat_suffix: "</s>"
+    compositions:
+      prompt: "{chat_prefix}"
+      chosen: "{chat_prefix}{pos}"
+      reject: "{chat_prefix}{neg}"
+  instruction: "\\boxed{}"
+  index_field: id
+  kv_mapping:
+    chosen: chosen
+    reject: reject
+    id: index
+    prompt: prompt
+
+
+read_tensor_dpo:
+  _target_: data.combine_dataset.MultiMappingDataset
+  file_path: ${sft_model_dir}/mathscale4o/mscale-v0.1-300k/mscale.v0.1.300k.v1.0.n10.tem1.0.p1.0.prefer_pair.by_sc_p0.5.json
+  aligner:
+    _target_: data.input_aligner.concat_aligner
+    aligners:
+      - _target_: data.input_aligner.dpo_random_choice_aligner
+        anchor_field: pos
+        paired_field: neg
+#        pos_field: pos
+#        neg_field: neg
+  template:
+    _target_: data.input_utils.recompose_template
+    units:
+      chat_prefix: "{question}\n\nPlease put your final answer within {instruction}."
+      pos: "{pos}"
+      neg: "{neg}"
+      chat_suffix: "</s>"
+    compositions:
+      prompt: "{chat_prefix}"
+      chosen: "{chat_prefix}{pos}{chat_suffix}"
+      reject: "{chat_prefix}{neg}{chat_suffix}"
+  instruction: "\\boxed{}"
+  index_field: id
+  kv_mapping:
+    chosen: chosen
+    reject: reject
+    id: index
+    prompt: prompt
+
+
+read_tensor:
+  _target_: data.combine_dataset.ReplayDataset
+  _recursive_: False
+  new_dataset_cfg: ${read_tensor_pdpo}
+  old_dataset_cfg: ${read_tensor_dpo}
+  replay_ratio: 1.0
+
+
+dist_load_data_barrier: False
+
+extended_vocab:
+
+# Data collator
+collator:
+  _target_: data.general_collator.DPOCollator
+  tokenizer: ${tokenizer_init}
+  max_seq_length: 2048
+
+# Dataloader
+num_workers: 8
+prefetch_factor: 2
+
+model_name_or_path: ${sft_model_dir}
+pretrain:
+resume: latest
+
+dp_size:
+tp_size: 1
+pp_size: 1
+
+
+exp_name: mathstral.mscale-v0.1-300k.process-dpo-sc.p0.5.iter1.H100.dp16.v3.1.s${seed}
+exp_notes:
+output_dir: ${output_path_prefix}experiments/${exp_name}  # Fix <pad token id>
+
+
+do_train: True
+evaluate_during_training: False
+
+do_eval: False
+eval_sub_path: checkpoint-*
+
+# Training hyper-parameters
+per_gpu_train_batch_size: 4
+per_gpu_eval_batch_size: 4
+#learning_rate: 1e-4
+learning_rate: 1e-7
+#learning_rate: 2e-5
+gradient_accumulation_steps: 16
+weight_decay: 0.1
+adam_epsilon: 1e-6
+adam_betas: "(0.9, 0.98)"
+#adam_betas: "(0.9, 0.999)"
+#max_grad_norm: 0.0
+total_dataset_len: -1
+max_grad_norm: 1.0
+num_train_epochs: 1
+max_steps: 0
+warmup_proportion: 0.0
+warmup_steps: 0
+
+# Optimizer
+optimizer:
+use_nvlamb:
+bit_training:
+
+logging_steps: 1
+save_ds_state: True
+save_steps: 100
+save_best: False
+eval_steps: 100
+ddp_eval: True
+no_cuda: False
+seed: 42
+local_rank: -1
+fp16: True
+fp16_opt_level: O1
+fp16_bfloat16: True
+
+# Prediction config
+prediction_cfg:
+  metric: "loss"
+  measure: -1
+  best_checkpoint:
+  best_result:
+eval_forward_fn:
+  _target_: general_util.evaluator.DefaultForwardFn
+post_process:
+  _target_: post_processors.dpo.DPOEvalPostProcessor
+
+
+ds_cfg:
+  train_micro_batch_size_per_gpu: ${per_gpu_train_batch_size}
+  gradient_accumulation_steps: ${gradient_accumulation_steps}
+  optimizer:
+    type: AdamW
+    params:
+      lr: ${learning_rate}
+      betas: [ 0.9, 0.95 ]
+      weight_decay: ${weight_decay}
+  steps_per_print: 1
+#  bf16:
+#    enabled: False
+#  fp16:
+#    enabled: True
+#    auto_cast: False
+#    loss_scale: 0
+#    initial_scale_power: 16
+#    loss_scale_window: 1000
+#    hysteresis: 2
+#    consecutive_hysteresis: False
+#    min_loss_scale: 1
+
+
+
+
+summary_helper:
+  _target_: general_util.tensorboard_helper.WandbWriter
+  batch_index_or_keys:
+  outputs_index_or_keys:
+    "train/chosen_reward": chosen_reward
+    "train/rejected_reward": rejected_reward
+
+# Temporary variables
+n_gpu:
+device:
+train_batch_size:
+eval_batch_size:
+world_size:

@@ -1,0 +1,78 @@
+You are an expert programmer. I will show you a programing problem and several test cases. Your code should pass these test cases.
+Please carefully comprehend the requirements in the problem, and write down the solution program to pass it under the given time and memory constraints.
+
+**REMEMBER** to strictly follow the steps below to help reduce the potential flaws:
+(1) According to the input scale and the time/memory constraints, think about the time complexity and space complexity of your solution.
+(2) Think **step-by-step** to design the algorithm.
+(3) Translate your thoughts into Python program to solve it.
+
+Besides, your Python solution program should be located between <BEGIN> and <END> tags. For example:
+<BEGIN>
+t = int(input())
+...
+print(ans)
+<END>
+
+Here are some examples (note that the think process are omitted):
+--------
+Write a function to find the shared elements from the given two lists.
+Your code should pass these tests:
+
+assert set(similar_elements((3, 4, 5, 6),(5, 7, 4, 10))) == set((4, 5))
+assert set(similar_elements((1, 2, 3, 4),(5, 4, 3, 7))) == set((3, 4))
+assert set(similar_elements((11, 12, 14, 13),(17, 15, 14, 13))) == set((13, 14))
+--------
+*omitted step-by-step thinking process*
+
+<BEGIN>
+def similar_elements(test_tup1, test_tup2):
+    res = tuple(set(test_tup1) & set(test_tup2))
+    return (res)
+<END>
+
+--------
+Write a python function to identify non-prime numbers.
+Your code should pass these tests:
+
+assert is_not_prime(2) == False
+assert is_not_prime(10) == True
+assert is_not_prime(35) == True
+assert is_not_prime(37) == False
+--------
+*omitted step-by-step thinking process*
+
+<BEGIN>
+import math
+def is_not_prime(n):
+    result = False
+    for i in range(2,int(math.sqrt(n)) + 1):
+        if n % i == 0:
+            result = True
+    return result
+<END>
+
+--------
+Write a function to find the n largest integers from a given list of numbers, returned in descending order.
+Your code should pass these tests:
+
+assert heap_queue_largest( [25, 35, 22, 85, 14, 65, 75, 22, 58],3)==[85, 75, 65]
+assert heap_queue_largest( [25, 35, 22, 85, 14, 65, 75, 22, 58],2)==[85, 75]
+assert heap_queue_largest( [25, 35, 22, 85, 14, 65, 75, 22, 58],5)==[85, 75, 65, 58, 35]
+--------
+*omitted step-by-step thinking process*
+
+<BEGIN>
+import heapq as hq
+def heap_queue_largest(nums,n):
+    largest_nums = hq.nlargest(n, nums)
+    return largest_nums
+<END>
+
+
+Now, remember my instruction and let's get started:
+--------
+{prompt}
+Your code should pass the following test cases:
+
+{test_list}
+--------

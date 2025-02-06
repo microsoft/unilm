@@ -1,0 +1,21 @@
+You are an expert programmer. Here is a programming problem:
+--------
+Please continue to complete the function. You are not allowed to modify the given code and do the completion only.
+
+{prompt}
+--------
+Please carefully comprehend the requirements in the problem, and write down the solution program to pass it under the given time and memory constraints.
+
+**REMEMBER** to strictly follow the steps below to help reduce the potential flaws:
+(1) According to the input scale and the time/memory constraints, think about the time complexity and space complexity of your solution.
+(2) Think **step-by-step** to design the algorithm.
+(3) Translate your thoughts into Python program to solve it.
+
+Besides, your Python solution program should be located between <BEGIN> and <END> tags. For example:
+<BEGIN>
+t = int(input())
+...
+print(ans)
+<END>
+
+Now, remember my instruction and let's get started:

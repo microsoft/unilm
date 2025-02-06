@@ -1,0 +1,128 @@
+You are an expert programmer. I will show you a programming problem. Please carefully comprehend the requirements in the problem, and write down the solution program to pass it under the given time and memory constraints.
+
+**REMEMBER** to strictly follow the steps below to help reduce the potential flaws:
+(1) According to the input scale and the time/memory constraints, think about the time complexity and space complexity of your solution.
+(2) Think **step-by-step** to design the algorithm.
+(3) Translate your thoughts into Python program to solve it.
+
+Besides, your Python solution program should be located between <BEGIN> and <END> tags:
+<BEGIN>
+t = int(input())
+...
+print(ans)
+<END>
+
+Here is an example:
+
+## Problem
+
+You are given an array $a$ of length $n$ consisting of zeros. You perform $n$ actions with this array: during the $i$-th action, the following sequence of operations appears:  Choose the maximum by length subarray (continuous subsegment) consisting only of zeros, among all such segments choose the leftmost one;  Let this segment be $[l; r]$. If $r-l+1$ is odd (not divisible by $2$) then assign (set) $a[\frac{l+r}{2}] := i$ (where $i$ is the number of the current action), otherwise (if $r-l+1$ is even) assign (set) $a[\frac{l+r-1}{2}] := i$. 
+
+Consider the array $a$ of length $5$ (initially $a=[0, 0, 0, 0, 0]$). Then it changes as follows:  Firstly, we choose the segment $[1; 5]$ and assign $a[3] := 1$, so $a$ becomes $[0, 0, 1, 0, 0]$;  then we choose the segment $[1; 2]$ and assign $a[1] := 2$, so $a$ becomes $[2, 0, 1, 0, 0]$;  then we choose the segment $[4; 5]$ and assign $a[4] := 3$, so $a$ becomes $[2, 0, 1, 3, 0]$;  then we choose the segment $[2; 2]$ and assign $a[2] := 4$, so $a$ becomes $[2, 4, 1, 3, 0]$;  and at last we choose the segment $[5; 5]$ and assign $a[5] := 5$, so $a$ becomes $[2, 4, 1, 3, 5]$. 
+
+Your task is to find the array $a$ of length $n$ after performing all $n$ actions. Note that the answer exists and unique.
+
+You have to answer $t$ independent test cases.
+
+
+-----Input-----
+
+The first line of the input contains one integer $t$ ($1 \le t \le 10^4$) — the number of test cases. Then $t$ test cases follow.
+
+The only line of the test case contains one integer $n$ ($1 \le n \le 2 \cdot 10^5$) — the length of $a$.
+
+It is guaranteed that the sum of $n$ over all test cases does not exceed $2 \cdot 10^5$ ($\sum n \le 2 \cdot 10^5$).
+
+
+-----Output-----
+
+For each test case, print the answer — the array $a$ of length $n$ after performing $n$ actions described in the problem statement. Note that the answer exists and unique.
+
+
+-----Example-----
+Input
+6
+1
+2
+3
+4
+5
+6
+
+Output
+1 
+1 2 
+2 1 3 
+3 1 2 4 
+2 4 1 3 5 
+3 4 1 5 2 6
+
+## Step-by-Step Thought
+
+1. **Understand the Operations**:
+    - Each step involves selecting the leftmost maximum length subarray of zeros and then assigning the middle element based on whether the length of this subarray is odd or even.
+    - When the length is odd, the middle is `(l+r)//2`.
+    - When the length is even, the middle is `(l+r-1)//2`.
+
+2. **Data Structures**:
+    - We need an array `a` to keep track of our operations.
+    - A heap (priority queue) can be useful to keep track of the largest segment of zeros efficiently.
+
+3. **Algorithm Design**:
+    - Use a max-heap (priority queue) to keep track of segments. The priority will be by negative length (to simulate max-heap with min-heap) and start index.
+    - Initialize the heap with the full range `[0, n-1]`.
+    - Iteratively perform the given operations for `n` steps, each time extracting the largest segment and determining the middle index to assign the current step value.
+
+4. **Efficiency Considerations**:
+    - Each insertion and extraction from the heap is `O(log n)`.
+    - Since we perform this operation `n` times, the overall complexity will be `O(n log n)`, which is efficient given the constraints.
+
+5. **Implementation**:
+    - We will use Python's `heapq` to implement the priority queue.
+    - We will handle multiple test cases as described.
+
+## Program Solution
+
+<BEGIN>
+import heapq
+
+def solve(n):
+    a = [0] * n
+    pq = []
+    heapq.heappush(pq, (-n, 0, n-1))  # Push the full segment initially
+
+    for i in range(1, n+1):
+        length, l, r = heapq.heappop(pq)
+        length = -length
+        if length % 2 == 1:
+            m = (l + r) // 2
+        else:
+            m = (l + r - 1) // 2
+        a[m] = i
+        
+        if l <= m - 1:
+            heapq.heappush(pq, (-(m - l), l, m - 1))
+        if m + 1 <= r:
+            heapq.heappush(pq, (-(r - m), m + 1, r))
+    
+    return a
+
+# Read input
+t = int(input())
+results = []
+for _ in range(t):
+    n = int(input())
+    results.append(solve(n))
+
+# Print output
+for res in results:
+    print(' '.join(map(str, res)))
+<END>
+
+Now, remember my instruction and try the following new problem:
+
+## Problem
+
+{question}
+
+## Step-by-Step Thought

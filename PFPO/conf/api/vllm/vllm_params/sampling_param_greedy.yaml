@@ -1,0 +1,5 @@
+_target_: vllm.SamplingParams
+n: 1
+temperature: 0.0
+stop: [ "</s>", "\n\n\n\n" ]
+max_tokens: 2048

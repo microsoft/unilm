@@ -1,0 +1,10 @@
+You are an expert programmer. Here is a programming problem:
+--------
+{question}
+--------
+Please carefully comprehend the requirements in the problem, and write down one test case inputs for me, which should follow the format below:
+<BEGIN>
+`test case inputs`
+<END>
+
+Now let's get started:

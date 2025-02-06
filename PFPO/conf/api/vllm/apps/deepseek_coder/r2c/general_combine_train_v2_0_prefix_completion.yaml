@@ -1,0 +1,138 @@
+defaults:
+  - hydra: default
+  - _self_
+
+hydra:
+  searchpath:
+    - file://conf/
+
+data_path_prefix: /mnt/fangkai_blob/share/dataset/
+model_path_prefix: /mnt/fangkai_blob/share/models # ../pretrained-models/
+output_path_prefix: /mnt/fangkai_blob/reward_modeling/
+
+#train_file: ${data_path_prefix}/magicoder/oss-instruct-apps-train-pseudo-test-inputs.v1.0.json
+train_file: /mnt/fangkai_blob/share/xcode_4o_oss_apps_test_inputs_v1.json
+dev_file: ${train_file}
+test_file: ${train_file}
+
+port: 6000
+model: ds-coder-v1.5-chat
+
+sampling_params:
+  _target_: vllm.SamplingParams
+  n: 3
+  temperature: 1.0
+  stop: [ "</s>", "\n\n\n\n", "Context:\n", "Thought 42:", "<|end_of_text|>", "<|eot_id|>, <|EOT|>" ]
+  max_tokens: 4096
+
+tem: ${sampling_params.temperature}
+n: ${sampling_params.n}
+split_size: 256
+split_id: 0
+max_num_seqs: 16
+global_batch_size: 128
+
+global_split_id: 0
+suffix: ${split_id}-of-${split_size}
+#output_file: ${output_dir}/oss-instruct-apps-train/${eval_sub_path}/train.tem1.0.n10.prefix.upper0.8.r0.3.sample20_per.completion.tem${tem}.n${n}.${suffix}.v2.0.json
+#output_file: ${output_dir}/oss-apps-xcode-combine/${eval_sub_path}/train.0shot.tem1.0.n10.v2.0.prefix.upper0.8.r0.3.sample10_per.completion.tem${tem}.n${n}.${suffix}.v2.0.json
+#output_file: ${output_dir}/oss-apps-xcode-combine/${eval_sub_path}/train.0shot.tem1.0.n64.v2.0.prefix.upper0.8.r0.3.sample10_per.completion.tem${tem}.n${n}.glo-${global_split_id}-of-8.loc-${suffix}.v2.0.json
+output_file: ${output_dir}/oss-apps-xcode-combine/${eval_sub_path}/train.0shot.tem1.0.n64.v2.0.prefix.upper0.8.r0.3.sample32_per.completion.tem${tem}.n${n}.glo-${global_split_id}-of-16.loc-${suffix}.v2.0.json
+flush_file: ${output_file}l
+
+apply_chat_template: False
+add_generation_prompt: True
+
+chat_prefix: "<｜begin▁of▁sentence｜>You are an AI programming assistant, utilizing the Deepseek Coder model, developed by Deepseek Company, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer\n### Instruction:\n"
+chat_connect: "\n### Response:\n"
+chat_suffix: "\n<|EOT|>"
+prompt:
+  _target_: data.input_utils.read_text
+  file_path: prompts/apps/r2c_prompt_0shot_v1.0.txt
+
+
+# Data loading
+read_tensor:
+  _target_: data.combine_dataset.ResponseAlignDataset
+  read_fn:
+    _target_: data.apps.PseudoInputsWithFunctionName
+    use_starter_code: True
+  aligner:
+    _target_: data.input_aligner.concat_aligner
+    aligners:
+      - _target_: data.input_aligner.field_extract_aligner
+        input_index_field: problem_id
+        extract_index_field: id
+#        extract_fields: [ response, pred, prefix, prefix_id ]
+        extract_fields: [ prefix, prefix_id ]
+#        extra_file: ${output_path_prefix}experiments/deepseek-coder-v1.5-ins.7b.apps.r2c.sft_ps_test_case.process-dpo.V100.tp8dp16.v4.9.s42/oss-instruct-apps-train/checkpoint-700/split-32/train.0shot.tem1.0.n10.v2.0.prefix.upper0.8.r0.3.sample20_per.json
+#        extra_file: ${output_path_prefix}experiments/deepseek-coder-v1.5-ins.7b.apps.r2c.sft_ps_test_case.iter1.dpo.A100.tp4dp16.v1.2.s42/oss-apps-xcode-combine/checkpoint-800/train.0shot.tem1.0.n10.v2.0.prefix.upper0.8.r0.3.sample10_per.json
+#        extra_file: ${output_path_prefix}experiments/${exp_name}/oss-apps-xcode-combine/${eval_sub_path}/train.0shot.tem1.0.n64.v2.0.prefix.upper0.8.r0.3.sample10_per.${global_split_id}-of-8.json
+        extra_file: ${output_path_prefix}experiments/${exp_name}/oss-apps-xcode-combine/${eval_sub_path}/train.0shot.tem1.0.n64.v2.0.prefix.upper0.8.r0.3.sample32_per.${global_split_id}-of-16.json
+#        renamed_fields:
+#          response: orig_response
+#          pred: orig_pred
+      - _target_: data.input_aligner.flat_aligner
+        input_index_field: problem_id
+        extract_field: [ prefix, prefix_id ]
+        mode: multi
+  template:
+    _target_: data.input_utils.compose_template
+    units:
+      chat_prefix: ${chat_prefix}
+      prompt: ${prompt}
+      chat_connect: ${chat_connect}
+      prefix: "{prefix}"
+    composition: "{chat_prefix}{prompt}{chat_connect}{prefix}"
+  instruction:
+  index_field: prefix_id
+  service_based: False
+  split_size: ${split_size}
+  split_id: ${split_id}
+  max_data_num: -1
+  flush_file: ${flush_file}
+
+exp_name:
+save_best: False
+eval_sub_path:
+output_dir: ${output_path_prefix}experiments/${exp_name}/
+
+# Dataloader
+num_workers: 32
+prefetch_factor: 2
+
+dp_size:
+tp_size: 1
+pp_size: 1
+
+post_process:
+  _target_: post_processors.code.code.CodeExtractor
+  output_file: ${output_file}
+  answer_clean:
+    _target_: post_processors.code.clean.get
+    name: tag
+  index_field: prefix_id
+  test_case_field:
+  resume: True
+  evaluator:
+    _target_: post_processors.code.code.APPsEvaluator
+  saved_keys: [ "prefix_id", "prefix", "problem_id", ]
+  completion_separator: ${chat_connect}
+
+# Training hyper-parameters
+per_gpu_train_batch_size: 1
+per_gpu_eval_batch_size: 1
+
+ddp_eval: False
+no_cuda: False
+seed: 42
+local_rank: -1
+
+# Temporary variables
+fp16: True
+fp16_bfloat16: True
+n_gpu: 1
+device:
+train_batch_size:
+eval_batch_size:
+world_size:

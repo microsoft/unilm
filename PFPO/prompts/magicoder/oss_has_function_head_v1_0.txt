@@ -1,0 +1,59 @@
+You are an expert programmer. I will show you a python programming problem, please help me find the asked function head. If there is no function head mentioned, return `None` to me. The response should follow the format of below.
+
+## Response Format
+
+You should return me your response in `json_object` format. The json object contains only one field: `func_head`. If there is explicit function head required in the problem, save it in the `func_head` field. Otherwise, save `None` in the `func_head` field.
+
+## Examples for Function Head Extraction
+
+### Programming Problem
+
+You are tasked with implementing a function to parse a string containing names separated by whitespace. The function should handle various edge cases and return a list of parsed names. The function should also remove any leading or trailing whitespace, as well as any occurrences of carriage return ('\r') and newline ('\n') characters.
+
+You are provided with a code snippet that includes a partial implementation of the function `parse_names` and a set of unit tests using the `unittest` framework.
+
+Your task is to complete the implementation of the `parse_names` function and ensure that it passes all the provided unit tests.
+
+The `parse_names` function should have the following signature:
+```python
+def parse_names(value: str) -> List[str]:
+    # Your implementation here
+```
+
+### Response
+
+```json
+{
+    "func_head": "parse_names",
+}
+```
+
+
+### Programming Problem
+
+You are tasked with creating a program to control a dispenser for a women's restroom. The dispenser is connected to a microcontroller, and the code snippet provided contains a comment indicating the pin number and the corresponding relay number for the dispenser. Your task is to write a Python program that toggles the relay to control the dispenser.
+
+Your program should include the following functionalities:
+1. Initialize the pin and relay mapping based on the provided comment in the code snippet.
+2. Implement a function to toggle the relay, simulating the action of dispensing a product.
+3. Provide a user interface to prompt the user for input to trigger the dispenser.
+
+Write a Python program that fulfills the requirements outlined above.
+
+#### Response
+
+```json
+{
+    "func_head": None,
+}
+```
+
+## Get Started
+
+Now let's get started.
+
+### Programming Problem
+
+[[Question]]
+
+### Response

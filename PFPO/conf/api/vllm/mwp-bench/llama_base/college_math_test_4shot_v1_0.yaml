@@ -1,0 +1,126 @@
+defaults:
+  - hydra: default
+  - _self_
+
+hydra:
+  searchpath:
+    - file://conf/
+
+mount_dir: /mnt/fangkai_blob/
+data_path_prefix: ${mount_dir}/share/
+model_path_prefix: ${mount_dir}/share/models # ../pretrained-models/
+output_path_prefix: ${mount_dir}/reward_modeling/
+
+train_file:
+dev_file:
+test_file: ${data_path_prefix}/MWPBench/data/full_test.json
+
+port: 6000
+model:
+
+sampling_params:
+  _target_: vllm.SamplingParams
+  n: 1
+  temperature: 0.0
+  max_tokens: 8192
+  stop: [ "<eos>", "\n\n\n\n", "### Instruction", "<｜end▁of▁sentence｜>", "</s>", "<pad>", "<|end_of_text|>", "<|eot_id|>", "## Question" ]
+  top_p: 1.0
+
+tem: ${sampling_params.temperature}
+n: ${sampling_params.n}
+top_p: ${sampling_params.top_p}
+split_size: 1
+split_id: 0
+max_num_seqs: 8
+global_batch_size: 256
+max_model_len: 8192
+
+suffix: ${split_id}-of-${split_size}
+output_file: ${output_dir}/mwpbench/${eval_sub_path}/college_math.test.v1.0.0shot.n${n}.tem${tem}.p${top_p}.${suffix}.json
+flush_file: ${output_file}l
+
+apply_chat_template: False
+add_generation_prompt: True
+
+few_shot_prompt:
+  _target_: data.input_utils.read_text
+  file_path: prompts/math/college_math_4shot.txt
+
+
+read_tensor:
+  _target_: data.combine_dataset.ResponseAlignDataset
+  read_fn:
+    _target_: data.input_utils.jsonl_read_fn
+  aligner:
+    _target_: data.input_aligner.concat_aligner
+    aligners:
+      - _target_: data.input_aligner.starts_with_filter
+        key: data_topic
+        value: "college_math"
+  template:
+    _target_: data.input_utils.compose_template
+    units:
+      few_shot_prompt: ${few_shot_prompt}
+      prompt: "{question}\n\n## Response"
+    composition: "{few_shot_prompt}{prompt}"
+  replacement:
+    "{question}": "question"
+  instruction:
+  split_size: ${split_size}
+  split_id: ${split_id}
+  service_based: False
+  service_processor:
+    _target_: data.vllm.VLLMRequestGenerator
+    api_url: http://0.0.0.0:${port}/v1/completions
+    max_tokens: ${sampling_params.max_tokens}
+    model: ${model}
+    stop: ${sampling_params.stop}
+    n: ${n}
+    temperature: ${tem}
+    top_p: ${top_p}
+  index_field: question_number
+  flush_file: ${flush_file}
+
+
+save_best: False
+step:
+exp_name:
+exp_notes:
+output_dir: ${output_path_prefix}/experiments/${exp_name}/
+eval_sub_path: ""
+
+# Dataloader
+num_workers: 8
+prefetch_factor: 2
+
+dp_size:
+tp_size: 1
+pp_size: 1
+
+
+post_process:
+  _target_: post_processors.openai_api_callback.MathScaleCallBack
+  answer_clean:
+  output_file: ${output_file}
+  resume: True
+  index_field: "question_number"
+  label_field: "answer"
+  saved_keys: [ "question", "question_number", "data_source", "answer", "data_topic" ]
+
+# Training hyper-parameters
+per_gpu_train_batch_size: 1
+per_gpu_eval_batch_size: 1
+
+ddp_eval: False
+no_cuda: False
+seed: 42
+local_rank: -1
+
+# Temporary variables
+fp16: True
+fp16_bfloat16: True
+n_gpu: 1
+device:
+train_batch_size:
+eval_batch_size:
+world_size:

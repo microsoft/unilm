@@ -1,0 +1,144 @@
+## Question
+
+Simplify: $-3 \\sqrt{18}-\\sqrt{8}+2 \\sqrt{8}+2 \\sqrt{8}$.
+
+## Response
+
+To simplify \( -3 \sqrt{18} - \sqrt{8} + 2 \sqrt{8} + 2 \sqrt{8} \):
+
+1. Combine like terms involving \( \sqrt{8} \):
+   \[
+   -\sqrt{8} + 2\sqrt{8} + 2\sqrt{8} = (2 + 2 - 1)\sqrt{8} = 3\sqrt{8}.
+   \]
+
+2. Simplify \( \sqrt{18} \) and \( \sqrt{8} \) by factoring out perfect squares:
+   \[
+   \sqrt{18} = \sqrt{9 \cdot 2} = 3\sqrt{2}, \quad \sqrt{8} = \sqrt{4 \cdot 2} = 2\sqrt{2}.
+   \]
+
+3. Substitute back into the expression:
+   \[
+   -3\sqrt{18} + 3\sqrt{8} = -3(3\sqrt{2}) + 3(2\sqrt{2}) = -9\sqrt{2} + 6\sqrt{2}.
+   \]
+
+4. Combine terms:
+   \[
+   -9\sqrt{2} + 6\sqrt{2} = -3\sqrt{2}.
+   \]
+
+The simplified expression is:
+\[
+\boxed{-3\sqrt{2}}
+\]
+
+## Question
+
+Find the angle measure to the nearest degree given $\\sin \\mathrm{Y}=0.6561$.
+
+## Response
+
+To find the angle \( Y \) where \( \sin Y = 0.6561 \), we use the inverse sine function (\( \arcsin \)).
+
+1. Apply the inverse sine:
+   \[
+   Y = \arcsin(0.6561)
+   \]
+
+2. Calculate \( Y \) using a calculator:
+   \[
+   Y \approx 41^\circ
+   \]
+
+The angle measure is approximately:
+\[
+\boxed{41^\circ}
+\]
+
+## Question
+
+Given $p(t)=-2 \\cdot 4^{2 t+1}+1$, find $p(-2)$.
+
+## Response
+
+To evaluate \( p(-2) \) given \( p(t) = -2 \cdot 4^{2t+1} + 1 \), follow these steps:
+
+### Step 1: Substitute \( t = -2 \) into \( p(t) \):
+\[
+p(-2) = -2 \cdot 4^{2(-2) + 1} + 1
+\]
+
+### Step 2: Simplify the exponent:
+\[
+2(-2) + 1 = -4 + 1 = -3
+\]
+So:
+\[
+p(-2) = -2 \cdot 4^{-3} + 1
+\]
+
+### Step 3: Simplify \( 4^{-3} \):
+\[
+4^{-3} = \frac{1}{4^3} = \frac{1}{64}
+\]
+
+### Step 4: Substitute \( 4^{-3} \) into \( p(-2) \):
+\[
+p(-2) = -2 \cdot \frac{1}{64} + 1
+\]
+
+### Step 5: Simplify the multiplication:
+\[
+-2 \cdot \frac{1}{64} = -\frac{2}{64} = -\frac{1}{32}
+\]
+
+### Step 6: Add \( -\frac{1}{32} \) and \( 1 \):
+\[
+p(-2) = 1 - \frac{1}{32} = \frac{32}{32} - \frac{1}{32} = \frac{31}{32}
+\]
+
+### Final Answer:
+\[
+p(-2) = \boxed{\frac{31}{32}}
+\]
+
+## Question
+
+Simplify the expression: $\\frac{4 m+36}{m+9} \\cdot \\frac{m-5}{5 m^{2}}$.
+
+## Response
+
+We are tasked with simplifying the expression:
+
+\[
+\frac{4m + 36}{m + 9} \cdot \frac{m - 5}{5m^2}.
+\]
+
+### Step 1: Factorize where possible
+#### Factorize \( 4m + 36 \):
+\[
+4m + 36 = 4(m + 9).
+\]
+
+So the expression becomes:
+\[
+\frac{4(m + 9)}{m + 9} \cdot \frac{m - 5}{5m^2}.
+\]
+
+### Step 2: Simplify common terms
+The \( m + 9 \) in the numerator and denominator cancels out, leaving:
+\[
+\frac{4}{1} \cdot \frac{m - 5}{5m^2}.
+\]
+
+This simplifies to:
+\[
+\frac{4(m - 5)}{5m^2}.
+\]
+
+### Final Answer:
+\[
+\boxed{\frac{4(m - 5)}{5m^2}}
+\]
+
+## Question
+

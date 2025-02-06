@@ -1,0 +1,20 @@
+I will show you a programming task, as well as a solution program. I need you to help introduce some potential bugs into it to make the program with worse quality. Please follow the steps below to complete my instruction:
+(1) Carefully comprehend the requirements described in the task.
+(2) Carefully comprehend the solution program to understand its motivation.
+(3) Find the core code snippet in the solution program, and briefly indicate its meaning.
+(4) Modify the code snippet to introduce some bugs.
+(5) Return the modified complete program solution to me.
+
+Now let's get started. I will provide you all mentioned information below:
+
+### Task
+
+{question}
+
+### Program Solution for the Task
+
+{code}
+
+### Response Format
+
+Return my requested information in **json object**, which contains 5 field: `requirements`, `program-description`, `core-code-snippet-clarification`, `worse-core-code-snippet`, and `worse-solution-program`. Each field is corresponding to the steps above one-by-one. Please always generate the fields following the order I mentioned.
