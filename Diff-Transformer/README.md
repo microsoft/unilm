@@ -11,6 +11,10 @@
 
 `multihead_flashdiff_2.py` contains multi-head differential attention implemented with FlashAttention, for packages that **do not** support different qk/v dimensions (e.g., [flash-attention](https://github.com/Dao-AILab/flash-attention)).
 
+`multihead_attention.py` contains implementation of conventional multi-head attention.
+
+`example.py` contains instantiation of differential attention and conventional attention in pair, which can be compared against each other.
+
 Also refer to [PR](https://github.com/microsoft/unilm/pull/1633) for another implementation.
 
 We recommend using models with a sufficiently large number of heads to minimize the impact of halving heads. For instance, using Diff Transformer with more than 8 heads (the minimum used in the paper, with the same number of parameters as Transformer with 16 heads) is advisable.
