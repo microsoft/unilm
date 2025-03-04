@@ -3,13 +3,13 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
-from .kernel.rotary import apply_rotary_emb
+from kernel.rotary import apply_rotary_emb
 from flex_head_fa import flash_attn_func
 try:
     from apex.normalization import FusedRMSNorm as RMSNorm 
 except ModuleNotFoundError:
     print("No fused RMSNorm")
-    from .rms_norm import RMSNorm
+    from rms_norm import RMSNorm
 
 
 def repeat_kv(x: torch.Tensor, n_rep: int) -> torch.Tensor:
@@ -35,21 +35,23 @@ class MultiheadFlashDiff1(nn.Module):
     """
     def __init__(
         self,
-        args,
         embed_dim,
-        depth,
+        depth, # current layer index
         num_heads,
+        num_kv_heads=None,
     ):
         super().__init__()
-        self.args = args
         self.embed_dim = embed_dim
         
-        # arg num_heads set to half of Transformer's num_heads
+        # arg num_heads set to half of baseline Transformer's num_heads
+        # for e.g., to compare with a baseline Transformer with 16 heads, pass in num_heads=8 for DIFF Transformer
         self.num_heads = num_heads
         
-        # arg decoder_kv_attention_heads set to half of Transformer's num_kv_heads if use GQA
-        # set to same as num_heads if use normal MHA
-        self.num_kv_heads = args.decoder_kv_attention_heads if args.decoder_kv_attention_heads is not None else num_heads
+        # arg num_kv_heads set to half of baseline Transformer's num_kv_heads if use GQA
+        # for e.g., to compare with a baseline Transformer with 16 heads and 8 kv_heads, 
+        # pass in num_heads=8, num_kv_heads=4 for DIFF Transformer
+        # if use MHA, pass in num_kv_heads=None
+        self.num_kv_heads = num_kv_heads if num_kv_heads is not None else num_heads
         self.n_rep = self.num_heads // self.num_kv_heads
         
         self.head_dim = embed_dim // num_heads // 2
@@ -60,6 +62,7 @@ class MultiheadFlashDiff1(nn.Module):
         self.v_proj = nn.Linear(embed_dim, embed_dim // self.n_rep, bias=False)
         self.out_proj = nn.Linear(embed_dim, embed_dim, bias=False)
 
+        # depth means current layer index
         self.lambda_init = lambda_init_fn(depth)
         self.lambda_q1 = nn.Parameter(torch.zeros(self.head_dim, dtype=torch.float32).normal_(mean=0,std=0.1))
         self.lambda_k1 = nn.Parameter(torch.zeros(self.head_dim, dtype=torch.float32).normal_(mean=0,std=0.1))
