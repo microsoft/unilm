@@ -9,7 +9,7 @@ from logger_config import logger
 
 def trec_eval(qrels: Dict[str, Dict[str, int]],
               predictions: Dict[str, List[ScoredDoc]],
-              k_values: Tuple[int] = (10, 50, 100, 200, 1000)) -> Dict[str, float]:
+              k_values: Tuple[int, ...] = (10, 50, 100, 200, 1000)) -> Dict[str, float]:
     ndcg, _map, recall = {}, {}, {}
 
     for k in k_values:
