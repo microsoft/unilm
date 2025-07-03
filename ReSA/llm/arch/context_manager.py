@@ -62,7 +62,7 @@ def block_attn_decoding(q, k_min, k_max, num_blocks, local_block_num):
 
 @torch.compile(fullgraph=True)
 def get_topk_indices(block_attn_score, block_index_mask, max_num_selected_blocks):
-    block_index = torch.topk(block_attn_score, k=max_num_selected_blocks, dim=-1, sorted=False).indices
+    block_index = torch.topk(block_attn_score, k=max_num_selected_blocks, dim=-1, sorted=True).indices
     topk_indices = block_index.masked_fill_(~block_index_mask, -1)
     topk_indices = torch.sort(topk_indices, dim=-1, descending=False).values
     return topk_indices.to(torch.int32)
