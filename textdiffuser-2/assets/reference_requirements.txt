@@ -6,7 +6,7 @@ altair==5.2.0
 anyio==3.7.1
 async-timeout==4.0.3
 attrs==23.1.0
-certifi==2023.11.17
+certifi==2024.7.4
 charset-normalizer==3.3.2
 click==8.1.7
 cmake==3.27.9
