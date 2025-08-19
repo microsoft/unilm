@@ -1,4 +1,4 @@
-datasets==1.15.1
+datasets==2.3.2
 transformers==4.12.5
 seqeval==1.2.2
 deepspeed==0.5.7
