@@ -173,9 +173,10 @@ class XfunReTrainer(FunsdTrainer):
         if eval_dataset is not None and not isinstance(eval_dataset, collections.abc.Sized):
             raise ValueError("eval_dataset must implement __len__")
 
+        prev_local_rank = self.args.local_rank
         self.args.local_rank = -1
         eval_dataloader = self.get_eval_dataloader(eval_dataset)
-        self.args.local_rank = torch.distributed.get_rank()
+        self.args.local_rank = prev_local_rank
 
         start_time = time.time()
 
