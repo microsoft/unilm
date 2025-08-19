@@ -20,7 +20,7 @@ def get_last_checkpoint(folder):
         for path in content
         if _re_checkpoint.search(path) is not None and os.path.isdir(os.path.join(folder, path))
     ]
-    if len(checkpoints) == 0:
+    if not checkpoints:
         return
     return os.path.join(folder, max(checkpoints, key=lambda x: int(_re_checkpoint.search(x).groups()[0])))
 
