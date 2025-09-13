@@ -1,0 +1,25 @@
+import argparse
+
+def parse_eval_args():
+    parser = argparse.ArgumentParser(description="evaluation arguments")
+    parser.add_argument(f"--limit", type=int, default=None)
+    parser.add_argument(f"--batch_size", type=int, default=32)
+    parser.add_argument(f"--tasks", type=str, default=None)
+    parser.add_argument(f"--downstream_task", type=str, default=None)
+    parser.add_argument(f"--valid_set", type=str, default=None)
+    parser.add_argument(f"--checkpoint_dir", type=str, default=None)
+    parser.add_argument(f"--merging_checkpoint_dir", type=str, default=None)
+    parser.add_argument(f"--save_feature", type=str, default=None)
+    parser.add_argument(f"--resa_sparse_ratio", type=float, default=0.1)
+    parser.add_argument(f"--resa_block_size", type=int, default=16)
+    parser.add_argument(f"--resa_local_block_num", type=int, default=1)
+    parser.add_argument(f"--resa_min_block_num", type=int, default=16)
+    parser.add_argument(f"--resa_rec_freq", type=int, default=32)
+    parser.add_argument(f"--output_folder", type=str, default=None)
+    parser.add_argument(f"--temperature", type=float, default=0.6)
+    parser.add_argument(f"--top_p", type=float, default=0.9)
+    parser.add_argument(f"--tokenizer_path", type=str, default=None)
+    parser.add_argument(f"--wandb_project", type=str, default=None)
+    parser.add_argument(f"--wandb_id", type=str, default=None)
+    
+    return parser.parse_args()
