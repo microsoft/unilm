@@ -60,7 +60,7 @@ class MultiheadFlashDiff1(nn.Module):
         self.q_proj = nn.Linear(embed_dim, embed_dim, bias=False)
         self.k_proj = nn.Linear(embed_dim, embed_dim // self.n_rep, bias=False)
         self.v_proj = nn.Linear(embed_dim, embed_dim // self.n_rep, bias=False)
-        self.out_proj = nn.Linear(embed_dim, embed_dim, bias=False)
+        self.out_proj = nn.Linear(self.num_heads * 2 * self.head_dim, embed_dim, bias=False)
 
         # depth means current layer index
         self.lambda_init = lambda_init_fn(depth)
