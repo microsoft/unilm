@@ -43,6 +43,8 @@ class WPAScorer(BaseScorer):
     def score(self):
 
         length = len(self.refs)
+        if length == 0:
+            return 0.0
         correct = 0
         for i in range(length):
             if self.refs[i] == self.preds[i]:
@@ -71,6 +73,8 @@ class AccEDScorer(BaseScorer):
         self.pred.append(pred)
 
     def score(self):
+        if self.n_data == 0:
+            return 0.0, 0.0
         return self.n_correct / float(self.n_data) * 100, self.ed / float(self.n_data)
 
     def result_string(self):
@@ -98,9 +102,9 @@ class SROIEScorer(BaseScorer):
         self.pred.append(pred)
 
     def score(self):
-        prec = self.n_match_words / float(self.n_detected_words) * 100
-        recall = self.n_match_words / float(self.n_gt_words) * 100
-        f1 = 2 * (prec * recall) / (prec + recall)
+        prec = self.n_match_words / float(self.n_detected_words) * 100 if self.n_detected_words > 0 else 0.0
+        recall = self.n_match_words / float(self.n_gt_words) * 100 if self.n_gt_words > 0 else 0.0
+        f1 = 2 * (prec * recall) / (prec + recall) if (prec + recall) > 0 else 0.0
         return prec, recall, f1
 
     def result_string(self):
