@@ -4,7 +4,7 @@ import os
 
 try:
     from torch._six import inf
-except:
+except Exception:
     import sys
     import torch
     sys.modules["torch._six"] = torch

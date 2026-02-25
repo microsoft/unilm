@@ -71,7 +71,7 @@ def extract_program(text:str=None, trajectory:list=None, last_only=False) -> str
     if trajectory is None:
         try:
             trajectory = text_to_trajectory(text)
-        except:
+        except Exception:
             return "raise ValueError('Invalid trajectory')"
 
     program_list = []

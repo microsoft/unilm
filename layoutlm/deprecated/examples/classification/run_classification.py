@@ -29,7 +29,7 @@ from layoutlm.data.rvl_cdip import CdipProcessor, load_and_cache_examples
 
 try:
     from torch.utils.tensorboard import SummaryWriter
-except:
+except Exception:
     from tensorboardX import SummaryWriter
 
 

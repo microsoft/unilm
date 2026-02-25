@@ -54,7 +54,7 @@ def hydra_main(cfg: FairseqConfig) -> float:
         best_val = metrics.get_smoothed_value(
             "valid", cfg.checkpoint.best_checkpoint_metric
         )
-    except:
+    except Exception:
         best_val = None
 
     if best_val is None:
@@ -83,7 +83,7 @@ def cli_main():
         from hydra._internal.utils import get_args
 
         cfg_name = get_args().config_name or "config"
-    except:
+    except Exception:
         logger.warning("Failed to get config name from hydra args")
         cfg_name = "config"
 

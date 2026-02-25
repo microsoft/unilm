@@ -71,7 +71,7 @@ def _worker(item, test_case_field: str):
             json.dumps(outputs)
             all_outputs.append(outputs)
             all_errors.append(errors)
-        except:
+        except Exception:
             print(f"Cannot dump outputs for {outputs}")
             all_outputs.append([])
             all_errors.append([])
@@ -194,7 +194,7 @@ def main():
                     if "errors" in item:
                         item.pop("errors")
                     large_mem += 1
-            except:
+            except Exception:
                 print("failed to compute size. Still abandon the outputs.")
                 if "res" in item:
                     item.pop("res")

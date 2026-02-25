@@ -246,7 +246,7 @@ class LMLoader(BaseBatchGen):
         try:
             with open(file_path, 'r', encoding='utf8') as f:
                 lines = f.read().strip().split('\n')
-        except:
+        except Exception:
             return iter([]) # skip bad file
         return lines
     

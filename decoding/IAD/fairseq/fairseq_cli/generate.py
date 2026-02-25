@@ -112,7 +112,7 @@ def _main(cfg: DictConfig, output_file):
             lms, _ = checkpoint_utils.load_model_ensemble(
                 [cfg.generation.lm_path], arg_overrides=overrides, task=None
             )
-        except:
+        except Exception:
             logger.warning(
                 f"Failed to load language model! Please make sure that the language model dict is the same "
                 f"as target dict and is located in the data dir ({cfg.task.data})"

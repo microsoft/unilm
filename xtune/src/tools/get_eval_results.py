@@ -240,7 +240,7 @@ if __name__ == "__main__":
                 print(final_output[:-1])
                 pass
             all_res_terms.append(res_terms)
-        except:
+        except Exception:
             print()
             pass
 

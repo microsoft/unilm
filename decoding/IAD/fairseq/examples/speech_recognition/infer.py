@@ -47,7 +47,7 @@ output units",
             default=0.2,
             help="weight for lm while interpolating with neural score",
         )
-    except:
+    except Exception:
         pass
     parser.add_argument(
         "--rnnt_len_penalty", default=-0.5, help="rnnt length penalty on word level"
@@ -200,7 +200,7 @@ class ExistingEmissionsDecoder(object):
         ids = sample["id"].cpu().numpy()
         try:
             emissions = np.stack(self.emissions[ids])
-        except:
+        except Exception:
             print([x.shape for x in self.emissions[ids]])
             raise Exception("invalid sizes")
         emissions = torch.from_numpy(emissions)

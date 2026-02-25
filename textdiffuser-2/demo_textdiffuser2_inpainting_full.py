@@ -440,7 +440,7 @@ def text_to_image(guest_id, i, orig_i, prompt,keywords,positive_prompt,radio,sli
                 try:
                     ocr_ids = tokenizer.encode(ocr_ids)
                     prompt = caption_ids + ocr_ids
-                except:
+                except Exception:
                     prompt = caption_ids
 
                 user_prompt = tokenizer.decode(prompt)

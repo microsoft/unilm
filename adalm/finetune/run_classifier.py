@@ -32,7 +32,7 @@ from torch.utils.data.distributed import DistributedSampler
 
 try:
     from torch.utils.tensorboard import SummaryWriter
-except:
+except Exception:
     from tensorboardX import SummaryWriter
 
 from tqdm import tqdm, trange

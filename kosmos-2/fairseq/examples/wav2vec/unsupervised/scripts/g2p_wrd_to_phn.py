@@ -36,7 +36,7 @@ def main():
             phones.extend(wrd_to_phn[w])
         try:
             print(" ".join(phones))
-        except:
+        except Exception:
             print(wrd_to_phn, words, phones, file=sys.stderr)
             raise
 

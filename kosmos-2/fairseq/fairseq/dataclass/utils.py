@@ -267,7 +267,7 @@ def _override_attr(
         ):
             try:
                 val = field_type(val)
-            except:
+            except Exception:
                 pass  # ignore errors here, they are often from interpolation args
 
         if val is None:
@@ -387,7 +387,7 @@ def convert_namespace_to_omegaconf(args: Namespace) -> DictConfig:
     with initialize(config_path=config_path):
         try:
             composed_cfg = compose("config", overrides=overrides, strict=False)
-        except:
+        except Exception:
             logger.error("Error when composing. Overrides: " + str(overrides))
             raise
 

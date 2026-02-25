@@ -70,7 +70,7 @@ def main():
 
     try:
         faiss_spec = parse_faiss_specs(spec.rstrip("/"))[0]
-    except:
+    except Exception:
         print(spec)
         raise
 

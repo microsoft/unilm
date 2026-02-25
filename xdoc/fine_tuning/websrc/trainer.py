@@ -50,7 +50,7 @@ def train(args, dataset_web, model, tokenizer):
     try:
         from azureml.core.run import Run
         aml_run = Run.get_context()
-    except:
+    except Exception:
         aml_run = None
         
     # Open tensorboard

@@ -65,7 +65,7 @@ class KaldiDecoder(object):
             )
             from kaldi.lat.functions import DeterminizeLatticePhonePrunedOptions
             from kaldi.fstext import read_fst_kaldi, SymbolTable
-        except:
+        except Exception:
             warnings.warn(
                 "pykaldi is required for this functionality. Please install from https://github.com/pykaldi/pykaldi"
             )

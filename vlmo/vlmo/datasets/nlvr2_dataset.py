@@ -31,7 +31,7 @@ class NLVR2Dataset(BaseDataset):
                 image_tensor_1 = self.get_image(index, image_key="image_1")["image"]
                 text = self.get_text(index)["text"]
                 result = True
-            except:
+            except Exception:
                 print(
                     f"error while read file idx {index} in {self.names[0]}",
                     file=sys.stderr,

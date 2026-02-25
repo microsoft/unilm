@@ -23,7 +23,7 @@ from torch.utils.data import DataLoader
 
 try:
     import tqdm
-except:
+except Exception:
     print("Install tqdm to use --log-format=tqdm")
 
 

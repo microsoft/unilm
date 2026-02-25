@@ -59,14 +59,14 @@ def main():
             f = open(file, "r")
             try:
                 data += json.load(f)
-            except:
+            except Exception:
                 print(f"Error in file {file}")
                 new_file = file.replace(".json", ".jsonl")
                 lines = open(new_file, "r").readlines()
                 for line in lines:
                     try:
                         data.append(json.loads(line))
-                    except:
+                    except Exception:
                         print(f"Error in line: {line}")
 
     data = merge_seed_sampled_data(data)

@@ -180,7 +180,7 @@ class TextRecognitionTask(LegacyFairseqTask):
         )
         try:
             from .generator import TextRecognitionGenerator
-        except:
+        except Exception:
             from generator import TextRecognitionGenerator
 
         try:

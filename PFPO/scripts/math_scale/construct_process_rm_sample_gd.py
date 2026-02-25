@@ -123,7 +123,7 @@ def main():
             print(file)
             try:
                 sub_data = json.load(open(file))
-            except:
+            except Exception:
                 print(f"Warning: {file}l")
                 sub_data = [json.loads(line) for line in open(f"{file}l").readlines()]
             data += sub_data

@@ -298,7 +298,7 @@ class FileAudioDataset(RawAudioDataset):
             import pyarrow
 
             self.fnames = pyarrow.array(self.fnames)
-        except:
+        except Exception:
             logger.debug(
                 "Could not create a pyarrow array. Please install pyarrow for better performance"
             )

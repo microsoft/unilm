@@ -75,7 +75,7 @@ def _set_server(conn, name='webcv2', port=7788):
                                     if isinstance(message, bytes):
                                         message = message.decode('utf8')
                                     message = int(message)
-                                except:
+                                except Exception:
                                     traceback.print_exc()
                                     message = -1
                             else:

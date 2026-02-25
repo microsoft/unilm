@@ -49,7 +49,7 @@ def main():
         if item["completion"]:
             try:
                 completion = json.loads(item["completion"])
-            except:
+            except Exception:
                 print(f"Json parsing error: {item['completion']}")
                 continue
             neg_code = completion["incorrect_program"]

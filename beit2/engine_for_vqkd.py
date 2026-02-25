@@ -44,7 +44,7 @@ def train_one_epoch(model: torch.nn.Module,
         try:
             model.module.quantize.reset_cluster_size(device)
             print("Reset the codebook statistic info in quantizer before each epoch")
-        except:
+        except Exception:
             pass
         
     for step, (batch, _) in enumerate(metric_logger.log_every(data_loader, print_freq, header)):
@@ -116,7 +116,7 @@ def train_one_epoch(model: torch.nn.Module,
     if hasattr(model.module, 'quantize'):
         try:
             codebook_cluster_size = model.module.quantize._codebook.cluster_size
-        except:
+        except Exception:
             codebook_cluster_size = model.module.quantize.cluster_size
         zero_cnt = (codebook_cluster_size == 0).sum().item()
         train_stat = {k: meter.global_avg for k, meter in metric_logger.meters.items()}
@@ -138,7 +138,7 @@ def evaluate(data_loader, model, device, log_writer=None, epoch=None, args=None)
         try:
             model.module.quantize.reset_cluster_size(device)
             print("Reset the codebook statistic info in quantizer before testing")
-        except:
+        except Exception:
             pass
 
     for step, (batch, extra_info) in enumerate(metric_logger.log_every(data_loader, 10, header)):
@@ -159,7 +159,7 @@ def evaluate(data_loader, model, device, log_writer=None, epoch=None, args=None)
     if hasattr(model, 'module') and hasattr(model.module, 'quantize'):
         try:
             codebook_cluster_size = model.module.quantize._codebook.cluster_size
-        except:
+        except Exception:
             codebook_cluster_size = model.module.quantize.cluster_size
         zero_cnt = (codebook_cluster_size == 0).sum().item()
         test_stat = {k: meter.global_avg for k, meter in metric_logger.meters.items()}

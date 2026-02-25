@@ -595,7 +595,7 @@ def main():
             try:
                 ocr_ids = tokenizer.encode(ocr_ids)
                 prompt = caption_ids + ocr_ids
-            except:
+            except Exception:
                 prompt = caption_ids
 
             prompt = prompt[:args.max_length]

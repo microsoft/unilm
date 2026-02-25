@@ -35,7 +35,7 @@ class Fp32BatchNorm(nn.Module):
                     try:
                         self.bn.weight = self.bn.weight.float()
                         self.bn.bias = self.bn.bias.float()
-                    except:
+                    except Exception:
                         self.bn.float()
             else:
                 self.bn.float()

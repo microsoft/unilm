@@ -317,7 +317,7 @@ def get_ocr_res(tokenizer, tokens, p2s_resized_width, p2s_resized_height, raw_wi
 			x1 = int(cur_bbox[2][1:-1].split('_')[-1])
 			y1 = int(cur_bbox[3][1:-1].split('_')[-1])
 			pass
-		except:
+		except Exception:
 			print('w')
 			continue
 		cur_token.append(cur_line)

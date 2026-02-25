@@ -728,7 +728,7 @@ def main():
             #### get caption
             try: #### note that few cases do not contain valid captions
                 caption = open(f'{args.dataset_path}/{first}/{second}/caption.txt').readlines()[0]
-            except:
+            except Exception:
                 caption = 'null'
                 print('erorr of caption')
             
@@ -936,7 +936,7 @@ def main():
             accelerator.print(f"Resuming from checkpoint {path}")
             try:
                 accelerator.load_state(args.resume_from_checkpoint)
-            except:
+            except Exception:
                 accelerator.load_state(os.path.join(args.output_dir, path))
             global_step = int(path.split("-")[1])
 

@@ -120,7 +120,7 @@ def parse_latex_answer(sample):
     sample = clean_expr_str(sample)
     try:
         expr = my_parse_latex(sample)
-    except:
+    except Exception:
         print("[parse failed]", sample)
         return None
     return expr
@@ -141,7 +141,7 @@ def is_expr_equal(ans_p, ans_l, is_strict=False):
             try:
                 ret = my_equals(equation.rhs, number)
                 return bool(ret)
-            except:
+            except Exception:
                 return equation.rhs == number
 
     if ans_p is None or ans_l is None:
@@ -175,7 +175,7 @@ def is_expr_equal(ans_p, ans_l, is_strict=False):
     try:
         ret = my_equals(ans_p, ans_l)
         return bool(ret)
-    except:
+    except Exception:
         return False
 
 

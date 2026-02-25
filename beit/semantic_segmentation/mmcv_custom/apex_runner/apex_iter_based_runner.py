@@ -12,7 +12,7 @@ from .checkpoint import save_checkpoint
 
 try:
     import apex
-except:
+except Exception:
     print('apex is not installed')
 
 

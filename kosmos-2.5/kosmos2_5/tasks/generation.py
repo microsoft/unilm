@@ -66,7 +66,7 @@ class customDataset(FairseqDataset):
     def collater(self, samples):
         try:
             return torch.stack(samples)
-        except:
+        except Exception:
             return samples
 
 class RawImageDataset(FairseqDataset):

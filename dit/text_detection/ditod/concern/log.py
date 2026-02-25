@@ -36,7 +36,7 @@ class Logger(Configurable):
         self.log_dir = os.path.join(self.log_dir, self.name)
         try:
             self.verbose = cmd['verbose']
-        except:
+        except Exception:
             print('verbose:', self.verbose)
         if self.verbose:
             print('Initializing log dir for', self.log_dir)

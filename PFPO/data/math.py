@@ -102,7 +102,7 @@ def remove_boxed(s):
         assert s[:len(left)] == left
         assert s[-1] == "}"
         return s[len(left):-1]
-    except:
+    except Exception:
         return None
 
 

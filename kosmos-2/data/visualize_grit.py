@@ -75,7 +75,7 @@ def vis_image(json_obj, output_folder):
     
     try:
         pil_img = Image.open(output_path).convert("RGB")
-    except:
+    except Exception:
         return 
     image = np.array(pil_img)[:, :, [2, 1, 0]]
     image_h = pil_img.height
@@ -149,7 +149,7 @@ def vis_image(json_obj, output_folder):
         output_path = os.path.join(output_folder, file_key_name) 
         
         imshow(new_image, file_name= output_path, caption=caption)
-    except:
+    except Exception:
         # Out of (supported formats: eps, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff, webp)
         return 
 

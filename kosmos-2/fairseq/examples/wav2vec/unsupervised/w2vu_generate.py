@@ -694,7 +694,7 @@ def cli_main():
         from hydra._internal.utils import get_args
 
         cfg_name = get_args().config_name or "config"
-    except:
+    except Exception:
         logger.warning("Failed to get config name from hydra args")
         cfg_name = "config"
 

@@ -16,7 +16,7 @@ def grab(line):
     uid, split, line = line
     try:
         caption, url = line.split("\t")[:2]
-    except:
+    except Exception:
         print("Parse error")
         return
 
@@ -48,7 +48,7 @@ def grab(line):
 
             print("Success", o.shape, uid, url)
             return uid, caption, url
-        except:
+        except Exception:
             print("Failed", uid, url)
             
     except Exception as e:

@@ -13,7 +13,7 @@ import torch.utils.data
 from transformers.file_utils import WEIGHTS_NAME
 try:
     import lmdb
-except:
+except Exception:
     pass
 
 OPTIM_NAME = "optimizer.bin"

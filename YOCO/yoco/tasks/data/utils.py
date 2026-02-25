@@ -235,7 +235,7 @@ class RawArrayDataset(FairseqDataset):
         else:
             try:
                 self._sizes = np.array([len(x) for x in self.dataset])
-            except:
+            except Exception:
                 self._sizes =  np.array([1 for x in self.dataset])
 
     def __getitem__(self, index):

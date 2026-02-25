@@ -200,7 +200,7 @@ class eval:
                     resToCell = cell_mapping[ar.toText]
                     # make a mapped adjacency relation
                     lMappedAR.append(AdjRelation(resFromCell, resToCell, ar.direction))
-                except:
+                except Exception:
                     # no mapping is possible
                     pass
 
@@ -321,7 +321,7 @@ def calc_table_score(result_path):
 
             correct_nine += each_file.result[3].truePos
             res_nine += each_file.result[3].resTotal
-        except:
+        except Exception:
             print("Error occur in processing result list.")
             print(each_file.result[-1])
             break

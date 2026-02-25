@@ -240,7 +240,7 @@ class RvlcdipDatasetFolder(VisionDataset):
             samples = [(line.split()[0], int(line.split()[1])) for line in labels]
         try:
             assert len(samples) > 0 and os.path.exists(os.path.join(self.root, "images", samples[0][0]))
-        except:
+        except Exception:
             msg = "Found 0 files in subfolders of: {}\n".format(self.root)
             msg += "Expected first file: {}".format(os.path.join(self.root, "images", samples[0][0]))
             raise RuntimeError(msg)

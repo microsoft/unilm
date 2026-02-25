@@ -1095,14 +1095,14 @@ def get_div_func():
         div_func = partial(torch.div, rounding_mode='floor')
         y = div_func(x, 4)
         return div_func
-    except:
+    except Exception:
         pass
     try:
         # for pytorch 1.6 & 1.7
         div_func = torch.floor_divide
         y = div_func(x, 4)
         return div_func
-    except:
+    except Exception:
         pass
 
     div_func = torch.div

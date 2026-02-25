@@ -285,7 +285,7 @@ def run_test(in_outs: Dict = None, test: str = None, debug: bool = False, return
 
         try:
             method = getattr(tmp, method_name)  # get_attr second arg must be str
-        except:
+        except Exception:
             signal.alarm(0)
             e = sys.exc_info()
             print(f"unable to get function error = {e}")
@@ -301,17 +301,17 @@ def run_test(in_outs: Dict = None, test: str = None, debug: bool = False, return
             try:
                 if isinstance(inputs[0], dict):
                     inputs = [{int(k): v for k, v in inputs[0].items()}]
-            except:
+            except Exception:
                 True
             try:
                 if isinstance(in_outs["outputs"][index], dict):
                     in_outs["outputs"][index] = [{int(k): v for k, v in in_outs["outputs"][index].items()}]
-            except:
+            except Exception:
                 True
             try:
                 if isinstance(in_outs["outputs"][index][0], dict):
                     in_outs["outputs"][index] = [{int(k): v for k, v in in_outs["outputs"][index][0].items()}]
-            except:
+            except Exception:
                 True
 
             if debug:
@@ -337,7 +337,7 @@ def run_test(in_outs: Dict = None, test: str = None, debug: bool = False, return
                     try:
                         if isinstance(output[0], tuple):
                             tmp_result = tmp_result or ([list(x) for x in output] == in_outs["outputs"][index][0])
-                    except:
+                    except Exception:
                         True
                     results.append(tmp_result)
                     if return_output:
@@ -692,7 +692,7 @@ def run_inference(in_outs: Dict = None, test: str = None, debug: bool = False, r
 
         try:
             method = getattr(tmp, method_name)  # get_attr second arg must be str
-        except:
+        except Exception:
             signal.alarm(0)
             e = sys.exc_info()
             print(f"unable to get function error = {e}")
@@ -708,19 +708,19 @@ def run_inference(in_outs: Dict = None, test: str = None, debug: bool = False, r
             try:
                 if isinstance(inputs[0], dict):
                     inputs = [{int(k): v for k, v in inputs[0].items()}]
-            except:
+            except Exception:
                 pass
 
             # try:
             #     if isinstance(in_outs["outputs"][index], dict):
             #         in_outs["outputs"][index] = [{int(k): v for k, v in in_outs["outputs"][index].items()}]
-            # except:
+            # except Exception:
             #     pass
 
             # try:
             #     if isinstance(in_outs["outputs"][index][0], dict):
             #         in_outs["outputs"][index] = [{int(k): v for k, v in in_outs["outputs"][index][0].items()}]
-            # except:
+            # except Exception:
             #     pass
 
             if debug:
@@ -745,7 +745,7 @@ def run_inference(in_outs: Dict = None, test: str = None, debug: bool = False, r
                         if isinstance(output[0], tuple):
                             # tmp_result = tmp_result or ([list(x) for x in output] == in_outs["outputs"][index][0])
                             output = [list(x) for x in output]
-                    except:
+                    except Exception:
                         pass
 
                     # results.append(tmp_result)
@@ -1128,7 +1128,7 @@ def main():
         question = apps[i]['question']
         try:
             tests = json.loads(apps[i]['input_output'])
-        except:
+        except Exception:
             tests = {"inputs": [], "outputs": []}
         solution = json.loads(apps[i]['solutions'])[solution_index]
         starter_code = apps[i]['starter_code']
@@ -1152,7 +1152,7 @@ def main():
                     if solution_index >= len(eval(apps[i]['solutions'])):
                         solution_indices.append(-1)
                         break
-            except:
+            except Exception:
                 solution_index += 1
                 if solution_index >= len(eval(apps[i]['solutions'])):
                     solution_indices.append(-1)

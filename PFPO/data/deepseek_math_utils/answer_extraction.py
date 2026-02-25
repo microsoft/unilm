@@ -15,7 +15,7 @@ def _fix_fracs(string):
             else:
                 try:
                     assert len(substr) >= 2
-                except:
+                except Exception:
                     return string
                 a = substr[0]
                 b = substr[1]
@@ -48,7 +48,7 @@ def _fix_a_slash_b(string):
         assert string == "{}/{}".format(a, b)
         new_string = "\\frac{" + str(a) + "}{" + str(b) + "}"
         return new_string
-    except:
+    except Exception:
         return string
 
 
@@ -346,7 +346,7 @@ def extract_cmath_few_shot_test(question, reasoning, task):
         ans = ans.strip("。")
         try:
             ans = [s for s in regex.findall(r'-?\d+\.?\d*', ans)][-1]
-        except:
+        except Exception:
             print(f"DEBUG CMATH: {reasoning}", flush=True)
             ans = "[invalid]"
     else:

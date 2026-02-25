@@ -11,7 +11,7 @@ from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.utils import get_root_logger
 try:
     import apex
-except:
+except Exception:
     print('apex is not installed')
 
 

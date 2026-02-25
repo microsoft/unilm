@@ -116,7 +116,7 @@ def main():
         if isinstance(item["completion"], str):
             try:
                 item["completion"] = json.loads(item["completion"])
-            except:
+            except Exception:
                 # print(f"Parsing error: {item['completion']}")
                 parsing_error += 1
         if isinstance(item["completion"], dict):

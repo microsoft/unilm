@@ -28,7 +28,7 @@ LORA_TARGET_MODULES = [
 
 try:
     import bitsandbytes as bnb
-except:
+except Exception:
     bnb = None
 
 

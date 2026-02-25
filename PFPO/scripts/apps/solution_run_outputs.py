@@ -84,7 +84,7 @@ def _worker(item):
             json.dumps(outputs)
             all_outputs.append(outputs)
             all_errors.append(errors)
-        except:
+        except Exception:
             print(f"Cannot dump outputs for {outputs}")
             all_outputs.append([])
             all_errors.append([])

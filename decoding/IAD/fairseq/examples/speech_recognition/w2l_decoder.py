@@ -37,7 +37,7 @@ try:
         Trie,
         LexiconDecoder,
     )
-except:
+except Exception:
     warnings.warn(
         "flashlight python bindings are required to use this functionality. Please install from https://github.com/facebookresearch/flashlight/tree/master/bindings/python"
     )

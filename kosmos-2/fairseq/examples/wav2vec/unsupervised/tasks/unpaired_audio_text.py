@@ -264,7 +264,7 @@ class UnpairedAudioText(FairseqTask):
 
         try:
             world_size = get_data_parallel_world_size()
-        except:
+        except Exception:
             world_size = 1
 
         logging_output = {

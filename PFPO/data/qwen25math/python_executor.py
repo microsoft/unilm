@@ -132,7 +132,7 @@ class PythonExecutor:
             report = "Done"
             str(result)
             pickle.dumps(result) # serialization check
-        except:
+        except Exception:
             result = ''
             report = traceback.format_exc().split('\n')[-2]
         return result, report

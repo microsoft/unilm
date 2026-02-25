@@ -50,7 +50,7 @@ def main(args):
     try:
         from fairseq.dataclass.utils import convert_namespace_to_omegaconf
         args = convert_namespace_to_omegaconf(args)
-    except:
+    except Exception:
         pass
 
     # if args.max_tokens is None and args.max_sentences is None:

@@ -183,7 +183,7 @@ class NoisedDataGenerator(object):
                 line = line.strip()
                 try:
                     src, tgt = line.split("\t")
-                except:
+                except Exception:
                     src, tgt = line.split(" ")
                 if src not in self.lang2dict[lang]:
                     self.lang2dict[lang][src] = [tgt]

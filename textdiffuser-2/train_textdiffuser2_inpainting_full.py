@@ -808,7 +808,7 @@ def main():
 
             try:
                 caption = open(f'{args.dataset_path}/{first}/{second}/caption.txt').readlines()[0]
-            except:
+            except Exception:
                 caption = 'null'
                 print('erorr of caption')
             caption_ids = tokenizer(

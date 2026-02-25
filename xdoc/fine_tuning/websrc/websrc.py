@@ -151,7 +151,7 @@ class StrucDataset(Dataset):
                     try:
                         xx = node_pairs_lengths[x_tid4nid]
                         # x_tid4nid in valid tid list, or == -1
-                    except:
+                    except Exception:
                         # x_tid4nid out of bound, like `question`, `sep` or `cls`
                         xx = node_pairs_lengths[-1]
                         x_tid4nid=-1
@@ -159,7 +159,7 @@ class StrucDataset(Dataset):
                     try:
                         dis = xx[x_tid4anid]
                         # x_tid4anid in valid tid list, or == -1
-                    except:
+                    except Exception:
                         # x_tid4nid out of bound, like `question`, `sep` or `cls`
                         dis = xx[-1]
                         x_tid4anid = -1

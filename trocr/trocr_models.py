@@ -28,7 +28,7 @@ from fairseq.dataclass.utils import convert_namespace_to_omegaconf
 
 try:
     from .unilm_models import UniLMDecoder
-except:
+except Exception:
     from unilm_models import UniLMDecoder
 
 @register_model('DeiT_TR')

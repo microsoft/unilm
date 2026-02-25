@@ -113,7 +113,7 @@ class RefExpEvaluatorFromTxt(object):
             for k in self.k:
                 try:
                     value[k] /= dataset2count[key]
-                except:
+                except Exception:
                     pass
                 
         results = {}

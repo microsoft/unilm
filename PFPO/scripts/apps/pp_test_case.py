@@ -112,7 +112,7 @@ def main():
                 res = run_test(item["gen_test_cases"], solution)
                 pass_num = sum([1 for item in res if item is True])
                 cnt += pass_num
-            except:
+            except Exception:
                 pass
             num_program += 1
 

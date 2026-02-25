@@ -12,7 +12,7 @@ from mmcv.runner.checkpoint import weights_to_cpu, get_state_dict
 
 try:
     import apex
-except:
+except Exception:
     print('apex is not installed')
 
 

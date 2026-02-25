@@ -94,7 +94,7 @@ def main():
                 res = check_correctness(_cases, solution, timeout=10, debug=False)
                 pass_num = sum([1 for item in res if item is True])
                 problem_pass_cnt[item["problem_id"]] += pass_num
-            except:
+            except Exception:
                 pass
 
     print(difficulty_cnt)

@@ -116,13 +116,13 @@ class Underline(torch.nn.Module):
             y1 = max(black_pixels[0])
             x0 = min(black_pixels[1])
             x1 = max(black_pixels[1])
-        except:
+        except Exception:
             return img
         for x in range(x0, x1):
             for y in range(y1, y1-3, -1):
                 try:
                     img.putpixel((x, y), (0, 0, 0))
-                except:
+                except Exception:
                     continue
         return img
 

@@ -72,7 +72,7 @@ def main():
             for line in lines:
                 try:
                     item = json.loads(line)
-                except:
+                except Exception:
                     print(f"Cannot load {line}")
                     cnt += 1
                     pass
