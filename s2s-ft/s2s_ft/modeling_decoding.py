@@ -576,7 +576,7 @@ class BertEncoder(nn.Module):
     def forward(self, hidden_states, attention_mask, output_all_encoded_layers=True, 
                 prev_embedding=None, prev_encoded_layers=None, mask_qkv=None, 
                 seg_ids=None, key_history=None, value_history=None, rel_pos=None):
-        # history embedding and encoded layer must be simultanously given
+        # history embedding and encoded layer must be simultaneously given
         assert (prev_embedding is None) == (prev_encoded_layers is None)
 
         all_encoder_layers = []
