@@ -6,6 +6,6 @@ transformers[sentencepiece]==4.10.2
 lxml==4.9.1
 absl-py==0.12.0
 tqdm==4.62.3
-networkx==2.3
+networkx==2.6
 tensorboardX==1.8
 bs4==0.0.1
