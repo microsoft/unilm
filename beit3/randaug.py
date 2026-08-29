@@ -123,7 +123,7 @@ def brightness_func(img, factor):
     '''
         same output as PIL.ImageEnhance.Contrast
     '''
-    table = (np.arange(256, dtype=np.float32) * factor).clip(0, 255).astype(np.uint8)
+    table = (np.arange(256, dtype=float) * factor).clip(0, 255).astype(np.uint8)
     out = table[img]
     return out
 
@@ -133,7 +133,7 @@ def sharpness_func(img, factor):
     The differences the this result and PIL are all on the 4 boundaries, the center
     areas are same
     '''
-    kernel = np.ones((3, 3), dtype=np.float32)
+    kernel = np.ones((3, 3), dtype=float)
     kernel[1][1] = 5
     kernel /= 13
     degenerate = cv2.filter2D(img, -1, kernel)
@@ -142,8 +142,8 @@ def sharpness_func(img, factor):
     elif factor == 1.0:
         out = img
     else:
-        out = img.astype(np.float32)
-        degenerate = degenerate.astype(np.float32)[1:-1, 1:-1, :]
+        out = img.astype(float)
+        degenerate = degenerate.astype(float)[1:-1, 1:-1, :]
         out[1:-1, 1:-1, :] = degenerate + factor * (out[1:-1, 1:-1, :] - degenerate)
         out = out.astype(np.uint8)
     return out
