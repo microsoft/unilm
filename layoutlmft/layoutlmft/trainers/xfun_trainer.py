@@ -91,7 +91,7 @@ class XfunReTrainer(FunsdTrainer):
         re_labels = None
         pred_relations = None
         entities = None
-        for step, inputs in enumerate(dataloader):
+        for inputs in dataloader:
             outputs, labels = self.prediction_step(model, inputs, prediction_loss_only, ignore_keys=ignore_keys)
             re_labels = labels[1] if re_labels is None else re_labels + labels[1]
             pred_relations = (
@@ -105,8 +105,7 @@ class XfunReTrainer(FunsdTrainer):
         for b in range(len(re_labels)):
             rel_sent = []
             for head, tail in zip(re_labels[b]["head"], re_labels[b]["tail"]):
-                rel = {}
-                rel["head_id"] = head
+                rel = {'head_id': head}
                 rel["head"] = (entities[b]["start"][rel["head_id"]], entities[b]["end"][rel["head_id"]])
                 rel["head_type"] = entities[b]["label"][rel["head_id"]]
 
