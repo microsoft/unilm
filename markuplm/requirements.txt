@@ -5,7 +5,7 @@ torch==1.7.1+cu110
 transformers[sentencepiece]==4.10.2
 lxml==4.9.1
 absl-py==0.12.0
-tqdm==4.62.3
+tqdm==4.66.3
 networkx==2.3
 tensorboardX==1.8
 bs4==0.0.1
