@@ -15,7 +15,7 @@ python ./dit/object_detection/inference.py \
 --image_path ./dit/object_detection/publaynet_example.jpeg \
 --output_file_name output.jpg \
 --config ./dit/object_detection/publaynet_configs/maskrcnn/maskrcnn_dit_base.yaml \
---opts MODEL.WEIGHTS https://layoutlm.blob.core.windows.net/dit/dit-fts/publaynet_dit-b_mrcnn.pth \
+--opts MODEL.WEIGHTS https://layoutlm.blob.core.windows.net/dit/dit-fts/publaynet_dit-b_mrcnn.pth?sv=2022-11-02&ss=b&srt=o&sp=r&se=2033-06-08T16:48:15Z&st=2023-06-08T08:48:15Z&spr=https&sig=a9VXrihTzbWyVfaIDlIT1Z0FoR1073VB0RLQUMuudD4%3D
 ```
 
 Make sure that the configuration file (YAML) and PyTorch checkpoint match. The example above uses DiT-base with the Mask R-CNN framework fine-tuned on PubLayNet.
