@@ -10,9 +10,12 @@ conda create --name layoutlmv3 python=3.7
 conda activate layoutlmv3
 git clone https://github.com/microsoft/unilm.git
 cd unilm/layoutlmv3
-pip install -r requirements.txt
+
 # install pytorch, torchvision refer to https://pytorch.org/get-started/locally/
 pip install torch==1.10.0+cu111 torchvision==0.11.1+cu111 -f https://download.pytorch.org/whl/torch_stable.html
+
+pip install -r requirements.txt
+
 # install detectron2 refer to https://detectron2.readthedocs.io/en/latest/tutorials/install.html
 python -m pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.10/index.html
 pip install -e .
