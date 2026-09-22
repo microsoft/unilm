@@ -31,7 +31,7 @@ h11==0.14.0
 httpcore==1.0.2
 httpx==0.25.2
 huggingface-hub==0.19.4
-idna==3.6
+idna==3.7
 importlib-metadata==7.0.0
 importlib-resources==6.1.1
 Jinja2==3.1.2
