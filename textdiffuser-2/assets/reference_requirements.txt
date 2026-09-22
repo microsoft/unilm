@@ -25,7 +25,7 @@ fonttools==4.46.0
 frozenlist==1.4.0
 fschat==0.2.26
 fsspec==2023.12.0
-gradio==3.50.2
+gradio==4.37.1
 gradio_client==0.6.1
 h11==0.14.0
 httpcore==1.0.2
