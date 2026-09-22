@@ -119,7 +119,7 @@ transformers==4.28.1
 triton==2.0.0
 typing_extensions==4.8.0
 tzdata==2023.3
-urllib3==2.1.0
+urllib3==2.2.2
 uvicorn==0.24.0.post1
 wavedrom==2.0.3.post3
 wcwidth==0.2.12
