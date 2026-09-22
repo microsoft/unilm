@@ -1,5 +1,9 @@
 <!--# Large-scale Self-supervised Pre-training Across Tasks, Languages, and Modalities-->
 ## [aka.ms/GeneralAI](https://aka.ms/GeneralAI)
+
+<p align="center">
+  <b>English</b> · <a href="README.zh.md">简体中文</a>
+</p>
 # Hiring
 We are hiring at all levels (including FTE researchers and interns)! If you are interested in working with us on Foundation Models (aka large-scale pre-trained models) and General AI, NLP, MT, Speech, Document AI and Multimodal AI, please send your resume to <a href="mailto:fuwei@microsoft.com" class="x-hidden-focus">fuwei@microsoft.com</a>.
 
