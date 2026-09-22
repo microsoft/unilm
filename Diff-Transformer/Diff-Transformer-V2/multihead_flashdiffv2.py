@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 from typing import Optional, Tuple
-from ..kernel.rotary import apply_rotary_emb
+from kernel.rotary import apply_rotary_emb
 from flash_attn import flash_attn_func
 
 
