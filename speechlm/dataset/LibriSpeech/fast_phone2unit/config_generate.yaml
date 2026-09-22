@@ -9,5 +9,5 @@ features:
   sample_rate: 16000
 sample_rate: 16000
 vocab_filename: dict.km.txt
-src_vocab_filename: dict.PHN.txt
+src_vocab_filename: dict.phn_2.txt
 
