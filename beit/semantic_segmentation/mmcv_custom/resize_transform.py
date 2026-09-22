@@ -196,7 +196,7 @@ class SETR_Resize(object):
             img, w_scale, h_scale = mmcv.imresize(
                 results['img'], results['scale'], return_scale=True)
         scale_factor = np.array([w_scale, h_scale, w_scale, h_scale],
-                                dtype=np.float32)
+                                dtype=float)
         results['img'] = img
         results['img_shape'] = img.shape
         results['pad_shape'] = img.shape  # in case that there is no padding

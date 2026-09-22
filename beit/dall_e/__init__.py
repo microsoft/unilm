@@ -12,7 +12,7 @@ def load_model(path: str, device: torch.device = None) -> nn.Module:
         resp.raise_for_status()
             
         with io.BytesIO(resp.content) as buf:
-            return torch.load(buf, map_location=device)
+            return torch.load(buf, map_location=device, weights_only=False)
     else:
         with open(path, 'rb') as f:
-            return torch.load(f, map_location=device)
+            return torch.load(f, map_location=device, weights_only=False)
