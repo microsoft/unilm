@@ -1,7 +1,7 @@
 pytorch_lightning==1.5.5
 transformers==4.8.1
 Pillow==8.3.1
-tqdm==4.53.0
+tqdm==4.66.3
 ipdb==0.13.7
 einops==0.3.0
 pyarrow==2.0.0
