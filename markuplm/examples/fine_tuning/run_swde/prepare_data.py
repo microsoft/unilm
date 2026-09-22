@@ -31,7 +31,7 @@ from absl import app
 from absl import flags
 import lxml
 from lxml import etree
-from lxml.html.clean import Cleaner
+from lxml_html_clean import Cleaner
 from tqdm import tqdm
 
 import constants
@@ -51,6 +51,7 @@ flags.DEFINE_string(
     "The path of the output file containing both the input sequences and "
     "output sequences of the sequence tagging version of swde dataset.")
 
+FLAGS(sys.argv) # unknown flag error will be raised if the flags are not set correctly.
 
 def clean_spaces(text):
     r"""Clean extra spaces in a string.

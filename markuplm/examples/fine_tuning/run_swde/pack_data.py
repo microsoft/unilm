@@ -46,6 +46,7 @@ flags.DEFINE_string("output_pack_path", "",
 flags.DEFINE_integer("first_n_pages", -1,
                      "The cut-off number to shorten the number of pages.")
 
+FLAGS(sys.argv) # unknown flag error will be raised if the flags are not set correctly.
 
 def pack_swde_data(swde_path, pack_path, cut_off):
     """Packs the swde dataset to a single file.
@@ -77,6 +78,9 @@ def pack_swde_data(swde_path, pack_path, cut_off):
     print("Start loading data...")
     for v in vertical_to_websites_map:
         for w in os.listdir(os.path.join(swde_path, v)):
+            # if is .DS_Store continue, o.w. causes an error in mac
+            if ".DS_Store" in w:
+                continue
             page_count = 0
             filenames = os.listdir(os.path.join(swde_path, v, w))
             filenames.sort()
