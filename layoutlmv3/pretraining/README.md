@@ -38,15 +38,23 @@ python scripts/finetune_funsd.py --task funsd --model runs/base/backbone --seeds
 ```
 
 `python scripts/pretrain.py --help` lists every option. The main ones:
-- `--corpus funsd|idl`
-- `--image_tokenizer kmeans|dalle`
+- `--corpus hf|idl`: a small Hugging Face dataset with words and boxes (default: FUNSD train) or IDL pages streamed shard by shard
+- `--image_tokenizer kmeans|dalle`: MIM targets from a k-means patch codebook fitted on the training images (default) or the DALL-E dVAE
 - `--wpa_head mlp|linear`
-- `--head_warmup_steps`
+- `--head_warmup_steps` / `--head_lr`: train only the new heads, with the encoder frozen, before joint training
 - `--layer_decay`
+- `--random_init`: the released config with random weights (the from-scratch comparison above)
 - `--state_every` / `--resume`
-- `--idl_orientation`: IDL frames stored rotated relative to their OCR boxes are fixed by default.
+- `--idl_orientation fix|drop|off`: IDL frames stored rotated relative to their OCR boxes are fixed by default.
 
-`backbone/` loads directly into `LayoutLMv3ForTokenClassification` and the other LayoutLMv3 task models.
+`output_dir/backbone/` holds the encoder with the lowest validation loss and loads directly into `LayoutLMv3ForTokenClassification` and the other LayoutLMv3 task models. `pretraining_heads.pt` holds the matching heads, `log.json` the validation metrics and `run_info.json` the arguments and corpus details.
+
+## Files
+
+- `src/layoutlmv3_pretraining/`: `modeling.py` (model and heads), `masking.py` (span, blockwise and WPA labels), `data.py` (collator), `corpus.py` (IDL reader), `image_tokenizer.py` (k-means) and `dvae.py` (DALL-E dVAE encoder)
+- `scripts/pretrain.py`: continued pre-training
+- `scripts/finetune_funsd.py`: FUNSD / CORD fine-tuning and entity F1
+- `tests/`: unit tests (CPU only)
 
 ## Differences from the paper
 

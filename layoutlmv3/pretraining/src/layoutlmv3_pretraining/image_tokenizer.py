@@ -2,8 +2,8 @@
 
 The LayoutLMv3 paper reconstructs discrete visual tokens produced by a dVAE
 image tokenizer trained on documents (from DiT). That tokenizer's weights are
-not distributed with the paper's release, so this module defines a small
-interface and a dependency-free default:
+not released, so this module defines a small interface and a default that
+needs no external weights:
 
 * ``KMeansPatchTokenizer`` - a k-means codebook over down-sampled grey-scale
   patches, fitted on your own document images. It is far simpler than a dVAE,
@@ -37,9 +37,8 @@ class KMeansPatchTokenizer:
         grey = pixel_values.float().mean(dim=1, keepdim=True)                  # B,1,H,W
         small = F.avg_pool2d(grey, kernel_size=patch_size // pool)             # B,1,H/4,W/4
         b, _, h, w = small.shape
-        g = patch_size // (patch_size // pool)                                 # = pool
-        x = small.reshape(b, h // g, g, w // g, g).permute(0, 1, 3, 2, 4)      # B,gh,gw,g,g
-        return x.reshape(b, (h // g) * (w // g), g * g)
+        x = small.reshape(b, h // pool, pool, w // pool, pool).permute(0, 1, 3, 2, 4)  # B,gh,gw,pool,pool
+        return x.reshape(b, (h // pool) * (w // pool), pool * pool)
 
     @torch.no_grad()
     def encode(self, pixel_values: torch.Tensor) -> torch.Tensor:

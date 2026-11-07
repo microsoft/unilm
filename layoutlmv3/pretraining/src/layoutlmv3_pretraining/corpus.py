@@ -166,15 +166,14 @@ class NgramBlocklist:
 def idl_pages(sample: dict[str, bytes], max_pages_per_doc: int = 2, min_words: int = 10,
               min_score: float = 0.5, max_words: int = 512, decode_images: bool = True,
               exclude: Callable[[list[str]], bool] | None = None, image_size: int = 448,
-              orientation: str = "fix", stats: dict | None = None) -> Iterator[dict]:
+              orientation: str = "fix") -> Iterator[dict]:
     """Yield ``{"key", "image", "tokens", "bboxes", "rotation"}`` for the first pages of one IDL document.
 
     ``image`` is a greyscale (``L``) PIL image. ``orientation`` handles frames stored turned relative to their OCR
     boxes (``page_orientation``): ``"fix"`` turns 90/270-degree pages upright and drops 180-degree and ambiguous
     ones (for 180 degrees it cannot tell cheaply whether the image or the boxes are upside down), ``"drop"`` drops
-    every turned or ambiguous page, ``"off"`` keeps the stored frame (the behaviour before the fix). It needs the
-    images, so with ``decode_images=False`` nothing is checked and counts are upper bounds. Dropped and turned
-    pages are counted in ``stats`` if given.
+    every turned or ambiguous page, ``"off"`` keeps the stored frame. It needs the images, so with
+    ``decode_images=False`` nothing is checked.
     """
     if orientation not in ORIENTATION_MODES:
         raise ValueError(f"orientation must be one of {ORIENTATION_MODES}")
@@ -212,16 +211,10 @@ def idl_pages(sample: dict[str, bytes], max_pages_per_doc: int = 2, min_words: i
                 continue
             if orientation != "off":
                 k = page_orientation(image, boxes)
-                reason = ("ambiguous" if k is None else "rotated_180" if k == 2
-                          else f"rotated_{90 * k}" if k and orientation == "drop" else None)
-                if reason is not None:
-                    if stats is not None:
-                        stats[f"dropped_{reason}"] = stats.get(f"dropped_{reason}", 0) + 1
+                if k is None or k == 2 or (k and orientation == "drop"):
                     continue
                 if k:
                     image, rotation = image.transpose(_TRANSPOSE[k]), 90 * k
-                    if stats is not None:
-                        stats[f"turned_{rotation}"] = stats.get(f"turned_{rotation}", 0) + 1
         kept += 1
         yield {"key": f"{sample['__key__']}/{i}", "image": image, "tokens": words, "bboxes": boxes,
                "rotation": rotation}
@@ -284,7 +277,7 @@ class IDLPages(IterableDataset):
             return self.sources[wid::nw], 1, 0, quota
         return self.sources, nw, wid, quota
 
-    def raw_pages(self, decode_images: bool = True, stats: dict | None = None) -> Iterator[dict]:
+    def raw_pages(self, decode_images: bool = True) -> Iterator[dict]:
         """One pass over this worker's share of the corpus (no processor, no shuffling)."""
         sources, stride, offset, quota = self._worker_split()
         n = 0
@@ -297,7 +290,7 @@ class IDLPages(IterableDataset):
                         continue
                     for page in idl_pages(sample, self.max_pages_per_doc, self.min_words, self.min_score,
                                           decode_images=decode_images, exclude=self.exclude,
-                                          orientation=self.orientation, stats=stats):
+                                          orientation=self.orientation):
                         yield page
                         n += 1
                         if quota is not None and n >= quota:

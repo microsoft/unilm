@@ -35,25 +35,26 @@ class PretrainingCollator:
     and with DataLoader worker processes).
 
     Random masks: every DataLoader worker gets a copy of the collator, so the random generators are created lazily,
-    in the process that uses them. In the main process they are seeded with ``seed`` (an int seed gives the same
-    masks as before this was lazy; validation batches are collated there), in worker ``w`` with ``(seed, w)``, so
-    workers draw different masks and a run is still reproducible. ``seed`` may be an int, a sequence of ints
-    (e.g. ``(seed, resume_step)``) or None (fresh entropy).
+    in the process that uses them. In the main process (where validation batches are collated) an int ``seed``
+    seeds them directly; worker ``w`` uses ``(seed, w)``, so workers draw different masks and a run stays
+    reproducible. ``seed`` may be an int, a sequence of ints (e.g. ``(seed, resume_step)``) or None (fresh entropy).
     """
+
+    _UNSEEDED = object()
 
     def __init__(self, tokenizer, image_tokenizer=None, mlm_ratio: float = 0.3, mim_ratio: float = 0.4,
                  poisson_lambda: float = 3.0, grid: int = 14, seed: int | Sequence[int] | None = None):
         self.tok, self.img_tok = tokenizer, image_tokenizer
         self.mlm_ratio, self.mim_ratio, self.lam, self.grid = mlm_ratio, mim_ratio, poisson_lambda, grid
         self.seed = seed
-        self._rng_owner = None
+        self._rng_owner = self._UNSEEDED
 
     def _seed_rngs(self) -> None:
         info = get_worker_info()
-        owner = info.id if info is not None else None
-        if self._rng_owner == ("set", owner):
+        owner = info.id if info is not None else None        # None: the main process
+        if self._rng_owner is not self._UNSEEDED and self._rng_owner == owner:
             return
-        self._rng_owner = ("set", owner)
+        self._rng_owner = owner
         if self.seed is None:
             self.np_rng, self.py_rng = np.random.default_rng(), random.Random()
             return
@@ -74,10 +75,10 @@ class PretrainingCollator:
         mlm_labels = torch.full_like(input_ids, -100)
         wpa = torch.full_like(input_ids, -100)
         image_masks = []
-        special_ids = set(self.tok.all_special_ids)
+        special_ids = torch.tensor(sorted(self.tok.all_special_ids))
         for b in range(input_ids.shape[0]):
             ids = batch["input_ids"][b]
-            special = torch.tensor([int(i) in special_ids for i in ids.tolist()])
+            special = torch.isin(ids, special_ids)
             cand = torch.nonzero(~special).flatten().tolist()
             masked = span_mask(cand, self.mlm_ratio, self.lam, self.np_rng)
             text_mask = torch.zeros(len(ids), dtype=torch.bool)

@@ -14,7 +14,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import time
 
 import numpy as np
@@ -23,14 +22,13 @@ from datasets import ClassLabel, Features, Sequence, Value, load_dataset
 from datasets import Image as ImageFeature
 from seqeval.metrics import f1_score
 from torch.utils.data import DataLoader
-from layoutlmv3_pretraining.tracking import RunTracker, write_json_atomic
 from transformers import (LayoutLMv3ForTokenClassification, LayoutLMv3Processor,
                           get_linear_schedule_with_warmup)
 
 DEFAULTS = {"funsd": dict(steps=1000, lr=1e-5, batch_size=2), "cord": dict(steps=1000, lr=5e-5, batch_size=4)}
-# --protocol strict / paper: see --help. paper: the LayoutLMv3 paper's settings (Sec. 3.3: 1,000 steps; FUNSD lr 1e-5, batch 16; CORD lr 5e-5,
-# batch 64), labels on the first sub-token of each word only, and words cut off by the 512-token limit scored as
-# missed (predicted "O") instead of being dropped from the evaluation.
+# --protocol paper: the LayoutLMv3 paper's settings (Sec. 3.3: 1,000 steps; FUNSD lr 1e-5, batch 16; CORD lr 5e-5,
+# batch 64). --protocol strict and paper also label only the first sub-token of each word and score the words that
+# the 512-token limit cuts off as missed (predicted "O") instead of dropping them from the evaluation.
 PAPER = {"funsd": dict(steps=1000, lr=1e-5, batch_size=16), "cord": dict(steps=1000, lr=5e-5, batch_size=64)}
 
 
@@ -173,49 +171,31 @@ def main():
     ap.add_argument("--steps", type=int)
     ap.add_argument("--lr", type=float)
     ap.add_argument("--batch_size", type=int)
-    ap.add_argument("--out")
-    ap.add_argument("--protocol", choices=["legacy", "strict", "paper"], default="legacy",
-                    help="legacy: the settings of all results so far; strict: legacy batch sizes with first-sub-token "
-                         "labels and truncated words scored as missed; paper: strict plus the paper's batch sizes (PAPER)")
+    ap.add_argument("--out", help="write the results (per-seed F1, mean, std, curves) to this JSON file")
+    ap.add_argument("--protocol", choices=["default", "strict", "paper"], default="default",
+                    help="default: small batches (FUNSD 2, CORD 4), the processor's labels, truncated words not scored; "
+                         "strict: default batch sizes with first-sub-token labels and truncated words scored as missed; "
+                         "paper: strict with the paper's batch sizes (FUNSD 16, CORD 64)")
     ap.add_argument("--micro_batch", type=int, default=16, help="--protocol paper: per-forward batch (accumulation)")
     ap.add_argument("--eval_at", type=int, nargs="*", default=[],
                     help="also evaluate at these fine-tuning steps (0 = before training) and save the learning curve")
-    ap.add_argument("--tags", nargs="*", default=[], help="free-form tags for experiments/registry.jsonl")
     a = ap.parse_args()
-    base_hp = PAPER if a.protocol == "paper" else DEFAULTS
-    hp = {k: getattr(a, k) if getattr(a, k) is not None else v for k, v in base_hp[a.task].items()}
-    out_dir = os.path.dirname(os.path.abspath(a.out)) if a.out else None
-    with RunTracker(f"finetune_{a.task}", a, tags=a.tags) as tracker:
-        tracker.config.update(task=a.task, model=a.model, seeds=a.seeds, protocol=a.protocol, micro_batch=a.micro_batch, **hp,
-                              dataset="nielsr/funsd-layoutlmv3" if a.task == "funsd" else "naver-clova-ix/cord-v2")
-        tracker.outputs["results"] = os.path.abspath(a.out) if a.out else None
-        res = finetune(a, hp, tracker)
-        tracker.metrics.update({k: res[k] for k in ("f1", "mean", "std", "minutes")})
-    if a.out:  # the full record next to the results file
-        stem = os.path.splitext(os.path.basename(a.out))[0]
-        write_json_atomic(os.path.join(out_dir, "records", f"{stem}.run_record.json"), tracker.record)
-
-
-def finetune(a, hp, tracker):
+    hp = {k: getattr(a, k) if getattr(a, k) is not None else v
+          for k, v in (PAPER if a.protocol == "paper" else DEFAULTS)[a.task].items()}
     device = "cuda" if torch.cuda.is_available() else "cpu"
     ds = load_task(a.task)
     t0 = time.time()
     f1s, curves = [], {}
     for s in a.seeds:
-        f1, curve = run(ds, a.model, s, device=device, eval_at=set(a.eval_at), paper=a.protocol != "legacy",
+        f1, curve = run(ds, a.model, s, device=device, eval_at=set(a.eval_at), paper=a.protocol != "default",
                         micro_batch=a.micro_batch, **hp)
         f1s.append(f1)
         if curve:
             curves[s] = curve
             print(json.dumps({"seed": s, "curve": curve}), flush=True)
-            for point in curve:  # W&B steps must increase, so the fine-tuning step is logged as a metric
-                tracker.log({"seed": s, "finetune_step": point["step"],
-                             **{f"curve/{k}": v for k, v in point.items() if k != "step" and v is not None}})
-        tracker.log({"seed": s, f"{a.task}/f1": f1})
-        tracker.metrics.setdefault("per_seed", {})[s] = round(f1s[-1], 4)
-        print(json.dumps({"seed": s, "f1": round(f1s[-1], 4)}), flush=True)
-    res = {"task": a.task, "model": a.model, "protocol": a.protocol, **hp, "seeds": a.seeds, "f1": [round(f, 4) for f in f1s],
-           "mean": round(float(np.mean(f1s)), 4),
+        print(json.dumps({"seed": s, "f1": round(f1, 4)}), flush=True)
+    res = {"task": a.task, "model": a.model, "protocol": a.protocol, **hp, "seeds": a.seeds,
+           "f1": [round(f, 4) for f in f1s], "mean": round(float(np.mean(f1s)), 4),
            "std": round(float(np.std(f1s, ddof=1)), 4) if len(f1s) > 1 else 0.0,
            "minutes": round((time.time() - t0) / 60, 1)}
     if curves:
@@ -224,7 +204,6 @@ def finetune(a, hp, tracker):
     if a.out:
         with open(a.out, "w") as f:
             json.dump(res, f, indent=1)
-    return res
 
 
 if __name__ == "__main__":

@@ -117,7 +117,7 @@ def test_kmeans_tokenizer_roundtrip(tmp_path):
 def _dalle_weights():
     import os
     from pathlib import Path
-    for p in (os.environ.get("DALLE_ENCODER"), "runs/dalle/encoder.pkl",
+    for p in (os.environ.get("DALLE_ENCODER"),
               Path.home() / ".cache" / "layoutlmv3_pretraining" / "dalle_encoder.pkl"):
         if p and Path(p).exists():
             return str(p)
@@ -294,21 +294,7 @@ def test_from_backbone_random_init_does_not_load_weights(tmp_path):
 
 # ------------------------------------------------------------------ WPA head variants
 
-def test_token_patch_matrix_matches_bbox_to_patches():
-    from layoutlmv3_pretraining.modeling import token_patch_matrix
-    g = torch.Generator().manual_seed(0)
-    x0 = torch.randint(0, 1000, (3, 40), generator=g); y0 = torch.randint(0, 1000, (3, 40), generator=g)
-    x1 = (x0 + torch.randint(-50, 300, (3, 40), generator=g)).clamp(max=1000)
-    y1 = (y0 + torch.randint(-50, 300, (3, 40), generator=g)).clamp(max=1000)
-    bbox = torch.stack([x0, y0, x1, y1], -1)
-    bbox[0, 0] = torch.tensor([0, 0, 0, 0])                                   # e.g. a special token
-    m = token_patch_matrix(bbox)
-    for b in range(3):
-        for t in range(40):
-            assert torch.nonzero(m[b, t]).flatten().tolist() == bbox_to_patches(bbox[b, t].tolist()), (b, t)
-
-
-@pytest.mark.parametrize("variant", ["linear", "mlp", "mlp_patch"])
+@pytest.mark.parametrize("variant", ["linear", "mlp"])
 def test_wpa_head_variants(variant):
     torch.manual_seed(0)
     model = LayoutLMv3ForPreTraining(tiny_config(), image_vocab_size=8, wpa_head=variant)
@@ -323,24 +309,19 @@ def test_wpa_head_variants(variant):
 
 
 def test_wpa_head_default_is_the_papers_two_layer_mlp():
-    """The paper's WPA head is a two-layer MLP; mlp (text token only) is the default everywhere, never mlp_patch."""
+    """The paper's WPA head is a two-layer MLP on the text token; it is the default of the model and the script."""
     import importlib.util
     import pathlib
-    from layoutlmv3_pretraining.modeling import DEFAULT_WPA_HEAD, WPAHead
-    assert DEFAULT_WPA_HEAD == "mlp"
     model = LayoutLMv3ForPreTraining(tiny_config(), image_vocab_size=8)
     assert model.config.wpa_head == "mlp" and model.wpa_head.variant == "mlp"
     assert [type(m).__name__ for m in model.wpa_head.net] == ["Linear", "GELU", "Linear"]
-    assert model.wpa_head.net[0].in_features == tiny_config().hidden_size          # text token only: no patches
+    assert model.wpa_head.net[0].in_features == tiny_config().hidden_size
     path = pathlib.Path(__file__).resolve().parents[1] / "scripts" / "pretrain.py"
     spec = importlib.util.spec_from_file_location("pretrain_script", path)
     pretrain = importlib.util.module_from_spec(spec); spec.loader.exec_module(pretrain)
     assert pretrain.build_parser().parse_args(["--output_dir", "x"]).wpa_head == "mlp"
-    # saved heads identify their variant, including heads saved before WPAHead existed (linear runs)
-    for variant in WPAHead.VARIANTS:
-        heads = LayoutLMv3ForPreTraining(tiny_config(), image_vocab_size=8, wpa_head=variant).state_dict()
-        assert WPAHead.variant_of(heads) == variant
-    assert WPAHead.variant_of({"wpa_head.weight": torch.zeros(2, 32), "wpa_head.bias": torch.zeros(2)}) == "linear"
+    with pytest.raises(ValueError):
+        LayoutLMv3ForPreTraining(tiny_config(), image_vocab_size=8, wpa_head="mlp_patch")
 
 
 def test_save_train_state_roundtrip_is_atomic(tmp_path):
@@ -364,21 +345,6 @@ def test_save_train_state_roundtrip_is_atomic(tmp_path):
     assert state["step"] == 7 and opt2.state_dict()["state"].keys() == opt.state_dict()["state"].keys()
 
 
-def test_wpa_mlp_patch_reads_the_covered_patches():
-    """mlp_patch: a token's logits depend on the hidden states of the patches its box covers, not on others."""
-    from layoutlmv3_pretraining.modeling import WPAHead
-    torch.manual_seed(0)
-    head = WPAHead(tiny_config(), "mlp_patch")
-    text, patches = torch.randn(1, 1, 32), torch.randn(1, 196, 32)
-    bbox = torch.tensor([[[0, 0, 70, 70]]])                                   # the top-left patch only
-    covered = bbox_to_patches(bbox[0, 0].tolist())
-    base = head(text, patches, bbox)
-    other = patches.clone(); other[0, [p for p in range(196) if p not in covered]] += 5.0
-    torch.testing.assert_close(head(text, other, bbox), base)
-    touched = patches.clone(); touched[0, covered] += 5.0
-    assert not torch.allclose(head(text, touched, bbox), base)
-
-
 def test_from_backbone_round_trip_keeps_image_mask_token(tmp_path):
     """A backbone saved by pretrain.py (LayoutLMv3ModelWithImageMask) reloads with its trained [MASK] token."""
     torch.manual_seed(0)
@@ -391,37 +357,6 @@ def test_from_backbone_round_trip_keeps_image_mask_token(tmp_path):
     assert again.loading_info["image_mask_token_from_checkpoint"] is True
     w = "encoder.layer.1.output.dense.weight"
     torch.testing.assert_close(again.layoutlmv3.state_dict()[w], model.layoutlmv3.state_dict()[w])
-
-
-# ------------------------------------------------------------------ screen options
-
-def test_freeze_bottom_layers():
-    model = LayoutLMv3ForPreTraining(tiny_config(), image_vocab_size=8)        # 2 layers
-    model.set_encoder_trainable(True)
-    model.freeze_bottom(1)                                                     # embeddings + layer 0
-    for name, p in model.named_parameters():
-        frozen = name in ("layoutlmv3.embeddings.word_embeddings.weight", "layoutlmv3.patch_embed.proj.weight") \
-            or name.startswith("layoutlmv3.encoder.layer.0.")
-        if frozen:
-            assert not p.requires_grad, name
-        if name.startswith(("layoutlmv3.encoder.layer.1.", "mlm_head.", "mim_head.", "wpa_head.",
-                            "layoutlmv3.encoder.rel_pos")) or name == "layoutlmv3.image_mask_token":
-            assert p.requires_grad, name
-    assert not model.mlm_head.decoder.weight.requires_grad                    # tied to the word embeddings
-
-
-def test_encoder_drift():
-    torch.manual_seed(0)
-    model = LayoutLMv3ForPreTraining(tiny_config(), image_vocab_size=8)
-    ref = model.checkpoint_state()
-    assert "layoutlmv3.image_mask_token" not in ref and not any(k.startswith("mim_head") for k in ref)
-    assert model.encoder_drift(ref)["all"] == 0.0
-    with torch.no_grad():
-        w = model.layoutlmv3.encoder.layer[1].output.dense.weight
-        w.mul_(1.1)                                                            # +10% on one tensor of layer 1
-        model.mim_head[1].weight.add_(1.0)                                     # heads are not counted
-    d = model.encoder_drift(ref)
-    assert d["depth_1"] == 0.0 and d["depth_0"] == 0.0 and 0 < d["depth_2"] < 0.1 and 0 < d["all"] < d["depth_2"]
 
 
 def test_idl_pages_skips_malformed_tiff(monkeypatch):
@@ -455,7 +390,7 @@ def test_idl_pages_skips_malformed_tiff(monkeypatch):
     assert list(corpus.idl_pages(sample)) == []
 
 
-# ------------------------------------------------------------------ data-pipeline fixes (scale-v2)
+# ------------------------------------------------------------------ page orientation and sampling
 
 def _text_page(lines, size=(1000, 1300)):
     """An upright page with 'text' (vertical strokes) inside each 0-1000 line box, and the OCR json page."""
@@ -497,10 +432,8 @@ def test_idl_pages_turns_or_drops_rotated_frames():
     tif = io.BytesIO(); frames[0].save(tif, format="TIFF", save_all=True, append_images=frames[1:])
     sample = {"__key__": "d", "json": json.dumps({"pages": [page] * 4}).encode(), "tif": tif.getvalue()}
 
-    stats = {}
-    fixed = list(idl_pages(sample, max_pages_per_doc=4, stats=stats))
+    fixed = list(idl_pages(sample, max_pages_per_doc=4))
     assert [(p["key"], p["rotation"]) for p in fixed] == [("d/0", 0), ("d/1", 90), ("d/2", 270)]   # 180 dropped
-    assert stats == {"turned_90": 1, "turned_270": 1, "dropped_rotated_180": 1}
     for p in fixed:                                                  # every kept page now fits its boxes as is
         assert p["image"].size[0] < p["image"].size[1] and page_orientation(p["image"], p["bboxes"]) == 0
     assert [p["key"] for p in idl_pages(sample, max_pages_per_doc=4, orientation="drop")] == ["d/0"]
@@ -549,7 +482,7 @@ def test_validation_masks_fixed_in_the_main_process():
     a = PretrainingCollator(_Tok(), None, seed=0)(feats)
     b = PretrainingCollator(_Tok(), None, seed=0)(feats)
     assert torch.equal(a["mlm_labels"], b["mlm_labels"]) and torch.equal(a["bool_masked_pos"], b["bool_masked_pos"])
-    # an int seed in the main process is the same stream as before the per-worker seeding (old validation masks)
+    # an int seed in the main process seeds the generators directly
     expected = span_mask(list(range(1, 63)), 0.3, 3.0, np.random.default_rng(0))
     assert (a["mlm_labels"][0] != -100).nonzero().flatten().tolist() == expected
     assert torch.equal(a["bool_masked_pos"][0], torch.from_numpy(blockwise_mask(14, 14, 0.4, rng=random.Random(0))).reshape(-1))

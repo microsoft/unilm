@@ -59,65 +59,24 @@ class LMHead(nn.Module):
         return self.decoder(self.layer_norm(self.act(self.dense(x))))
 
 
-def token_patch_matrix(bbox: torch.Tensor, grid: int = 14, scale: int = 1000) -> torch.Tensor:
-    """(B, T, grid * grid) bool: which patches each token's 0-1000 box overlaps (vectorised ``bbox_to_patches``)."""
-    x0, y0, x1, y1 = bbox.long().unbind(-1)
-    valid = (x1 > x0) & (y1 > y0)
-    c0, c1 = x0 * grid // scale, ((x1 * grid - 1) // scale).clamp(max=grid - 1)
-    r0, r1 = y0 * grid // scale, ((y1 * grid - 1) // scale).clamp(max=grid - 1)
-    idx = torch.arange(grid, device=bbox.device)
-    cols = (idx >= c0[..., None]) & (idx <= c1[..., None])                  # B, T, grid
-    rows = (idx >= r0[..., None]) & (idx <= r1[..., None])
-    m = rows[..., :, None] & cols[..., None, :] & valid[..., None, None]
-    return m.flatten(-2)
-
-
-DEFAULT_WPA_HEAD = "mlp"
-
-
 class WPAHead(nn.Module):
     """Word-patch alignment classifier (aligned / unaligned) for each text token.
 
-    * ``mlp``       : a two-layer MLP on the text token's hidden state (default; the paper describes WPA with
-                      "a two-layer MLP head")
-    * ``linear``    : a linear layer on the text token's hidden state
-    * ``mlp_patch`` : a two-layer MLP on [text hidden state; mean hidden state of the image patches its box
-                      covers]. **Leaky, do not use for pre-training**: a masked patch's hidden state carries the
-                      image [MASK] embedding, so the head can read the label directly (a random encoder reaches
-                      AUC 1.0). Kept to reproduce that probe. The paper (Sec. 2.3, objective III) only says the
-                      two-layer MLP head "inputs contextual text and image".
+    ``mlp`` (default): the paper's "two-layer MLP head" on the text token's hidden state;
+    ``linear``: a single linear layer.
     """
 
-    VARIANTS = ("linear", "mlp", "mlp_patch")
+    VARIANTS = ("mlp", "linear")
 
-    def __init__(self, config: LayoutLMv3Config, variant: str = DEFAULT_WPA_HEAD):
+    def __init__(self, config: LayoutLMv3Config, variant: str = "mlp"):
         super().__init__()
-        assert variant in self.VARIANTS, variant
+        if variant not in self.VARIANTS:
+            raise ValueError(f"wpa_head must be one of {self.VARIANTS}, got {variant!r}")
         self.variant, d = variant, config.hidden_size
-        if variant == "linear":
-            self.net = nn.Linear(d, 2)
-        else:
-            d_in = 2 * d if variant == "mlp_patch" else d
-            self.net = nn.Sequential(nn.Linear(d_in, d), nn.GELU(), nn.Linear(d, 2))
+        self.net = nn.Linear(d, 2) if variant == "linear" else nn.Sequential(nn.Linear(d, d), nn.GELU(), nn.Linear(d, 2))
 
-    def forward(self, text, patches=None, bbox=None):
-        if self.variant == "mlp_patch":
-            m = token_patch_matrix(bbox, grid=int(round(patches.shape[1] ** 0.5))).type_as(patches)
-            pooled = torch.einsum("btp,bpd->btd", m, patches) / m.sum(-1, keepdim=True).clamp(min=1)
-            text = torch.cat([text, pooled], -1)
+    def forward(self, text):
         return self.net(text)
-
-    @staticmethod
-    def variant_of(state: dict[str, torch.Tensor]) -> str:
-        """The variant that saved head weights (``pretraining_heads.pt``) belong to.
-
-        Heads saved before ``WPAHead`` existed hold the linear layer as ``wpa_head.{weight,bias}``.
-        """
-        if "wpa_head.net.0.weight" in state:
-            w = state["wpa_head.net.0.weight"]
-            return "mlp_patch" if w.shape[1] == 2 * w.shape[0] else "mlp"
-        assert "wpa_head.net.weight" in state or "wpa_head.weight" in state, "no WPA head weights"
-        return "linear"
 
 
 @dataclass
@@ -149,7 +108,7 @@ class LayoutLMv3ForPreTraining(LayoutLMv3PreTrainedModel):
     def __init__(self, config: LayoutLMv3Config, image_vocab_size: int = 512, wpa_head: str | None = None):
         super().__init__(config)
         self.config.image_vocab_size = image_vocab_size
-        self.config.wpa_head = wpa_head or getattr(config, "wpa_head", DEFAULT_WPA_HEAD)
+        self.config.wpa_head = wpa_head or getattr(config, "wpa_head", "mlp")
         self.layoutlmv3 = LayoutLMv3ModelWithImageMask(config)
         self.mlm_head = LMHead(config)
         self.mim_head = nn.Sequential(nn.LayerNorm(config.hidden_size, eps=config.layer_norm_eps),
@@ -160,7 +119,7 @@ class LayoutLMv3ForPreTraining(LayoutLMv3PreTrainedModel):
 
     @classmethod
     def from_backbone(cls, name_or_path: str, image_vocab_size: int = 512,
-                      random_init: bool = False, wpa_head: str = DEFAULT_WPA_HEAD) -> "LayoutLMv3ForPreTraining":
+                      random_init: bool = False, wpa_head: str = "mlp") -> "LayoutLMv3ForPreTraining":
         """Start from a pretrained ``LayoutLMv3Model`` checkpoint (e.g. microsoft/layoutlmv3-base).
 
         The released checkpoints contain only the encoder, so the MLM/MIM/WPA heads (and the image
@@ -173,7 +132,7 @@ class LayoutLMv3ForPreTraining(LayoutLMv3PreTrainedModel):
             model.loading_info = {"random_init": True}
             return model
         backbone, info = LayoutLMv3Model.from_pretrained(name_or_path, output_loading_info=True)
-        # a backbone saved by this repository also holds the image [MASK] token, which LayoutLMv3Model ignores
+        # a backbone saved by this code also holds the image [MASK] token, which LayoutLMv3Model ignores
         own_token = set(info["unexpected_keys"]) == {"image_mask_token"}
         assert not info["missing_keys"] and not info["mismatched_keys"] and (
             own_token or not info["unexpected_keys"]), info
@@ -184,8 +143,8 @@ class LayoutLMv3ForPreTraining(LayoutLMv3PreTrainedModel):
         missing, unexpected = model.layoutlmv3.load_state_dict(state, strict=False)
         assert set(missing) <= {"image_mask_token"} and not unexpected, (missing, unexpected)
         model.mlm_head.decoder.weight = model.layoutlmv3.embeddings.word_embeddings.weight
-        model.loading_info = {"random_init": False, "checkpoint_missing_keys": info["missing_keys"],
-                              "checkpoint_unexpected_keys": info["unexpected_keys"],
+        model.loading_info = {"random_init": False, "checkpoint_missing_keys": sorted(info["missing_keys"]),
+                              "checkpoint_unexpected_keys": sorted(info["unexpected_keys"]),
                               "encoder_keys_loaded": len(backbone.state_dict()),
                               "encoder_keys_not_in_checkpoint": sorted(missing),
                               "image_mask_token_from_checkpoint": own_token}
@@ -206,36 +165,6 @@ class LayoutLMv3ForPreTraining(LayoutLMv3PreTrainedModel):
         new = {id(p) for p in self.new_parameters().values()}
         for p in self.parameters():
             p.requires_grad_(trainable or id(p) in new)
-
-    def freeze_bottom(self, num_layers: int) -> None:
-        """Freeze the embeddings and transformer layers 0 .. num_layers - 1 (depth <= num_layers).
-
-        New parameters (heads, image [MASK] token) and the shared relative-position biases stay as they are.
-        """
-        new = {id(p) for p in self.new_parameters().values()}
-        for name, p in self.named_parameters():
-            if id(p) not in new and self.layer_id(name) <= num_layers:
-                p.requires_grad_(False)
-
-    def checkpoint_state(self) -> dict[str, torch.Tensor]:
-        """CPU copy of every checkpoint (non-new) parameter, e.g. to measure drift later."""
-        new = set(self.new_parameters())
-        return {n: p.detach().float().cpu().clone() for n, p in self.named_parameters() if n not in new}
-
-    def encoder_drift(self, reference: dict[str, torch.Tensor]) -> dict[str, float]:
-        """Relative L2 change ||theta - theta_0|| / ||theta_0|| of the checkpoint parameters, overall and per depth
-        (``depth_0`` = embeddings, ``depth_i`` = layer i - 1, top = shared relative-position biases)."""
-        num, den = {}, {}
-        for name, p in self.named_parameters():
-            if name not in reference:
-                continue
-            ref = reference[name]
-            d = (p.detach().float().cpu() - ref).pow(2).sum().item()
-            r = ref.pow(2).sum().item()
-            for key in ("all", f"depth_{self.layer_id(name)}"):
-                num[key] = num.get(key, 0.0) + d
-                den[key] = den.get(key, 0.0) + r
-        return {k: (num[k] / den[k]) ** 0.5 if den[k] > 0 else 0.0 for k in sorted(num, key=lambda k: (k != "all", len(k), k))}
 
     def layer_id(self, name: str) -> int:
         """BEiT-style depth of a parameter: 0 = embeddings, i + 1 = transformer layer i, L + 1 = top.
@@ -285,8 +214,7 @@ class LayoutLMv3ForPreTraining(LayoutLMv3PreTrainedModel):
         seq = out.last_hidden_state
         t = input_ids.shape[1]
         text, patches = seq[:, :t], seq[:, t + 1:]                       # skip the visual [CLS]
-        mlm_logits, wpa_logits = self.mlm_head(text), self.wpa_head(text, patches, bbox)
-        mim_logits = self.mim_head(patches)
+        mlm_logits, mim_logits, wpa_logits = self.mlm_head(text), self.mim_head(patches), self.wpa_head(text)
 
         losses = {}
         if mlm_labels is not None:
