@@ -25,6 +25,8 @@ pip install -e .
 | layoutlmv3-large | [microsoft/layoutlmv3-large](https://huggingface.co/microsoft/layoutlmv3-large) |
 | layoutlmv3-base-chinese | [microsoft/layoutlmv3-base-chinese](https://huggingface.co/microsoft/layoutlmv3-base-chinese) |
 
+**Continued pre-training.** [`pretraining/`](pretraining) contains a community implementation of the three pre-training objectives (MLM, MIM, WPA) on top of Hugging Face `transformers`. Use it to continue pre-training these checkpoints on your own documents. Questions about it come up in [#1042](https://github.com/microsoft/unilm/issues/1042) and [#1609](https://github.com/microsoft/unilm/issues/1609). It was written from the paper and is not the original training code; see [pretraining/README.md](pretraining/README.md) for usage, results and differences from the paper.
+
 ## Fine-tuning Examples
 We provide some fine-tuned models and their train/test logs.
 ### Form Understanding on FUNSD
