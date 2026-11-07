@@ -12,8 +12,8 @@ It was written from the paper. It is not the original training code, and it is m
 
 ![Starting points](docs/starting_points.png)
 
-- **Pre-training (top row):** the released checkpoints contain no pre-training heads, so the heads are trained first with the encoder frozen (grey band). Masked-token accuracy then reaches **0.511 (base) / 0.576 (large)**; a randomly initialised encoder reaches **0.056**.
-- **Fine-tuning (bottom row):** after continued pre-training on about 400k IDL pages, FUNSD and CORD fine-tuning follow the released checkpoint's curves from the first step. Final F1: FUNSD 0.901 vs 0.894, CORD 0.937 vs 0.937. A model pre-trained from scratch on the same data reaches 0.400 and 0.792.
+- **Pre-training (top row):** the released checkpoints contain no pre-training heads. Step 0 is the point after a 1,000-step head-only warm-up: the encoder has not changed, but the new heads have learned to read it. From there, the released encoder starts at **0.511 (base) / 0.576 (large)** masked-token accuracy and loss 8.4 / 7.8. A randomly initialised encoder starts at **0.056** and loss 17.0. Before the warm-up, the random heads make every encoder score about 0, so that point says nothing about the encoder.
+- **Fine-tuning (bottom row):** after continued pre-training on about 400k IDL pages, FUNSD and CORD fine-tuning follow the released checkpoint's curves from the first step. Final F1: FUNSD 0.901 vs 0.894, CORD 0.937 vs 0.937. A model pre-trained from scratch on the same data reaches 0.400 and 0.792. At fine-tuning step 0 every model has a new random classifier, so all start near 0 F1; what matters is that the continued and released curves overlap.
 - **Downstream effect:** with 10 seeds, continued pre-training on IDL gives a small FUNSD gain of +0.65 F1 (p = 0.047) and no change on CORD.
 
 ## Install and test
