@@ -85,6 +85,28 @@ def test_all_three_losses_backpropagate_into_backbone():
     assert model.layoutlmv3.image_mask_token.grad.abs().sum() > 0
 
 
+def test_relative_position_bias_tables_are_trained():
+    """transformers looks the bias tables up under no_grad (huggingface/transformers#50636); here they train, and
+    the encoder's outputs are the same as transformers' own LayoutLMv3Model."""
+    from transformers import LayoutLMv3Model
+
+    torch.manual_seed(0)
+    model = LayoutLMv3ForPreTraining(tiny_config(), image_vocab_size=8)
+    model(**tiny_batch()).loss.backward()
+    encoder = model.layoutlmv3.encoder
+    for table in (encoder.rel_pos_bias, encoder.rel_pos_x_bias, encoder.rel_pos_y_bias):
+        assert table.weight.grad is not None and table.weight.grad.abs().sum() > 0
+
+    reference = LayoutLMv3Model(tiny_config()).eval()
+    missing, unexpected = reference.load_state_dict(model.layoutlmv3.state_dict(), strict=False)
+    assert not missing and unexpected == ["image_mask_token"]
+    batch = tiny_batch()
+    inputs = {k: batch[k] for k in ("input_ids", "bbox", "attention_mask", "pixel_values")}
+    with torch.no_grad():
+        torch.testing.assert_close(model.layoutlmv3.eval()(**inputs).last_hidden_state,
+                                   reference(**inputs).last_hidden_state)
+
+
 def test_image_mask_replaces_patches_only_where_masked():
     torch.manual_seed(0)
     model = LayoutLMv3ForPreTraining(tiny_config(), image_vocab_size=8).eval()

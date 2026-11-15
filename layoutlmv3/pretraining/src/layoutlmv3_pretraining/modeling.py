@@ -1,8 +1,12 @@
 """LayoutLMv3 with the three pre-training objectives: MLM, MIM and WPA.
 
-Built on Hugging Face ``transformers``' ``LayoutLMv3Model``. The only change to
-the backbone is image masking: masked patch embeddings are replaced by a learned
-``[MASK]`` embedding before position embeddings are added (as in BEiT).
+Built on Hugging Face ``transformers``' ``LayoutLMv3Model``. Two changes to the
+backbone:
+
+* image masking: masked patch embeddings are replaced by a learned ``[MASK]``
+  embedding before position embeddings are added (as in BEiT);
+* the relative position bias tables are trainable again (see
+  ``train_relative_position_bias``).
 """
 
 from __future__ import annotations
@@ -17,6 +21,39 @@ from transformers.activations import ACT2FN
 from transformers.utils import ModelOutput
 
 
+def train_relative_position_bias(encoder: nn.Module) -> nn.Module:
+    """Make the 1D and 2D relative position bias tables of a ``LayoutLMv3Encoder`` trainable.
+
+    Since transformers 4.42 (huggingface/transformers#30988) the encoder looks the tables up under
+    ``torch.no_grad()``, so ``rel_pos_bias``, ``rel_pos_x_bias`` and ``rel_pos_y_bias`` never get a gradient
+    and keep their checkpoint values in any (pre-)training. The lookup was put under ``no_grad`` because the
+    backward of advanced indexing made training about 5x slower (huggingface/transformers#30974);
+    ``index_select`` keeps the gradient at about 7% extra time per step and gives the same forward values.
+    Reported as huggingface/transformers#50636; this patch can be dropped once transformers fixes it.
+    """
+
+    def lookup(table: nn.Linear, buckets: torch.Tensor) -> torch.Tensor:   # -> (B, heads, T, T)
+        out = table.weight.t().index_select(0, buckets.flatten()).view(*buckets.shape, -1)
+        return out.permute(0, 3, 1, 2).contiguous()
+
+    def cal_1d_pos_emb(position_ids):
+        rel = position_ids.unsqueeze(-2) - position_ids.unsqueeze(-1)
+        buckets = encoder.relative_position_bucket(rel, num_buckets=encoder.rel_pos_bins,
+                                                   max_distance=encoder.max_rel_pos)
+        return lookup(encoder.rel_pos_bias, buckets)
+
+    def cal_2d_pos_emb(bbox):
+        x, y = bbox[:, :, 0], bbox[:, :, 3]
+        bucket = lambda d: encoder.relative_position_bucket(  # noqa: E731
+            d, num_buckets=encoder.rel_2d_pos_bins, max_distance=encoder.max_rel_2d_pos)
+        return (lookup(encoder.rel_pos_x_bias, bucket(x.unsqueeze(-2) - x.unsqueeze(-1)))
+                + lookup(encoder.rel_pos_y_bias, bucket(y.unsqueeze(-2) - y.unsqueeze(-1))))
+
+    encoder._cal_1d_pos_emb = cal_1d_pos_emb
+    encoder._cal_2d_pos_emb = cal_2d_pos_emb
+    return encoder
+
+
 class LayoutLMv3ModelWithImageMask(LayoutLMv3Model):
     """``LayoutLMv3Model`` that can mask image patches during ``forward``."""
 
@@ -25,6 +62,7 @@ class LayoutLMv3ModelWithImageMask(LayoutLMv3Model):
         self.image_mask_token = nn.Parameter(torch.zeros(1, 1, config.hidden_size))
         nn.init.trunc_normal_(self.image_mask_token, std=0.02)
         self._bool_masked_pos: torch.Tensor | None = None
+        train_relative_position_bias(self.encoder)
 
     def forward_image(self, pixel_values):
         embeddings = self.patch_embed(pixel_values)                          # B, N, D

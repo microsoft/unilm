@@ -61,3 +61,9 @@ python scripts/finetune_funsd.py --task funsd --model runs/base/backbone --seeds
 - **MIM targets:** the paper's document dVAE tokenizer is not released. MIM targets come from OpenAI's DALL-E dVAE (as in BEiT v1) or from a k-means codebook.
 - **WPA head:** the paper describes a two-layer MLP but gives no further details; this is our reading of it.
 - **Scale:** the reported runs use up to about 400k pages, not the paper's 11M.
+
+## Relative position bias and `transformers`
+
+Since `transformers` 4.42, `LayoutLMv3Model` looks up its 1D and 2D relative position bias tables (`rel_pos_bias`, `rel_pos_x_bias`, `rel_pos_y_bias`) under `torch.no_grad()`, so these tables never receive a gradient and stay at their checkpoint values ([huggingface/transformers#50636](https://github.com/huggingface/transformers/issues/50636)). `modeling.train_relative_position_bias` replaces the lookup with `index_select`. That makes the tables trainable again, with the same forward outputs and about 7% more time per step. `LayoutLMv3ModelWithImageMask` applies it, so pre-training updates all encoder weights; `tests/test_pretraining.py` checks both properties.
+
+The tables hold 1,920 of the encoder's 125M parameters. The results above were produced before this change. `scripts/finetune_funsd.py` fine-tunes with stock `transformers`, so its numbers match what users get from `LayoutLMv3ForTokenClassification`.
