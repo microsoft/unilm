@@ -1,0 +1,22 @@
+[project]
+name = "layoutlmv3-pretraining"
+version = "0.1.0"
+description = "LayoutLMv3 pre-training objectives (MLM, MIM, WPA) on top of Hugging Face transformers"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Qiming Bao" }]
+dependencies = ["torch>=2.1", "transformers>=4.46,<5", "datasets>=2.20", "numpy", "scikit-learn", "pillow", "huggingface_hub", "safetensors"]
+
+[project.optional-dependencies]
+dev = ["pytest", "seqeval"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
