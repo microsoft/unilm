@@ -131,6 +131,9 @@ We also fine-tune the LayoutLMv3 Chinese model on [EPHOIE](https://github.com/HC
   
 
 
+### Long documents (more than 512 tokens)
+[`long_documents/`](long_documents) fine-tunes the released checkpoints on whole pages of up to 2,048 or 4,096 text tokens without extra pre-training. It repeats the learned position embeddings and uses a low-memory exact attention. On long forms and invoices (VRDU, RealKIE) LayoutLMv3-base gains 24 to 25 entity F1 points over cutting pages at 512 tokens. This is a community contribution; see [long_documents/README.md](long_documents/README.md).
+
 ## Citation
 If you find LayoutLMv3 helpful, please cite us:
 ```
